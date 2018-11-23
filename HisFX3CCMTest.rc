@@ -1,0 +1,186 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+#include "inc/VersionDefine.h"
+#include "versionswitch.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 中文(简体，中国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "#include ""inc/VersionDefine.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "VS_VERSION_INFO VERSIONINFO\r\n"
+    "FILEVERSION VER_Major, VER_Minor, VER_Release, VER_Build\r\n"
+    "PRODUCTVERSION VER_Major, VER_Minor, VER_Release, VER_Build\r\n"
+    "FILEFLAGSMASK 0x17L\r\n"
+    "#ifdef _DEBUG\r\n"
+    " FILEFLAGS 0x1L\r\n"
+    "#else\r\n"
+    " FILEFLAGS 0x0L\r\n"
+    "#endif\r\n"
+    " FILEOS 0x4L\r\n"
+    " FILETYPE 0x1L\r\n"
+    " FILESUBTYPE 0x0L\r\n"
+    "BEGIN\r\n"
+    "    BLOCK ""StringFileInfo""\r\n"
+    "  BEGIN\r\n"
+    "        BLOCK ""080404b0""\r\n"
+    "        BEGIN\r\n"
+    "            VALUE ""FileDescription"", ""HisFX3CC Application""\r\n"
+    "            VALUE ""FileVersion"", STR_Version\r\n"
+    "            VALUE ""InternalName"", ""HisFX3CCMTest""\r\n"
+    "            VALUE ""LegalCopyright"", ""Ro Longo Automation Technology Copyright (C) 2015""\r\n"
+    "            VALUE ""OriginalFilename"", ""HisFX3CC.exe""\r\n"
+    "            VALUE ""ProductName"", ""Rolongo CCM Test""\r\n"
+    "            VALUE ""ProductVersion"", STR_Version\r\n"
+    "            VALUE ""CompanyName"", ""Ro Longo Automation Technology Co.,Ltd .""\r\n"
+    "       END\r\n"
+    "    END\r\n"
+    "    BLOCK ""VarFileInfo""\r\n"
+    "    BEGIN\r\n"
+    "        VALUE ""Translation"", 0x804, 1200\r\n"
+    "    END\r\n"
+    "END\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+/*
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,1,0,28
+ PRODUCTVERSION 1,1,0,28
+ FILEFLAGSMASK 0x17L
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080404b0"
+        BEGIN
+            VALUE "FileDescription", "HisFX3CC Application"
+            VALUE "FileVersion", "1.1.0.28"
+            VALUE "InternalName", "HisFX3CC"
+            VALUE "LegalCopyright", "Copyright (C) 2014"
+            VALUE "OriginalFilename", "HisFX3CC.exe"
+            VALUE "ProductName", "HisFX3CC Application"
+            VALUE "ProductVersion", "1.1.0.28"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 1200
+    END
+END
+*/
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+#if (defined EXELOG_USE_SUNNEX) 
+IDI_ICON1               ICON                    "Resources\\sunex.ico"
+#elif (defined USE_EQUIPMENT_HYB_FUNCTION) || (defined USE_EQUIPMENT_SUNRISE_AFA_V1)
+IDI_ICON1               ICON                    "Resources\\HoneYcomB.ico"
+#else
+IDI_ICON1               ICON                    "Resources\\logo.ico"
+#endif
+
+#endif    // 中文(简体，中国) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION VER_Major, VER_Minor, VER_Release, VER_Build
+PRODUCTVERSION VER_Major, VER_Minor, VER_Release, VER_Build
+FILEFLAGSMASK 0x17L
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+  BEGIN
+        BLOCK "080404b0"
+        BEGIN
+            VALUE "FileDescription", "HisFX3CC Application"
+            VALUE "FileVersion", STR_Version
+            VALUE "InternalName", "HisFX3CCMTest"
+            VALUE "LegalCopyright", "Ro Longo Automation Technology Copyright (C) 2015"
+            VALUE "OriginalFilename", "HisFX3CC.exe"
+            VALUE "ProductName", "Rolongo CCM Test"
+            VALUE "ProductVersion", STR_Version
+            VALUE "CompanyName", "Ro Longo Automation Technology Co.,Ltd ."
+       END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 1200
+    END
+END
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

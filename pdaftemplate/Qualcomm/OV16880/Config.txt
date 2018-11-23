@@ -1,0 +1,15 @@
+cfa = BGGR
+image_width = 4672
+image_height = 3504
+bit_depth = 10
+black_lvl = 64
+fv_measure_channel = 1
+pd_block_width = 32
+pd_block_height = 32
+pd_block_n_pd_pairs = 8
+pd_block_start_x = 96
+pd_block_start_y = 88 
+pd_block_l_x = "6,6,14,14,22,22,30,30"
+pd_block_l_y = "14,30,2,18,14,30,2,18"
+pd_block_r_x = "6,6,14,14,22,22,30,30"
+pd_block_r_y = "10,26,6,22,10,26,6,22"

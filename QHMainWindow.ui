@@ -1,0 +1,595 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>QHMainWindow</class>
+ <widget class="QMainWindow" name="QHMainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>642</width>
+    <height>433</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>320</width>
+    <height>240</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>Microsoft Tai Le</family>
+    <pointsize>9</pointsize>
+    <weight>75</weight>
+    <bold>true</bold>
+   </font>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::StrongFocus</enum>
+  </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::CustomContextMenu</enum>
+  </property>
+  <property name="windowTitle">
+   <string>HisFX3CCMTest</string>
+  </property>
+  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>642</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <widget class="QMenu" name="menuAdministrator">
+    <property name="font">
+     <font>
+      <family>Microsoft Tai Le</family>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="title">
+     <string>Administrator</string>
+    </property>
+    <addaction name="csvManageaction"/>
+    <addaction name="actionConfig_Content_Table"/>
+    <addaction name="separator"/>
+    <addaction name="actionShortcut"/>
+    <addaction name="separator"/>
+    <addaction name="actionChoose_OperatorMode"/>
+    <addaction name="separator"/>
+    <addaction name="disableconfigaction"/>
+    <addaction name="actionChange_Password"/>
+   </widget>
+   <widget class="QMenu" name="menuUI">
+    <property name="font">
+     <font>
+      <family>Microsoft Tai Le</family>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="title">
+     <string>UI</string>
+    </property>
+    <addaction name="showItem2EndResultaction"/>
+    <addaction name="showEndResult2Imageaction"/>
+    <addaction name="separator"/>
+    <addaction name="actionImage_Show"/>
+    <addaction name="separator"/>
+    <addaction name="actionSave_Lock_UI"/>
+    <addaction name="actionPanel_moveable"/>
+    <addaction name="actionReset_UI_Layout"/>
+    <addaction name="separator"/>
+    <addaction name="actionShow_Channel_1"/>
+    <addaction name="actionShow_Channel_2"/>
+    <addaction name="separator"/>
+    <addaction name="actionFont"/>
+   </widget>
+   <widget class="QMenu" name="menuDEBUG">
+    <property name="font">
+     <font>
+      <family>Microsoft Tai Le</family>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="title">
+     <string>DEBUG</string>
+    </property>
+    <addaction name="enableDebugModeaction"/>
+    <addaction name="actionSave_Text_Info_To_Local"/>
+   </widget>
+   <widget class="QMenu" name="menuTool">
+    <property name="font">
+     <font>
+      <family>Microsoft Tai Le</family>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="title">
+     <string>Tool</string>
+    </property>
+    <addaction name="actionCoordinate_Convertion"/>
+    <addaction name="actionComputer_Compatibility_Test"/>
+    <addaction name="actionRepeated_Test"/>
+   </widget>
+   <widget class="QMenu" name="menuGrabber">
+    <property name="font">
+     <font>
+      <family>Microsoft Tai Le</family>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="title">
+     <string>Grabber</string>
+    </property>
+    <addaction name="actionChoose_Grabber"/>
+    <addaction name="actionUpdate_FPGA_FW"/>
+    <addaction name="separator"/>
+    <addaction name="actionVoltage_Calibration"/>
+    <addaction name="currentCalaction"/>
+    <addaction name="OSCalibrationaction"/>
+   </widget>
+   <widget class="QMenu" name="menuLanguage">
+    <property name="font">
+     <font>
+      <family>Microsoft Tai Le</family>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="title">
+     <string>Language</string>
+    </property>
+    <addaction name="simpleChineseaction"/>
+    <addaction name="englishaction"/>
+   </widget>
+   <widget class="QMenu" name="menuAbort">
+    <property name="font">
+     <font>
+      <family>Microsoft Tai Le</family>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="title">
+     <string>Abort</string>
+    </property>
+    <addaction name="actionVersion"/>
+    <addaction name="actionHelp"/>
+    <addaction name="actionSOP"/>
+   </widget>
+   <widget class="QMenu" name="menuEquipment">
+    <property name="font">
+     <font>
+      <family>Microsoft Tai Le</family>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="title">
+     <string>Equipment</string>
+    </property>
+   </widget>
+   <addaction name="menuAdministrator"/>
+   <addaction name="menuUI"/>
+   <addaction name="menuDEBUG"/>
+   <addaction name="menuTool"/>
+   <addaction name="menuGrabber"/>
+   <addaction name="menuEquipment"/>
+   <addaction name="menuLanguage"/>
+   <addaction name="menuAbort"/>
+  </widget>
+  <action name="disableconfigaction">
+   <property name="text">
+    <string>Lock</string>
+   </property>
+  </action>
+  <action name="actionChange_Password">
+   <property name="text">
+    <string>Change Password</string>
+   </property>
+  </action>
+  <action name="csvManageaction">
+   <property name="text">
+    <string>Config Manage</string>
+   </property>
+  </action>
+  <action name="actionChoose_OperatorMode">
+   <property name="text">
+    <string>Choose Operator Mode</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="showItem2EndResultaction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Result On Right</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="showEndResult2Imageaction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Result On Image</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="actionImage_Show">
+   <property name="text">
+    <string>Image Show</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="actionSave_Lock_UI">
+   <property name="text">
+    <string>Save/Lock UI</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="actionPanel_moveable">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Panel Moveable</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="actionReset_UI_Layout">
+   <property name="text">
+    <string>Reset UI Layout</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="enableDebugModeaction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Debug Mode ON</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="actionCoordinate_Convertion">
+   <property name="text">
+    <string>Coordinate Convertion</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="actionChoose_Grabber">
+   <property name="text">
+    <string>Grabber Config</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="actionUpdate_FPGA_FW">
+   <property name="text">
+    <string>Update FPGA FW</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="actionVoltage_Calibration">
+   <property name="text">
+    <string>Voltage Calibration</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="currentCalaction">
+   <property name="text">
+    <string>Current Self Calibration</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="OSCalibrationaction">
+   <property name="text">
+    <string>OS Self Calibration</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="simpleChineseaction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>simplified Chinese</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="englishaction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>English</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="actionVersion">
+   <property name="text">
+    <string>Version</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="actionShortcut">
+   <property name="text">
+    <string>Shortcut</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="actionConfig_Content_Table">
+   <property name="text">
+    <string>Config Content Table</string>
+   </property>
+  </action>
+  <action name="actionShow_Channel_1">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show Channel 1</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="actionShow_Channel_2">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show Channel 2</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="actionComputer_Compatibility_Test">
+   <property name="text">
+    <string>Computer Compatibility Test</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="text">
+    <string>User Manual(CHM)</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="actionRepeated_Test">
+   <property name="text">
+    <string>Repeated Test</string>
+   </property>
+  </action>
+  <action name="actionSave_Text_Info_To_Local">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Save Text Info To Local</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="actionFont">
+   <property name="text">
+    <string>Font</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft Tai Le</family>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="actionSOP">
+   <property name="text">
+    <string>作业指导书(SOP)</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="hisfx3ccmtest.qrc"/>
+ </resources>
+ <connections/>
+</ui>

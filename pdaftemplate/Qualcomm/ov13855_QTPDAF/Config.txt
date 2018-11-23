@@ -1,0 +1,12 @@
+nWidth = 4224;		//Image Width
+nHeight = 3136;		//Image Height
+GlobalShift_x = 0; 	//PDAF Start position x
+GlobalShift_y = 0;	//PDAF Start position y
+x_step = 32; 		//PDAF Block Width  
+y_step = 32; 		//PDAF Block Height
+SensorGain = 1;
+ImageBits = 10; 	//Image Bit Width
+BlackLevel = 64; 	//Image Black Level
+DSRatio = 2;
+PDAFonG = false;
+OTPFormat_Type = OTPFORMAT2D

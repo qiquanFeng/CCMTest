@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>QHOpModeSwitch</class>
+ <widget class="QDialog" name="QHOpModeSwitch">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>336</width>
+    <height>514</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Microsoft Tai Le</family>
+    <pointsize>10</pointsize>
+    <weight>75</weight>
+    <bold>true</bold>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Choose Operator Mode</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_6">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Operator Mode:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="modecomboBox">
+       <item>
+        <property name="text">
+         <string>Normal Mode</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Manual Mode A</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Slave Mode</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Manual Mode B</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Master Mode</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="manualmodeAgroupBox">
+     <property name="title">
+      <string>Manual Mode A</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="charttypeAlabel">
+          <property name="text">
+           <string>Chart Type:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="chartTypecomboBox">
+          <item>
+           <property name="text">
+            <string notr="true">MTF</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">SFR</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">TV Line</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QCheckBox" name="saveLogcheckBox">
+          <property name="text">
+           <string>Save Log</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="showTotalResultcheckBox">
+          <property name="text">
+           <string>Show Total Result</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="manualmodeBgroupBox">
+     <property name="title">
+      <string>Manual Mode B</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <item>
+         <widget class="QLabel" name="charttypeBlabel">
+          <property name="text">
+           <string>Chart Type:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="B_chartTypecomboBox">
+          <item>
+           <property name="text">
+            <string notr="true">MTF</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">SFR</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">TV Line</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_11">
+        <item>
+         <widget class="QLabel" name="Scenelabel">
+          <property name="text">
+           <string>Scene:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="B_scenccomboBox">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>None</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Auto</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Focus Adjust</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>White Field</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Black Field</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="HotPlugroupBox">
+        <property name="title">
+         <string>Hot Plug</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_8">
+           <item>
+            <widget class="QLabel" name="interfacelabel">
+             <property name="text">
+              <string>Interface:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="B_PlugInterfacecomboBox">
+             <item>
+              <property name="text">
+               <string notr="true">MIPI</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string notr="true">DVP</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_9">
+           <item>
+            <widget class="QLabel" name="PINlabel">
+             <property name="text">
+              <string>PIN:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="B_Plug2ndNamecomboBox">
+             <item>
+              <property name="text">
+               <string notr="true">RST</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string notr="true">PWDN</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>MCLK</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>SCL</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>SDA</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_10">
+           <item>
+            <widget class="QLabel" name="rangelabel">
+             <property name="text">
+              <string>Range:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QDoubleSpinBox" name="B_PlugMindoubleSpinBox">
+             <property name="prefix">
+              <string notr="true"/>
+             </property>
+             <property name="suffix">
+              <string notr="true"/>
+             </property>
+             <property name="decimals">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <double>2000.000000000000000</double>
+             </property>
+             <property name="value">
+              <double>5.000000000000000</double>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="wavelinelabel">
+             <property name="text">
+              <string notr="true">~</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QDoubleSpinBox" name="B_PlugMaxdoubleSpinBox">
+             <property name="prefix">
+              <string notr="true"/>
+             </property>
+             <property name="suffix">
+              <string notr="true"/>
+             </property>
+             <property name="decimals">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <double>2000.000000000000000</double>
+             </property>
+             <property name="value">
+              <double>800.000000000000000</double>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="ipsetgroupBox">
+     <property name="title">
+      <string>IP/PORT Configure</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <property name="topMargin">
+       <number>2</number>
+      </property>
+      <property name="rightMargin">
+       <number>2</number>
+      </property>
+      <property name="bottomMargin">
+       <number>2</number>
+      </property>
+      <item>
+       <widget class="QGroupBox" name="groupBox_3">
+        <property name="title">
+         <string/>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="margin">
+          <number>2</number>
+         </property>
+         <item>
+          <widget class="QRadioButton" name="localradioButton">
+           <property name="text">
+            <string>Local</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QRadioButton" name="ipV4radioButton">
+             <property name="text">
+              <string>IP V4</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="ipv4lineEdit">
+             <property name="inputMask">
+              <string notr="true">000.000.000.000; </string>
+             </property>
+             <property name="text">
+              <string notr="true">127.0.0.1</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <property name="placeholderText">
+              <string notr="true"/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Socket Port:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="portspinBox">
+          <property name="suffix">
+           <string notr="true"/>
+          </property>
+          <property name="prefix">
+           <string notr="true"/>
+          </property>
+          <property name="minimum">
+           <number>30000</number>
+          </property>
+          <property name="maximum">
+           <number>65535</number>
+          </property>
+          <property name="value">
+           <number>41589</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QPushButton" name="okpushButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>15</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>OK</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancelpushButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>15</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

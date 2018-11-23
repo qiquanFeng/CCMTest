@@ -1,0 +1,390 @@
+﻿生成启动时间为 2018/6/26 20:54:49。
+     1>项目“E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\HisFX3CCMTest.vcxproj”在节点 2 上(rebuild 个目标)。
+     1>_PrepareForClean:
+         正在删除文件“x64\Debug\HisFX3CCMTest.lastbuildstate”。
+       InitializeBuildStatus:
+         正在创建“x64\Debug\HisFX3CCMTest.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+       CustomBuild:
+         Moc'ing updatefirewaredialog.h...
+         Moc'ing qconfigmanage.h...
+         Moc'ing coorconverttool.h...
+         Moc'ing fx3deviceconfig.h...
+         Moc'ing itemprocess.h...
+         Moc'ing qitemexetool.h...
+         Moc'ing jsl_logindialog.h...
+         Moc'ing jsl_burnstate.h...
+         Moc'ing jsl_controlpanel.h...
+         E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\jsl_controlpanel.h(0): Note: No relevant classes found. No output generated.
+         Moc'ing leisaimotion.h...
+         Moc'ing qimageshowconfig.h...
+         Moc'ing QHButtonExec.h...
+         Moc'ing QHInfoPanel.h...
+         Moc'ing QHOpModeSwitch.h...
+         Moc'ing QHManualModeA.h...
+         Moc'ing QHTextItemEdit.h...
+         Moc'ing QHTextInfoPanel.h...
+         Moc'ing QHBlemishHC.h...
+         Moc'ing QHDrawTEstItem.h...
+         Moc'ing QHStatisPanel.h...
+         Moc'ing QHMainWindow.h...
+         Moc'ing QHShortcut.h...
+         Moc'ing QHTableContent.h...
+         Moc'ing QHImageFrame.h...
+         Moc'ing QHImageDebug.h...
+         Moc'ing QHChooseGrabberType.h...
+         Moc'ing QHofflinePath.h...
+         Moc'ing QHRepeatedTest.h...
+         Moc'ing QHFontSetting.h...
+         Moc'ing qcustomplot.h...
+         Moc'ing savedebuginfo.h...
+         Moc'ing cchooseconfigs.h...
+         Moc'ing configsetting.h...
+         Moc'ing hardwareop.h...
+         Moc'ing hisfx3ccmtest.h...
+         Moc'ing importtable.h...
+         Moc'ing qmanualtool.h...
+         Moc'ing saveimage.h...
+         Rcc'ing hisfx3ccmtest.qrc...
+         Uic'ing cchooseconfigs.ui...
+         Uic'ing configsetting.ui...
+     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : The name 'horizontalLayout_637' (QHBoxLayout) is already in use, defaulting to 'horizontalLayout_6371'.
+     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : The name 'verticalLayout_167' (QVBoxLayout) is already in use, defaulting to 'verticalLayout_1671'.
+     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : The name 'verticalLayout_162' (QVBoxLayout) is already in use, defaulting to 'verticalLayout_1621'.
+     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : The name 'horizontalLayout_11' (QHBoxLayout) is already in use, defaulting to 'horizontalLayout_117'.
+     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : The name 'horizontalLayout_636' (QHBoxLayout) is already in use, defaulting to 'horizontalLayout_6361'.
+     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : The name 'horizontalLayout_117' (QHBoxLayout) is already in use, defaulting to 'horizontalLayout_1171'.
+     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : The name 'horizontalLayout_625' (QHBoxLayout) is already in use, defaulting to 'horizontalLayout_6251'.
+     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : Z-order assignment: '' is not a valid widget.
+     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : Z-order assignment: '' is not a valid widget.
+     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : Z-order assignment: '' is not a valid widget.
+     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : Z-order assignment: '' is not a valid widget.
+     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : Z-order assignment: '' is not a valid widget.
+         Uic'ing coorconverttool.ui...
+         Uic'ing fx3deviceconfig.ui...
+         Uic'ing hardwareop.ui...
+         Uic'ing hisfx3ccmtest.ui...
+         Uic'ing importtable.ui...
+         Uic'ing qconfigmanage.ui...
+         Uic'ing QHBlemishHC.ui...
+         Uic'ing QHButtonExec.ui...
+         Uic'ing QHDrawTEstItem.ui...
+         Uic'ing QHInfoPanel.ui...
+         Uic'ing QHManualModeA.ui...
+         Uic'ing QHOpModeSwitch.ui...
+         Uic'ing QHTextInfoPanel.ui...
+         Uic'ing QHTextItemEdit.ui...
+         Uic'ing qimageshowconfig.ui...
+         Uic'ing qitemexetool.ui...
+         Uic'ing qmanualtool.ui...
+         Uic'ing QHStatisPanel.ui...
+         Uic'ing QHMainWindow.ui...
+         Uic'ing QHShortcut.ui...
+         Uic'ing QHTableContent.ui...
+         Uic'ing QHImageDebug.ui...
+         Uic'ing QHChooseGrabberType.ui...
+         Uic'ing QHofflinePath.ui...
+         Uic'ing QHRepeatedTest.ui...
+         Uic'ing QHFontSetting.ui...
+         Uic'ing jsl_logindialog.ui...
+         Uic'ing jsl_burnstate.ui...
+         Uic'ing jsl_controlpanel.ui...
+         Uic'ing saveimage.ui...
+         Uic'ing updatefirewaredialog.ui...
+         Uic'ing savedebuginfo.ui...
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\CL.exe /c /I.\GeneratedFiles /I. /I"C:\Qt\qt-4.8.6-x64-msvc2010\include" /I.\GeneratedFiles\Debug /I"C:\Qt\qt-4.8.6-x64-msvc2010\include\QtCore" /I"C:\Qt\qt-4.8.6-x64-msvc2010\include\QtGui" /I"C:\Qt\qt-4.8.6-x64-msvc2010\include\QtNetwork" /I"C:\Qt\qt-4.8.6-x64-msvc2010\include\QtHelp" /I"C:\Qt\qt-4.8.6-x64-msvc2010\include\QtSql" /I"C:\Qt\qt-4.8.6-x64-msvc2010\include\QtMultimedia" /Zi /nologo /W3 /WX- /Od /Oy- /D UNICODE /D _WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_NETWORK_LIB /D QT_SQL_LIB /D QT_SERIALPORT_LIB /D QT_MULTIMEDIA_LIB /GF- /Gm- /EHa /RTCc /MDd /Zp8 /GS /Gy- /fp:strict /fp:except /Zc:wchar_t- /Zc:forScope /GR /Fo"x64\Debug\\" /Fd"x64\Debug\vc100.pdb" /Gd /TP /wd4996 /wd4018 /wd4267 /errorReport:prompt cchooseconfigs.cpp configsetting.cpp coorconverttool.cpp fx3deviceconfig.cpp GC5005_OTP_DD.cpp GeneratedFiles\Debug\moc_cchooseconfigs.cpp GeneratedFiles\Debug\moc_configsetting.cpp GeneratedFiles\Debug\moc_coorconverttool.cpp GeneratedFiles\Debug\moc_fx3deviceconfig.cpp GeneratedFiles\Debug\moc_hardwareop.cpp GeneratedFiles\Debug\moc_hisfx3ccmtest.cpp GeneratedFiles\Debug\moc_importtable.cpp GeneratedFiles\Debug\moc_itemprocess.cpp GeneratedFiles\Debug\moc_jsl_burnstate.cpp GeneratedFiles\Debug\moc_jsl_controlpanel.cpp GeneratedFiles\Debug\moc_jsl_logindialog.cpp GeneratedFiles\Debug\moc_leisaimotion.cpp GeneratedFiles\Debug\moc_qconfigmanage.cpp GeneratedFiles\Debug\moc_qcustomplot.cpp GeneratedFiles\Debug\moc_QHBlemishHC.cpp GeneratedFiles\Debug\moc_QHButtonExec.cpp GeneratedFiles\Debug\moc_QHChooseGrabberType.cpp GeneratedFiles\Debug\moc_QHDrawTEstItem.cpp GeneratedFiles\Debug\moc_QHFontSetting.cpp GeneratedFiles\Debug\moc_QHImageDebug.cpp GeneratedFiles\Debug\moc_QHImageFrame.cpp GeneratedFiles\Debug\moc_QHInfoPanel.cpp GeneratedFiles\Debug\moc_QHMainWindow.cpp GeneratedFiles\Debug\moc_QHManualModeA.cpp GeneratedFiles\Debug\moc_QHofflinePath.cpp GeneratedFiles\Debug\moc_QHOpModeSwitch.cpp GeneratedFiles\Debug\moc_QHRepeatedTest.cpp GeneratedFiles\Debug\moc_QHShortcut.cpp GeneratedFiles\Debug\moc_QHStatisPanel.cpp GeneratedFiles\Debug\moc_QHTableContent.cpp GeneratedFiles\Debug\moc_QHTextInfoPanel.cpp GeneratedFiles\Debug\moc_QHTextItemEdit.cpp GeneratedFiles\Debug\moc_qimageshowconfig.cpp GeneratedFiles\Debug\moc_qitemexetool.cpp GeneratedFiles\Debug\moc_qmanualtool.cpp GeneratedFiles\Debug\moc_savedebuginfo.cpp GeneratedFiles\Debug\moc_saveimage.cpp GeneratedFiles\Debug\moc_updatefirewaredialog.cpp hardwareop.cpp hisfx3ccmtest.cpp importtable.cpp itemprocess.cpp jsl_burnstate.cpp jsl_controlpanel.cpp jsl_logindialog.cpp jsoncpp.cpp leisaimotion.cpp main.cpp qautomation.cpp qconfigmanage.cpp qcustomplot.cpp QHBlemishHC.cpp QHButtonExec.cpp QHChooseGrabberType.cpp QHDrawTEstItem.cpp QHFontSetting.cpp QHImageDebug.cpp QHImageFrame.cpp QHInfoPanel.cpp QHMainWindow.cpp QHManualModeA.cpp QHofflinePath.cpp QHOpModeSwitch.cpp QHRepeatedTest.cpp QHShortcut.cpp QHStatisPanel.cpp QHTableContent.cpp QHTextInfoPanel.cpp QHTextItemEdit.cpp qimageshowconfig.cpp qitemexetool.cpp qmanualtool.cpp qoplow.cpp Qualcomm_LSCCalibrationDll.cpp savedebuginfo.cpp saveimage.cpp Serial.cpp updatefirewaredialog.cpp
+         cchooseconfigs.cpp
+         configsetting.cpp
+         coorconverttool.cpp
+         fx3deviceconfig.cpp
+         GC5005_OTP_DD.cpp
+         moc_cchooseconfigs.cpp
+         moc_configsetting.cpp
+         moc_coorconverttool.cpp
+         moc_fx3deviceconfig.cpp
+         moc_hardwareop.cpp
+         moc_hisfx3ccmtest.cpp
+         moc_importtable.cpp
+         moc_itemprocess.cpp
+         moc_jsl_burnstate.cpp
+         moc_jsl_controlpanel.cpp
+         moc_jsl_logindialog.cpp
+         moc_leisaimotion.cpp
+         moc_qconfigmanage.cpp
+         moc_qcustomplot.cpp
+         moc_QHBlemishHC.cpp
+         Generating Code...
+         Compiling...
+         moc_QHButtonExec.cpp
+         moc_QHChooseGrabberType.cpp
+         moc_QHDrawTEstItem.cpp
+         moc_QHFontSetting.cpp
+         moc_QHImageDebug.cpp
+         moc_QHImageFrame.cpp
+         moc_QHInfoPanel.cpp
+         moc_QHMainWindow.cpp
+         moc_QHManualModeA.cpp
+         moc_QHofflinePath.cpp
+         moc_QHOpModeSwitch.cpp
+         moc_QHRepeatedTest.cpp
+         moc_QHShortcut.cpp
+         moc_QHStatisPanel.cpp
+         moc_QHTableContent.cpp
+         moc_QHTextInfoPanel.cpp
+         moc_QHTextItemEdit.cpp
+         moc_qimageshowconfig.cpp
+         moc_qitemexetool.cpp
+         moc_qmanualtool.cpp
+         Generating Code...
+         Compiling...
+         moc_savedebuginfo.cpp
+         moc_saveimage.cpp
+         moc_updatefirewaredialog.cpp
+         hardwareop.cpp
+         hisfx3ccmtest.cpp
+         importtable.cpp
+         itemprocess.cpp
+     1>itemprocess.cpp(19148): warning C4305: “=”: 从“double”到“float”截断
+     1>itemprocess.cpp(19150): warning C4305: “=”: 从“double”到“float”截断
+     1>itemprocess.cpp(19151): warning C4305: “=”: 从“double”到“float”截断
+     1>itemprocess.cpp(19533): warning C4305: “=”: 从“double”到“float”截断
+     1>itemprocess.cpp(19535): warning C4305: “=”: 从“double”到“float”截断
+     1>itemprocess.cpp(19536): warning C4305: “=”: 从“double”到“float”截断
+         jsl_burnstate.cpp
+         jsl_controlpanel.cpp
+         jsl_logindialog.cpp
+         jsoncpp.cpp
+         leisaimotion.cpp
+         main.cpp
+         qautomation.cpp
+         qconfigmanage.cpp
+         qcustomplot.cpp
+         QHBlemishHC.cpp
+         QHButtonExec.cpp
+         QHChooseGrabberType.cpp
+         QHDrawTEstItem.cpp
+         Generating Code...
+         Compiling...
+         QHFontSetting.cpp
+         QHImageDebug.cpp
+         QHImageFrame.cpp
+         QHInfoPanel.cpp
+         QHMainWindow.cpp
+         QHManualModeA.cpp
+         QHofflinePath.cpp
+         QHOpModeSwitch.cpp
+         QHRepeatedTest.cpp
+         QHShortcut.cpp
+         QHStatisPanel.cpp
+         QHTableContent.cpp
+         QHTextInfoPanel.cpp
+         QHTextItemEdit.cpp
+         qimageshowconfig.cpp
+         qitemexetool.cpp
+         qmanualtool.cpp
+         qoplow.cpp
+         Qualcomm_LSCCalibrationDll.cpp
+         savedebuginfo.cpp
+         Generating Code...
+         Compiling...
+         saveimage.cpp
+         Serial.cpp
+         updatefirewaredialog.cpp
+         Generating Code...
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\CL.exe /c /I.\GeneratedFiles /I. /I"C:\Qt\qt-4.8.6-x64-msvc2010\include" /I.\GeneratedFiles\Debug /I"C:\Qt\qt-4.8.6-x64-msvc2010\include\QtCore" /I"C:\Qt\qt-4.8.6-x64-msvc2010\include\QtGui" /I"C:\Qt\qt-4.8.6-x64-msvc2010\include\QtNetwork" /I"C:\Qt\qt-4.8.6-x64-msvc2010\include\QtHelp" /I"C:\Qt\qt-4.8.6-x64-msvc2010\include\QtSql" /I"C:\Qt\qt-4.8.6-x64-msvc2010\include\QtMultimedia" /Zi /nologo /W3 /WX- /Od /Oy- /D UNICODE /D _WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_NETWORK_LIB /D QT_SQL_LIB /D QT_SERIALPORT_LIB /D QT_MULTIMEDIA_LIB /GF- /Gm- /EHa /RTCc /MDd /Zp8 /GS /Gy- /fp:strict /fp:except /Zc:wchar_t- /Zc:forScope /GR /Fo"x64\Debug\\" /Fd"x64\Debug\vc100.pdb" /Gd /TP /wd4996 /wd4018 /wd4267 /errorReport:prompt GeneratedFiles\qrc_hisfx3ccmtest.cpp
+         qrc_hisfx3ccmtest.cpp
+       ResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /l"0x0409" /nologo /fo"x64\Debug\HisFX3CCMTest.res" HisFX3CCMTest.rc 
+       ManifestResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"x64\Debug\HisFX3CCMTest.exe.embed.manifest.res" x64\Debug\HisFX3CCMTest_manifest.rc 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Qt\qt-4.8.6-x64-msvc2010\lib" qtmaind.lib QtCored4.lib QtGuid4.lib QtNetworkd4.lib QtHelpd4.lib QtSqld4.lib .\lib\x64\Debug\HisFX3CCMAlg64D.lib .\lib\x64\Debug\HisFX3Log64D.lib .\lib\x64\Debug\RolongoImageTestAlg64D.lib .\lib\x64\Debug\QHTcpIpCommu64D.lib .\lib\x64\Debug\qwtd.lib .\lib\x64\Debug\HisFX3GerneralMotion.lib ./PlatformLib/General/x64/HisFX3Platform64D.lib Iphlpapi.lib Version.lib QtMultimediad4.lib pdh.lib .\lib\x64\slm_runtime_api.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"x64\Debug\HisFX3CCMTest.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.lib" /MACHINE:X64 x64\Debug\HisFX3CCMTest.res
+         x64\Debug\HisFX3CCMTest.exe.embed.manifest.res
+         x64\Debug\cchooseconfigs.obj
+         x64\Debug\configsetting.obj
+         x64\Debug\coorconverttool.obj
+         x64\Debug\fx3deviceconfig.obj
+         x64\Debug\GC5005_OTP_DD.obj
+         x64\Debug\moc_cchooseconfigs.obj
+         x64\Debug\moc_configsetting.obj
+         x64\Debug\moc_coorconverttool.obj
+         x64\Debug\moc_fx3deviceconfig.obj
+         x64\Debug\moc_hardwareop.obj
+         x64\Debug\moc_hisfx3ccmtest.obj
+         x64\Debug\moc_importtable.obj
+         x64\Debug\moc_itemprocess.obj
+         x64\Debug\moc_jsl_burnstate.obj
+         x64\Debug\moc_jsl_controlpanel.obj
+         x64\Debug\moc_jsl_logindialog.obj
+         x64\Debug\moc_leisaimotion.obj
+         x64\Debug\moc_qconfigmanage.obj
+         x64\Debug\moc_qcustomplot.obj
+         x64\Debug\moc_QHBlemishHC.obj
+         x64\Debug\moc_QHButtonExec.obj
+         x64\Debug\moc_QHChooseGrabberType.obj
+         x64\Debug\moc_QHDrawTEstItem.obj
+         x64\Debug\moc_QHFontSetting.obj
+         x64\Debug\moc_QHImageDebug.obj
+         x64\Debug\moc_QHImageFrame.obj
+         x64\Debug\moc_QHInfoPanel.obj
+         x64\Debug\moc_QHMainWindow.obj
+         x64\Debug\moc_QHManualModeA.obj
+         x64\Debug\moc_QHofflinePath.obj
+         x64\Debug\moc_QHOpModeSwitch.obj
+         x64\Debug\moc_QHRepeatedTest.obj
+         x64\Debug\moc_QHShortcut.obj
+         x64\Debug\moc_QHStatisPanel.obj
+         x64\Debug\moc_QHTableContent.obj
+         x64\Debug\moc_QHTextInfoPanel.obj
+         x64\Debug\moc_QHTextItemEdit.obj
+         x64\Debug\moc_qimageshowconfig.obj
+         x64\Debug\moc_qitemexetool.obj
+         x64\Debug\moc_qmanualtool.obj
+         x64\Debug\moc_savedebuginfo.obj
+         x64\Debug\moc_saveimage.obj
+         x64\Debug\moc_updatefirewaredialog.obj
+         x64\Debug\qrc_hisfx3ccmtest.obj
+         x64\Debug\hardwareop.obj
+         x64\Debug\hisfx3ccmtest.obj
+         x64\Debug\importtable.obj
+         x64\Debug\itemprocess.obj
+         x64\Debug\jsl_burnstate.obj
+         x64\Debug\jsl_controlpanel.obj
+         x64\Debug\jsl_logindialog.obj
+         x64\Debug\jsoncpp.obj
+         x64\Debug\leisaimotion.obj
+         x64\Debug\main.obj
+         x64\Debug\qautomation.obj
+         x64\Debug\qconfigmanage.obj
+         x64\Debug\qcustomplot.obj
+         x64\Debug\QHBlemishHC.obj
+         x64\Debug\QHButtonExec.obj
+         x64\Debug\QHChooseGrabberType.obj
+         x64\Debug\QHDrawTEstItem.obj
+         x64\Debug\QHFontSetting.obj
+         x64\Debug\QHImageDebug.obj
+         x64\Debug\QHImageFrame.obj
+         x64\Debug\QHInfoPanel.obj
+         x64\Debug\QHMainWindow.obj
+         x64\Debug\QHManualModeA.obj
+         x64\Debug\QHofflinePath.obj
+         x64\Debug\QHOpModeSwitch.obj
+         x64\Debug\QHRepeatedTest.obj
+         x64\Debug\QHShortcut.obj
+         x64\Debug\QHStatisPanel.obj
+         x64\Debug\QHTableContent.obj
+         x64\Debug\QHTextInfoPanel.obj
+         x64\Debug\QHTextItemEdit.obj
+         x64\Debug\qimageshowconfig.obj
+         x64\Debug\qitemexetool.obj
+         x64\Debug\qmanualtool.obj
+         x64\Debug\qoplow.obj
+         x64\Debug\Qualcomm_LSCCalibrationDll.obj
+         x64\Debug\savedebuginfo.obj
+         x64\Debug\saveimage.obj
+         x64\Debug\Serial.obj
+         x64\Debug\updatefirewaredialog.obj
+            正在创建库 E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.lib 和对象 E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.exp
+     1>QHTcpIpCommu64D.lib(moc_qhtcpipcommu.obj) : warning LNK4099: 未找到 PDB“vc100.pdb”(使用“QHTcpIpCommu64D.lib(moc_qhtcpipcommu.obj)”或在“E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\vc100.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>QHTcpIpCommu64D.lib(qhtcpipcommu.obj) : warning LNK4099: 未找到 PDB“vc100.pdb”(使用“QHTcpIpCommu64D.lib(qhtcpipcommu.obj)”或在“E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\vc100.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+         HisFX3CCMTest.vcxproj -> E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.exe
+       Manifest:
+         正在删除文件“x64\Debug\HisFX3CCMTest.exe.embed.manifest”。
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"x64\Debug\HisFX3CCMTest.exe.embed.manifest" /manifest x64\Debug\HisFX3CCMTest.exe.intermediate.manifest
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"x64\Debug\HisFX3CCMTest.exe.embed.manifest.res" x64\Debug\HisFX3CCMTest_manifest.rc 
+       LinkEmbedManifest:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Qt\qt-4.8.6-x64-msvc2010\lib" qtmaind.lib QtCored4.lib QtGuid4.lib QtNetworkd4.lib QtHelpd4.lib QtSqld4.lib .\lib\x64\Debug\HisFX3CCMAlg64D.lib .\lib\x64\Debug\HisFX3Log64D.lib .\lib\x64\Debug\RolongoImageTestAlg64D.lib .\lib\x64\Debug\QHTcpIpCommu64D.lib .\lib\x64\Debug\qwtd.lib .\lib\x64\Debug\HisFX3GerneralMotion.lib ./PlatformLib/General/x64/HisFX3Platform64D.lib Iphlpapi.lib Version.lib QtMultimediad4.lib pdh.lib .\lib\x64\slm_runtime_api.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"x64\Debug\HisFX3CCMTest.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.lib" /MACHINE:X64 x64\Debug\HisFX3CCMTest.res
+         x64\Debug\HisFX3CCMTest.exe.embed.manifest.res
+         x64\Debug\cchooseconfigs.obj
+         x64\Debug\configsetting.obj
+         x64\Debug\coorconverttool.obj
+         x64\Debug\fx3deviceconfig.obj
+         x64\Debug\GC5005_OTP_DD.obj
+         x64\Debug\moc_cchooseconfigs.obj
+         x64\Debug\moc_configsetting.obj
+         x64\Debug\moc_coorconverttool.obj
+         x64\Debug\moc_fx3deviceconfig.obj
+         x64\Debug\moc_hardwareop.obj
+         x64\Debug\moc_hisfx3ccmtest.obj
+         x64\Debug\moc_importtable.obj
+         x64\Debug\moc_itemprocess.obj
+         x64\Debug\moc_jsl_burnstate.obj
+         x64\Debug\moc_jsl_controlpanel.obj
+         x64\Debug\moc_jsl_logindialog.obj
+         x64\Debug\moc_leisaimotion.obj
+         x64\Debug\moc_qconfigmanage.obj
+         x64\Debug\moc_qcustomplot.obj
+         x64\Debug\moc_QHBlemishHC.obj
+         x64\Debug\moc_QHButtonExec.obj
+         x64\Debug\moc_QHChooseGrabberType.obj
+         x64\Debug\moc_QHDrawTEstItem.obj
+         x64\Debug\moc_QHFontSetting.obj
+         x64\Debug\moc_QHImageDebug.obj
+         x64\Debug\moc_QHImageFrame.obj
+         x64\Debug\moc_QHInfoPanel.obj
+         x64\Debug\moc_QHMainWindow.obj
+         x64\Debug\moc_QHManualModeA.obj
+         x64\Debug\moc_QHofflinePath.obj
+         x64\Debug\moc_QHOpModeSwitch.obj
+         x64\Debug\moc_QHRepeatedTest.obj
+         x64\Debug\moc_QHShortcut.obj
+         x64\Debug\moc_QHStatisPanel.obj
+         x64\Debug\moc_QHTableContent.obj
+         x64\Debug\moc_QHTextInfoPanel.obj
+         x64\Debug\moc_QHTextItemEdit.obj
+         x64\Debug\moc_qimageshowconfig.obj
+         x64\Debug\moc_qitemexetool.obj
+         x64\Debug\moc_qmanualtool.obj
+         x64\Debug\moc_savedebuginfo.obj
+         x64\Debug\moc_saveimage.obj
+         x64\Debug\moc_updatefirewaredialog.obj
+         x64\Debug\qrc_hisfx3ccmtest.obj
+         x64\Debug\hardwareop.obj
+         x64\Debug\hisfx3ccmtest.obj
+         x64\Debug\importtable.obj
+         x64\Debug\itemprocess.obj
+         x64\Debug\jsl_burnstate.obj
+         x64\Debug\jsl_controlpanel.obj
+         x64\Debug\jsl_logindialog.obj
+         x64\Debug\jsoncpp.obj
+         x64\Debug\leisaimotion.obj
+         x64\Debug\main.obj
+         x64\Debug\qautomation.obj
+         x64\Debug\qconfigmanage.obj
+         x64\Debug\qcustomplot.obj
+         x64\Debug\QHBlemishHC.obj
+         x64\Debug\QHButtonExec.obj
+         x64\Debug\QHChooseGrabberType.obj
+         x64\Debug\QHDrawTEstItem.obj
+         x64\Debug\QHFontSetting.obj
+         x64\Debug\QHImageDebug.obj
+         x64\Debug\QHImageFrame.obj
+         x64\Debug\QHInfoPanel.obj
+         x64\Debug\QHMainWindow.obj
+         x64\Debug\QHManualModeA.obj
+         x64\Debug\QHofflinePath.obj
+         x64\Debug\QHOpModeSwitch.obj
+         x64\Debug\QHRepeatedTest.obj
+         x64\Debug\QHShortcut.obj
+         x64\Debug\QHStatisPanel.obj
+         x64\Debug\QHTableContent.obj
+         x64\Debug\QHTextInfoPanel.obj
+         x64\Debug\QHTextItemEdit.obj
+         x64\Debug\qimageshowconfig.obj
+         x64\Debug\qitemexetool.obj
+         x64\Debug\qmanualtool.obj
+         x64\Debug\qoplow.obj
+         x64\Debug\Qualcomm_LSCCalibrationDll.obj
+         x64\Debug\savedebuginfo.obj
+         x64\Debug\saveimage.obj
+         x64\Debug\Serial.obj
+         x64\Debug\updatefirewaredialog.obj
+         HisFX3CCMTest.vcxproj -> E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.exe
+       FinalizeBuildStatus:
+         正在删除文件“x64\Debug\HisFX3CCMTest.unsuccessfulbuild”。
+         正在对“x64\Debug\HisFX3CCMTest.lastbuildstate”执行 Touch 任务。
+     1>已完成生成项目“E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\HisFX3CCMTest.vcxproj”(rebuild 个目标)的操作。
+
+生成成功。
+
+已用时间 00:03:59.40
