@@ -112,6 +112,8 @@ struct _OutInfo {
 
 //CVIMAGETOOL_API int fnShading(_ShadingImageInfo& imageInfo,_OutInfo& outInfo);
 typedef int (*fnShadingE)(_ShadingImageInfo& imageInfo,_OutInfo& outInfo);
+typedef int (*fnShadingF)(IN unsigned char* pImageBuff,IN int imgWidth, IN int imgHeight,IN int imgDepth,IN int roiNumberW,IN int roiNumberH,OUT double *pValue,OUT long *len);
 typedef int (*fnMTF_Q)(_ShadingImageInfo& imageInfo, RECT rect, float& fMtfH,float& fMtfV,BOOL bSTOU);
+
 
 

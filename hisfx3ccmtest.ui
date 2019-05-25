@@ -452,7 +452,7 @@
      <x>0</x>
      <y>0</y>
      <width>905</width>
-     <height>22</height>
+     <height>28</height>
     </rect>
    </property>
    <property name="font">
@@ -1046,6 +1046,11 @@
      <weight>75</weight>
      <bold>true</bold>
     </font>
+   </property>
+  </action>
+  <action name="actionJsv_to_csv">
+   <property name="text">
+    <string>jsv to csv</string>
    </property>
   </action>
  </widget>

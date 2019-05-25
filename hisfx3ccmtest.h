@@ -34,6 +34,7 @@
 #include "QHImageDebug.h"
 #include <QMessageBox>
 #include <QList>
+#include <QPushButton>
 
 
 #include "jsl_burnstate.h"
@@ -132,7 +133,7 @@ public:
 	itemprocess* itemprocessworker;
 	QDockWidget *wid;
 
-
+	SOCKET m_sock;//20190401
 protected:
 	void mouseDoubleClickEvent(QMouseEvent * event);
 	void resizeEvent (QResizeEvent * event);
@@ -151,6 +152,7 @@ public slots:
 	void testsignalslot(char, unsigned char);
 	void ClickExecbutton();
 	void slotImageDebug();
+	
 
 	void updateCOMstatus(bool bConnect)
 	{
@@ -247,7 +249,9 @@ private slots:
 	void slotShowTextPanel() {if(!HISGLOBALUI::isUnlocked()) return;if(classTextPanel->isHidden())classTextPanel->show(); }
 	void slotShowStatisPanel() {if(!HISGLOBALUI::isUnlocked()) return;if(classStatisPanel->isHidden())classStatisPanel->show(); }
 	void slotTestItem(){if(!HISGLOBALUI::isUnlocked()) return;if(classDrawTestItem->isHidden())classDrawTestItem->show(); }
-	 
+	void showBindWid(QString);
+	void updateSN(QString,QString);
+	
 public:
 	Ui::HisFX3CCMTestClass ui; 
 	QToolBar *mainToolBar;
@@ -268,6 +272,8 @@ public:
 	QString	saveimageDir;
 	QTimer	luxmonitorTimer;
 	QTimer	wheelvcmTimer;
+
+	jsl_bindSerialNumber *wids;
 
 	double uidaat;
 	int getglobalParameter();
@@ -326,7 +332,7 @@ public:
 	int getofflineparamater();
 	int saveofflineflag(bool bChecked);
 	int getofflineflag();
-
+	
 };
 
 #endif // HISFX3CCMTEST_H 

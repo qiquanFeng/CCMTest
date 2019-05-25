@@ -12,7 +12,7 @@
 #include <QSpinBox>
 #include <QTableWidget>
 #include <QTableWidgetItem>
-#include <qt_windows.h>
+//#include <qt_windows.h>
 
 #include ".\\LeisaiLib\\LTDMC.h"
 #include "globaldefine.h"

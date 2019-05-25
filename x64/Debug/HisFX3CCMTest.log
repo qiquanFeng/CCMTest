@@ -1,5 +1,5 @@
-﻿生成启动时间为 2018/6/26 20:54:49。
-     1>项目“E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\HisFX3CCMTest.vcxproj”在节点 2 上(rebuild 个目标)。
+﻿生成启动时间为 2018/12/3 12:17:12。
+     1>项目“D:\work\source code\HisFX3CCMTest-80[Main]\HisFX3CCMTest\HisFX3CCMTest.vcxproj”在节点 2 上(rebuild 个目标)。
      1>_PrepareForClean:
          正在删除文件“x64\Debug\HisFX3CCMTest.lastbuildstate”。
        InitializeBuildStatus:
@@ -14,7 +14,7 @@
          Moc'ing jsl_logindialog.h...
          Moc'ing jsl_burnstate.h...
          Moc'ing jsl_controlpanel.h...
-         E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\jsl_controlpanel.h(0): Note: No relevant classes found. No output generated.
+         D:\work\source code\HisFX3CCMTest-80[Main]\HisFX3CCMTest\jsl_controlpanel.h(0): Note: No relevant classes found. No output generated.
          Moc'ing leisaimotion.h...
          Moc'ing qimageshowconfig.h...
          Moc'ing QHButtonExec.h...
@@ -47,18 +47,18 @@
          Rcc'ing hisfx3ccmtest.qrc...
          Uic'ing cchooseconfigs.ui...
          Uic'ing configsetting.ui...
-     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : The name 'horizontalLayout_637' (QHBoxLayout) is already in use, defaulting to 'horizontalLayout_6371'.
-     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : The name 'verticalLayout_167' (QVBoxLayout) is already in use, defaulting to 'verticalLayout_1671'.
-     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : The name 'verticalLayout_162' (QVBoxLayout) is already in use, defaulting to 'verticalLayout_1621'.
-     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : The name 'horizontalLayout_11' (QHBoxLayout) is already in use, defaulting to 'horizontalLayout_117'.
-     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : The name 'horizontalLayout_636' (QHBoxLayout) is already in use, defaulting to 'horizontalLayout_6361'.
-     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : The name 'horizontalLayout_117' (QHBoxLayout) is already in use, defaulting to 'horizontalLayout_1171'.
-     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : The name 'horizontalLayout_625' (QHBoxLayout) is already in use, defaulting to 'horizontalLayout_6251'.
-     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : Z-order assignment: '' is not a valid widget.
-     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : Z-order assignment: '' is not a valid widget.
-     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : Z-order assignment: '' is not a valid widget.
-     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : Z-order assignment: '' is not a valid widget.
-     1>E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : Z-order assignment: '' is not a valid widget.
+     1>D:\work\source code\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : The name 'horizontalLayout_637' (QHBoxLayout) is already in use, defaulting to 'horizontalLayout_6371'.
+     1>D:\work\source code\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : The name 'verticalLayout_167' (QVBoxLayout) is already in use, defaulting to 'verticalLayout_1671'.
+     1>D:\work\source code\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : The name 'verticalLayout_162' (QVBoxLayout) is already in use, defaulting to 'verticalLayout_1621'.
+     1>D:\work\source code\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : The name 'horizontalLayout_11' (QHBoxLayout) is already in use, defaulting to 'horizontalLayout_117'.
+     1>D:\work\source code\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : The name 'horizontalLayout_636' (QHBoxLayout) is already in use, defaulting to 'horizontalLayout_6361'.
+     1>D:\work\source code\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : The name 'horizontalLayout_117' (QHBoxLayout) is already in use, defaulting to 'horizontalLayout_1171'.
+     1>D:\work\source code\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : The name 'horizontalLayout_625' (QHBoxLayout) is already in use, defaulting to 'horizontalLayout_6251'.
+     1>D:\work\source code\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : Z-order assignment: '' is not a valid widget.
+     1>D:\work\source code\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : Z-order assignment: '' is not a valid widget.
+     1>D:\work\source code\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : Z-order assignment: '' is not a valid widget.
+     1>D:\work\source code\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : Z-order assignment: '' is not a valid widget.
+     1>D:\work\source code\HisFX3CCMTest-80[Main]\HisFX3CCMTest\configsetting.ui : warning : Z-order assignment: '' is not a valid widget.
          Uic'ing coorconverttool.ui...
          Uic'ing fx3deviceconfig.ui...
          Uic'ing hardwareop.ui...
@@ -144,12 +144,12 @@
          hisfx3ccmtest.cpp
          importtable.cpp
          itemprocess.cpp
-     1>itemprocess.cpp(19148): warning C4305: “=”: 从“double”到“float”截断
-     1>itemprocess.cpp(19150): warning C4305: “=”: 从“double”到“float”截断
-     1>itemprocess.cpp(19151): warning C4305: “=”: 从“double”到“float”截断
-     1>itemprocess.cpp(19533): warning C4305: “=”: 从“double”到“float”截断
-     1>itemprocess.cpp(19535): warning C4305: “=”: 从“double”到“float”截断
-     1>itemprocess.cpp(19536): warning C4305: “=”: 从“double”到“float”截断
+     1>itemprocess.cpp(19396): warning C4305: “=”: 从“double”到“float”截断
+     1>itemprocess.cpp(19398): warning C4305: “=”: 从“double”到“float”截断
+     1>itemprocess.cpp(19399): warning C4305: “=”: 从“double”到“float”截断
+     1>itemprocess.cpp(19781): warning C4305: “=”: 从“double”到“float”截断
+     1>itemprocess.cpp(19783): warning C4305: “=”: 从“double”到“float”截断
+     1>itemprocess.cpp(19784): warning C4305: “=”: 从“double”到“float”截断
          jsl_burnstate.cpp
          jsl_controlpanel.cpp
          jsl_logindialog.cpp
@@ -198,7 +198,7 @@
        ManifestResourceCompile:
          C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"x64\Debug\HisFX3CCMTest.exe.embed.manifest.res" x64\Debug\HisFX3CCMTest_manifest.rc 
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Qt\qt-4.8.6-x64-msvc2010\lib" qtmaind.lib QtCored4.lib QtGuid4.lib QtNetworkd4.lib QtHelpd4.lib QtSqld4.lib .\lib\x64\Debug\HisFX3CCMAlg64D.lib .\lib\x64\Debug\HisFX3Log64D.lib .\lib\x64\Debug\RolongoImageTestAlg64D.lib .\lib\x64\Debug\QHTcpIpCommu64D.lib .\lib\x64\Debug\qwtd.lib .\lib\x64\Debug\HisFX3GerneralMotion.lib ./PlatformLib/General/x64/HisFX3Platform64D.lib Iphlpapi.lib Version.lib QtMultimediad4.lib pdh.lib .\lib\x64\slm_runtime_api.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"x64\Debug\HisFX3CCMTest.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.lib" /MACHINE:X64 x64\Debug\HisFX3CCMTest.res
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\work\source code\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Qt\qt-4.8.6-x64-msvc2010\lib" qtmaind.lib QtCored4.lib QtGuid4.lib QtNetworkd4.lib QtHelpd4.lib QtSqld4.lib .\lib\x64\Debug\HisFX3CCMAlg64D.lib .\lib\x64\Debug\HisFX3Log64D.lib .\lib\x64\Debug\RolongoImageTestAlg64D.lib .\lib\x64\Debug\QHTcpIpCommu64D.lib .\lib\x64\Debug\qwtd.lib .\lib\x64\Debug\HisFX3GerneralMotion.lib ./PlatformLib/General/x64/HisFX3Platform64D.lib Iphlpapi.lib Version.lib QtMultimediad4.lib pdh.lib .\lib\x64\slm_runtime_api.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"x64\Debug\HisFX3CCMTest.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\work\source code\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\work\source code\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.lib" /MACHINE:X64 x64\Debug\HisFX3CCMTest.res
          x64\Debug\HisFX3CCMTest.exe.embed.manifest.res
          x64\Debug\cchooseconfigs.obj
          x64\Debug\configsetting.obj
@@ -284,16 +284,16 @@
          x64\Debug\saveimage.obj
          x64\Debug\Serial.obj
          x64\Debug\updatefirewaredialog.obj
-            正在创建库 E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.lib 和对象 E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.exp
-     1>QHTcpIpCommu64D.lib(moc_qhtcpipcommu.obj) : warning LNK4099: 未找到 PDB“vc100.pdb”(使用“QHTcpIpCommu64D.lib(moc_qhtcpipcommu.obj)”或在“E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\vc100.pdb”中寻找)；正在链接对象，如同没有调试信息一样
-     1>QHTcpIpCommu64D.lib(qhtcpipcommu.obj) : warning LNK4099: 未找到 PDB“vc100.pdb”(使用“QHTcpIpCommu64D.lib(qhtcpipcommu.obj)”或在“E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\vc100.pdb”中寻找)；正在链接对象，如同没有调试信息一样
-         HisFX3CCMTest.vcxproj -> E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.exe
+            正在创建库 D:\work\source code\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.lib 和对象 D:\work\source code\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.exp
+     1>QHTcpIpCommu64D.lib(moc_qhtcpipcommu.obj) : warning LNK4099: 未找到 PDB“vc100.pdb”(使用“QHTcpIpCommu64D.lib(moc_qhtcpipcommu.obj)”或在“D:\work\source code\HisFX3CCMTest-80[Main]\x64\Debug\vc100.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>QHTcpIpCommu64D.lib(qhtcpipcommu.obj) : warning LNK4099: 未找到 PDB“vc100.pdb”(使用“QHTcpIpCommu64D.lib(qhtcpipcommu.obj)”或在“D:\work\source code\HisFX3CCMTest-80[Main]\x64\Debug\vc100.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+         HisFX3CCMTest.vcxproj -> D:\work\source code\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.exe
        Manifest:
          正在删除文件“x64\Debug\HisFX3CCMTest.exe.embed.manifest”。
          C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"x64\Debug\HisFX3CCMTest.exe.embed.manifest" /manifest x64\Debug\HisFX3CCMTest.exe.intermediate.manifest
          C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"x64\Debug\HisFX3CCMTest.exe.embed.manifest.res" x64\Debug\HisFX3CCMTest_manifest.rc 
        LinkEmbedManifest:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Qt\qt-4.8.6-x64-msvc2010\lib" qtmaind.lib QtCored4.lib QtGuid4.lib QtNetworkd4.lib QtHelpd4.lib QtSqld4.lib .\lib\x64\Debug\HisFX3CCMAlg64D.lib .\lib\x64\Debug\HisFX3Log64D.lib .\lib\x64\Debug\RolongoImageTestAlg64D.lib .\lib\x64\Debug\QHTcpIpCommu64D.lib .\lib\x64\Debug\qwtd.lib .\lib\x64\Debug\HisFX3GerneralMotion.lib ./PlatformLib/General/x64/HisFX3Platform64D.lib Iphlpapi.lib Version.lib QtMultimediad4.lib pdh.lib .\lib\x64\slm_runtime_api.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"x64\Debug\HisFX3CCMTest.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.lib" /MACHINE:X64 x64\Debug\HisFX3CCMTest.res
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\work\source code\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Qt\qt-4.8.6-x64-msvc2010\lib" qtmaind.lib QtCored4.lib QtGuid4.lib QtNetworkd4.lib QtHelpd4.lib QtSqld4.lib .\lib\x64\Debug\HisFX3CCMAlg64D.lib .\lib\x64\Debug\HisFX3Log64D.lib .\lib\x64\Debug\RolongoImageTestAlg64D.lib .\lib\x64\Debug\QHTcpIpCommu64D.lib .\lib\x64\Debug\qwtd.lib .\lib\x64\Debug\HisFX3GerneralMotion.lib ./PlatformLib/General/x64/HisFX3Platform64D.lib Iphlpapi.lib Version.lib QtMultimediad4.lib pdh.lib .\lib\x64\slm_runtime_api.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"x64\Debug\HisFX3CCMTest.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\work\source code\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\work\source code\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.lib" /MACHINE:X64 x64\Debug\HisFX3CCMTest.res
          x64\Debug\HisFX3CCMTest.exe.embed.manifest.res
          x64\Debug\cchooseconfigs.obj
          x64\Debug\configsetting.obj
@@ -379,12 +379,12 @@
          x64\Debug\saveimage.obj
          x64\Debug\Serial.obj
          x64\Debug\updatefirewaredialog.obj
-         HisFX3CCMTest.vcxproj -> E:\QtProject\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.exe
+         HisFX3CCMTest.vcxproj -> D:\work\source code\HisFX3CCMTest-80[Main]\x64\Debug\HisFX3CCMTest.exe
        FinalizeBuildStatus:
          正在删除文件“x64\Debug\HisFX3CCMTest.unsuccessfulbuild”。
          正在对“x64\Debug\HisFX3CCMTest.lastbuildstate”执行 Touch 任务。
-     1>已完成生成项目“E:\QtProject\HisFX3CCMTest-80[Main]\HisFX3CCMTest\HisFX3CCMTest.vcxproj”(rebuild 个目标)的操作。
+     1>已完成生成项目“D:\work\source code\HisFX3CCMTest-80[Main]\HisFX3CCMTest\HisFX3CCMTest.vcxproj”(rebuild 个目标)的操作。
 
 生成成功。
 
-已用时间 00:03:59.40
+已用时间 00:05:08.07

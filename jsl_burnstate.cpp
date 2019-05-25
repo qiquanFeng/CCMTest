@@ -1,5 +1,6 @@
 #include "jsl_burnstate.h"
 #include "itemprocess.h"
+#include "shellapi.h"
 
 jsl_burnState::jsl_burnState(int configtype,QWidget *parent)
 	: QDockWidget(parent),parentWid(parent)
@@ -346,7 +347,7 @@ void jsl_burnState::slot_BurnDataExport(){
 			if(query.value(5).toInt()>1){
 				strNote=QString("'%1%1%1%1%1%1%1%1").arg(query.value(5).toInt());
 			}
-			QString strTemp=QString("%1,%2,%3,%4,%5,%6\n").arg(query.value(0).toString()).arg(query.value(1).toString())\
+			QString strTemp=QString("#%1,%2,%3,%4,%5,%6\n").arg(query.value(0).toString()).arg(query.value(1).toString())\
 				.arg(query.value(2).toInt()).arg(query.value(3).toInt()).arg(query.value(4).toInt()).arg(strNote);
 
 			file.write(strTemp.toLatin1());

@@ -129,6 +129,7 @@ configsetting::configsetting(QWidget *parent, bool bChannel1, _threadshareData& 
 	RolongogetQualcommPDAFList getQualcommPDAFList = (RolongogetQualcommPDAFList)(QLibrary::resolve(strLibPath, "getQualcommPDAFList"));
 	RolongogetSONYPDAFList  getSONYPDAFList = (RolongogetSONYPDAFList)(QLibrary::resolve(strLibPath, "getSONYPDAFList"));
 	RolongogetDualCameraBurnList  getDualCameraBurnList = (RolongogetDualCameraBurnList)(QLibrary::resolve(strLibPath, "getDualCameraBurnList"));
+	RolongogetHISIPDAFList getHisiPDAFList = (RolongogetQualcommPDAFList)(QLibrary::resolve(strLibPath, "getHISIPDAFList"));
 	
 	if(!(getRolongoOTPAPIVersion && getAFList && getOTPList && getQualcommPDAFList&&getSONYPDAFList&&getDualCameraBurnList)){
 		ui.statuslabel->setText(tr("Resolve HisCCMOTP DLL Function Fail"));
@@ -175,6 +176,14 @@ configsetting::configsetting(QWidget *parent, bool bChannel1, _threadshareData& 
 			listStr.append(vecList.at(x).c_str());
 		listStr.sort();
 		ui.SONYpdafBurnGetFunListcomboBox->addItems(listStr);
+
+		vecList.clear();
+		getHisiPDAFList(vecList);
+		listStr.clear();
+		for(int x=0;	x<vecList.size();	++x)
+			listStr.append(vecList.at(x).c_str());
+		listStr.sort();
+		ui.HISIpdafBurnGetFunListcomboBox->addItems(listStr);
 
 		listStr.clear();
 		getDualCameraBurnList(vecList);
@@ -1193,7 +1202,11 @@ void configsetting::whitepanel2UI()
 		ui.doubleSpinBox_B9->setValue(itemshareData.wpShadingParameter->stShadingConfigHE.qs_ShadingB9_min);
 		ui.doubleSpinBox_B9_2->setValue(itemshareData.wpShadingParameter->stShadingConfigHE.qs_ShadingB9_max);
 		
-		//**************************************************************
+		//**************************   2019/01/26  ************************************
+		ui.spinBox_ShadingF_ROIWNumber->setValue(itemshareData.wpShadingParameter->stShadingConfigHF.iROIWNumber_AlgF);
+		ui.spinBox_ShadingF_ROIHNumber->setValue(itemshareData.wpShadingParameter->stShadingConfigHF.iROIHNumber_AlgF);
+		ui.doubleSpinBox_ShadingF_Spec->setValue(itemshareData.wpShadingParameter->stShadingConfigHF.fMinMaxRatioSpec_AlgF);
+
 
 
 		ui.shadingcomboBox->setCurrentIndex(itemshareData.wpShadingParameter->shadingAlg);
@@ -1503,6 +1516,21 @@ int configsetting::saveWhitePanel()
 
 
 			//****************   2018/01/16  End *********************************
+			//******************** 2019/01/26 start ******************************
+
+
+			strname.clear();	strvalue.clear();
+			strname.append("roiwnumber");	strvalue.append(ui.spinBox_ShadingF_ROIWNumber->cleanText());
+			strname.append("roihnumber");	strvalue.append(ui.spinBox_ShadingF_ROIHNumber->cleanText());
+			strname.append("mindivmax");	strvalue.append(ui.doubleSpinBox_ShadingF_Spec->cleanText());
+
+			ROPLOW::jointconfigstring(key, strname, strvalue);
+			HISDBCUSTOM::insertItem(stSqlDB, itemshareData.currentTableName, uiIndex, "algorithm", "whitepanel", "shandinghf", itemsuffix2, key);
+			//********************* 2019/01/26 end ********************************
+
+
+
+
 			//(deviation:10.0)
 			//(pixelratio:0.09)
 			strname.clear();	strvalue.clear();
@@ -1779,6 +1807,9 @@ int configsetting::saveWhitePanel()
 			}
 			else if(ui.occomboBox->currentIndex() == 2){
 				strvalue.append("c");
+			}
+			else if(ui.occomboBox->currentIndex() == 3){
+				strvalue.append("d");
 			}else{
 				strvalue.append("a");
 			}
@@ -1805,7 +1836,8 @@ int configsetting::saveWhitePanel()
 			else if(ui.shadingcomboBox->currentIndex() == 1)	strvalue.append("b");
 			else if(ui.shadingcomboBox->currentIndex() == 2)	strvalue.append("c");
 			else if(ui.shadingcomboBox->currentIndex() == 3)	strvalue.append("d");
-			else	strvalue.append("e");
+			else if(ui.shadingcomboBox->currentIndex() == 4)	strvalue.append("e");
+			else	strvalue.append("f");
 			strname.append("vignettingalg");strvalue.append("a");
 			ROPLOW::jointconfigstring(reserve, strname, strvalue);
 			HISDBCUSTOM::insertItem(stSqlDB, itemshareData.currentTableName, uiIndex, "algorithm", "whitepanel", "total", itemsuffix2, key, value1, reserve);
@@ -2214,6 +2246,8 @@ void configsetting::pdafBurn2UI()
 	ui.mtkv2step2sizespinBox->setValue(itemshareData.pdafParameter->usMTKV2Step2dataSize);
 	ui.mtkstep2verifycheckBox->setChecked(itemshareData.pdafParameter->bEnableMTKStep2Verify); 
 	ui.pdtypecomboBox->setCurrentIndex(itemshareData.pdafParameter->ucpdafsensortype);
+
+	ui.HISIpdafBurnGetFunListcomboBox->setCurrentIndex(ui.HISIpdafBurnGetFunListcomboBox->findText(itemshareData.pdafParameter->strHISIPDAFChoose.toUpper()));
 }
 
 int configsetting::savePDAFBurnData()
@@ -2298,6 +2332,11 @@ int configsetting::savePDAFBurnData()
 			strname.append("mtkv2step1datasize");strvalue.append(ui.mtkv2step1sizespinBox->cleanText());
 			strname.append("mtkv2step2datasize");strvalue.append(ui.mtkv2step2sizespinBox->cleanText());
 			strname.append("mtkstep2verify");strvalue.append((ui.mtkstep2verifycheckBox->isChecked())?("true"):("false"));
+			ROPLOW::jointconfigstring(value1, strname, strvalue);
+			HISDBCUSTOM::insertItem(stSqlDB, itemshareData.currentTableName, uiIndex, "algorithm", "mtkpdaf",  QVariant(), itemsuffix2, key, value1);
+
+			strname.clear();strvalue.clear();
+			strname.append("hisipdafchoose");strvalue.append(ui.HISIpdafBurnGetFunListcomboBox->currentText().toLower());
 			ROPLOW::jointconfigstring(value1, strname, strvalue);
 			HISDBCUSTOM::insertItem(stSqlDB, itemshareData.currentTableName, uiIndex, "algorithm", "mtkpdaf",  QVariant(), itemsuffix2, key, value1);
 
@@ -7353,6 +7392,7 @@ void configsetting::slotPDAFplatformChange(int index) // 0 MTK 1: qualcomm 2 son
 		ui.sonygroupBox->setVisible(false);
 		ui.mtkgroupBox->setVisible(true);
 		ui.step2verifygroupBox->setVisible(true);
+		ui.hisigroupBox->setVisible(false);
 	}
 	else if(index==1)
 	{
@@ -7360,6 +7400,7 @@ void configsetting::slotPDAFplatformChange(int index) // 0 MTK 1: qualcomm 2 son
 		ui.sonygroupBox->setVisible(false);
 		ui.mtkgroupBox->setVisible(false);
 		ui.step2verifygroupBox->setVisible(true);
+		ui.hisigroupBox->setVisible(false);
 	}
 	else if(index==2)
 	{
@@ -7367,6 +7408,15 @@ void configsetting::slotPDAFplatformChange(int index) // 0 MTK 1: qualcomm 2 son
 		ui.sonygroupBox->setVisible(true);
 		ui.mtkgroupBox->setVisible(false);
 		ui.step2verifygroupBox->setVisible(false);
+		ui.hisigroupBox->setVisible(false);
+	}
+	else if(index==3)
+	{
+		ui.qualcommgroupBox->setVisible(false);
+		ui.sonygroupBox->setVisible(false);
+		ui.mtkgroupBox->setVisible(false);
+		ui.step2verifygroupBox->setVisible(false);
+		ui.hisigroupBox->setVisible(true);
 	}
 }
 

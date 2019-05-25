@@ -341,7 +341,7 @@ static const uint qt_meta_data_HisFX3CCMTest[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      55,   14, // methods
+      57,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -406,6 +406,8 @@ static const uint qt_meta_data_HisFX3CCMTest[] = {
     1563,   14,   14,   14, 0x08,
     1583,   14,   14,   14, 0x08,
     1605,   14,   14,   14, 0x08,
+    1620,   14,   14,   14, 0x08,
+    1641,  263,   14,   14, 0x08,
 
        0        // eod
 };
@@ -454,6 +456,7 @@ static const char qt_meta_stringdata_HisFX3CCMTest[] = {
     "stopLuxMonitor()\0slotShowOperationPanel()\0"
     "slotShowInfoPanel()\0slotShowTextPanel()\0"
     "slotShowStatisPanel()\0slotTestItem()\0"
+    "showBindWid(QString)\0updateSN(QString,QString)\0"
 };
 
 void HisFX3CCMTest::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -517,6 +520,8 @@ void HisFX3CCMTest::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         case 52: _t->slotShowTextPanel(); break;
         case 53: _t->slotShowStatisPanel(); break;
         case 54: _t->slotTestItem(); break;
+        case 55: _t->showBindWid((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 56: _t->updateSN((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
         default: ;
         }
     }
@@ -554,9 +559,9 @@ int HisFX3CCMTest::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 55)
+        if (_id < 57)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 55;
+        _id -= 57;
     }
     return _id;
 }

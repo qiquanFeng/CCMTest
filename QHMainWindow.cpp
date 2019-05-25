@@ -191,8 +191,9 @@ QHMainWindow::QHMainWindow(QWidget *parent)
 	connect(ui.actionHelp, SIGNAL(triggered()), this, SLOT(slotExecHelpFile()));
 	connect(ui.actionFont, SIGNAL(triggered()), this, SLOT(slotFontSetting()));
 	//************ 2018.04.19 ADD *************
-	
 	connect(ui.actionSOP, SIGNAL(triggered()), this, SLOT(slotShowSOP()));
+	connect(ui.actionJsl_to_csv,SIGNAL(triggered()),this,SLOT(slotJsvDecode()));
+
 
 	connect(this, SIGNAL(information(QString)), windowc1.classTextPanel, SLOT(ShowInformation(QString)));
 	connect(this, SIGNAL(information(QString)), windowc2.classTextPanel, SLOT(ShowInformation(QString)));
@@ -2017,4 +2018,39 @@ void QHMainWindow::slotCompterCompatibilityTest()
 		emit information(tr("Good Delay Setting: ") % listResult.join(", "));
 	}
 	
+}
+
+void QHMainWindow::slotJsvDecode(){
+	QStringList list = QFileDialog::getOpenFileNames(this, "select .jsv file", "", "Binary File(*.jsv)");
+	for (int i = 0; i < list.size(); i++)
+	{
+		QFile file(list.at(i));
+		file.open(QIODevice::ReadOnly);
+		QByteArray buff=file.readAll();
+		file.close();
+
+		QByteArray jsvMD5 = buff.right(32);
+		buff.resize(buff.size() - 32);
+
+		QCryptographicHash md(QCryptographicHash::Md5);
+		md.addData(buff);
+		QByteArray calMD5 = md.result();
+		calMD5=calMD5.toHex();
+
+		bool bb = (calMD5 == jsvMD5);
+		if (!bb) {
+			QMessageBox::warning(this, "Error", "jsv File Error!");
+			return;
+		}
+
+		QString str = list.at(i);
+		str = str.remove(".jsv");
+
+		QFile fileCSV(str+"_output_.csv");
+		fileCSV.open(QIODevice::WriteOnly);
+		fileCSV.write(buff);
+		fileCSV.close();
+		QMessageBox::information(this, "success", "jsv to csv, success!");
+
+	}
 }

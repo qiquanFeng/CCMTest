@@ -40,7 +40,7 @@
      <x>0</x>
      <y>0</y>
      <width>642</width>
-     <height>22</height>
+     <height>28</height>
     </rect>
    </property>
    <property name="font">
@@ -129,6 +129,7 @@
     <addaction name="actionCoordinate_Convertion"/>
     <addaction name="actionComputer_Compatibility_Test"/>
     <addaction name="actionRepeated_Test"/>
+    <addaction name="actionJsl_to_csv"/>
    </widget>
    <widget class="QMenu" name="menuGrabber">
     <property name="font">
@@ -584,6 +585,11 @@
   <action name="actionSOP">
    <property name="text">
     <string>作业指导书(SOP)</string>
+   </property>
+  </action>
+  <action name="actionJsl_to_csv">
+   <property name="text">
+    <string>jsv to csv</string>
    </property>
   </action>
  </widget>

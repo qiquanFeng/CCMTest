@@ -202,6 +202,11 @@ enum _operateItemList{
 	showcontrolpanel=0xb5 ,
 	mtffocus=0xb6,
 	savemtfdata=0xb7,
+	bindserialnumber=0xb8,
+	afc_messtatusupdate=0xb9,
+	burn_messtatusupdate=0xbA,
+	burncheck_messtatusupdate=0xbB,
+	focus_messtatusupdate=0xbC,
 
 	debugitem										=	0xff
 	
@@ -234,6 +239,22 @@ __inline void globalgetListAllTestItem(QList<_TestItem_Basic_Info>& itemList) //
 		QTextCodec::codecForName( "GBK")->toUnicode("功能：MTF调焦"), \
 		"HisFX3CCMTest");
 #endif
+	_CODE_GLOBALITEM_PUSHBACK(focus_messtatusupdate, "focus_messtatusupdate", QTextCodec::codecForName( "GBK")->toUnicode("更新focus到MES"), "other", "", \
+		QTextCodec::codecForName( "GBK")->toUnicode("功能：更新调焦站位信息到MES服务器"), \
+		"HisFX3CCMTest");
+	_CODE_GLOBALITEM_PUSHBACK(burncheck_messtatusupdate, "burncheck_messtatusupdate", QTextCodec::codecForName( "GBK")->toUnicode("更新OTP Check到MES"), "other", "", \
+		QTextCodec::codecForName( "GBK")->toUnicode("功能：更新烧录检测站位信息到MES服务器"), \
+		"HisFX3CCMTest");
+	_CODE_GLOBALITEM_PUSHBACK(burn_messtatusupdate, "burn_messtatusupdate", QTextCodec::codecForName( "GBK")->toUnicode("更新OTP 到MES"), "other", "", \
+		QTextCodec::codecForName( "GBK")->toUnicode("功能：更新烧录站位信息到MES服务器"), \
+		"HisFX3CCMTest");
+	_CODE_GLOBALITEM_PUSHBACK(afc_messtatusupdate, "afc_messtatusupdate", QTextCodec::codecForName( "GBK")->toUnicode("更新AFC 到MES"), "other", "", \
+		QTextCodec::codecForName( "GBK")->toUnicode("功能：更新AFC站位信息到MES服务器"), \
+		"HisFX3CCMTest");
+	_CODE_GLOBALITEM_PUSHBACK(bindserialnumber, "bindserialnumber", QTextCodec::codecForName( "GBK")->toUnicode("芯片ID与二维码绑定"), "other", "", \
+		QTextCodec::codecForName( "GBK")->toUnicode("功能：芯片ID与二维码绑定"), \
+		"HisFX3CCMTest");
+
 	_CODE_GLOBALITEM_PUSHBACK(savemtfdata, "savemtfdata", QTextCodec::codecForName( "GBK")->toUnicode("保存调焦MTF数据"), "other", "", \
 		QTextCodec::codecForName( "GBK")->toUnicode("功能：保存手动调焦MTF数据"), \
 		"HisFX3CCMTest");

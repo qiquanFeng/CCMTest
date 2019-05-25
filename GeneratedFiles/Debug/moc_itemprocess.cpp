@@ -22,12 +22,12 @@ static const uint qt_meta_data_itemprocess[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      33,   14, // methods
+      35,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-      29,       // signalCount
+      31,       // signalCount
 
  // signals: signature, parameters, type, tag, flags
       13,   12,   12,   12, 0x05,
@@ -59,12 +59,14 @@ static const uint qt_meta_data_itemprocess[] = {
      978,   12,   12,   12, 0x05,
      995,  993,   12,   12, 0x05,
     1036,   12,   12,   12, 0x05,
+    1057,   12,   12,   12, 0x05,
+    1087,  993,   12,   12, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-    1069, 1057,   12,   12, 0x0a,
-    1105,   12,   12,   12, 0x0a,
-    1161, 1114,   12,   12, 0x0a,
-    1225, 1213,   12,   12, 0x0a,
+    1136, 1124,   12,   12, 0x0a,
+    1172,   12,   12,   12, 0x0a,
+    1228, 1181,   12,   12, 0x0a,
+    1292, 1280,   12,   12, 0x0a,
 
        0        // eod
 };
@@ -96,8 +98,9 @@ static const char qt_meta_stringdata_itemprocess[] = {
     "dataVar\0signalTCPMessageSend(QVariant)\0"
     "sigBurnCount()\0,\0"
     "sigCountToPanel(QStringList,QStringList)\0"
-    "sig_test(QqrealList)\0key,uctimer\0"
-    "ExecKeyshortcut(char,unsigned char)\0"
+    "sig_test(QqrealList)\0sig_serialnumberbind(QString)\0"
+    "sig_messtatusupdate(QString,QString)\0"
+    "key,uctimer\0ExecKeyshortcut(char,unsigned char)\0"
     "finish()\0u8Channel,usItem,strOtherInfo,u64ID,u8LoopTime\0"
     "slotItemExec(quint8,quint16,QString,quint64,quint8)\0"
     "currentitem\0slotNativeItemExec(_shoutCutDetail&)\0"
@@ -138,10 +141,12 @@ void itemprocess::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         case 26: _t->sigBurnCount(); break;
         case 27: _t->sigCountToPanel((*reinterpret_cast< QStringList(*)>(_a[1])),(*reinterpret_cast< QStringList(*)>(_a[2]))); break;
         case 28: _t->sig_test((*reinterpret_cast< QqrealList(*)>(_a[1]))); break;
-        case 29: _t->ExecKeyshortcut((*reinterpret_cast< char(*)>(_a[1])),(*reinterpret_cast< unsigned char(*)>(_a[2]))); break;
-        case 30: _t->finish(); break;
-        case 31: _t->slotItemExec((*reinterpret_cast< quint8(*)>(_a[1])),(*reinterpret_cast< quint16(*)>(_a[2])),(*reinterpret_cast< QString(*)>(_a[3])),(*reinterpret_cast< quint64(*)>(_a[4])),(*reinterpret_cast< quint8(*)>(_a[5]))); break;
-        case 32: _t->slotNativeItemExec((*reinterpret_cast< _shoutCutDetail(*)>(_a[1]))); break;
+        case 29: _t->sig_serialnumberbind((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 30: _t->sig_messtatusupdate((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
+        case 31: _t->ExecKeyshortcut((*reinterpret_cast< char(*)>(_a[1])),(*reinterpret_cast< unsigned char(*)>(_a[2]))); break;
+        case 32: _t->finish(); break;
+        case 33: _t->slotItemExec((*reinterpret_cast< quint8(*)>(_a[1])),(*reinterpret_cast< quint16(*)>(_a[2])),(*reinterpret_cast< QString(*)>(_a[3])),(*reinterpret_cast< quint64(*)>(_a[4])),(*reinterpret_cast< quint8(*)>(_a[5]))); break;
+        case 34: _t->slotNativeItemExec((*reinterpret_cast< _shoutCutDetail(*)>(_a[1]))); break;
         default: ;
         }
     }
@@ -179,9 +184,9 @@ int itemprocess::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 33)
+        if (_id < 35)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 33;
+        _id -= 35;
     }
     return _id;
 }
@@ -378,5 +383,19 @@ void itemprocess::sig_test(QqrealList _t1)
 {
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 28, _a);
+}
+
+// SIGNAL 29
+void itemprocess::sig_serialnumberbind(QString _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 29, _a);
+}
+
+// SIGNAL 30
+void itemprocess::sig_messtatusupdate(QString _t1, QString _t2)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    QMetaObject::activate(this, &staticMetaObject, 30, _a);
 }
 QT_END_MOC_NAMESPACE

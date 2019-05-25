@@ -6,10 +6,9 @@
 #include "cvImageTool.h"
 #include "jsl_controlpanel.h"
 
+
 // #include "inc/HisCCMOTP.h"
 // #pragma comment(lib, "./lib/x86/Release/HisCCMOTP32.lib")
-
-
 
 typedef enum
 {
@@ -82,7 +81,7 @@ typedef int (*IMX386_PDAF_Window_DCC_verify) (unsigned short  *dcc,int *pd,int h
 typedef int (*polyfit)(const double* BufferX, const double* BufferY, int Amount, int SizeSrc, double* ParaResK);
 typedef int (*polyval)(const double* BufferX, double* BufferY, int Amount, double* ParaResK,int SizeSrc);
 typedef int (*getMarkDistance_RGB24)(uchar* pRGB24,uchar *pDstBuffer,double *pflDist,INT ImgWidth,INT ImgHeight,INT morphSize, INT markMinArea, INT markMaxArea,INT markMinLength, INT markMaxLength,BOOL bDebug);
-typedef INT (*opticalCenter)(char* pChannel8Bit, int width, int height, int &ocX, int &ocY,bool bDebugMode);	
+typedef INT (*opticalCenter)(unsigned char* pChannel8Bit, int width, int height, int &ocX, int &ocY,bool bDebugMode);	
 	
 typedef int (__cdecl *RolongowriteQualcommPDAF)(std::vector<std::wstring>& vectorHisCCMOTPInfoW, _HisQualcommPDAFBurn_Config* pstconfig , hardwarereadiic funreadiic , hardwarewriteiic funwriteiic , hardwaresetiicspeed funiicspeed , \
 	hardwaresetvolt funsetvolt , hardwaregetvolt fungetvolt , hardwaresetvfuse funsetvfuse , hardwaregetvfuse fungetvfuse , hardwaregetframe fungetframe , \
@@ -117,6 +116,19 @@ typedef int (__cdecl *RolongowriteMTKPDAF)(std::vector<std::wstring>& vectorHisC
 	hisfx3logpush_back funlogpushback  , hardwarepagewriteiic fucpagewriteiic  , hardwarepagereadiic fucpagereadiic, \
 	hardwarepagewritespi funpagewritespi, hardwarepagereadspi funpagereadspi);
 typedef int (__cdecl *RolongocheckMTKPDAF)(std::vector<std::wstring>& vectorHisCCMOTPInfoW, _HisCCMMTKPDAFBurn_Config* pstconfig , hardwarereadiic funreadiic , hardwarewriteiic funwriteiic , hardwaresetiicspeed funiicspeed , \
+	hardwaresetvolt funsetvolt, hardwaregetvolt fungetvolt , hardwaresetvfuse funsetvfuse , hardwaregetvfuse fungetvfuse , hardwaregetframe fungetframe , \
+	hardwarebatchwriteiic funbatchwriteiic , hardwarebatchreadiic funbatchreadiic , hardwaresetgpio funsetgpio , hardwaregetgpio fungetgpio , \
+	hardwarepullreset funreset , hardwarepullpwnd funpwnd , hardwarebatchreadiicnolimit funbatchreadiicnolimit , hardwarebatchwriteiicnolimit funbatchwriteiicnolimit , \
+	hisfx3logpush_back funlogpushback  , hardwarepagewriteiic fucpagewriteiic, hardwarepagereadiic fucpagereadiic, \
+	hardwarepagewritespi funpagewritespi, hardwarepagereadspi funpagereadspi);
+
+typedef int (__cdecl *RolongowriteHISIPDAF)(std::vector<std::wstring>& vectorHisCCMOTPInfoW, _HisCCMMTKPDAFBurn_Config* pstconfig , hardwarereadiic funreadiic , hardwarewriteiic funwriteiic , hardwaresetiicspeed funiicspeed , \
+	hardwaresetvolt funsetvolt , hardwaregetvolt fungetvolt , hardwaresetvfuse funsetvfuse , hardwaregetvfuse fungetvfuse , hardwaregetframe fungetframe , \
+	hardwarebatchwriteiic funbatchwriteiic , hardwarebatchreadiic funbatchreadiic , hardwaresetgpio funsetgpio , hardwaregetgpio fungetgpio , \
+	hardwarepullreset funreset , hardwarepullpwnd funpwnd , hardwarebatchreadiicnolimit funbatchreadiicnolimit , hardwarebatchwriteiicnolimit funbatchwriteiicnolimit , \
+	hisfx3logpush_back funlogpushback  , hardwarepagewriteiic fucpagewriteiic  , hardwarepagereadiic fucpagereadiic, \
+	hardwarepagewritespi funpagewritespi, hardwarepagereadspi funpagereadspi);
+typedef int (__cdecl *RolongocheckHISIPDAF)(std::vector<std::wstring>& vectorHisCCMOTPInfoW, _HisCCMMTKPDAFBurn_Config* pstconfig , hardwarereadiic funreadiic , hardwarewriteiic funwriteiic , hardwaresetiicspeed funiicspeed , \
 	hardwaresetvolt funsetvolt, hardwaregetvolt fungetvolt , hardwaresetvfuse funsetvfuse , hardwaregetvfuse fungetvfuse , hardwaregetframe fungetframe , \
 	hardwarebatchwriteiic funbatchwriteiic , hardwarebatchreadiic funbatchreadiic , hardwaresetgpio funsetgpio , hardwaregetgpio fungetgpio , \
 	hardwarepullreset funreset , hardwarepullpwnd funpwnd , hardwarebatchreadiicnolimit funbatchreadiicnolimit , hardwarebatchwriteiicnolimit funbatchwriteiicnolimit , \
@@ -181,9 +193,9 @@ bool sort_mtfitem_fov(_HisCCMAlg_MTFItem_Info& item1, _HisCCMAlg_MTFItem_Info& i
 }
 
 itemprocess::itemprocess(bool bChannel1, _threadshareData& threadshareDataC, _global_itemexec& itemshareDataC, _globalFunctionPointer& globalFunPointerC, \
-	QHImageFrame& imageframeC, QScrollBar& horizontalScrollBarC, QScrollBar& verticalScrollBarC, QLineEdit& serialNumberLineEditC)
+	QHImageFrame& imageframeC, QScrollBar& horizontalScrollBarC, QScrollBar& verticalScrollBarC, QLineEdit& serialNumberLineEditC,HisFX3CCMTest *parent)
 	:bBoxChannel1(bChannel1), threadshareData(threadshareDataC), itemshareData(itemshareDataC), globalFunPointer(globalFunPointerC), \
-	imageframe(imageframeC), horizontalScrollBar(horizontalScrollBarC), verticalScrollBar(verticalScrollBarC), serialNumberLineEdit(serialNumberLineEditC),bAutoFocus(false)
+	imageframe(imageframeC), horizontalScrollBar(horizontalScrollBarC), verticalScrollBar(verticalScrollBarC), serialNumberLineEdit(serialNumberLineEditC),bAutoFocus(false),widCCMTest(parent)
 {
 	licenseCount = 0;
 	iMotorStartDec = iNearPeakMotorDec = iMiddlePeakMotorDec = iFarPeakMotorDec = 0x00FFFFFF;
@@ -3023,6 +3035,7 @@ int itemprocess::mtfFA(unsigned int uiOpMode)
 
 		if(pstParameter->stMTFBasic.algswitch != 7){
 			stItemData.flCenterValue		=	flvalue;
+			stItemData_EX.flCenterValue = flvalue;
 		}else{
 			stItemData.flCenterValue		=	(flHvalue+flVvalue)/2;
 			stItemData_EX.flHCenterValue=flHvalue;
@@ -3055,6 +3068,7 @@ int itemprocess::mtfFA(unsigned int uiOpMode)
 
 				if(pstParameter->stMTFBasic.algswitch != 7){
 					stItemData.vectorFOV.at(y).flValue[x]		=	flvalue;
+					stItemData_EX.vectorFOV.at(y).flValue[x] =	flvalue;
 				}else{
 					stItemData.vectorFOV.at(y).flValue[x]		=	(flHvalue+flVvalue)/2;
 					stItemData_EX.vectorFOV.at(y).flHValue[x]=flHvalue;
@@ -3721,34 +3735,53 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 	****************************************/  
 
 	//********** 线性 *****************
-	/*if(vectorItemData.size()>2){
-			emit information(QString::fromLocal8Bit("开始检测线性。。。"));
-			FILE *pfile;
-			fopen_s(&pfile,"debug.csv","wb+");
-			fprintf(pfile,"step1,step2,mtf1,mtf2,dist\n");
-			double dflMaxDist=0;
-			for (int i=0;i<vectorItemData.size()-1;i++)
-			{
-				double xdist=(double)abs(vectorItemData.at(i).sMotorStep-vectorItemData.at(i+1).sMotorStep);
-				double ydist=(double)abs(vectorItemData.at(i).flCenterValue-vectorItemData.at(i+1).flCenterValue);
-				double dflDist=ydist/xdist;
-				
-				fprintf(pfile,"%d,%d,%f,%f,%f\n",vectorItemData.at(i).sMotorStep,vectorItemData.at(i+1).sMotorStep,\
-					vectorItemData.at(i).flCenterValue,vectorItemData.at(i+1).flCenterValue,dflDist);
-				if(dflDist>dflMaxDist){
-					dflMaxDist=dflDist;
+	if(vectorItemData.size()>2){
+		emit information(QString::fromLocal8Bit("开始检测线性。。。"));
+		FILE *pfile;
+		fopen_s(&pfile,"LineDebug.csv","wb+");
+		fprintf(pfile,"step1,step2,mtf1,mtf2,dist\n");
+		double dflMaxDist=0;
+		for (int i=1;i<vectorItemData.size()-2;i++)
+		{
+			double xdist=(double)abs(vectorItemData.at(i).sMotorStep-vectorItemData.at(i+1).sMotorStep);
+			double ydist=(double)abs(vectorItemData.at(i).flCenterValue-vectorItemData.at(i+1).flCenterValue);
+			double dflDist=ydist/xdist;
+
+			fprintf(pfile,"%d,%d,%f,%f,%f\n",vectorItemData.at(i).sMotorStep,vectorItemData.at(i+1).sMotorStep,\
+				vectorItemData.at(i).flCenterValue,vectorItemData.at(i+1).flCenterValue,dflDist);
+
+			if(vectorItemData.at(i).flCenterValue<vectorItemData.at(i-1).flCenterValue&&vectorItemData.at(i).flCenterValue<vectorItemData.at(i+1).flCenterValue){
+				float fMaxMTF=vectorItemData.at(i-1).flCenterValue>vectorItemData.at(i+1).flCenterValue?vectorItemData.at(i-1).flCenterValue:vectorItemData.at(i+1).flCenterValue;
+				emit information(QString::fromLocal8Bit("凹点高度差:")+QString::number(fMaxMTF-vectorItemData.at(i).flCenterValue));
+
+				if(fMaxMTF-vectorItemData.at(i).flCenterValue>dflDist>vectorItemData.at(0).flCenterGradeB){
+					emit information(QString::fromLocal8Bit("线性规格超标:")+QString::number(dflMaxDist));
+					fclose(pfile);
+					iresult=-1;
+					_CODE_RJAFA_LP_ASIGNDRAW
+						HisReleaseMalloc(pucBufRaw);
+					_CODE_AFC_MTF_EXIT1
 				}
+
 			}
-			fclose(pfile);
-			emit information(QString::fromLocal8Bit("线性斜率最大:")+QString::number(dflMaxDist));
-			if(dflMaxDist>vectorItemData.at(0).flCenterGradeB){
+
+			if(0&&dflDist>vectorItemData.at(0).flCenterGradeB&&ydist>vectorItemData.at(0).flCenterWeight){
 				emit information(QString::fromLocal8Bit("线性规格超标:")+QString::number(dflMaxDist));
+
+				fclose(pfile);
 				iresult=-1;
 				_CODE_RJAFA_LP_ASIGNDRAW
-				HisReleaseMalloc(pucBufRaw);
+					HisReleaseMalloc(pucBufRaw);
 				_CODE_AFC_MTF_EXIT1
 			}
-	}*/
+
+			if(dflDist>dflMaxDist){
+				dflMaxDist=dflDist;
+			}
+		}
+		fclose(pfile);
+	
+	}
 	//******************************************************
 
 
@@ -8294,6 +8327,7 @@ int itemprocess::getwhitePanelOCParameter(bool bupdate, bool bcheck)
 						if(strvalue.at(x) == "a")	itemshareData.wpOCParameter->opticalcenterAlg	=	_HisAlg_SWITCH_A;
 						else if(strvalue.at(x) == "b")	itemshareData.wpOCParameter->opticalcenterAlg	=	_HisAlg_SWITCH_B;
 						else if(strvalue.at(x) == "c")	itemshareData.wpOCParameter->opticalcenterAlg	=	_HisAlg_SWITCH_C;
+						else if(strvalue.at(x) == "d")	itemshareData.wpOCParameter->opticalcenterAlg	=	_HisAlg_SWITCH_D;
 					}
 				}
 			}
@@ -8591,7 +8625,7 @@ int itemprocess::whitePanelOC()
 			pucSrc			+=	3;
 		}
 
-		iresult	=	funOC((char*)pucRGB24,itemshareData.previewParameter->iWidth,itemshareData.previewParameter->iHeight, ioc_x, ioc_y,hisglobalparameter.bDebugMode);
+		iresult	=	funOC(pucRGB24,itemshareData.previewParameter->iWidth,itemshareData.previewParameter->iHeight, ioc_x, ioc_y,hisglobalparameter.bDebugMode);
 
 		if(iresult)	return iresult;
 
@@ -8653,6 +8687,199 @@ int itemprocess::whitePanelOC()
 		classLog->push_back(stLogItem);
 		++(stLogItem.itemtype);
 		stLogItem.itemkey		=	"OC_Distance";
+		stLogItem.itemvalue	=	fldistance;
+		classLog->push_back(stLogItem);
+	}else if(itemshareData.wpOCParameter->opticalcenterAlg == _HisAlg_SWITCH_D)
+	{
+		int ioc_x, ioc_y;
+		unsigned char* pucRaw8	=	(unsigned char*)HisAlignedMalloc(itemshareData.previewParameter->iWidth *itemshareData.previewParameter->iHeight);
+		if(!pucRaw8) return HisFX3Error_MallocBuffer;
+
+		if(iresult	=	GetFreshframe(pucRaw8, itemshareData.previewParameter->iWidth *itemshareData.previewParameter->iHeight *2, _FrameType_Raw, true))
+			return iresult;
+
+		if(hisglobalparameter.bDebugMode){
+			double out1[5]={0};
+			//funCalMarkDist(pucRaw10,NULL,out1,itemshareData.previewParameter->iWidth,itemshareData.previewParameter->iHeight,15,15000,25000,700,1200,false);
+			QImage image(pucRaw8,itemshareData.previewParameter->iWidth,itemshareData.previewParameter->iHeight,itemshareData.previewParameter->iWidth,QImage::Format_RGB888);
+			QString strSerialNumber;
+			classLog->getserialnumber(strSerialNumber);
+			if(image.save(strSerialNumber+"_OC.BMP")){
+				emit information(QString("Save Image Success:%1").arg(strSerialNumber+"_OC.BMP"));
+			}
+		}
+		unsigned int uiChannelPixel = itemshareData.previewParameter->iWidth *itemshareData.previewParameter->iHeight/2;
+		unsigned char* pucDes = pucRaw8;
+		
+		unsigned char *pucRawChannel1,*pucRawChannel2,*pucRawChannel3,*pucRawChannel4;
+		pucRawChannel1=(BYTE*)_aligned_malloc(uiChannelPixel,64);
+		pucRawChannel2=(BYTE*)_aligned_malloc(uiChannelPixel,64);
+		pucRawChannel3=(BYTE*)_aligned_malloc(uiChannelPixel,64);
+		pucRawChannel4=(BYTE*)_aligned_malloc(uiChannelPixel,64);
+
+		int PosIndex=0;
+		unsigned int uiRowStep=itemshareData.previewParameter->iWidth;
+		for (int row=0;row<itemshareData.previewParameter->iHeight;row+=2)
+		{
+			for (int col=0;col<itemshareData.previewParameter->iWidth;col+=2)
+			{
+				pucRawChannel1[PosIndex]=pucRaw8[(row*uiRowStep)+(col)];
+				pucRawChannel2[PosIndex]=pucRaw8[(row*uiRowStep)+(col+1)];
+				pucRawChannel3[PosIndex]=pucRaw8[((row+1)*uiRowStep)+(col)];
+				pucRawChannel4[PosIndex]=pucRaw8[((row+1)*uiRowStep)+(col+1)];
+				PosIndex++;
+			}
+		}
+
+		int ioc_x1,ioc_x2,ioc_x3,ioc_x4;
+		int ioc_y1,ioc_y2,ioc_y3,ioc_y4;
+
+		int iresult_temp=0;
+		iresult_temp	=	funOC(pucRawChannel1,itemshareData.previewParameter->iWidth/2,itemshareData.previewParameter->iHeight/2, ioc_x1, ioc_y1,hisglobalparameter.bDebugMode);
+		iresult_temp	=	funOC(pucRawChannel2,itemshareData.previewParameter->iWidth/2,itemshareData.previewParameter->iHeight/2, ioc_x2, ioc_y2,hisglobalparameter.bDebugMode);
+		iresult_temp	=	funOC(pucRawChannel3,itemshareData.previewParameter->iWidth/2,itemshareData.previewParameter->iHeight/2, ioc_x3, ioc_y3,hisglobalparameter.bDebugMode);
+		iresult_temp	=	funOC(pucRawChannel4,itemshareData.previewParameter->iWidth/2,itemshareData.previewParameter->iHeight/2, ioc_x4, ioc_y4,hisglobalparameter.bDebugMode);
+		
+		_aligned_free(pucRawChannel1);
+		_aligned_free(pucRawChannel2);
+		_aligned_free(pucRawChannel3);
+		_aligned_free(pucRawChannel4);
+
+		int ioc_x_R,ioc_y_R,ioc_x_Gr,ioc_y_Gr,ioc_x_Gb,ioc_y_Gb,ioc_x_B,ioc_y_B;
+		switch (itemshareData.previewParameter->ucDataFormat)
+		{
+		case HisBaylor8_RGGB:
+		case HisBaylor10_RGGB:
+			ioc_x_R=ioc_x1;ioc_y_R=ioc_y1;
+			ioc_x_Gr=ioc_x2;ioc_y_Gr=ioc_y2;
+			ioc_x_Gb=ioc_x3;ioc_y_Gb=ioc_y3;
+			ioc_x_B=ioc_x4;ioc_y_B=ioc_y4;
+			break;
+		case HisBaylor8_GRBG:
+		case HisBaylor10_GRBG:
+			ioc_x_Gr=ioc_x1;ioc_y_Gr=ioc_y1;
+			ioc_x_R=ioc_x2;ioc_y_R=ioc_y2;
+			ioc_x_B=ioc_x3;ioc_y_B=ioc_y3;
+			ioc_x_Gb=ioc_x4;ioc_y_Gb=ioc_y4;
+			break;
+		case HisBaylor8_GBRG:
+		case HisBaylor10_GBRG:
+			ioc_x_Gb=ioc_x1;ioc_y_Gb=ioc_y1;
+			ioc_x_B=ioc_x2;ioc_y_B=ioc_y2;
+			ioc_x_R=ioc_x3;ioc_y_R=ioc_y3;
+			ioc_x_Gr=ioc_x4;ioc_y_Gr=ioc_y4;
+			break;
+		case HisBaylor8_BGGR:
+		case HisBaylor10_BGGR:
+			ioc_x_B=ioc_x1;ioc_y_B=ioc_y1;
+			ioc_x_Gb=ioc_x2;ioc_y_Gb=ioc_y2;
+			ioc_x_Gr=ioc_x3;ioc_y_Gr=ioc_y3;
+			ioc_x_R=ioc_x4;ioc_y_R=ioc_y4;
+			break;
+		}
+
+
+		ioc_x_R*=2;ioc_x_Gr*=2;ioc_x_Gb*=2;ioc_x_B*=2;
+		ioc_y_R*=2;ioc_y_Gr*=2;ioc_y_Gb*=2;ioc_y_B*=2;
+		ioc_x=max(max(max(ioc_x1,ioc_x2),ioc_x3),ioc_x4)*2;
+		ioc_y=max(max(max(ioc_y1,ioc_y2),ioc_y3),ioc_y4)*2;
+		global_ioc_x = ioc_x;
+		global_ioc_y = ioc_y;
+		global_ioc_x=global_ioc_x-itemshareData.previewParameter->iWidth/2;
+		global_ioc_y=global_ioc_y-itemshareData.previewParameter->iHeight/2;
+
+		emit information(QString::fromLocal8Bit("R Channel X:%1 Y:%2").arg(ioc_x_R).arg(ioc_y_R));
+		emit information(QString::fromLocal8Bit("Gr Channel X:%1 Y:%2").arg(ioc_x_Gr).arg(ioc_y_Gr));
+		emit information(QString::fromLocal8Bit("Gb Channel X:%1 Y:%2").arg(ioc_x_Gb).arg(ioc_y_Gb));
+		emit information(QString::fromLocal8Bit("B Channel X:%1 Y:%2").arg(ioc_x_B).arg(ioc_y_B));
+
+		float fldistance	=	sqrtf((ioc_x-itemshareData.previewParameter->iWidth/2)*(ioc_x-itemshareData.previewParameter->iWidth/2) + \
+			(ioc_y-itemshareData.previewParameter->iHeight/2)*(ioc_y-itemshareData.previewParameter->iHeight/2));
+
+		emit information(QTextCodec::codecForName( "GBK")->toUnicode("光心测试数据："));
+		emit information(QTextCodec::codecForName( "GBK")->toUnicode("测试光心坐标(x,y)：") % \
+			QString::number(ioc_x, 10) % ",  " % QString::number(ioc_y, 10) );
+		emit information(QTextCodec::codecForName( "GBK")->toUnicode("与物理中心距离：") % \
+			QString::number(static_cast<double>(fldistance), 'f', 3) % "pixel");
+
+		itemshareData.drawLock.lockForWrite();
+		int ilastcount	=	itemshareData.itemdrawList.size();
+		itemshareData.itemdrawList.resize(ilastcount + 2);
+		theIterator	=	itemshareData.itemdrawList.begin() +ilastcount;
+		theIterator->usitem							=	whitepanelitem_oc;
+		theIterator->uctype							=	HisDrawType_Line;
+		theIterator->stcolor							=	QColor::fromRgb(0, 255, 0);
+		theIterator->strinfo.stblock.left			=	ioc_x - 100;
+		theIterator->strinfo.stblock.right		=	ioc_x + 100;
+		theIterator->strinfo.stblock.top			=	ioc_y;
+		theIterator->strinfo.stblock.bottom	=	ioc_y;
+		theIterator++;
+		theIterator->usitem							=	whitepanelitem_oc;
+		theIterator->uctype							=	HisDrawType_Line;
+		theIterator->stcolor							=	QColor::fromRgb(0, 255, 0);
+		theIterator->strinfo.stblock.left			=	ioc_x;
+		theIterator->strinfo.stblock.right		=	ioc_x;
+		theIterator->strinfo.stblock.top			=	ioc_y - 100;
+		theIterator->strinfo.stblock.bottom	=	ioc_y + 100;
+		itemshareData.drawLock.unlock();
+
+		if(fldistance > itemshareData.wpOCParameter->stAlgHA.oc_fldeviation){
+			iresult							=	HisCCMError_Result;
+			stLogItem.itemvalue	=	"NG";
+			itemshareData.drawLock.lockForWrite();
+			theIterator	=	itemshareData.itemdrawList.begin() +ilastcount;
+			theIterator->stcolor	=	QColor::fromRgb(255, 0, 0);
+			theIterator++;
+			theIterator->stcolor	=	QColor::fromRgb(255, 0, 0);
+			itemshareData.drawLock.unlock();
+		}
+
+		classstLogItem.SubRef();
+		classLog->push_back(stLogItem);
+
+		++(stLogItem.itemtype);
+		stLogItem.itemkey		=	"ChannelR_OC_X";
+		stLogItem.itemvalue	=	ioc_x_R;
+		classLog->push_back(stLogItem);
+		++(stLogItem.itemtype);
+		stLogItem.itemkey		=	"ChannelR_OC_Y";
+		stLogItem.itemvalue	=	ioc_y_R;
+		classLog->push_back(stLogItem);
+		++(stLogItem.itemtype);
+		stLogItem.itemkey		=	"ChannelGr_OC_X";
+		stLogItem.itemvalue	=	ioc_x_Gr;
+		classLog->push_back(stLogItem);
+		++(stLogItem.itemtype);
+		stLogItem.itemkey		=	"ChannelGr_OC_Y";
+		stLogItem.itemvalue	=	ioc_y_Gr;
+		classLog->push_back(stLogItem);
+		++(stLogItem.itemtype);
+		stLogItem.itemkey		=	"ChannelGb_OC_X";
+		stLogItem.itemvalue	=	ioc_x_Gb;
+		classLog->push_back(stLogItem);
+		++(stLogItem.itemtype);
+		stLogItem.itemkey		=	"ChannelGb_OC_Y";
+		stLogItem.itemvalue	=	ioc_y_Gb;
+		classLog->push_back(stLogItem);
+		++(stLogItem.itemtype);
+		stLogItem.itemkey		=	"ChannelB_OC_X";
+		stLogItem.itemvalue	=	ioc_x_B;
+		classLog->push_back(stLogItem);
+		++(stLogItem.itemtype);
+		stLogItem.itemkey		=	"ChannelB_OC_Y";
+		stLogItem.itemvalue	=	ioc_y_B;
+		classLog->push_back(stLogItem);
+
+		++(stLogItem.itemtype);
+		stLogItem.itemkey		=	"Max_OC_X";
+		stLogItem.itemvalue	=	ioc_x;
+		classLog->push_back(stLogItem);
+		++(stLogItem.itemtype);
+		stLogItem.itemkey		=	"Max_OC_Y";
+		stLogItem.itemvalue	=	ioc_y;
+		classLog->push_back(stLogItem);
+		++(stLogItem.itemtype);
+		stLogItem.itemkey		=	"Max_OC_Distance";
 		stLogItem.itemvalue	=	fldistance;
 		classLog->push_back(stLogItem);
 	}
@@ -9645,8 +9872,8 @@ int itemprocess::getwhitePanelShadingParameter(bool bupdate, bool bcheck)
 						else if(strvalue.at(x) == "b")	itemshareData.wpShadingParameter->shadingAlg	=	_HisAlg_SWITCH_B;
 						else if(strvalue.at(x) == "c")	itemshareData.wpShadingParameter->shadingAlg	=	_HisAlg_SWITCH_C;
 						else if(strvalue.at(x) == "d")	itemshareData.wpShadingParameter->shadingAlg	=	_HisAlg_SWITCH_D;
-						else if(strvalue.at(x) == "e")	
-							itemshareData.wpShadingParameter->shadingAlg	=	_HisAlg_SWITCH_E;
+						else if(strvalue.at(x) == "e")	itemshareData.wpShadingParameter->shadingAlg	=	_HisAlg_SWITCH_E;
+						else if(strvalue.at(x) == "f")	itemshareData.wpShadingParameter->shadingAlg	=	_HisAlg_SWITCH_F;
 					}
 				}
 			}
@@ -9845,6 +10072,25 @@ int itemprocess::getwhitePanelShadingParameter(bool bupdate, bool bcheck)
 			}
 		}
 
+		query.prepare("SELECT itemsuffix2,key,value,reserve FROM " % itemshareData.currentTableName % \
+			" WHERE classfy='algorithm' AND item='whitepanel' AND itemsuffix1='shandinghf' ORDER BY id ASC" );
+		query.exec();
+		while (query.next())
+		{
+			bItemExist = true;
+			for(int y=0;	y<4;	++y)
+			{
+				strData	=	query.value(y).toString();
+				ROPLOW::patchconfigstring(strData, strname, strvalue);
+				for(int x=0;	x<strname.size();	++x)
+				{
+					if(strname.at(x) == "roiwnumber")	 itemshareData.wpShadingParameter->stShadingConfigHF.iROIWNumber_AlgF = strvalue.at(x).toUInt() & 0xFFFF;
+					else if(strname.at(x) == "roihnumber")	 itemshareData.wpShadingParameter->stShadingConfigHF.iROIHNumber_AlgF = strvalue.at(x).toUInt() & 0xFFFF;
+					else if(strname.at(x) == "mindivmax")	 itemshareData.wpShadingParameter->stShadingConfigHF.fMinMaxRatioSpec_AlgF = strvalue.at(x).toFloat();
+				}
+			}
+		}
+
 		customdb.close();
 	}
 
@@ -9869,6 +10115,18 @@ int itemprocess::whitePanelShading()
 
 	std::vector<_itemDraw>::iterator theIterator;
 	itemshareData.clearDrawList();
+
+#ifdef _DEBUG
+	fnMTF_Q fnMTF=(fnMTF_Q)QLibrary::resolve("cvImageToold.dll","fnMTF");
+	getMarkDistance_RGB24 funCalMarkDist=(getMarkDistance_RGB24)QLibrary::resolve("fqqImageToolD.dll","getMarkDistance_RGB24");
+	polyfit funPolyfit=(polyfit)QLibrary::resolve("fqqImageToolD.dll","polyfit");
+	opticalCenter funOC=(opticalCenter)QLibrary::resolve("fqqImageToolD.dll","opticalCenter");
+#else
+	fnMTF_Q fnMTF=(fnMTF_Q)QLibrary::resolve("cvImageTool.dll","fnMTF");
+	getMarkDistance_RGB24 funCalMarkDist=(getMarkDistance_RGB24)QLibrary::resolve("fqqImageTool.dll","getMarkDistance_RGB24");
+	polyfit funPolyfit=(polyfit)QLibrary::resolve("fqqImageTool.dll","polyfit");
+	opticalCenter funOC=(opticalCenter)QLibrary::resolve("fqqImageTool.dll","opticalCenter");
+#endif
 
 	//判断图像是否点亮中
 	if(!threadshareData.GetHisPreviewflag())	return HisCCMError_NotPreivew;
@@ -10377,6 +10635,7 @@ int itemprocess::whitePanelShading()
 
 		for (int i=0;i<8;i++)
 		{
+			
 			theIterator->usitem	=	whitepanelitem_shading;
 			theIterator->uctype	=	HisDrawType_Block;
 			theIterator->strinfo.stblock.left	=	rect[i].left();
@@ -10498,6 +10757,124 @@ int itemprocess::whitePanelShading()
 		}
 
 		theIterator++;
+
+		itemshareData.drawLock.unlock();
+	}else if(itemshareData.wpShadingParameter->shadingAlg == _HisAlg_SWITCH_F){
+		emit information(tr("Algorithm: F"));
+#ifdef _DEBUG
+		fnShadingF fnShadingf=(fnShadingF)QLibrary::resolve("cvImageToold.dll","fnShadingF");
+#else
+		fnShadingF fnShadingf=(fnShadingF)QLibrary::resolve("cvImageTool.dll","fnShadingF");
+#endif
+		unsigned char *pucBuffer=(unsigned char*)malloc(itemshareData.previewParameter->iWidth *itemshareData.previewParameter->iHeight * 3);
+		if(iresult	=	GetFreshframe(pucBuffer, itemshareData.previewParameter->iWidth *itemshareData.previewParameter->iHeight *3, _FrameType_RGB24, true))
+			return iresult;
+
+		int iRoiwNumber=itemshareData.wpShadingParameter->stShadingConfigHF.iROIWNumber_AlgF;
+		int iRoihNumber=itemshareData.wpShadingParameter->stShadingConfigHF.iROIHNumber_AlgF;
+
+		long outLen=0;
+		double *outBuffer=(double*)malloc(iRoiwNumber*iRoihNumber*sizeof(double));
+		fnShadingf(pucBuffer,itemshareData.previewParameter->iWidth,itemshareData.previewParameter->iHeight,24,\
+			iRoiwNumber,iRoihNumber,outBuffer,&outLen);
+		free(pucBuffer);
+
+		//求 Min  Max
+		int min=0xFF,max=0,minIndex=0,maxIndex=0;
+		for (int i=0;i<outLen;i++)
+		{
+			if(outBuffer[i]<min){
+				min=outBuffer[i];
+				minIndex=i;
+			}
+			if(outBuffer[i]>max){
+				max=outBuffer[i];
+				maxIndex=i;
+			}
+		}
+		emit information(QString("RI(Y Channel) Min:%1  Max:%2  Min/Max:%3").arg(min).arg(max).arg((float)min/max));
+		//************  判断规格 *******************
+		if((float)min/max<itemshareData.wpShadingParameter->stShadingConfigHF.fMinMaxRatioSpec_AlgF)
+			iresult=-1;
+
+		//***************  画框 ***************************
+		itemshareData.drawLock.lockForWrite();
+		itemshareData.itemdrawList.resize(iRoihNumber*iRoiwNumber*2);
+		theIterator	=	itemshareData.itemdrawList.begin();
+
+		int iROIW=(int)((double)itemshareData.previewParameter->iWidth/iRoiwNumber+0.5f);
+		int iROIH=(int)((double)itemshareData.previewParameter->iHeight/iRoihNumber+0.5f);
+
+		int index=0;
+		for (int h=0;h<iRoihNumber;h++)
+		{
+			for (int w=0;w<iRoiwNumber;w++)
+			{
+				int x = w*iROIW;
+				int y = h*iROIH;
+				int roiW_temp = iROIW;
+				int roiH_temp = iROIH;
+				if (w == iRoiwNumber - 1) {
+					roiW_temp = itemshareData.previewParameter->iWidth - x;
+				}
+				if (h == iRoihNumber - 1) {
+					roiH_temp = itemshareData.previewParameter->iHeight - y;
+				}
+
+				QColor color;
+				color=QColor::fromRgb(255, 255, 0);
+				if(index==minIndex){
+					color=QColor::fromRgb(255, 0, 0);
+				}
+				if(index==maxIndex){
+					color=QColor::fromRgb(0, 0, 255);
+				}
+					
+
+				theIterator->usitem	=	whitepanelitem_shading;
+				theIterator->uctype	=	HisDrawType_Block;
+				theIterator->strinfo.stblock.left	=	x;
+				theIterator->strinfo.stblock.top = y;
+				theIterator->strinfo.stblock.right	=	theIterator->strinfo.stblock.left+roiW_temp;
+				theIterator->strinfo.stblock.bottom	=	theIterator->strinfo.stblock.top+roiH_temp;
+				theIterator->stcolor	=	color;
+				theIterator++;
+
+				theIterator->usitem	=	whitepanelitem_shading;
+				theIterator->uctype	=	HisDrawType_Text;
+				theIterator->idata[0]=x;
+				theIterator->idata[1]=y+((double)roiH_temp/2);
+				sprintf(theIterator->strinfo.strtext,"%.1f",outBuffer[index++]);
+				theIterator->stcolor	=	color;
+				theIterator++;
+			}
+		}
+
+		// Save Log **********************
+		_HisLog_Item logitem;
+		logitem.itemtype		=	classLog->getmaxtypeindex(_HISLOG_CLASSIFY_SHADING);
+		logitem.itemkey		=	"shadingF_MinDivMax";
+		logitem.itemvalue	=	(float)min/max;
+		classLog->push_back(logitem);
+
+		_HisLog_Item logitem2;
+		logitem2.itemtype		=	classLog->getmaxtypeindex(_HISLOG_CLASSIFY_SHADING);
+		logitem2.itemkey		=	"shadingF_Min";
+		logitem2.itemvalue	=	min;
+		classLog->push_back(logitem2);
+
+		_HisLog_Item logitem3;
+		logitem3.itemtype		=	classLog->getmaxtypeindex(_HISLOG_CLASSIFY_SHADING);
+		logitem3.itemkey		=	"shadingF_Max";
+		logitem3.itemvalue	=	max;
+		classLog->push_back(logitem3);
+
+		_HisLog_Item logitem1;
+		logitem1.itemtype		=	classLog->getmaxtypeindex(_HISLOG_CLASSIFY_SHADING);
+		logitem1.itemkey		=	"shading_result";
+		logitem1.itemvalue	=	(iresult)?("NG"):("OK");
+		classLog->push_back(logitem1);
+		
 
 		itemshareData.drawLock.unlock();
 	}
@@ -14003,7 +14380,7 @@ int itemprocess::afBurn()
 	stParameter.ucEESlave		=	itemshareData.ccmhardwareParameter->ucEESlave;
 	stParameter.iNearMotor		=	(iNearPeakMotorDec==0x00FFFFFF)?(0x00FFFFFF):(iNearPeakMotorDec + itemshareData.afburnParameter->iNearMotorOffset);
 	stParameter.iMiddleMotor	=	(iMiddlePeakMotorDec==0x00FFFFFF)?(0x00FFFFFF):(iMiddlePeakMotorDec + itemshareData.afburnParameter->iMiddleMotorOffset);
-	stParameter.iInfinitMotor		=	(iFarPeakMotorDec==0x00FFFFFF)?(0x00FFFFFF):(iFarPeakMotorDec + itemshareData.afburnParameter->iFarMotorOffset);
+	stParameter.iInfinitMotor		= (iFarPeakMotorDec==0x00FFFFFF)?(0x00FFFFFF):(iFarPeakMotorDec + itemshareData.afburnParameter->iFarMotorOffset);
 	stParameter.Reserve1.ivalue[0]		=	(iMotorStartDec==0x00FFFFFF)?(0x00FFFFFF):(iMotorStartDec + itemshareData.afburnParameter->iFarMotorOffset);
 
 
@@ -16638,6 +17015,7 @@ int itemprocess::getpdafParameter(bool bupdate, bool bcheck )
 					else if(strname.at(x) == "platform"){
 						if(strvalue.at(x) == "Qualcomm")	itemshareData.pdafParameter->ucPlatform	=	1;
 						else if(strvalue.at(x) == "SONY")	itemshareData.pdafParameter->ucPlatform	=	2;
+						else if(strvalue.at(x)=="His") itemshareData.pdafParameter->ucPlatform	=	3;
 						else itemshareData.pdafParameter->ucPlatform	=	0;
 					}
 					else if(strname.at(x) == "qualcommversion" && strvalue.at(x).size() > 0)  itemshareData.pdafParameter->cVersion = strvalue[x][0];
@@ -16669,6 +17047,7 @@ int itemprocess::getpdafParameter(bool bupdate, bool bcheck )
 					else if(strname.at(x)== "mtkv2step1datasize") itemshareData.pdafParameter->usMTKV2Step1dataSize=strvalue.at(x).toUShort();
 					else if(strname.at(x)== "mtkv2step2datasize") itemshareData.pdafParameter->usMTKV2Step2dataSize=strvalue.at(x).toUShort();
 					else if(strname.at(x)=="mtkstep2verify")   itemshareData.pdafParameter->bEnableMTKStep2Verify=(strvalue.at(x)=="true");
+					else if(strname.at(x)=="hisipdafchoose")   itemshareData.pdafParameter->strHISIPDAFChoose		=	strvalue.at(x).toUpper();
 				}
 			}
 		}
@@ -16730,9 +17109,17 @@ int itemprocess::getpdafParameter(bool bupdate, bool bcheck )
 			itemshareData.itemparameterLock.unlock();
 			return HisFX3Error_Parameter;
 		}
+	}else if(itemshareData.pdafParameter->ucPlatform==3)
+	{
+		if(itemshareData.pdafParameter->strHISIPDAFChoose.isEmpty())
+		{
+			emit information(tr("hisi pdaf  burn rule is not select"));
+			HisReleaseNewO(itemshareData.pdafParameter);
+			itemshareData.itemparameterLock.unlock();
+			return HisFX3Error_Parameter;
+		}
+
 	}
-
-
 	itemshareData.itemparameterLock.unlock();
 	return 0;
 }
@@ -17116,6 +17503,9 @@ int itemprocess::PDAFCalibrationWhitePanel()
 	else if(itemshareData.pdafParameter->ucPlatform== 2)//SONY
 	{
 		iresult=this->SONYPDAF_SPCCal();
+	}else if(itemshareData.pdafParameter->ucPlatform== 3)// His
+	{
+		iresult=this->HISIPDAFSTEP1_WhitePannel(); 
 	}
 	return iresult;
 }
@@ -17819,7 +18209,7 @@ int itemprocess::MTKPDAFSTEP2_20CM()
 	DWORD dwend, dwstart	=	::GetTickCount();
 
 	//****************** by feng 20180129 **************
-	/*ppusRaw10[0]	=	(unsigned short*)_aligned_malloc(uiPixel, _HisCacheLine_Aligned);
+	ppusRaw10[0]	=	(unsigned short*)_aligned_malloc(uiPixel, _HisCacheLine_Aligned);
 
 	if(hisglobalparameter.bDebugMode){
 	QDir classDir;
@@ -17827,7 +18217,7 @@ int itemprocess::MTKPDAFSTEP2_20CM()
 	classDir.mkpath(strIniPath);
 	ROPLOW::saveRaw10(strIniPath, strSerialNumber % "_MTK_20CM_Motor_" % QString::number(1)%"_DAC_"%QString::number(iMotorValue), itemshareData.previewParameter->ucDataFormat, \
 	itemshareData.previewParameter->iWidth, itemshareData.previewParameter->iHeight, (void*)(ppusRaw10[0]));
-	}*/
+	}
 
 
 
@@ -17903,7 +18293,7 @@ int itemprocess::MTKPDAFSTEP2_20CM()
 	int iOutputSize	=	0;
 	mtkError	=	pd_cali_proc2((char**)(ppusRaw10), piMotorStep, iCaptureNum, pstrOutput, iMaxOutputSize, iOutputSize);
 	for(int x=0;	x<iCaptureNum;	++x)
-		HisReleaseMalloc(ppusRaw10[x]);
+	HisReleaseMalloc(ppusRaw10[x]);
 	HisReleaseNewB(ppusRaw10);
 	HisReleaseNewB(piMotorStep)
 		if(iresult	=	MTkErrorcodeConvert(mtkError)){
@@ -18017,6 +18407,428 @@ int itemprocess::MTKPDAFSTEP2_20CM()
 		itemshareData.itemparameterLock.unlock();
 		return 0;
 }
+
+//***************************  HISI ****************************
+int itemprocess::HISIPDAFSTEP1_WhitePannel()
+{
+	itemshareData.itemparameterLock.lockForRead();
+
+	QString strSerialNumber;
+	classLog->getserialnumber(strSerialNumber);
+	QString strHISIDir;
+	if(!strSerialNumber.isEmpty()){
+		strHISIDir	=	QDir::currentPath() % "/HISIPDAF/" % strSerialNumber;
+		QDir classTempDir;
+		if(!classTempDir.mkpath(strHISIDir)) strHISIDir.clear();
+	}
+
+
+	_HisCCMAFBurn_Config stAFConfig;
+	stAFConfig.bDebug						=	hisglobalparameter.bDebugMode;
+	stAFConfig.strDriverIC				=	(itemshareData.ccmhardwareParameter->motortype.toAscii()).data();
+	stAFConfig.strproject					=	itemshareData.ccmhardwareParameter->projectname.toAscii().data();
+	stAFConfig.strsensor					=	itemshareData.ccmhardwareParameter->sensortype.toAscii().data();
+	stAFConfig.bNear						=	true;
+	stAFConfig.bInfinite						=	true;
+	stAFConfig.iwidth						=	itemshareData.previewParameter->iWidth;
+	stAFConfig.iheight						=	itemshareData.previewParameter->iHeight;
+	stAFConfig.strFunctionChoose	=	itemshareData.pdafParameter->strAFChoose.toAscii().data();
+	stAFConfig.ucSlave					=	itemshareData.previewParameter->ucSlave;
+	stAFConfig.uiDataFormat			=	itemshareData.previewParameter->ucDataFormat;
+	stAFConfig.ucEESlave				=	itemshareData.ccmhardwareParameter->ucEESlave;
+	stAFConfig.strSerialNumber	=	strSerialNumber.toAscii().data();
+
+#if (defined _WIN64) && (defined _DEBUG)
+	QString strLibPath	=	QDir::currentPath() % "/HisCCMOTP64D";
+#elif (defined _WIN64) && !(defined _DEBUG)
+	QString strLibPath	=	QDir::currentPath() % "/HisCCMOTP64";
+#elif (defined _WIN32) && (defined _DEBUG)
+	QString strLibPath	=	QDir::currentPath() % "/HisCCMOTP32D";
+#else
+	QString strLibPath	=	QDir::currentPath() % "/HisCCMOTP32";
+#endif
+
+	RolongoOTPAPIVersion getRolongoOTPAPIVersion = (RolongoOTPAPIVersion)(QLibrary::resolve(strLibPath, "getRolongoOTPAPIVersion"));
+	Rolongocheckafmotor checkafmotor = (Rolongocheckafmotor)(QLibrary::resolve(strLibPath, "checkafmotor"));
+	RolongowriteHISIPDAF writeHISIPDAF = (RolongowriteHISIPDAF)(QLibrary::resolve(strLibPath, "writeHISIPDAF"));
+
+	if(!(getRolongoOTPAPIVersion && checkafmotor && writeHISIPDAF)){
+		emit information(tr("Resolve HisCCMOTP DLL Function Fail"));
+		itemshareData.itemparameterLock.unlock();
+		return HisCCMError_LoadDLLFuc;
+	}
+
+	int iresult=0;
+	if(!threadshareData.bOfflineMode){
+		emit enableinfotimer(1);
+		iresult	=	checkafmotor(*globalFunPointer.vectorHisCCMOTPInfoW, &stAFConfig, globalFunPointer.ReadHisFX3IIC, globalFunPointer.WriteHisFX3IIC, globalFunPointer.SetHisFX3IICSpeed, globalFunPointer.SetHisFX3Voltage, \
+			globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, SetHisFX3GPIO, GetHisFX3GPIO, \
+			globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, \
+			globalFunPointer.HisFX3LogPush_back, globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, \
+			globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+		emit enableinfotimer(0);
+		if(iresult){
+			itemshareData.itemparameterLock.unlock();
+			return iresult;
+		}
+
+		int iInfiniteMotor	=	stAFConfig.iInfinitMotor;
+		int iMacroMotor	=	stAFConfig.iNearMotor;
+
+		emit information(QTextCodec::codecForName( "GBK")->toUnicode("近焦位置：") % QString::number(iMacroMotor));
+		emit information(QTextCodec::codecForName( "GBK")->toUnicode("远焦位置：") % QString::number(iInfiniteMotor));
+	}
+
+	unsigned int uiPixel	=	itemshareData.previewParameter->iWidth *itemshareData.previewParameter->iHeight *2;
+	unsigned short* pusRaw10	=	(unsigned short*)_aligned_malloc(uiPixel, _HisCacheLine_Aligned);
+	if(!pusRaw10){
+		HisReleaseMalloc(pusRaw10);
+		itemshareData.itemparameterLock.unlock();
+		return HisFX3Error_MallocBuffer;
+	}
+
+	iresult	=	GetFreshframe((unsigned char*)(pusRaw10), uiPixel, _FrameType_Raw10, true);
+	if(iresult){
+		HisReleaseMalloc(pusRaw10);
+		itemshareData.itemparameterLock.unlock();
+		return iresult;
+	}
+
+	QString strPath=QDir::currentPath()+"/pdaflib/hisi";
+	QDir dir(strPath);
+	if(!dir.exists()){
+		emit information(QString::fromLocal8Bit("创建文件夹")+dir.path());
+		if(!dir.mkdir(dir.path())){
+			HisReleaseMalloc(pusRaw10);
+			itemshareData.itemparameterLock.unlock();
+			return -1;
+		}
+	}
+
+	QString strFileName=dir.path()+"/GM.raw";
+	QFile file(strFileName);
+	file.open(QIODevice::ReadWrite);
+	file.write((char*)pusRaw10,uiPixel);
+	file.close();
+
+	HisReleaseMalloc(pusRaw10);
+
+	//********* PDAF Gain Map ***************************
+	int raw_idx = -1;
+	int returnCode =pdaf_gm_cal_main(strFileName.toLocal8Bit().data(), -1);
+	if (returnCode) {
+		print_gm_error_code(returnCode, raw_idx);
+		emit information(QString("Error Code:")+QString::number(returnCode));
+		return -1;
+	}
+	else {
+		emit information("Make a gain map(Left/Right) using flat image successfully.");
+		raw_idx++;
+	}
+
+	// Make a Gain Map Data File (raw_idx : 0)
+	returnCode = pdaf_gm_cal_main((strFileName.remove(".raw")+".dat").toLocal8Bit().data(), raw_idx);
+	print_gm_error_code(returnCode, raw_idx);
+
+	if(returnCode)
+		return returnCode;
+
+	//********* Burn PDAF ********************
+	INT iOutputSize=1024;
+
+	_HisCCMMTKPDAFBurn_Config stPDAFConfig;
+	stPDAFConfig.bDebug					=		hisglobalparameter.bDebugMode;
+	stPDAFConfig.ucSensorSlave		=		itemshareData.previewParameter->ucSlave;
+	stPDAFConfig.strproject					=		itemshareData.ccmhardwareParameter->projectname.toAscii().data();
+	stPDAFConfig.strsensor					=		itemshareData.ccmhardwareParameter->sensortype.toAscii().data();
+	stPDAFConfig.strDriverIC				=		itemshareData.ccmhardwareParameter->motortype.toAscii().data();
+	stPDAFConfig.strFunctionChoose	=	itemshareData.pdafParameter->strHISIPDAFChoose.toAscii().data();
+	stPDAFConfig.ucEESlave				=	itemshareData.ccmhardwareParameter->ucEESlave;
+	stPDAFConfig.ucTpye					=	1;
+	stPDAFConfig.uiDataSize				=	iOutputSize;
+	stPDAFConfig.uiStep1Size=iOutputSize;
+	stPDAFConfig.uiStep2Size =itemshareData.pdafParameter->usMTKV2Step2dataSize;
+	stPDAFConfig.Reserve1.u16value[3]	=	itemshareData.pdafParameter->usVersion[3];
+	stPDAFConfig.Reserve1.u16value[2]	=	itemshareData.pdafParameter->usVersion[2];
+	stPDAFConfig.Reserve1.u16value[1]	=	itemshareData.pdafParameter->usVersion[1];
+	stPDAFConfig.Reserve1.u16value[0]	=	itemshareData.pdafParameter->usVersion[0];
+	memset(stPDAFConfig.ucData,0,2048);
+
+	emit enableinfotimer(1);
+	iresult	=	writeHISIPDAF(*globalFunPointer.vectorHisCCMOTPInfoW, &stPDAFConfig, globalFunPointer.ReadHisFX3IIC, globalFunPointer.WriteHisFX3IIC, globalFunPointer.SetHisFX3IICSpeed, \
+		globalFunPointer.SetHisFX3Voltage, globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, \
+		globalFunPointer.BatchWriteHisFX3IIC, globalFunPointer.BatchReadHisFX3IIC, SetHisFX3GPIO, GetHisFX3GPIO, globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, \
+		globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, globalFunPointer.HisFX3LogPush_back, \
+		globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+	emit enableinfotimer(0);
+	if(iresult){
+		emit information(QTextCodec::codecForName( "GBK")->toUnicode("写入PDAF Step1 数据失败"));
+		itemshareData.itemparameterLock.unlock();
+		return iresult;
+	}
+
+	itemshareData.itemparameterLock.unlock();
+
+	return 0;
+}
+
+int itemprocess::HISIPDAFSTEP2_20CM(){
+	itemshareData.itemparameterLock.lockForRead();
+
+	if(itemshareData.pdafParameter->usVersion[3] == 1 ){
+		emit information(tr("The MTK PDAF lib version you chosen is not support V1 "));
+		itemshareData.itemparameterLock.unlock();
+		return HisFX3Error_Parameter;
+	}
+
+	QString strSerialNumber;
+	classLog->getserialnumber(strSerialNumber);
+
+	_HisCCMAFBurn_Config stAFConfig;
+	stAFConfig.bDebug						=	hisglobalparameter.bDebugMode;
+	stAFConfig.strDriverIC				=	(itemshareData.ccmhardwareParameter->motortype.toAscii()).data();
+	stAFConfig.strproject					=	itemshareData.ccmhardwareParameter->projectname.toAscii().data();
+	stAFConfig.strsensor					=	itemshareData.ccmhardwareParameter->sensortype.toAscii().data();
+	stAFConfig.bNear						=	true;
+	stAFConfig.bInfinite						=	true;
+	stAFConfig.iwidth						=	itemshareData.previewParameter->iWidth;
+	stAFConfig.iheight						=	itemshareData.previewParameter->iHeight;
+	stAFConfig.strFunctionChoose	=	itemshareData.pdafParameter->strAFChoose.toAscii().data();
+	stAFConfig.ucSlave					=	itemshareData.previewParameter->ucSlave;
+	stAFConfig.uiDataFormat			=	itemshareData.previewParameter->ucDataFormat;
+	stAFConfig.ucEESlave				=	itemshareData.ccmhardwareParameter->ucEESlave;
+	stAFConfig.strSerialNumber	=	strSerialNumber.toAscii().data();
+
+#if (defined _WIN64) && (defined _DEBUG)
+	QString strLibPath	=	QDir::currentPath() % "/HisCCMOTP64D";
+#elif (defined _WIN64) && !(defined _DEBUG)
+	QString strLibPath	=	QDir::currentPath() % "/HisCCMOTP64";
+#elif (defined _WIN32) && (defined _DEBUG)
+	QString strLibPath	=	QDir::currentPath() % "/HisCCMOTP32D";
+#else
+	QString strLibPath	=	QDir::currentPath() % "/HisCCMOTP32";
+#endif
+
+	RolongoOTPAPIVersion getRolongoOTPAPIVersion = (RolongoOTPAPIVersion)(QLibrary::resolve(strLibPath, "getRolongoOTPAPIVersion"));
+	Rolongocheckafmotor checkafmotor = (Rolongocheckafmotor)(QLibrary::resolve(strLibPath, "checkafmotor"));
+	RolongowriteHISIPDAF writeHISIPDAF = (RolongowriteHISIPDAF)(QLibrary::resolve(strLibPath, "writeHISIPDAF"));
+
+	if(!(getRolongoOTPAPIVersion && checkafmotor && writeHISIPDAF)){
+		emit information(tr("Resolve HisCCMOTP DLL Function Fail"));
+		itemshareData.itemparameterLock.unlock();
+		return HisCCMError_LoadDLLFuc;
+	}
+
+	emit enableinfotimer(1);
+	int iresult	=	checkafmotor(*globalFunPointer.vectorHisCCMOTPInfoW, &stAFConfig, globalFunPointer.ReadHisFX3IIC, globalFunPointer.WriteHisFX3IIC, globalFunPointer.SetHisFX3IICSpeed, globalFunPointer.SetHisFX3Voltage, \
+		globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, SetHisFX3GPIO, GetHisFX3GPIO, \
+		globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, \
+		globalFunPointer.HisFX3LogPush_back, globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, \
+		globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+	emit enableinfotimer(0);
+	if(iresult){
+		emit information(QTextCodec::codecForName( "GBK")->toUnicode("获取远近焦烧录数据失败"));
+		itemshareData.itemparameterLock.unlock();
+		return iresult;
+	}
+
+	int iInfiniteMotor	=	stAFConfig.iInfinitMotor;
+	int iMacroMotor	=	stAFConfig.iNearMotor;
+
+	emit information(QTextCodec::codecForName( "GBK")->toUnicode("近焦位置：") % QString::number(iMacroMotor));
+	emit information(QTextCodec::codecForName( "GBK")->toUnicode("远焦位置：") % QString::number(iInfiniteMotor));
+
+//******************** DCC *********************************************
+	unsigned int uiPixel	=	itemshareData.previewParameter->iWidth *itemshareData.previewParameter->iHeight*2;
+	unsigned short* ppusRaw10	=	new unsigned short[uiPixel/2];
+	if(!ppusRaw10){
+		itemshareData.itemparameterLock.unlock();
+		return HisFX3Error_MallocBuffer;
+	}
+
+
+	//***********************  DCC AF CODE(Calculate) ***********************************
+	int iMotorValue[10]={0};
+	iMotorValue[0]=iInfiniteMotor;
+	//iMotorValue[9]=iMacroMotor;
+
+	int iMotorStep=int((double)(iMacroMotor-iInfiniteMotor)/9+0.5f);
+	for (int i=1;i<=9;i++)
+	{
+		iMotorValue[i]=iInfiniteMotor+i*iMotorStep;
+	}
+
+	//**************************** Save Image ********************************
+	for (int i=0;i<10;i++)
+	{
+		emit information(QString("Move Motor :%1 Index:%2").arg(iMotorValue[i]).arg(i));
+		iresult =	setMotor((itemshareData.ccmhardwareParameter->motortype.toAscii()).data(), \
+			itemshareData.previewParameter->ucSlave, \
+			(itemshareData.ccmhardwareParameter->projectname.toAscii()).data(), iMotorValue[i], \
+			globalFunPointer.ReadHisFX3IIC, globalFunPointer.WriteHisFX3IIC, globalFunPointer.SetHisFX3IICSpeed, globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, \
+			globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+
+		if(iresult){
+			HisReleaseNewB(ppusRaw10);
+			itemshareData.itemparameterLock.unlock();
+			return iresult;
+		}
+		
+		
+		::Sleep(itemshareData.pdafParameter->uiMotorSleep);
+		iresult	=	GetFreshframe((unsigned char*)(ppusRaw10), uiPixel, _FrameType_Raw10, (i==0)?(true):(false));
+		if(iresult){
+			emit information(QString::fromLocal8Bit("捉图失败！"));
+			itemshareData.itemparameterLock.unlock();
+			return iresult;
+		}
+
+		QString strFileName=QDir::currentPath()+"/pdaflib/hisi/"+QString("%1.raw").arg(i);
+		QFile file(strFileName);
+		file.open(QIODevice::ReadWrite);
+		file.write((char*)ppusRaw10,uiPixel);
+		file.close();
+	}
+
+	//**********************************  Calculate DCC Data ************************************
+	int raw_idx = -1;
+	int returnCode = 0;
+	char input_name[1024];
+
+	// Load a gain map from gain_map.dat file (raw_idx : -1)
+	returnCode = pdaf_dm_cal_main((QDir::currentPath()+"/pdaflib/hisi/GM.dat").toLocal8Bit().data()\
+		, raw_idx, 0);
+	if (returnCode) {
+		print_dm_error_code(returnCode, raw_idx);
+		emit information(QString("Error Code:") + QString::number(returnCode));
+		return -1;
+	}
+	else {
+		emit information("Load a gain map(Left/Right) successfully.\n");
+		raw_idx++;
+	}
+
+	// Cal. Chart Image for DCC Map (raw_idx : 0~9)
+	for (int i = 0; i < 10; i++)
+	{
+		QString strFileName=QString("%1/pdaflib/hisi/%2.raw").arg(QDir::currentPath()).arg(i);
+		returnCode = pdaf_dm_cal_main(strFileName.toLocal8Bit().data()\
+			, raw_idx, iMotorValue[i]);
+		if (returnCode) {
+			print_dm_error_code(returnCode, raw_idx);
+			emit information(QString("Error Step Index:%1\nError Code:%2").arg(i).arg(returnCode));
+			itemshareData.itemparameterLock.unlock();
+			return returnCode;
+		}
+		else {
+			emit information(QString("#%1 cal. chart image was entered successfully.\n").arg(raw_idx + 1));
+			if (raw_idx == 9) 
+				emit information("Make a DCC map using cal. chart image successfully.\n");
+			raw_idx++;
+		}
+	}
+
+	// Make a Cal. Binary File (raw_idx : 10)
+	QString strSaveDir=QString("%1/pdaflib/hisi/").arg(QDir::currentPath());
+	returnCode = pdaf_dm_cal_main(strSaveDir.toLocal8Bit().data(), raw_idx, 0);
+	print_dm_error_code(returnCode, raw_idx);
+	if(returnCode){
+		emit information(QString("DCC Calculate Fail!(Error Code:%1)").arg(returnCode));
+		itemshareData.itemparameterLock.unlock();
+		return returnCode;
+	}
+	
+	//***************************** Verification **********************************************
+	emit information("Start PDAF Verification");
+	raw_idx = -1;
+
+	// Load a Calibration Data
+
+	returnCode = pdaf_verify_main(strSaveDir.toLocal8Bit().data(), raw_idx, 0);
+	if (returnCode) {
+		print_error_code(returnCode, raw_idx);
+		emit information("Verify Fail!");
+		itemshareData.itemparameterLock.unlock();
+		return  returnCode;
+	}
+	else {
+		emit information("Load a calibration data successfully.\n");
+		raw_idx++;
+	}
+
+	// Image for Cal. Verification (raw_idx : 0~1)
+	int lensPosition[] = { iMotorValue[0],iMotorValue[9]};
+	for (int i = 0; i < 2; i++)
+	{
+		QString strFileName=QString("%1/pdaflib/hisi/0.raw").arg(QDir::currentPath());
+		if(i)
+			strFileName=QString("%1/pdaflib/hisi/9.raw").arg(QDir::currentPath());
+		returnCode = pdaf_verify_main(strFileName.toLocal8Bit().data()\
+			, raw_idx, lensPosition[i]);
+		if (returnCode) {
+			print_error_code(returnCode, raw_idx);
+			emit information("Verify Fail!");
+			itemshareData.itemparameterLock.unlock();
+			return returnCode;
+		}
+		else {
+			emit information(QString("#%1 verification chart image was entered successfully.\n").arg(raw_idx + 1));
+			raw_idx++;
+		}
+	}
+
+	// Decision whether calibration was passed or failed
+	returnCode = pdaf_verify_main(strSaveDir.toLocal8Bit().data(), raw_idx, 0);
+	print_error_code(returnCode, raw_idx);
+	if(returnCode){
+		emit information("Verify Fail!");
+		itemshareData.itemparameterLock.unlock();
+		return returnCode;
+	}
+	//****************************** Write *********************************************
+	QFile filePdafBuffer(strSaveDir+"cal_data.bin");
+	filePdafBuffer.open(QIODevice::ReadOnly);
+	QByteArray pdafBuf=filePdafBuffer.readAll();
+	filePdafBuffer.close();
+
+		_HisCCMMTKPDAFBurn_Config stPDAFConfig;
+		stPDAFConfig.bDebug					=		hisglobalparameter.bDebugMode;
+		stPDAFConfig.ucSensorSlave		=		itemshareData.previewParameter->ucSlave;
+		stPDAFConfig.strproject					=		itemshareData.ccmhardwareParameter->projectname.toAscii().data();
+		stPDAFConfig.strsensor					=		itemshareData.ccmhardwareParameter->sensortype.toAscii().data();
+		stPDAFConfig.strDriverIC				=		itemshareData.ccmhardwareParameter->motortype.toAscii().data();
+		stPDAFConfig.strFunctionChoose	=	itemshareData.pdafParameter->strHISIPDAFChoose.toAscii().data();
+		stPDAFConfig.ucEESlave				=	itemshareData.ccmhardwareParameter->ucEESlave;
+		stPDAFConfig.ucTpye					=	2;
+		stPDAFConfig.uiDataSize				=	filePdafBuffer.size();
+		stPDAFConfig.uiStep1Size =0;
+		stPDAFConfig.uiStep2Size =filePdafBuffer.size();
+		stPDAFConfig.Reserve1.u16value[3]	=	itemshareData.pdafParameter->usVersion[3];
+		stPDAFConfig.Reserve1.u16value[2]	=	itemshareData.pdafParameter->usVersion[2];
+		stPDAFConfig.Reserve1.u16value[1]	=	itemshareData.pdafParameter->usVersion[1];
+		stPDAFConfig.Reserve1.u16value[0]	=	itemshareData.pdafParameter->usVersion[0];
+
+		memset(stPDAFConfig.ucData,0,2048);
+		memcpy(stPDAFConfig.ucData, pdafBuf.data(), stPDAFConfig.uiDataSize);
+		
+		emit enableinfotimer(1);
+		iresult	=	writeHISIPDAF(*globalFunPointer.vectorHisCCMOTPInfoW, &stPDAFConfig, globalFunPointer.ReadHisFX3IIC, globalFunPointer.WriteHisFX3IIC, globalFunPointer.SetHisFX3IICSpeed, \
+			globalFunPointer.SetHisFX3Voltage, globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, \
+			globalFunPointer.BatchWriteHisFX3IIC, globalFunPointer.BatchReadHisFX3IIC, SetHisFX3GPIO, GetHisFX3GPIO, globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, \
+			globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, globalFunPointer.HisFX3LogPush_back, \
+			globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+		emit enableinfotimer(0);
+		if(iresult){
+			emit information(QTextCodec::codecForName( "GBK")->toUnicode("写入PDAF Step2 数据失败"));
+			itemshareData.itemparameterLock.unlock();
+			return iresult;
+		}
+		
+		itemshareData.itemparameterLock.unlock();
+		return 0;
+}
+//*************************** END ********************************
+
 void itemprocess::CureSmooth(float in[], float out[], int N)
 {
 	int i;
@@ -20134,6 +20946,10 @@ int itemprocess::PDAFBurnCheck()
 	{
 		iresult=this->SONYPDAFCheck(3);
 	}
+	else if(itemshareData.pdafParameter->ucPlatform== 3)
+	{
+		iresult=HISIPDAFCheck();
+	}
 
 	return iresult;
 }
@@ -20217,6 +21033,70 @@ int itemprocess::MTKPDAFCheck()
 	return iresult;
 }
 
+int itemprocess::HISIPDAFCheck()
+{	
+	QString strMTKDir;
+	QString strSerialNumber;
+	classLog->getserialnumber(strSerialNumber);
+
+	_HisCCMMTKPDAFBurn_Config stPDAFConfig;
+	stPDAFConfig.bDebug					=		hisglobalparameter.bDebugMode;
+	stPDAFConfig.ucSensorSlave		=		itemshareData.previewParameter->ucSlave;
+	stPDAFConfig.strproject					=		itemshareData.ccmhardwareParameter->projectname.toAscii().data();
+	stPDAFConfig.strsensor					=		itemshareData.ccmhardwareParameter->sensortype.toAscii().data();
+	stPDAFConfig.strDriverIC				=		itemshareData.ccmhardwareParameter->motortype.toAscii().data();
+	stPDAFConfig.strFunctionChoose	=	itemshareData.pdafParameter->strHISIPDAFChoose.toAscii().data();
+	stPDAFConfig.ucEESlave				=	itemshareData.ccmhardwareParameter->ucEESlave;
+	stPDAFConfig.ucTpye					=	1;
+	stPDAFConfig.uiDataSize				=	0;
+	stPDAFConfig.Reserve1.u16value[3]	=	itemshareData.pdafParameter->usVersion[3];
+	stPDAFConfig.Reserve1.u16value[2]	=	itemshareData.pdafParameter->usVersion[2];
+	stPDAFConfig.Reserve1.u16value[1]	=	itemshareData.pdafParameter->usVersion[1];
+	stPDAFConfig.Reserve1.u16value[0]	=	itemshareData.pdafParameter->usVersion[0];
+	stPDAFConfig.uiStep1Size=itemshareData.pdafParameter->usMTKV2Step1dataSize;
+	stPDAFConfig.uiStep2Size=itemshareData.pdafParameter->usMTKV2Step2dataSize;
+	stPDAFConfig.strSerialNumber	=	strSerialNumber.toAscii().data();
+	if(itemshareData.pdafParameter->bSONY258MTKCal)  {stPDAFConfig.bSONYIMX258Cal	=	true; }  // IMX258 MTK PDAF V2
+	else {stPDAFConfig.bSONYIMX258Cal	=	false;}
+
+#if (defined _WIN64) && (defined _DEBUG)
+	QString strLibPath	=	QDir::currentPath() % "/HisCCMOTP64D";
+#elif (defined _WIN64) && !(defined _DEBUG)
+	QString strLibPath	=	QDir::currentPath() % "/HisCCMOTP64";
+#elif (defined _WIN32) && (defined _DEBUG)
+	QString strLibPath	=	QDir::currentPath() % "/HisCCMOTP32D";
+#else
+	QString strLibPath	=	QDir::currentPath() % "/HisCCMOTP32";
+#endif
+
+	RolongoOTPAPIVersion getRolongoOTPAPIVersion = (RolongoOTPAPIVersion)(QLibrary::resolve(strLibPath, "getRolongoOTPAPIVersion"));
+	RolongocheckHISIPDAF checkHISIPDAF = (RolongocheckHISIPDAF)(QLibrary::resolve(strLibPath, "checkHISIPDAF"));
+
+	if(!(getRolongoOTPAPIVersion && checkHISIPDAF)){
+		emit information(tr("Resolve HisCCMOTP DLL Function Fail"));
+		itemshareData.itemparameterLock.unlock();
+		return HisCCMError_LoadDLLFuc;
+	}
+
+	emit enableinfotimer(1);
+	int iresult	=	checkHISIPDAF(*globalFunPointer.vectorHisCCMOTPInfoW, &stPDAFConfig, globalFunPointer.ReadHisFX3IIC, globalFunPointer.WriteHisFX3IIC, globalFunPointer.SetHisFX3IICSpeed, \
+		globalFunPointer.SetHisFX3Voltage, globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, \
+		globalFunPointer.BatchWriteHisFX3IIC, globalFunPointer.BatchReadHisFX3IIC, SetHisFX3GPIO, GetHisFX3GPIO, globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, \
+		globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, globalFunPointer.HisFX3LogPush_back, \
+		globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+	emit enableinfotimer(0);
+
+	if(iresult){
+		itemshareData.itemparameterLock.unlock();
+		return iresult;
+	}
+
+	itemshareData.itemparameterLock.unlock();
+
+	return iresult;
+}
+
+
 int itemprocess::PDAFCalibrationSTEP2()
 {
 	if(!classPlatform.HisFX3isstart())	return HisFX3Error_IsNotPreview;
@@ -20266,6 +21146,10 @@ int itemprocess::PDAFCalibrationSTEP2()
 	else if(itemshareData.pdafParameter->ucPlatform== 2) //SONY
 	{
 		iresult=this->SONYPDAF_DCCCal();
+	}
+	else if(itemshareData.pdafParameter->ucPlatform== 3) //His
+	{
+		iresult=HISIPDAFSTEP2_20CM();
 	}
 
 	return iresult;
@@ -22456,6 +23340,9 @@ int itemprocess::PDAFSTEP2Verify(int iPDAFDAC, int &iCDAFDAC,int  Width,int Heig
 		strLogPath	=	QDir::currentPath() % "/SONYPDAFLog";
 		classDir.mkpath(strLogPath);
 		strLogPath	=strLogPath% "/SONY_PDAF_Step2Verify_"%(QDate::currentDate()).toString("yyyyMMdd")%".csv";
+	}
+	else if(itemshareData.pdafParameter->ucPlatform==3){
+
 	}
 	ROPLOW::saveCDAFVerifyCure(itemshareData.pdafParameter->usVerifyDACShiftCount,iDACPos,fMTFValue,fMTFSommth,strLogPath,strSerialNumber);
 	return iresult;
@@ -26218,35 +27105,193 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 		updateItemstatus(itemstatus);
 		{
 			FILE *pfile;
-			fopen_s(&pfile,"AFC_FAR_MTF.csv","rb+");
+			fopen_s(&pfile,"Focus_MTF_Data.csv","rb+");
 			if(!pfile){
-				fopen_s(&pfile,"AFC_FAR_MTF.csv","w+");
-				fprintf(pfile,"S/N,Center_H,Center_V,F0.3_LT_H,F0.3_LT_V,F0.3_RT_H,F0.3_RT_V,F0.3_RB_H,F0.3_RB_V,F0.3_LB_H,F0.3_LB_V,\
-							  F0.4_R_H,F0.4_R_V,F0.4_L_H,F0.4_L_V,F0.7_LT_H,F0.7_LT_V,F0.7_RT_H,F0.7_RT_V,F0.7_RB_H,F0.7_RB_V,F0.7_LB_H,F0.7_LB_V\n");
+				fopen_s(&pfile,"Focus_MTF_Data.csv","w+");
+				fprintf(pfile,"S/N,Center,\n");
 			}else{
 				fseek(pfile,0,SEEK_END);
 			}
 
 			QString strSerialNumber;
 			classLog->getserialnumber(strSerialNumber);
+			_mtffaParameter* pstParameter	= itemshareData.mtffaParameter;
 
-			fprintf(pfile,"%s,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f\n",strSerialNumber.toLatin1().data(),stItemData_EX.flHCenterValue,stItemData_EX.flVCenterValue,\
-				stItemData_EX.vectorFOV.at(0).flHValue[0],stItemData_EX.vectorFOV.at(0).flVValue[0],\
-				stItemData_EX.vectorFOV.at(0).flHValue[1],stItemData_EX.vectorFOV.at(0).flVValue[1],\
-				stItemData_EX.vectorFOV.at(0).flHValue[2],stItemData_EX.vectorFOV.at(0).flVValue[2],\
-				stItemData_EX.vectorFOV.at(0).flHValue[3],stItemData_EX.vectorFOV.at(0).flVValue[3],\
-				stItemData_EX.vectorFOV.at(1).flHValue[0],stItemData_EX.vectorFOV.at(1).flVValue[0],\
-				stItemData_EX.vectorFOV.at(1).flHValue[1],stItemData_EX.vectorFOV.at(1).flVValue[1],\
-				stItemData_EX.vectorFOV.at(2).flHValue[0],stItemData_EX.vectorFOV.at(2).flVValue[0],\
-				stItemData_EX.vectorFOV.at(2).flHValue[1],stItemData_EX.vectorFOV.at(2).flVValue[1],\
-				stItemData_EX.vectorFOV.at(2).flHValue[2],stItemData_EX.vectorFOV.at(2).flVValue[2],\
-				stItemData_EX.vectorFOV.at(2).flHValue[3],stItemData_EX.vectorFOV.at(2).flVValue[3]
-			);
+			fprintf(pfile,"%s,%.3f",strSerialNumber.toLatin1().data(),stItemData_EX.flCenterValue);
 
+			for (int i=0;i<stItemData_EX.vectorFOV.size();i++)
+			{
+				for (int blks=0;blks<stItemData_EX.vectorFOV.at(i).ucBlockCount;blks++)
+				{
+					fprintf(pfile,",%.3f",stItemData_EX.vectorFOV.at(i).flValue[blks]);
+				}
+			}
+			fprintf(pfile,"\n");
 			fclose(pfile);
 			iresult=0x00;
 		}
 		bUpdateItemStatus	=	true;
+		break;
+	case focus_messtatusupdate:
+		updateItemstatus(itemstatus);
+		{
+			QString strSerialNumber;
+			classLog->getserialnumber(strSerialNumber);
+			emit sig_messtatusupdate(strSerialNumber,QString("focus"));
+			while (!global_ioc_x)
+			{
+				Sleep(100);
+			}
+
+		}
+
+		if(global_ioc_x>=1){
+			iresult	=	0;
+		}
+		else if(iresult	==-1){
+			emit information(QString::fromLocal8Bit("连接MES服务器失败！请重启程序再试。。。"));
+			iresult=-1;
+		}else{
+			iresult=-1;
+		}
+
+
+		bUpdateItemStatus	=	true;
+		global_ioc_x=0;
+		break;
+	case bindserialnumber:
+		updateItemstatus(itemstatus);
+		{
+			QString strSerialNumber;
+			classLog->getserialnumber(strSerialNumber);
+			emit sig_serialnumberbind(strSerialNumber);
+			while (!global_ioc_x)
+			{
+				Sleep(500);
+			}
+			
+		}
+
+		if(global_ioc_x>=1){
+			iresult	=	0;
+		}
+		else if(iresult	==-1){
+			emit information(QString::fromLocal8Bit("连接MES服务器失败！请重启程序再试。。。"));
+			iresult=-1;
+		}else{
+			iresult=-1;
+		}
+			
+
+		bUpdateItemStatus	=	true;
+		global_ioc_x=0;
+		break;
+		updateItemstatus(itemstatus);
+		{
+			QString strSerialNumber;
+			classLog->getserialnumber(strSerialNumber);
+			emit sig_serialnumberbind(strSerialNumber);
+			while (!global_ioc_x)
+			{
+				Sleep(100);
+			}
+
+		}
+
+		if(global_ioc_x>=1){
+			iresult	=	0;
+		}
+		else if(iresult	==-1){
+			emit information(QString::fromLocal8Bit("连接MES服务器失败！请重启程序再试。。。"));
+			iresult=-1;
+		}else{
+			iresult=-1;
+		}
+
+
+		bUpdateItemStatus	=	true;
+		global_ioc_x=0;
+		break;
+	case afc_messtatusupdate:
+		updateItemstatus(itemstatus);
+		{
+			QString strSerialNumber;
+			classLog->getserialnumber(strSerialNumber);
+			emit sig_messtatusupdate(strSerialNumber,QString("AFC"));
+			while (!global_ioc_x)
+			{
+				Sleep(100);
+			}
+
+		}
+
+		if(global_ioc_x>=1){
+			iresult	=	0;
+		}
+		else if(iresult	==-1){
+			emit information(QString::fromLocal8Bit("连接MES服务器失败！请重启程序再试。。。"));
+			iresult=-1;
+		}else{
+			iresult=-1;
+		}
+
+
+		bUpdateItemStatus	=	true;
+		global_ioc_x=0;
+		break;
+	case burn_messtatusupdate:
+		updateItemstatus(itemstatus);
+		{
+			QString strSerialNumber;
+			classLog->getserialnumber(strSerialNumber);
+			emit sig_messtatusupdate(strSerialNumber,QString("Burn"));
+			while (!global_ioc_x)
+			{
+				Sleep(100);
+			}
+
+		}
+
+		if(global_ioc_x>=1){
+			iresult	=	0;
+		}
+		else if(iresult	==-1){
+			emit information(QString::fromLocal8Bit("连接MES服务器失败！请重启程序再试。。。"));
+			iresult=-1;
+		}else{
+			iresult=-1;
+		}
+
+
+		bUpdateItemStatus	=	true;
+		global_ioc_x=0;
+		break;
+	case burncheck_messtatusupdate:
+		updateItemstatus(itemstatus);
+		{
+			QString strSerialNumber;
+			classLog->getserialnumber(strSerialNumber);
+			emit sig_messtatusupdate(strSerialNumber,QString("BurnCheck"));
+			while (!global_ioc_x)
+			{
+				Sleep(100);
+			}
+
+		}
+
+		if(global_ioc_x>=1){
+			iresult	=	0;
+		}
+		else if(iresult	==-1){
+			emit information(QString::fromLocal8Bit("连接MES服务器失败！请重启程序再试。。。"));
+			iresult=-1;
+		}else{
+			iresult=-1;
+		}
+
+
+		bUpdateItemStatus	=	true;
+		global_ioc_x=0;
 		break;
 	case startpreviewitem:
 		updateItemstatus(itemstatus);
@@ -26479,12 +27524,53 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 			_CODE_LOG_PUSHBACK_ALL(_HISLOG_CLASSIFY_TOTALRESULT, "total result", (itemshareData.totalresult)?("NG"):("OK"))
 				getccmhardwareParameter(false); 
 			if(!otherInfo.uidata[0]){
-				if(iresult	=	classLog->save(itemshareData.ccmhardwareParameter->projectname, true, false))
+				if(iresult	=	classLog->save(itemshareData.ccmhardwareParameter->projectname, true, false)){
 					emit information(QTextCodec::codecForName( "GBK")->toUnicode("保存文档错误，错误代码：0x") % QString::number(iresult, 16));
+				}else{
+					//************************** 2019/04/16 ************************
+					QString str=QString("./savelog/%1/%2").arg(itemshareData.ccmhardwareParameter->projectname).arg(QDate::currentDate().toString("yyyy-MM-dd"));
+					QFile filelog(str+".csv");
+					filelog.open(QIODevice::ReadOnly);
+					QByteArray buffer=filelog.readAll();
+					filelog.close();
+
+					QFileInfo fileinfo(str+".jsv");
+					bool bf=fileinfo.isFile();
+
+					QFile filelogNew(str+".jsv");
+					filelogNew.open(QIODevice::Append|QIODevice::ReadWrite);
+
+					QString strBuffer(buffer);
+					QStringList list=strBuffer.split("\r\n");
+					
+					if(!bf){
+						str=list.at(0);
+						filelogNew.write((str+="\n").toLatin1());
+					}else{
+						filelogNew.reset();
+						filelogNew.seek(filelogNew.size()-32);
+					}
+					
+					str=list.at(list.size()-2);
+
+					filelogNew.write((str+="\n").toLatin1());
+
+					//*************** Calc MD5 ******************
+					QCryptographicHash md(QCryptographicHash::Md5);
+					filelogNew.reset();
+					QByteArray array1=filelogNew.readAll();
+					md.addData(array1);
+					buffer=md.result();
+					filelogNew.write(buffer.toHex());
+					filelogNew.close();
+
+
+				}
+					
 			}
 			classLog->clear(); 
 			emit signalTotalTestTime(totalTime.elapsed()); 
-			//emit sigBurnCount();
+			emit sigBurnCount();
 			emit information(tr("Total Test Time:") % QString::number(totalTime.elapsed()) % "ms");
 		}
 		break;

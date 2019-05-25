@@ -151,7 +151,7 @@ static const uint qt_meta_data_QHMainWindow[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      43,   14, // methods
+      44,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -178,32 +178,33 @@ static const uint qt_meta_data_QHMainWindow[] = {
      322,   13,   13,   13, 0x0a,
      343,   13,   13,   13, 0x0a,
      361,   13,   13,   13, 0x0a,
-     400,   13,   13,  392, 0x0a,
-     414,   13,   13,  392, 0x0a,
-     425,   13,   13,   13, 0x0a,
-     452,  444,   13,   13, 0x0a,
-     475,  444,   13,   13, 0x0a,
-     498,  149,   13,   13, 0x0a,
-     520,  149,   13,   13, 0x0a,
-     550,   13,   13,   13, 0x0a,
-     573,   13,   13,   13, 0x0a,
-     590,   13,   13,   13, 0x0a,
-     615,   13,   13,   13, 0x0a,
-     640,   13,   13,   13, 0x0a,
-     659,   13,   13,   13, 0x0a,
-     677,  149,   13,   13, 0x0a,
-     708,  149,   13,   13, 0x0a,
-     740,   13,   13,   13, 0x0a,
-     758,   13,   13,   13, 0x0a,
-     778,   13,   13,   13, 0x0a,
-     800,   13,   13,   13, 0x0a,
-     818,   13,   13,   13, 0x0a,
-     837,  149,   13,   13, 0x0a,
-     864,  149,   13,   13, 0x0a,
-     884,   13,   13,   13, 0x0a,
-     899,   13,   13,   13, 0x0a,
-     920,   13,   13,   13, 0x0a,
-     971,  943,   13,   13, 0x0a,
+     392,   13,   13,   13, 0x0a,
+     416,   13,   13,  408, 0x0a,
+     430,   13,   13,  408, 0x0a,
+     441,   13,   13,   13, 0x0a,
+     468,  460,   13,   13, 0x0a,
+     491,  460,   13,   13, 0x0a,
+     514,  149,   13,   13, 0x0a,
+     536,  149,   13,   13, 0x0a,
+     566,   13,   13,   13, 0x0a,
+     589,   13,   13,   13, 0x0a,
+     606,   13,   13,   13, 0x0a,
+     631,   13,   13,   13, 0x0a,
+     656,   13,   13,   13, 0x0a,
+     675,   13,   13,   13, 0x0a,
+     693,  149,   13,   13, 0x0a,
+     724,  149,   13,   13, 0x0a,
+     756,   13,   13,   13, 0x0a,
+     774,   13,   13,   13, 0x0a,
+     794,   13,   13,   13, 0x0a,
+     816,   13,   13,   13, 0x0a,
+     834,   13,   13,   13, 0x0a,
+     853,  149,   13,   13, 0x0a,
+     880,  149,   13,   13, 0x0a,
+     900,   13,   13,   13, 0x0a,
+     915,   13,   13,   13, 0x0a,
+     936,   13,   13,   13, 0x0a,
+     987,  959,   13,   13, 0x0a,
 
        0        // eod
 };
@@ -220,8 +221,8 @@ static const char qt_meta_stringdata_QHMainWindow[] = {
     "OSSelfCal()\0FX3DeviceConfig()\0"
     "UpdateFPGAFW()\0slotShortcutConfig()\0"
     "slotVersionShow()\0slotCompterCompatibilityTest()\0"
-    "_inline\0slotShowSOP()\0slotExit()\0"
-    "slotExecHelpFile()\0checked\0"
+    "slotJsvDecode()\0_inline\0slotShowSOP()\0"
+    "slotExit()\0slotExecHelpFile()\0checked\0"
     "slotShowChannel1(bool)\0slotShowChannel2(bool)\0"
     "DebugModeSwitch(bool)\0"
     "slotSaveTextInfoToLocal(bool)\0"
@@ -262,32 +263,33 @@ void QHMainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         case 14: _t->slotShortcutConfig(); break;
         case 15: _t->slotVersionShow(); break;
         case 16: _t->slotCompterCompatibilityTest(); break;
-        case 17: _t->slotShowSOP(); break;
-        case 18: _t->slotExit(); break;
-        case 19: _t->slotExecHelpFile(); break;
-        case 20: _t->slotShowChannel1((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 21: _t->slotShowChannel2((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 22: _t->DebugModeSwitch((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 23: _t->slotSaveTextInfoToLocal((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 24: _t->DisableConfigSetting(); break;
-        case 25: _t->changePassword(); break;
-        case 26: _t->ShowConfigManageDialog(); break;
-        case 27: _t->slotConfigContentTable(); break;
-        case 28: _t->slotChooseOpMode(); break;
-        case 29: _t->slotFontSetting(); break;
-        case 30: _t->showItem2EndResultRegion((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 31: _t->showEndResult2ImageRegion((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 32: _t->slotSave_LockUI(); break;
-        case 33: _t->slotResetUILayout(); break;
-        case 34: _t->slotImageShowDialog(); break;
-        case 35: _t->CoorConvertTool(); break;
-        case 36: _t->slotRepeatedTest(); break;
-        case 37: _t->chooseSimpleChinenes((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 38: _t->chooseEnglish((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 39: _t->slotCloseExe(); break;
-        case 40: _t->slotPDAF50cmFinish(); break;
-        case 41: _t->slotSlaveShortcutExe(); break;
-        case 42: _t->slotMasterExeFinish((*reinterpret_cast< unsigned short(*)>(_a[1])),(*reinterpret_cast< unsigned char(*)>(_a[2])),(*reinterpret_cast< quint8(*)>(_a[3]))); break;
+        case 17: _t->slotJsvDecode(); break;
+        case 18: _t->slotShowSOP(); break;
+        case 19: _t->slotExit(); break;
+        case 20: _t->slotExecHelpFile(); break;
+        case 21: _t->slotShowChannel1((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 22: _t->slotShowChannel2((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 23: _t->DebugModeSwitch((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 24: _t->slotSaveTextInfoToLocal((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 25: _t->DisableConfigSetting(); break;
+        case 26: _t->changePassword(); break;
+        case 27: _t->ShowConfigManageDialog(); break;
+        case 28: _t->slotConfigContentTable(); break;
+        case 29: _t->slotChooseOpMode(); break;
+        case 30: _t->slotFontSetting(); break;
+        case 31: _t->showItem2EndResultRegion((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 32: _t->showEndResult2ImageRegion((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 33: _t->slotSave_LockUI(); break;
+        case 34: _t->slotResetUILayout(); break;
+        case 35: _t->slotImageShowDialog(); break;
+        case 36: _t->CoorConvertTool(); break;
+        case 37: _t->slotRepeatedTest(); break;
+        case 38: _t->chooseSimpleChinenes((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 39: _t->chooseEnglish((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 40: _t->slotCloseExe(); break;
+        case 41: _t->slotPDAF50cmFinish(); break;
+        case 42: _t->slotSlaveShortcutExe(); break;
+        case 43: _t->slotMasterExeFinish((*reinterpret_cast< unsigned short(*)>(_a[1])),(*reinterpret_cast< unsigned char(*)>(_a[2])),(*reinterpret_cast< quint8(*)>(_a[3]))); break;
         default: ;
         }
     }
@@ -325,9 +327,9 @@ int QHMainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 43)
+        if (_id < 44)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 43;
+        _id -= 44;
     }
     return _id;
 }

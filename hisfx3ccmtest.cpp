@@ -803,7 +803,7 @@ void improvergb24::startpreview()
 HisFX3CCMTest::HisFX3CCMTest(QWidget *parent, Qt::WFlags flags,bool bChannel1, _threadshareData& threadshareDataC, _global_itemexec& itemshareDataC, \
 	_globalFunctionPointer& globalFunPointerC,bool bLogin)
 	: QMainWindow(parent, flags), bBoxChannel1(bChannel1), threadshareData(threadshareDataC), itemshareData(itemshareDataC), globalFunPointer(globalFunPointerC), \
-	b2ndClick(false)
+	b2ndClick(false),wids(new jsl_bindSerialNumber),m_sock(NULL)
 {
 	QThread::currentThread()->setPriority(QThread::NormalPriority);
 	ui.setupUi(this);
@@ -843,6 +843,8 @@ HisFX3CCMTest::HisFX3CCMTest(QWidget *parent, Qt::WFlags flags,bool bChannel1, _
 	connect(classButtonExec->ui.whitePanelpushButton, SIGNAL(released()), this, SLOT(slotButtonWhiteField()));
 	connect(classButtonExec->ui.farFCpushButton, SIGNAL(released()), this, SLOT(slotButtonFarFC()));
 	connect(classButtonExec->ui.nearFCpushButton, SIGNAL(released()), this, SLOT(slotButtonNearFC()));
+
+	
 
 	//********************** ADD 2017/12/11*********
 	QHMainWindow *p_Parent=(QHMainWindow*)parent;
@@ -892,6 +894,7 @@ HisFX3CCMTest::HisFX3CCMTest(QWidget *parent, Qt::WFlags flags,bool bChannel1, _
 	connect(ui.actionShow_Text_Panel, SIGNAL(triggered()), this, SLOT(slotShowTextPanel()));
 	connect(ui.actionShoactionShow_TestItem, SIGNAL(triggered()), this, SLOT(slotTestItem()));
 	connect(ui.actionImage, SIGNAL(triggered()), this, SLOT(slotImageDebug()));
+	connect(ui.actionJsv_to_csv,SIGNAL(triggered()),this,SLOT(slotJsvDecode()));
 
 	if(!hisglobalparameter.bShowItem2EndResult)	ui.showItem2EndResultaction->setChecked(false);
 	if(!hisglobalparameter.bShowResult2Image)	ui.showEndResult2Imageaction->setChecked(false);
@@ -937,13 +940,13 @@ HisFX3CCMTest::HisFX3CCMTest(QWidget *parent, Qt::WFlags flags,bool bChannel1, _
 	QThread* itemprocessthread = new QThread;
 	itemprocessthread->setStackSize(5242880);
 	itemprocessworker = new itemprocess(bBoxChannel1, threadshareData, itemshareData, globalFunPointer, *ui.imageframe, \
-		*ui.horizontalScrollBar, *ui.verticalScrollBar, *classButtonExec->ui.seriallineEdit);
+		*ui.horizontalScrollBar, *ui.verticalScrollBar, *classButtonExec->ui.seriallineEdit,this);
 
 	//******************************** 2017/12/11 ***************
 	//QHMainWindow *p_Parent=(QHMainWindow*)parent;
 	//p_Parent->getOperateModeConfig();
-
-	
+	connect(itemprocessworker,SIGNAL(sig_serialnumberbind(QString)),this,SLOT(showBindWid(QString)));
+	connect(itemprocessworker,SIGNAL(sig_messtatusupdate(QString,QString)),this,SLOT(updateSN(QString,QString)));
 
 	if(bLogin&&bChannel1){
 		burnState=new jsl_burnState(hisglobalparameter.stOperatorMode.ucMode,this);
@@ -3188,4 +3191,65 @@ int HisFX3CCMTest::gettcpipparamater()
 	return 0;
 }
 
+void HisFX3CCMTest::showBindWid(QString strNumber){
+	wids->setSerialNumber(strNumber);
+	wids->exec();
+}
+void HisFX3CCMTest::updateSN(QString strNumber,QString strPro){
+	global_ioc_x=0;
+	if(!m_sock){
+		if(jsl_bindSerialNumber::init(m_sock,"192.168.10.15",8000)){
+			global_ioc_x=-1;
+			QMessageBox::warning(this,"Error",QString::fromLocal8Bit("错误：连接MES服务器失败!"));
+			m_sock=NULL;
+			return ;
+		}
+	}
 
+	QString str;
+	if(strPro.lastIndexOf("focus")<0){
+		str=QString("{\
+					\"JsonData\": [\
+					{\
+					\"LineCode\": \"line1\",\
+					\"WorkStationCode\": \"sta1\",\
+					\"ProcessCode\": \"%1\",\
+					\"Id\": \"%2\"\
+					}\
+					],\
+					\"OrgId\": 33,\
+					\"ActionName\": \"xiaozhi.Action.MES.External.AddProcess\",\
+					\"ActionAssembly\": \"xiaozhi.Action.MES\"\
+					}").arg(strPro).arg(strNumber);
+		
+	}else{
+		str=QString("{\
+					\"JsonData\": [\
+					{\
+					\"LineCode\": \"line1\",\
+					\"WorkStationCode\": \"sta1\",\
+					\"ProcessCode\": \"focus\",\
+					\"MODocNO\": \"MO111\",\
+					\"SN\": \"%1\",\
+					\"Id\": \"%2\"\
+					}\
+					],\
+					\"OrgId\": 33,\
+					\"ActionName\": \"xiaozhi.Action.MES.External.AddSNRd\",\
+					\"ActionAssembly\": \"xiaozhi.Action.MES\"\
+					}").arg(global_strSN).arg(strNumber);
+	}
+	
+
+	char recvBuf[8912] = { 0 };
+	jsl_bindSerialNumber::commit(m_sock,str.toLatin1().data(),recvBuf);
+
+	str=QString::fromUtf8(recvBuf);
+	if(str.lastIndexOf("success")<0){
+		if(!global_ioc_x)global_ioc_x=3;
+	}else{
+		if(!global_ioc_x)global_ioc_x=1;
+	}
+
+	global_ioc_x=1;
+}

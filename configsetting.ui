@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>860</width>
-    <height>638</height>
+    <width>973</width>
+    <height>793</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -67,7 +67,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>6</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideLeft</enum>
@@ -22837,6 +22837,11 @@
                   <string>Algorithm-C(Moto)</string>
                  </property>
                 </item>
+                <item>
+                 <property name="text">
+                  <string>Algorithm-D(Moto Raw)</string>
+                 </property>
+                </item>
                </widget>
               </item>
               <item>
@@ -23100,7 +23105,12 @@
                 </item>
                 <item>
                  <property name="text">
-                  <string>Algorithm-Q(ZTE-8ROI)</string>
+                  <string>Algorithm-E(ZTE-8ROI)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Algorithm-F(Moto)</string>
                  </property>
                 </item>
                </widget>
@@ -23128,7 +23138,7 @@
                <enum>QFrame::Plain</enum>
               </property>
               <property name="currentIndex">
-               <number>4</number>
+               <number>5</number>
               </property>
               <widget class="QWidget" name="page_3">
                <layout class="QVBoxLayout" name="verticalLayout_27">
@@ -24644,13 +24654,16 @@
                </layout>
               </widget>
               <widget class="QWidget" name="page_20">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
                <widget class="QWidget" name="horizontalLayoutWidget">
                 <property name="geometry">
                  <rect>
                   <x>10</x>
                   <y>10</y>
                   <width>601</width>
-                  <height>24</height>
+                  <height>27</height>
                  </rect>
                 </property>
                 <layout class="QHBoxLayout" name="horizontalLayout_650">
@@ -24682,7 +24695,7 @@
                   <x>10</x>
                   <y>40</y>
                   <width>601</width>
-                  <height>24</height>
+                  <height>27</height>
                  </rect>
                 </property>
                 <layout class="QHBoxLayout" name="horizontalLayout_651">
@@ -24724,8 +24737,8 @@
                      <rect>
                       <x>10</x>
                       <y>10</y>
-                      <width>194</width>
-                      <height>81</height>
+                      <width>238</width>
+                      <height>91</height>
                      </rect>
                     </property>
                     <layout class="QGridLayout" name="gridLayout_4">
@@ -24857,8 +24870,8 @@
                      <rect>
                       <x>10</x>
                       <y>10</y>
-                      <width>194</width>
-                      <height>81</height>
+                      <width>238</width>
+                      <height>91</height>
                      </rect>
                     </property>
                     <layout class="QGridLayout" name="gridLayout_5">
@@ -24990,8 +25003,8 @@
                      <rect>
                       <x>10</x>
                       <y>10</y>
-                      <width>194</width>
-                      <height>81</height>
+                      <width>238</width>
+                      <height>91</height>
                      </rect>
                     </property>
                     <layout class="QGridLayout" name="gridLayout_6">
@@ -25121,7 +25134,7 @@
                   <x>10</x>
                   <y>70</y>
                   <width>601</width>
-                  <height>24</height>
+                  <height>27</height>
                  </rect>
                 </property>
                 <layout class="QHBoxLayout" name="horizontalLayout_653">
@@ -25164,8 +25177,8 @@
                      <rect>
                       <x>10</x>
                       <y>10</y>
-                      <width>194</width>
-                      <height>81</height>
+                      <width>238</width>
+                      <height>91</height>
                      </rect>
                     </property>
                     <layout class="QGridLayout" name="gridLayout_7">
@@ -25297,8 +25310,8 @@
                      <rect>
                       <x>10</x>
                       <y>10</y>
-                      <width>194</width>
-                      <height>81</height>
+                      <width>238</width>
+                      <height>91</height>
                      </rect>
                     </property>
                     <layout class="QGridLayout" name="gridLayout_8">
@@ -25430,8 +25443,8 @@
                      <rect>
                       <x>10</x>
                       <y>10</y>
-                      <width>194</width>
-                      <height>81</height>
+                      <width>238</width>
+                      <height>91</height>
                      </rect>
                     </property>
                     <layout class="QGridLayout" name="gridLayout_9">
@@ -25580,6 +25593,78 @@
                 <property name="text">
                  <string>Spec(Max):</string>
                 </property>
+               </widget>
+              </widget>
+              <widget class="QWidget" name="page_21">
+               <widget class="QWidget" name="horizontalLayoutWidget_6">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>0</y>
+                  <width>631</width>
+                  <height>41</height>
+                 </rect>
+                </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_667">
+                 <item>
+                  <widget class="QLabel" name="label_119">
+                   <property name="text">
+                    <string>ROI Width Number:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBox_ShadingF_ROIWNumber"/>
+                 </item>
+                </layout>
+               </widget>
+               <widget class="QWidget" name="horizontalLayoutWidget_7">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>70</y>
+                  <width>631</width>
+                  <height>41</height>
+                 </rect>
+                </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_668">
+                 <item>
+                  <widget class="QLabel" name="label_175">
+                   <property name="text">
+                    <string>ROI Height Number:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBox_ShadingF_ROIHNumber"/>
+                 </item>
+                </layout>
+               </widget>
+               <widget class="QWidget" name="horizontalLayoutWidget_8">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>140</y>
+                  <width>631</width>
+                  <height>41</height>
+                 </rect>
+                </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_669">
+                 <item>
+                  <widget class="QLabel" name="label_182">
+                   <property name="text">
+                    <string>Min/Max(Spec):</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QDoubleSpinBox" name="doubleSpinBox_ShadingF_Spec">
+                   <property name="maximum">
+                    <double>1.000000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
                </widget>
               </widget>
              </widget>
@@ -35710,7 +35795,7 @@
            <enum>QTabWidget::West</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="tab_20">
            <attribute name="title">
@@ -37662,6 +37747,11 @@
                        <string notr="true">SONY</string>
                       </property>
                      </item>
+                     <item>
+                      <property name="text">
+                       <string>His</string>
+                      </property>
+                     </item>
                     </widget>
                    </item>
                   </layout>
@@ -38250,148 +38340,180 @@
              </layout>
             </item>
             <item>
-             <widget class="QGroupBox" name="sonygroupBox">
-              <property name="title">
-               <string>SONY</string>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_138">
-               <item>
-                <widget class="QLabel" name="label_127">
-                 <property name="text">
-                  <string>PDAF Burn Rule:</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="SONYpdafBurnGetFunListcomboBox"/>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_602">
+             <layout class="QVBoxLayout" name="verticalLayout_181">
+              <item>
+               <widget class="QGroupBox" name="sonygroupBox">
+                <property name="title">
+                 <string>SONY</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_138">
                  <item>
-                  <widget class="QLabel" name="label_129">
+                  <widget class="QLabel" name="label_127">
                    <property name="text">
-                    <string>Sensor Mode:</string>
+                    <string>PDAF Burn Rule:</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QComboBox" name="sonysensormodecomboBox">
+                  <widget class="QComboBox" name="SONYpdafBurnGetFunListcomboBox"/>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_602">
                    <item>
-                    <property name="text">
-                     <string>IMX230</string>
-                    </property>
+                    <widget class="QLabel" name="label_129">
+                     <property name="text">
+                      <string>Sensor Mode:</string>
+                     </property>
+                    </widget>
                    </item>
                    <item>
-                    <property name="text">
-                     <string>IMX298</string>
-                    </property>
+                    <widget class="QComboBox" name="sonysensormodecomboBox">
+                     <item>
+                      <property name="text">
+                       <string>IMX230</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>IMX298</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>IMX258</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>IMX386</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>IMX378</string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_603">
+                   <item>
+                    <widget class="QLabel" name="label_128">
+                     <property name="text">
+                      <string>SPC Gain Table Size:</string>
+                     </property>
+                    </widget>
                    </item>
                    <item>
-                    <property name="text">
-                     <string>IMX258</string>
-                    </property>
+                    <widget class="QSpinBox" name="sonyspcgainsizespinBox">
+                     <property name="maximum">
+                      <number>100000</number>
+                     </property>
+                     <property name="value">
+                      <number>352</number>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_431">
+                   <item>
+                    <widget class="QLabel" name="label_130">
+                     <property name="text">
+                      <string>DCC Window:</string>
+                     </property>
+                    </widget>
                    </item>
                    <item>
-                    <property name="text">
-                     <string>IMX386</string>
-                    </property>
+                    <widget class="QComboBox" name="sonydccwindowcomboBox">
+                     <item>
+                      <property name="text">
+                       <string>Fixed_8*6</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>Fixed_16*12</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>Flexible </string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_610">
+                   <item>
+                    <widget class="QLabel" name="label_133">
+                     <property name="text">
+                      <string>Verify_InfocusedPixel:</string>
+                     </property>
+                    </widget>
                    </item>
                    <item>
-                    <property name="text">
-                     <string>IMX378</string>
-                    </property>
+                    <widget class="QDoubleSpinBox" name="dccverifyspecdoubleSpinBox">
+                     <property name="decimals">
+                      <number>3</number>
+                     </property>
+                     <property name="singleStep">
+                      <double>0.001000000000000</double>
+                     </property>
+                    </widget>
                    </item>
-                  </widget>
+                  </layout>
                  </item>
                 </layout>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_603">
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="hisigroupBox">
+                <property name="title">
+                 <string>HISI (HuaWei)</string>
+                </property>
+                <property name="checkable">
+                 <bool>false</bool>
+                </property>
+                <property name="checked">
+                 <bool>false</bool>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_184">
                  <item>
-                  <widget class="QLabel" name="label_128">
+                  <widget class="QLabel" name="label_185">
                    <property name="text">
-                    <string>SPC Gain Table Size:</string>
+                    <string>PDAF Burn Rule:</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QSpinBox" name="sonyspcgainsizespinBox">
-                   <property name="maximum">
-                    <number>100000</number>
-                   </property>
-                   <property name="value">
-                    <number>352</number>
-                   </property>
-                  </widget>
+                  <widget class="QComboBox" name="HISIpdafBurnGetFunListcomboBox"/>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_671"/>
                  </item>
                 </layout>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_431">
-                 <item>
-                  <widget class="QLabel" name="label_130">
-                   <property name="text">
-                    <string>DCC Window:</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QComboBox" name="sonydccwindowcomboBox">
-                   <item>
-                    <property name="text">
-                     <string>Fixed_8*6</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>Fixed_16*12</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>Flexible </string>
-                    </property>
-                   </item>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_610">
-                 <item>
-                  <widget class="QLabel" name="label_133">
-                   <property name="text">
-                    <string>Verify_InfocusedPixel:</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QDoubleSpinBox" name="dccverifyspecdoubleSpinBox">
-                   <property name="decimals">
-                    <number>3</number>
-                   </property>
-                   <property name="singleStep">
-                    <double>0.001000000000000</double>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <spacer name="verticalSpacer_2">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>58</width>
-                   <height>311</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-              </layout>
-             </widget>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
             </item>
            </layout>
           </widget>
@@ -39931,8 +40053,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>394</width>
-               <height>1272</height>
+               <width>444</width>
+               <height>1455</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_53">
@@ -41613,8 +41735,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>411</width>
-               <height>481</height>
+               <width>465</width>
+               <height>612</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_56">
@@ -42869,7 +42991,6 @@
   <tabstop>qualcommverifyVCMSTEPspinBox</tabstop>
   <tabstop>qualcommpdafKVerifyOffestspinBox</tabstop>
   <tabstop>MTFDropStopcheckbox</tabstop>
-  <tabstop>SONYpdafBurnGetFunListcomboBox</tabstop>
   <tabstop>sonysensormodecomboBox</tabstop>
   <tabstop>sonyspcgainsizespinBox</tabstop>
   <tabstop>sonydccwindowcomboBox</tabstop>

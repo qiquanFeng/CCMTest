@@ -3,12 +3,19 @@
 #define ITEMPROCESS_H
 
 #include "qoplow.h"
-#include "globaldefine.h"
 #include <QScrollBar>
 #include <QSqlError>
 #include "QHImageFrame.h"
 #include "inc//RolongoImageTestAlg.h"
 #include <QList>
+
+#include "./include/3L6_PDAF/PdafCalibrationGMCore.h"
+#include "./include/3L6_PDAF/PdafCalibrationDMCore.h"
+#include "./include/3L6_PDAF/PdafVerificationCore.h"
+#pragma comment(lib,"./include/3L6_PDAF/PdafCalibrationGMDll.lib")
+#pragma comment(lib,"./include/3L6_PDAF/PdafCalibrationDMDll.lib")
+#pragma comment(lib,"./include/3L6_PDAF/PdafVerificationDll.lib")
+
 
 struct _autoExposreData{
 	bool bChannel_Gr;
@@ -40,13 +47,14 @@ struct _autoExposreData{
 	}
 };
 
+class HisFX3CCMTest;
 class itemprocess : public QObject
 {
 	Q_OBJECT
 
 public:
 	itemprocess(bool bChannel1, _threadshareData& threadshareDataC, _global_itemexec& itemshareDataC, _globalFunctionPointer& globalFunPointerC, \
-		QHImageFrame& imageframeC, QScrollBar& horizontalScrollBarC, QScrollBar& verticalScrollBarC, QLineEdit& serialNumberLineEditC);
+		QHImageFrame& imageframeC, QScrollBar& horizontalScrollBarC, QScrollBar& verticalScrollBarC, QLineEdit& serialNumberLineEditC,HisFX3CCMTest *parent=NULL);
 	~itemprocess();
 
 public slots:
@@ -91,14 +99,20 @@ signals:
 		//*********** 2017/12/11
 		void sigBurnCount();
 		void sigCountToPanel(QStringList,QStringList);
+
+		//************ 2019/03/30
 public:
 	signals:
 		void sig_test(QqrealList);
+		void sig_serialnumberbind(QString);//************ 2019/03/30
+		void sig_messtatusupdate(QString,QString);//************ 2019/03/30
 
 		 
 public:
 	//***************** 2018.04.16 ADD **************
 	bool bAutoFocus;
+	//*******************  2019/03/30************
+	HisFX3CCMTest *widCCMTest;
 	//***********************************************
 
 	const bool bBoxChannel1;
@@ -302,6 +316,10 @@ public:
 	void SavePDReadData(unsigned int iPDStartAddr,unsigned int *RegisterData, int *PDData_16_12,int *Coef_16_12,int *PDData_8_6, int *Coef_8_6, int iAFDAC,int PDMODE);
 	int ApplySONYIMX258SPC();
 	int SONYPDAFCheck(unsigned char CheckMode); // 1; SPC Check 2; DCC Check 3: Check SPC &DCC	
+
+	int HISIPDAFSTEP1_WhitePannel();
+	int HISIPDAFSTEP2_20CM();
+	int HISIPDAFCheck();
 
 #ifdef USE_EQUIPMENT_GB_PDAF
 	int movetopos(unsigned char uctype);

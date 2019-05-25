@@ -1,5 +1,6 @@
 #ifndef INTELGLOBALDEFINE_H
 #define INTELGLOBALDEFINE_H
+#pragma once
 
 #include <windows.h>
 #include "math.h"
@@ -40,6 +41,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QInputDialog>
+#include <QCryptographicHash>
  
 #include "inc/versionswitch.h"
 #include "inc/HisGlobalDefine.h"
@@ -95,6 +97,7 @@ extern int global_unit_g;
 extern int global_burn_group;
 extern int global_ioc_x;
 extern int global_ioc_y;
+extern char global_strSN[1024];
 extern _HisCCMAlg_AFC_MTF_DataItem_EX stItemData_EX;
 
 
@@ -948,7 +951,7 @@ struct _HisAlg_Shading_HC_Config
 	}
 };
 
-struct _HisAlg_Shading_HD_Config
+struct _HisAlg_Shading_HD_Config //Convert alg E\ F
 {
 	unsigned short usBlockW;
 	unsigned short usBlockH;
@@ -1014,6 +1017,12 @@ struct _HisAlg_Shading_HD_Config
 	float qs_ShadingB8_max;
 	float qs_ShadingB9_max;
 
+	//************   fengqiquan 2019/01/26 Add ***********************
+	int iROIWNumber_AlgF;
+	int iROIHNumber_AlgF;
+	float fMinMaxRatioSpec_AlgF;
+
+
 	_HisAlg_Shading_HD_Config()
 	{
 		usBlockW	=	17;
@@ -1031,6 +1040,7 @@ struct _wpShadingParameter
 	_HisAlg_Shading_HC_Config stShadingConfigHC;
 	_HisAlg_Shading_HD_Config stShadingConfigHD;
 	_HisAlg_Shading_HD_Config stShadingConfigHE;
+	_HisAlg_Shading_HD_Config stShadingConfigHF;
 	_wpShadingParameter()
 	{
 		shadingAlg				=	_HisAlg_SWITCH_A;
@@ -1387,6 +1397,7 @@ struct _pdafParameter{
 	QString strQualcommChoose;
 	QString strAFChoose;
 	QString strPDAFChoose;
+	QString strHISIPDAFChoose;
 	QString strSONYPDAFChoose;
 	std::string  strQualcommGainMapStruct;
 	unsigned short usSonySPCTableSize;
@@ -2540,6 +2551,7 @@ typedef void (__cdecl *RolongogetMTKPDAFList)(std::vector<std::string>& listPDAF
 typedef void (__cdecl *RolongogetSONYPDAFList)(std::vector<std::string>& listPDAF);
 typedef void (__cdecl *RolongogetQualcommPDAFList)(std::vector<std::string>& listPDAF);
 typedef void (__cdecl *RolongogetDualCameraBurnList)(std::vector<std::string>& listOTP);
+typedef void (__cdecl *RolongogetHISIPDAFList)(std::vector<std::string>& listPDAF);
 
 //Sensor DLL
 typedef int (__cdecl *RolongosetExposureTime)(char* pstrsensor, unsigned char ucslave, unsigned int uivalue, hardwarereadiic funreadiic, \

@@ -17,10 +17,6 @@
 #include "jsl_logindialog.h"
 
 
-
-
-
-
 class QHthreadShortcut : public QObject
 {
 	Q_OBJECT
@@ -78,7 +74,7 @@ public slots:
 	void slotShortcutConfig();
 	void slotVersionShow();
 	void slotCompterCompatibilityTest();
-
+	void slotJsvDecode();
 
 
 
