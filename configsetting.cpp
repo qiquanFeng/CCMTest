@@ -1541,7 +1541,22 @@ int configsetting::saveWhitePanel()
 			strname.append("pixelratio");
 			strvalue.append(ui.ocPixelRatiolineEdit->text());
 			ROPLOW::jointconfigstring(key, strname, strvalue);
+
 			HISDBCUSTOM::insertItem(stSqlDB, itemshareData.currentTableName, uiIndex, "algorithm", "whitepanel", "opticalcenter", itemsuffix2, key);
+
+			//****************************************** OC ALG B ****************************
+			//(deviation:10.0)
+			//(pixelratio:0.09)
+			strname.clear();	strvalue.clear();
+			strname.append("deviation");	strvalue.append(ui.ochbDevspinBox->text());
+			ROPLOW::jointconfigstring(itemsuffix2, strname, strvalue);
+
+			strname.clear();	strvalue.clear();
+			strname.append("pixelratio");
+			strvalue.append(ui.ochbSizeRatiodoubleSpinBox->text());
+			ROPLOW::jointconfigstring(key, strname, strvalue);
+
+			HISDBCUSTOM::insertItem(stSqlDB, itemshareData.currentTableName, uiIndex, "algorithm", "whitepanel", "opticalcenterhb", itemsuffix2, key);
 
 			//(defectratio:0.1)(woundratio:0.2)(defectscore:1)(woundscore:2)(deadscore:3)
 			//(clusterscore:50)(widthblocks:180)(deadratio:0.3)
@@ -1880,6 +1895,11 @@ void configsetting::blackpanel2UI()
 		ui.blackhbPPMindoubleSpinBox->setValue(itemshareData.blackfieldParameter->stAlgB.flPPMin);
 		ui.blackhbPPMaxdoubleSpinBox->setValue(itemshareData.blackfieldParameter->stAlgB.flPPMax);
 
+		ui.spinBox_bf_blc->setValue(itemshareData.blackfieldParameter->stAlgC.ucBlackLevel);
+		ui.spinBox_bf_threshold->setValue(itemshareData.blackfieldParameter->stAlgC.flThreshold);
+		ui.spinBox_bf_spec->setValue(itemshareData.blackfieldParameter->stAlgC.flChannelMax);
+		ui.spinBox_bf_cellspec->setValue(itemshareData.blackfieldParameter->stAlgC.flCellMax);
+
 		ui.blackFieldAlgcomboBox->setCurrentIndex(itemshareData.blackfieldParameter->ui8BlackFiledAlg);
 		BlackLightPixelAlgSwitch(itemshareData.blackfieldParameter->ui8BlackFiledAlg);
 	}
@@ -1941,11 +1961,24 @@ int configsetting::saveBlackPanel()
 			ROPLOW::jointconfigstring(key, strname, strvalue);
 			HISDBCUSTOM::insertItem(stSqlDB, itemshareData.currentTableName, uiIndex, "algorithm", "blackfield", "algb", itemsuffix2, key);
 
+			strname.clear();strvalue.clear();
+			strname.append("blacklevel");	strvalue.append(ui.spinBox_bf_blc->cleanText());
+			ROPLOW::jointconfigstring(itemsuffix2, strname, strvalue);
+
+			strname.clear();strvalue.clear();
+			strname.append("threshold");	strvalue.append(ui.spinBox_bf_threshold->cleanText());
+			strname.append("channelspec");	strvalue.append(ui.spinBox_bf_spec->cleanText());
+			strname.append("cellspec");	strvalue.append(ui.spinBox_bf_cellspec->cleanText());
+			ROPLOW::jointconfigstring(key, strname, strvalue);
+			HISDBCUSTOM::insertItem(stSqlDB, itemshareData.currentTableName, uiIndex, "algorithm", "blackfield", "algc", itemsuffix2, key);
+
 			//(alg:a)(digitalgain:1)(analoggain:1)(framesleep:500)
 			strname.clear(); strvalue.clear();
 			strname.append("alg");
 			if(ui.blackFieldAlgcomboBox->currentIndex() == 0)	strvalue.append("a");
-			else strvalue.append("b");
+			else if(ui.blackFieldAlgcomboBox->currentIndex() == 1) strvalue.append("b");
+			else if(ui.blackFieldAlgcomboBox->currentIndex() == 2) strvalue.append("c");
+
 			ROPLOW::jointconfigstring(itemsuffix2, strname, strvalue);
 			HISDBCUSTOM::insertItem(stSqlDB, itemshareData.currentTableName, uiIndex, "algorithm", "blackfield", "total", itemsuffix2);
 
@@ -2206,7 +2239,7 @@ void configsetting::pdafBurn2UI()
 
 	QString strVersion	=	QString::number(itemshareData.pdafParameter->usVersion[3]) % "." % QString::number(itemshareData.pdafParameter->usVersion[2]) % "." % \
 		QString::number(itemshareData.pdafParameter->usVersion[1]) % "." % QString::number(itemshareData.pdafParameter->usVersion[0]);
-	if(itemshareData.pdafParameter->usVersion[3]==3)
+	if(itemshareData.pdafParameter->usVersion[3]==3&&itemshareData.pdafParameter->usVersion[0]==525)
 	{
 		strVersion	=	QString::number(itemshareData.pdafParameter->usVersion[3]) % "." % QString::number(itemshareData.pdafParameter->usVersion[2]) % "." % \
 			QString::number(itemshareData.pdafParameter->usVersion[1]) % ".0" % QString::number(itemshareData.pdafParameter->usVersion[0]);

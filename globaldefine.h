@@ -1235,12 +1235,28 @@ struct _HisAlg_BPLightPixel_HB_Config
 	}
 };
 
+struct _HisAlg_BPLightPixel_HC_Config
+{
+	unsigned char ucBlackLevel;
+	float flThreshold;
+	float flChannelMax;
+	float flCellMax;
+	_HisAlg_BPLightPixel_HC_Config()
+	{
+		ucBlackLevel	=	0;
+		flThreshold		=   0;
+		flChannelMax = 1;
+		flCellMax =1;
+	}
+};
+
 
 struct _blackfiledParameter 
 {
 	unsigned __int8 ui8BlackFiledAlg;
 	_HisAlg_BPLightPixel_HA_Config stAlgA;
 	_HisAlg_BPLightPixel_HB_Config stAlgB;
+	_HisAlg_BPLightPixel_HC_Config stAlgC;
 	_blackfiledParameter()
 	{
 		ui8BlackFiledAlg	=	_HisAlg_SWITCH_A;
@@ -2527,6 +2543,10 @@ extern void __stdcall HisFX3LogPush_backC1(unsigned int uiIndex, const char* pst
 extern void __stdcall HisFX3LogPush_backC2(unsigned int uiIndex, const char* pstrKey, const char* pstrValue);
 extern int __stdcall GetFreshframeC1(unsigned char* pucdata, unsigned int uibuffersize, unsigned char ucframetype, bool binit);
 extern int __stdcall GetFreshframeC2(unsigned char* pucdata, unsigned int uibuffersize, unsigned char ucframetype, bool binit);
+extern void __stdcall setBulkSize(long size);
+
+//add By feng 2019-07-15
+typedef void (__stdcall *setbulktransformsize)(long bufSize);
 
 typedef void (__cdecl *RolongogetAFList)(std::vector<std::string>& listAF);
 typedef int (__cdecl *Rolongowriteafmotor)(std::vector<std::wstring>& vectorHisCCMOTPInfoW, _HisCCMAFBurn_Config* pstconfig, hardwarereadiic funreadiic, hardwarewriteiic funwriteiic, hardwaresetiicspeed funiicspeed, \
@@ -2534,13 +2554,13 @@ typedef int (__cdecl *Rolongowriteafmotor)(std::vector<std::wstring>& vectorHisC
 	hardwaresetgpio funsetgpio, hardwaregetgpio fungetgpio, hardwarepullreset funreset, hardwarepullpwnd funpwnd, \
 	hardwarebatchreadiicnolimit funbatchreadiicnolimit, hardwarebatchwriteiicnolimit funbatchwriteiicnolimit, \
 	hisfx3logpush_back funlogpushback, hardwarepagewriteiic fucpagewriteiic, hardwarepagereadiic fucpagereadiic, \
-	hardwarepagewritespi funpagewritespi, hardwarepagereadspi funpagereadspi);
+	hardwarepagewritespi funpagewritespi, hardwarepagereadspi funpagereadspi,setbulktransformsize funsetbulk);
 typedef int (__cdecl *Rolongocheckafmotor)(std::vector<std::wstring>& vectorHisCCMOTPInfoW, _HisCCMAFBurn_Config* pstconfig , hardwarereadiic funreadiic , hardwarewriteiic funwriteiic , hardwaresetiicspeed funiicspeed , \
 	hardwaresetvolt funsetvolt , hardwaregetvolt fungetvolt , hardwaresetvfuse funsetvfuse , hardwaregetvfuse fungetvfuse , hardwaregetframe fungetframe , \
 	hardwaresetgpio funsetgpio , hardwaregetgpio fungetgpio , hardwarepullreset funreset , hardwarepullpwnd funpwnd , \
 	hardwarebatchreadiicnolimit funbatchreadiicnolimit , hardwarebatchwriteiicnolimit funbatchwriteiicnolimit , \
 	hisfx3logpush_back funlogpushback  , hardwarepagewriteiic fucpagewriteiic  , hardwarepagereadiic fucpagereadiic, \
-	hardwarepagewritespi funpagewritespi, hardwarepagereadspi funpagereadspi);
+	hardwarepagewritespi funpagewritespi, hardwarepagereadspi funpagereadspi,setbulktransformsize funsetbulk);
 
 //OTP DLL
 typedef unsigned int (__cdecl *RolongoOTPAPIVersion)();
@@ -2612,6 +2632,7 @@ typedef bool (__stdcall *hardwareisdatastreaming)(unsigned int uiLoop);
 typedef unsigned __int64 (__stdcall *hardwaregetsensorframeindex)();
 typedef int (__stdcall *hardwaremeasurevoltage)(float* pflDOVDD, float* pflAVDD, float* pflDVDD, float* pflAF, float* pflVFuse, float* pflPOW);
 
+
 struct _globalFunctionPointer
 {
 	hardwarewriteiic WriteHisFX3IIC;
@@ -2646,10 +2667,15 @@ struct _globalFunctionPointer
 	hardwareisdatastreaming IsHisFX3DataStreaming;
 	hardwaregetsensorframeindex getSensorFrameIndex;
 	hardwaremeasurevoltage MeasureHisFX3Voltage;
+	//**************** 20190707  *****************************
+	setbulktransformsize setbulkSize;
+
 	std::vector<std::wstring>* vectorHisCCMOTPInfoW;
 	 
 	_globalFunctionPointer(bool bChannel1 = true)
 	{
+		setbulkSize=setBulkSize;
+
 		if(bChannel1)
 		{
 			vectorHisCCMOTPInfoW	=	&vectorHisCCMOTPInfoWC1;
@@ -2677,6 +2703,7 @@ struct _globalFunctionPointer
 			IsHisFX3DataStreaming			=	IsHisFX3DataStreamingC1;
 			getSensorFrameIndex			=	getSensorFrameIndexC1;
 			MeasureHisFX3Voltage			=	MeasureHisFX3VoltageC1;
+			
 		}
 		else
 		{

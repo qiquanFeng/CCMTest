@@ -67,7 +67,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>3</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideLeft</enum>
@@ -22798,7 +22798,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -22867,7 +22867,7 @@
                <enum>QFrame::Plain</enum>
               </property>
               <property name="currentIndex">
-               <number>0</number>
+               <number>1</number>
               </property>
               <widget class="QWidget" name="page">
                <layout class="QVBoxLayout" name="verticalLayout_26">
@@ -23138,7 +23138,7 @@
                <enum>QFrame::Plain</enum>
               </property>
               <property name="currentIndex">
-               <number>5</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="page_3">
                <layout class="QVBoxLayout" name="verticalLayout_27">
@@ -24716,8 +24716,8 @@
                  <rect>
                   <x>10</x>
                   <y>130</y>
-                  <width>641</width>
-                  <height>101</height>
+                  <width>871</width>
+                  <height>111</height>
                  </rect>
                 </property>
                 <layout class="QHBoxLayout" name="horizontalLayout_652">
@@ -24737,7 +24737,7 @@
                      <rect>
                       <x>10</x>
                       <y>10</y>
-                      <width>238</width>
+                      <width>244</width>
                       <height>91</height>
                      </rect>
                     </property>
@@ -24870,7 +24870,7 @@
                      <rect>
                       <x>10</x>
                       <y>10</y>
-                      <width>238</width>
+                      <width>244</width>
                       <height>91</height>
                      </rect>
                     </property>
@@ -25003,7 +25003,7 @@
                      <rect>
                       <x>10</x>
                       <y>10</y>
-                      <width>238</width>
+                      <width>244</width>
                       <height>91</height>
                      </rect>
                     </property>
@@ -25162,8 +25162,8 @@
                  <rect>
                   <x>10</x>
                   <y>270</y>
-                  <width>641</width>
-                  <height>101</height>
+                  <width>871</width>
+                  <height>131</height>
                  </rect>
                 </property>
                 <layout class="QHBoxLayout" name="horizontalLayout_654">
@@ -25177,7 +25177,7 @@
                      <rect>
                       <x>10</x>
                       <y>10</y>
-                      <width>238</width>
+                      <width>244</width>
                       <height>91</height>
                      </rect>
                     </property>
@@ -25310,7 +25310,7 @@
                      <rect>
                       <x>10</x>
                       <y>10</y>
-                      <width>238</width>
+                      <width>244</width>
                       <height>91</height>
                      </rect>
                     </property>
@@ -25443,7 +25443,7 @@
                      <rect>
                       <x>10</x>
                       <y>10</y>
-                      <width>238</width>
+                      <width>244</width>
                       <height>91</height>
                      </rect>
                     </property>
@@ -31333,6 +31333,11 @@
                   <string>Algorithm-B(SAMSUNG)</string>
                  </property>
                 </item>
+                <item>
+                 <property name="text">
+                  <string>Algorithm-C(4 Channel)</string>
+                 </property>
+                </item>
                </widget>
               </item>
              </layout>
@@ -31346,7 +31351,7 @@
                <enum>QFrame::Plain</enum>
               </property>
               <property name="currentIndex">
-               <number>0</number>
+               <number>2</number>
               </property>
               <widget class="QWidget" name="page_24">
                <layout class="QVBoxLayout" name="verticalLayout_259">
@@ -31901,6 +31906,125 @@
                  </layout>
                 </item>
                </layout>
+              </widget>
+              <widget class="QWidget" name="page_22">
+               <widget class="QLabel" name="label_187">
+                <property name="geometry">
+                 <rect>
+                  <x>40</x>
+                  <y>20</y>
+                  <width>831</width>
+                  <height>31</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>BlackBoard (Algorithm-C)</string>
+                </property>
+               </widget>
+               <widget class="QWidget" name="horizontalLayoutWidget_9">
+                <property name="geometry">
+                 <rect>
+                  <x>40</x>
+                  <y>50</y>
+                  <width>821</width>
+                  <height>80</height>
+                 </rect>
+                </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_673">
+                 <item>
+                  <widget class="QLabel" name="label_190">
+                   <property name="text">
+                    <string>Black Level(Raw10 BLC):</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBox_bf_blc">
+                   <property name="maximum">
+                    <number>1023</number>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+               <widget class="QWidget" name="horizontalLayoutWidget_10">
+                <property name="geometry">
+                 <rect>
+                  <x>40</x>
+                  <y>310</y>
+                  <width>821</width>
+                  <height>80</height>
+                 </rect>
+                </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_674">
+                 <item>
+                  <widget class="QLabel" name="label_191">
+                   <property name="text">
+                    <string>Bad Pixel (channel):</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBox_bf_spec">
+                   <property name="maximum">
+                    <number>9999</number>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+               <widget class="QWidget" name="horizontalLayoutWidget_11">
+                <property name="geometry">
+                 <rect>
+                  <x>40</x>
+                  <y>450</y>
+                  <width>821</width>
+                  <height>80</height>
+                 </rect>
+                </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_675">
+                 <item>
+                  <widget class="QLabel" name="label_192">
+                   <property name="text">
+                    <string>Bad Pixel(4 Channel):</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBox_bf_cellspec">
+                   <property name="maximum">
+                    <number>9999</number>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+               <widget class="QWidget" name="horizontalLayoutWidget_12">
+                <property name="geometry">
+                 <rect>
+                  <x>40</x>
+                  <y>180</y>
+                  <width>821</width>
+                  <height>80</height>
+                 </rect>
+                </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_676">
+                 <item>
+                  <widget class="QLabel" name="label_193">
+                   <property name="text">
+                    <string>threshold (- BLC):</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBox_bf_threshold">
+                   <property name="maximum">
+                    <number>1023</number>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
               </widget>
              </widget>
             </item>
@@ -38136,6 +38260,11 @@
                      <item>
                       <property name="text">
                        <string notr="true">3.0.0.0525</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>3.4.3.1115</string>
                       </property>
                      </item>
                     </widget>

@@ -294,6 +294,42 @@
     <ClCompile Include="GeneratedFiles\Release\moc_leisaimotion.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_hisfx3ccmtest.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_jsl_burnstate.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_jsl_controlpanel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_jsl_logindialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_leisaimotion.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_qconfigmanage.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_qcustomplot.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_QHBlemishHC.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_QHButtonExec.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_QHChooseGrabberType.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_QHDrawTEstItem.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_QHFontSetting.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_QHImageDebug.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -374,42 +410,6 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_itemprocess.cpp">
       <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_jsl_burnstate.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_jsl_controlpanel.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_jsl_logindialog.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_leisaimotion.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_qconfigmanage.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_qcustomplot.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_QHBlemishHC.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_QHButtonExec.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_QHChooseGrabberType.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_QHDrawTEstItem.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_QHFontSetting.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\qrc_hisfx3ccmtest.cpp">
-      <Filter>Generated Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

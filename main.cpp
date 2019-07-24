@@ -93,6 +93,11 @@ int __stdcall BatchReadHisFX3IICNoLimitC2(unsigned int uiCount, unsigned char* p
 	return classPlatform.HisFX3BatchReadIICNoLimit_S2(uiCount, pucSlave, puiReg, puiData, pusType, usDelay);
 }
 
+void __stdcall setBulkSize(long size)// 128~1024    * 1024
+{
+	return classPlatform.setBulkTransformSize(size);
+}
+
 int __stdcall BatchWriteHisFX3IICC1(unsigned int uiCount, unsigned char* pucSlave, unsigned int* puiReg, unsigned int* puiData, unsigned short usType, unsigned short usDelay)
 {
 #ifdef HisPlatform_BatchI2C

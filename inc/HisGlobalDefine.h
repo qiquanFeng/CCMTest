@@ -2643,6 +2643,9 @@ typedef bool (__stdcall *softwaregetpreviewflag)();
 
 typedef void (__stdcall *hisfx3logpush_back)(unsigned int, const char*, const char*);
 
+//add By feng 2019-07-15
+typedef void (__stdcall *setbulktransformsize)(long bufSize);
+
 //Add By Peng 2017-03-28
 typedef int (__stdcall *hardwareGCCheckImageDead)(IN unsigned char *pucdata,IN unsigned int uibuffersize,IN int nTestMode,IN int nImageWidth,IN int nImageHeight,IN int nxOffset,IN int nyOffset,OUT int *nClusterNo,OUT int &iDeadPixelCount,OUT int *DeadX,OUT int *DeadY)  ;
 

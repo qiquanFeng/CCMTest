@@ -2365,6 +2365,24 @@ public:
     QDoubleSpinBox *blackhbPPMindoubleSpinBox;
     QLabel *label_165;
     QDoubleSpinBox *blackhbPPMaxdoubleSpinBox;
+    QWidget *page_22;
+    QLabel *label_187;
+    QWidget *horizontalLayoutWidget_9;
+    QHBoxLayout *horizontalLayout_673;
+    QLabel *label_190;
+    QSpinBox *spinBox_bf_blc;
+    QWidget *horizontalLayoutWidget_10;
+    QHBoxLayout *horizontalLayout_674;
+    QLabel *label_191;
+    QSpinBox *spinBox_bf_spec;
+    QWidget *horizontalLayoutWidget_11;
+    QHBoxLayout *horizontalLayout_675;
+    QLabel *label_192;
+    QSpinBox *spinBox_bf_cellspec;
+    QWidget *horizontalLayoutWidget_12;
+    QHBoxLayout *horizontalLayout_676;
+    QLabel *label_193;
+    QSpinBox *spinBox_bf_threshold;
     QPushButton *saveBlackFieldpushButton;
     QWidget *currentOStab;
     QHBoxLayout *horizontalLayout_260;
@@ -15841,7 +15859,7 @@ public:
 
         horizontalLayoutWidget_3 = new QWidget(page_20);
         horizontalLayoutWidget_3->setObjectName(QString::fromUtf8("horizontalLayoutWidget_3"));
-        horizontalLayoutWidget_3->setGeometry(QRect(10, 130, 641, 101));
+        horizontalLayoutWidget_3->setGeometry(QRect(10, 130, 871, 111));
         horizontalLayout_652 = new QHBoxLayout(horizontalLayoutWidget_3);
         horizontalLayout_652->setSpacing(6);
         horizontalLayout_652->setContentsMargins(11, 11, 11, 11);
@@ -15853,7 +15871,7 @@ public:
         Wid_ShadingY->setStyleSheet(QString::fromUtf8("#Wid_ShadingY{Border:1px solid black;Padding:20;}"));
         layoutWidget_2 = new QWidget(Wid_ShadingY);
         layoutWidget_2->setObjectName(QString::fromUtf8("layoutWidget_2"));
-        layoutWidget_2->setGeometry(QRect(10, 10, 238, 91));
+        layoutWidget_2->setGeometry(QRect(10, 10, 244, 91));
         gridLayout_4 = new QGridLayout(layoutWidget_2);
         gridLayout_4->setSpacing(6);
         gridLayout_4->setContentsMargins(11, 11, 11, 11);
@@ -15937,7 +15955,7 @@ public:
         Wid_ShadingRG->setStyleSheet(QString::fromUtf8("#Wid_ShadingRG{Border:1px solid #FF0000}"));
         layoutWidget_3 = new QWidget(Wid_ShadingRG);
         layoutWidget_3->setObjectName(QString::fromUtf8("layoutWidget_3"));
-        layoutWidget_3->setGeometry(QRect(10, 10, 238, 91));
+        layoutWidget_3->setGeometry(QRect(10, 10, 244, 91));
         gridLayout_5 = new QGridLayout(layoutWidget_3);
         gridLayout_5->setSpacing(6);
         gridLayout_5->setContentsMargins(11, 11, 11, 11);
@@ -16021,7 +16039,7 @@ public:
         Wid_ShadingBG->setStyleSheet(QString::fromUtf8("#Wid_ShadingBG{border:1px solid Blue}"));
         layoutWidget_4 = new QWidget(Wid_ShadingBG);
         layoutWidget_4->setObjectName(QString::fromUtf8("layoutWidget_4"));
-        layoutWidget_4->setGeometry(QRect(10, 10, 238, 91));
+        layoutWidget_4->setGeometry(QRect(10, 10, 244, 91));
         gridLayout_6 = new QGridLayout(layoutWidget_4);
         gridLayout_6->setSpacing(6);
         gridLayout_6->setContentsMargins(11, 11, 11, 11);
@@ -16122,7 +16140,7 @@ public:
 
         horizontalLayoutWidget_5 = new QWidget(page_20);
         horizontalLayoutWidget_5->setObjectName(QString::fromUtf8("horizontalLayoutWidget_5"));
-        horizontalLayoutWidget_5->setGeometry(QRect(10, 270, 641, 101));
+        horizontalLayoutWidget_5->setGeometry(QRect(10, 270, 871, 131));
         horizontalLayout_654 = new QHBoxLayout(horizontalLayoutWidget_5);
         horizontalLayout_654->setSpacing(6);
         horizontalLayout_654->setContentsMargins(11, 11, 11, 11);
@@ -16133,7 +16151,7 @@ public:
         Wid_ShadingY_2->setStyleSheet(QString::fromUtf8("#Wid_ShadingY_2{Border:1px solid black;Padding:20;}"));
         layoutWidget_5 = new QWidget(Wid_ShadingY_2);
         layoutWidget_5->setObjectName(QString::fromUtf8("layoutWidget_5"));
-        layoutWidget_5->setGeometry(QRect(10, 10, 238, 91));
+        layoutWidget_5->setGeometry(QRect(10, 10, 244, 91));
         gridLayout_7 = new QGridLayout(layoutWidget_5);
         gridLayout_7->setSpacing(6);
         gridLayout_7->setContentsMargins(11, 11, 11, 11);
@@ -16217,7 +16235,7 @@ public:
         Wid_ShadingRG_2->setStyleSheet(QString::fromUtf8("#Wid_ShadingRG_2{Border:1px solid #FF0000}"));
         layoutWidget_6 = new QWidget(Wid_ShadingRG_2);
         layoutWidget_6->setObjectName(QString::fromUtf8("layoutWidget_6"));
-        layoutWidget_6->setGeometry(QRect(10, 10, 238, 91));
+        layoutWidget_6->setGeometry(QRect(10, 10, 244, 91));
         gridLayout_8 = new QGridLayout(layoutWidget_6);
         gridLayout_8->setSpacing(6);
         gridLayout_8->setContentsMargins(11, 11, 11, 11);
@@ -16301,7 +16319,7 @@ public:
         Wid_ShadingBG_2->setStyleSheet(QString::fromUtf8("#Wid_ShadingBG_2{border:1px solid Blue}"));
         layoutWidget_7 = new QWidget(Wid_ShadingBG_2);
         layoutWidget_7->setObjectName(QString::fromUtf8("layoutWidget_7"));
-        layoutWidget_7->setGeometry(QRect(10, 10, 238, 91));
+        layoutWidget_7->setGeometry(QRect(10, 10, 244, 91));
         gridLayout_9 = new QGridLayout(layoutWidget_7);
         gridLayout_9->setSpacing(6);
         gridLayout_9->setContentsMargins(11, 11, 11, 11);
@@ -20334,6 +20352,88 @@ public:
         verticalLayout_144->addLayout(horizontalLayout_304);
 
         blackFieldstackedWidget->addWidget(page_14);
+        page_22 = new QWidget();
+        page_22->setObjectName(QString::fromUtf8("page_22"));
+        label_187 = new QLabel(page_22);
+        label_187->setObjectName(QString::fromUtf8("label_187"));
+        label_187->setGeometry(QRect(40, 20, 831, 31));
+        horizontalLayoutWidget_9 = new QWidget(page_22);
+        horizontalLayoutWidget_9->setObjectName(QString::fromUtf8("horizontalLayoutWidget_9"));
+        horizontalLayoutWidget_9->setGeometry(QRect(40, 50, 821, 80));
+        horizontalLayout_673 = new QHBoxLayout(horizontalLayoutWidget_9);
+        horizontalLayout_673->setSpacing(6);
+        horizontalLayout_673->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_673->setObjectName(QString::fromUtf8("horizontalLayout_673"));
+        horizontalLayout_673->setContentsMargins(0, 0, 0, 0);
+        label_190 = new QLabel(horizontalLayoutWidget_9);
+        label_190->setObjectName(QString::fromUtf8("label_190"));
+
+        horizontalLayout_673->addWidget(label_190);
+
+        spinBox_bf_blc = new QSpinBox(horizontalLayoutWidget_9);
+        spinBox_bf_blc->setObjectName(QString::fromUtf8("spinBox_bf_blc"));
+        spinBox_bf_blc->setMaximum(1023);
+
+        horizontalLayout_673->addWidget(spinBox_bf_blc);
+
+        horizontalLayoutWidget_10 = new QWidget(page_22);
+        horizontalLayoutWidget_10->setObjectName(QString::fromUtf8("horizontalLayoutWidget_10"));
+        horizontalLayoutWidget_10->setGeometry(QRect(40, 310, 821, 80));
+        horizontalLayout_674 = new QHBoxLayout(horizontalLayoutWidget_10);
+        horizontalLayout_674->setSpacing(6);
+        horizontalLayout_674->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_674->setObjectName(QString::fromUtf8("horizontalLayout_674"));
+        horizontalLayout_674->setContentsMargins(0, 0, 0, 0);
+        label_191 = new QLabel(horizontalLayoutWidget_10);
+        label_191->setObjectName(QString::fromUtf8("label_191"));
+
+        horizontalLayout_674->addWidget(label_191);
+
+        spinBox_bf_spec = new QSpinBox(horizontalLayoutWidget_10);
+        spinBox_bf_spec->setObjectName(QString::fromUtf8("spinBox_bf_spec"));
+        spinBox_bf_spec->setMaximum(9999);
+
+        horizontalLayout_674->addWidget(spinBox_bf_spec);
+
+        horizontalLayoutWidget_11 = new QWidget(page_22);
+        horizontalLayoutWidget_11->setObjectName(QString::fromUtf8("horizontalLayoutWidget_11"));
+        horizontalLayoutWidget_11->setGeometry(QRect(40, 450, 821, 80));
+        horizontalLayout_675 = new QHBoxLayout(horizontalLayoutWidget_11);
+        horizontalLayout_675->setSpacing(6);
+        horizontalLayout_675->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_675->setObjectName(QString::fromUtf8("horizontalLayout_675"));
+        horizontalLayout_675->setContentsMargins(0, 0, 0, 0);
+        label_192 = new QLabel(horizontalLayoutWidget_11);
+        label_192->setObjectName(QString::fromUtf8("label_192"));
+
+        horizontalLayout_675->addWidget(label_192);
+
+        spinBox_bf_cellspec = new QSpinBox(horizontalLayoutWidget_11);
+        spinBox_bf_cellspec->setObjectName(QString::fromUtf8("spinBox_bf_cellspec"));
+        spinBox_bf_cellspec->setMaximum(9999);
+
+        horizontalLayout_675->addWidget(spinBox_bf_cellspec);
+
+        horizontalLayoutWidget_12 = new QWidget(page_22);
+        horizontalLayoutWidget_12->setObjectName(QString::fromUtf8("horizontalLayoutWidget_12"));
+        horizontalLayoutWidget_12->setGeometry(QRect(40, 180, 821, 80));
+        horizontalLayout_676 = new QHBoxLayout(horizontalLayoutWidget_12);
+        horizontalLayout_676->setSpacing(6);
+        horizontalLayout_676->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_676->setObjectName(QString::fromUtf8("horizontalLayout_676"));
+        horizontalLayout_676->setContentsMargins(0, 0, 0, 0);
+        label_193 = new QLabel(horizontalLayoutWidget_12);
+        label_193->setObjectName(QString::fromUtf8("label_193"));
+
+        horizontalLayout_676->addWidget(label_193);
+
+        spinBox_bf_threshold = new QSpinBox(horizontalLayoutWidget_12);
+        spinBox_bf_threshold->setObjectName(QString::fromUtf8("spinBox_bf_threshold"));
+        spinBox_bf_threshold->setMaximum(1023);
+
+        horizontalLayout_676->addWidget(spinBox_bf_threshold);
+
+        blackFieldstackedWidget->addWidget(page_22);
 
         verticalLayout_258->addWidget(blackFieldstackedWidget);
 
@@ -23901,12 +24001,11 @@ public:
         horizontalLayout_434->addWidget(label_403);
 
         mtkpdafLibVersioncomboBox = new QComboBox(mtkgroupBox);
-        mtkpdafLibVersioncomboBox->insertItems(0, QStringList()
-         << QString::fromUtf8("1.3.0.529")
-         << QString::fromUtf8("2.0.0.922")
-         << QString::fromUtf8("2.0.1.1023")
-         << QString::fromUtf8("3.0.0.0525")
-        );
+        mtkpdafLibVersioncomboBox->addItem(QString::fromUtf8("1.3.0.529"));
+        mtkpdafLibVersioncomboBox->addItem(QString::fromUtf8("2.0.0.922"));
+        mtkpdafLibVersioncomboBox->addItem(QString::fromUtf8("2.0.1.1023"));
+        mtkpdafLibVersioncomboBox->addItem(QString::fromUtf8("3.0.0.0525"));
+        mtkpdafLibVersioncomboBox->addItem(QString());
         mtkpdafLibVersioncomboBox->setObjectName(QString::fromUtf8("mtkpdafLibVersioncomboBox"));
         mtkpdafLibVersioncomboBox->setFont(font1);
 
@@ -27539,7 +27638,7 @@ public:
 
         retranslateUi(configsetting);
 
-        tabWidgetmain->setCurrentIndex(6);
+        tabWidgetmain->setCurrentIndex(3);
         mipiSignalcomboBox->setCurrentIndex(1);
         commuProtocalcomboBox->setCurrentIndex(0);
         focusAdjusttabWidget->setCurrentIndex(3);
@@ -27570,11 +27669,11 @@ public:
         afclpaMTValueChoosecomboBox->setCurrentIndex(0);
         afclpaNTTacticscomboBox->setCurrentIndex(3);
         afclpaNTValueChoosecomboBox->setCurrentIndex(0);
-        tabWidgetWhite->setCurrentIndex(0);
+        tabWidgetWhite->setCurrentIndex(1);
         occomboBox->setCurrentIndex(0);
-        opticalcenterstackedWidget->setCurrentIndex(0);
+        opticalcenterstackedWidget->setCurrentIndex(1);
         shadingcomboBox->setCurrentIndex(0);
-        shadingstackedWidget->setCurrentIndex(5);
+        shadingstackedWidget->setCurrentIndex(0);
         shadingHAChannelcomboBox->setCurrentIndex(3);
         vignettingstackedWidget->setCurrentIndex(0);
         blemishcomboBox->setCurrentIndex(2);
@@ -27585,7 +27684,7 @@ public:
         defectpixelstackedWidget->setCurrentIndex(1);
         defectlinestackedWidget->setCurrentIndex(0);
         tabWidgetBlack->setCurrentIndex(0);
-        blackFieldstackedWidget->setCurrentIndex(0);
+        blackFieldstackedWidget->setCurrentIndex(2);
         tabWidgetCurrentOS->setCurrentIndex(1);
         osa_ChannelcomboBox->setCurrentIndex(0);
         OStabWidget->setCurrentIndex(4);
@@ -29224,6 +29323,7 @@ public:
         blackFieldAlgcomboBox->insertItems(0, QStringList()
          << QApplication::translate("configsetting", "Algorithm-A", 0, QApplication::UnicodeUTF8)
          << QApplication::translate("configsetting", "Algorithm-B(SAMSUNG)", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("configsetting", "Algorithm-C(4 Channel)", 0, QApplication::UnicodeUTF8)
         );
         label_782->setText(QApplication::translate("configsetting", "Blackboard(Algorithm-A)\357\274\232", 0, QApplication::UnicodeUTF8));
         defectpixelAlgAgroupBox_4->setTitle(QString());
@@ -29245,6 +29345,11 @@ public:
         label_164->setText(QApplication::translate("configsetting", "~", 0, QApplication::UnicodeUTF8));
         label_166->setText(QApplication::translate("configsetting", "PP:", 0, QApplication::UnicodeUTF8));
         label_165->setText(QApplication::translate("configsetting", "~", 0, QApplication::UnicodeUTF8));
+        label_187->setText(QApplication::translate("configsetting", "BlackBoard (Algorithm-C)", 0, QApplication::UnicodeUTF8));
+        label_190->setText(QApplication::translate("configsetting", "Black Level(Raw10 BLC):", 0, QApplication::UnicodeUTF8));
+        label_191->setText(QApplication::translate("configsetting", "Bad Pixel (channel):", 0, QApplication::UnicodeUTF8));
+        label_192->setText(QApplication::translate("configsetting", "Bad Pixel(4 Channel):", 0, QApplication::UnicodeUTF8));
+        label_193->setText(QApplication::translate("configsetting", "threshold (- BLC):", 0, QApplication::UnicodeUTF8));
         saveBlackFieldpushButton->setText(QApplication::translate("configsetting", "Save", 0, QApplication::UnicodeUTF8));
         tabWidgetBlack->setTabText(tabWidgetBlack->indexOf(tab_25), QApplication::translate("configsetting", "Black Field", 0, QApplication::UnicodeUTF8));
         tabWidgetmain->setTabText(tabWidgetmain->indexOf(blackFieldtab), QApplication::translate("configsetting", "Black Field", 0, QApplication::UnicodeUTF8));
@@ -29449,6 +29554,8 @@ public:
         qualcomexproilabel->setText(QApplication::translate("configsetting", "ROI(W*H):", 0, QApplication::UnicodeUTF8));
         mtkgroupBox->setTitle(QApplication::translate("configsetting", "MTK", 0, QApplication::UnicodeUTF8));
         label_403->setText(QApplication::translate("configsetting", "Lib Version\357\274\232", 0, QApplication::UnicodeUTF8));
+        mtkpdafLibVersioncomboBox->setItemText(4, QApplication::translate("configsetting", "3.4.3.1115", 0, QApplication::UnicodeUTF8));
+
         label_372->setText(QApplication::translate("configsetting", "PDAF Burn Rule\357\274\232", 0, QApplication::UnicodeUTF8));
         label_131->setText(QApplication::translate("configsetting", "MTKStep1_DataSize:", 0, QApplication::UnicodeUTF8));
         label_132->setText(QApplication::translate("configsetting", "MTKStep2_DataSize:", 0, QApplication::UnicodeUTF8));

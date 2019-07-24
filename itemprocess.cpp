@@ -147,13 +147,13 @@ typedef int (__cdecl *Rolongowriteotp)(std::vector<std::wstring>& vectorHisCCMOT
 	hardwarebatchwriteiic funbatchwriteiic , hardwarebatchreadiic funbatchreadiic , hardwaresetgpio funsetgpio , hardwaregetgpio fungetgpio , \
 	hardwarepullreset funreset , hardwarepullpwnd funpwnd , hardwarebatchreadiicnolimit funbatchreadiicnolimit , hardwarebatchwriteiicnolimit funbatchwriteiicnolimit , \
 	hisfx3logpush_back funlogpushback , hardwarepagewriteiic fucpagewriteiic , hardwarepagereadiic fucpagereadiic, \
-	hardwarepagewritespi funpagewritespi, hardwarepagereadspi funpagereadspi);
+	hardwarepagewritespi funpagewritespi, hardwarepagereadspi funpagereadspi,setbulktransformsize funsetbulksize);
 typedef int (__cdecl *Rolongocheckotp)(std::vector<std::wstring>& vectorHisCCMOTPInfoW, _HisCCMOTP_Config* pstconfig, hardwarereadiic funreadiic , hardwarewriteiic funwriteiic , hardwaresetiicspeed funiicspeed , \
 	hardwaresetvolt funsetvolt , hardwaregetvolt fungetvolt , hardwaresetvfuse funsetvfuse , hardwaregetvfuse fungetvfuse , hardwaregetframe fungetframe , \
 	hardwarebatchwriteiic funbatchwriteiic , hardwarebatchreadiic funbatchreadiic , hardwaresetgpio funsetgpio , hardwaregetgpio fungetgpio , \
 	hardwarepullreset funreset , hardwarepullpwnd funpwnd , hardwarebatchreadiicnolimit funbatchreadiicnolimit , hardwarebatchwriteiicnolimit funbatchwriteiicnolimit , \
 	hisfx3logpush_back funlogpushback , hardwarepagewriteiic fucpagewriteiic , hardwarepagereadiic fucpagereadiic, \
-	hardwarepagewritespi funpagewritespi, hardwarepagereadspi funpagereadspi);
+	hardwarepagewritespi funpagewritespi, hardwarepagereadspi funpagereadspi,setbulktransformsize funsetbulksize);
 
 typedef int (__cdecl *Rolongowritedualcameratestdata)(std::vector<std::wstring>& vectorHisCCMOTPInfoW, _HisCCMDualCameraBurn_Config* pstconfig , hardwarereadiic funreadiic , hardwarewriteiic funwriteiic , hardwaresetiicspeed funiicspeed , \
 	hardwaresetvolt funsetvolt , hardwaregetvolt fungetvolt , hardwaresetvfuse funsetvfuse , hardwaregetvfuse fungetvfuse , hardwaregetframe fungetframe , \
@@ -3735,7 +3735,7 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 	****************************************/  
 
 	//********** 线性 *****************
-	if(vectorItemData.size()>2){
+	/*if(vectorItemData.size()>2){
 		emit information(QString::fromLocal8Bit("开始检测线性。。。"));
 		FILE *pfile;
 		fopen_s(&pfile,"LineDebug.csv","wb+");
@@ -3781,7 +3781,7 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 		}
 		fclose(pfile);
 	
-	}
+	}*/
 	//******************************************************
 
 
@@ -12437,6 +12437,7 @@ int itemprocess::getblackfieldParameter(bool bupdate, bool bcheck)
 					if(strname.at(x) == "alg"){
 						if(strvalue.at(x) == "a")	itemshareData.blackfieldParameter->ui8BlackFiledAlg	=	_HisAlg_SWITCH_A;
 						else if(strvalue.at(x) == "b")	itemshareData.blackfieldParameter->ui8BlackFiledAlg	=	_HisAlg_SWITCH_B;
+						else if(strvalue.at(x) == "c")	itemshareData.blackfieldParameter->ui8BlackFiledAlg	=	_HisAlg_SWITCH_C;
 					}
 				}
 			}
@@ -12504,6 +12505,29 @@ int itemprocess::getblackfieldParameter(bool bupdate, bool bcheck)
 						else if(strname.at(x) == "bgmax")	itemshareData.blackfieldParameter->stAlgB.flBGMax	=	strvalue.at(x).toFloat();
 						else if(strname.at(x) == "ppmin")	itemshareData.blackfieldParameter->stAlgB.flPPMin	=	strvalue.at(x).toFloat();
 						else if(strname.at(x) == "ppmax")	itemshareData.blackfieldParameter->stAlgB.flPPMax	=	strvalue.at(x).toFloat();
+					}
+				}
+			}
+		}
+		else if(itemshareData.blackfieldParameter->ui8BlackFiledAlg == _HisAlg_SWITCH_C)
+		{
+			query.prepare("SELECT itemsuffix2,key,value,reserve FROM " % itemshareData.currentTableName % \
+				" WHERE classfy='algorithm' AND item='blackfield' AND itemsuffix1='algc' ORDER BY id ASC" );
+			query.exec();
+
+			while (query.next())
+			{
+				bItemExist = true;
+				for(int y=0;	y<4;	++y)
+				{
+					strData	=	query.value(y).toString();
+					ROPLOW::patchconfigstring(strData, strname, strvalue);
+					for(int x=0;	x<strname.size();	++x)
+					{
+						if(strname.at(x) == "blacklevel")	itemshareData.blackfieldParameter->stAlgC.ucBlackLevel	=	strvalue.at(x).toUInt() & 0xFF;
+						else if(strname.at(x) == "threshold")	itemshareData.blackfieldParameter->stAlgC.flThreshold	=	strvalue.at(x).toFloat();
+						else if(strname.at(x) == "cellspec")	itemshareData.blackfieldParameter->stAlgC.flCellMax	=	strvalue.at(x).toFloat();
+						else if(strname.at(x) == "channelspec")	itemshareData.blackfieldParameter->stAlgC.flChannelMax	=	strvalue.at(x).toFloat();
 					}
 				}
 			}
@@ -12744,6 +12768,190 @@ int itemprocess::blackfield()
 		++(stLogItem.itemtype); stLogItem.itemkey = "Dark_RG"; stLogItem.itemvalue = rg; classLog->push_back(stLogItem);
 		++(stLogItem.itemtype); stLogItem.itemkey = "Dark_BG"; stLogItem.itemvalue = bg; classLog->push_back(stLogItem);
 		++(stLogItem.itemtype); stLogItem.itemkey = "Dark_PP"; stLogItem.itemvalue = pp; classLog->push_back(stLogItem);
+	}else if(itemshareData.blackfieldParameter->ui8BlackFiledAlg == _HisAlg_SWITCH_C){
+		unsigned short* pusBaylor	=	(unsigned short*)HisAlignedMalloc(itemshareData.previewParameter->iWidth *itemshareData.previewParameter->iHeight *2);
+		if(!pusBaylor) return HisFX3Error_MallocBuffer;
+
+		//取得raw图像数据
+		if(iresult	=	GetFreshframe((unsigned char*)pusBaylor, itemshareData.previewParameter->iWidth *itemshareData.previewParameter->iHeight *2, _FrameType_Raw10, true))
+			return iresult;
+
+		unsigned short* pusChannelR=(unsigned short*)HisAlignedMalloc(itemshareData.previewParameter->iWidth *itemshareData.previewParameter->iHeight *2/4);
+		unsigned short* pusChannelGr=(unsigned short*)HisAlignedMalloc(itemshareData.previewParameter->iWidth *itemshareData.previewParameter->iHeight *2/4);
+		unsigned short* pusChannelGb=(unsigned short*)HisAlignedMalloc(itemshareData.previewParameter->iWidth *itemshareData.previewParameter->iHeight *2/4);
+		unsigned short* pusChannelB=(unsigned short*)HisAlignedMalloc(itemshareData.previewParameter->iWidth *itemshareData.previewParameter->iHeight *2/4);
+		unsigned short* pusChannelCell=(unsigned short*)HisAlignedMalloc(itemshareData.previewParameter->iWidth *itemshareData.previewParameter->iHeight *2);
+		
+		_HisAlg_BPLightPixel_HC_Config stAlgC=itemshareData.blackfieldParameter->stAlgC;
+		long inx=0;
+		for (int r=0;r<itemshareData.previewParameter->iHeight;r+=2)
+		{
+			for (int c=0;c<itemshareData.previewParameter->iWidth;c+=2)
+			{
+				pusChannelR[inx]=pusBaylor[r*itemshareData.previewParameter->iWidth+c]-stAlgC.ucBlackLevel>stAlgC.flThreshold?1023:0;
+				pusChannelGr[inx]=pusBaylor[r*itemshareData.previewParameter->iWidth+c+1]-stAlgC.ucBlackLevel>stAlgC.flThreshold?1023:0;
+				pusChannelGb[inx]=pusBaylor[(r+1)*itemshareData.previewParameter->iWidth+c]-stAlgC.ucBlackLevel>stAlgC.flThreshold?1023:0;
+				pusChannelB[inx]=pusBaylor[(r+1)*itemshareData.previewParameter->iWidth+c+1]-stAlgC.ucBlackLevel>stAlgC.flThreshold?1023:0;
+				inx++;
+			}
+		}
+
+		for (int i=0;i<itemshareData.previewParameter->iHeight*itemshareData.previewParameter->iWidth;i++)
+		{
+			pusChannelCell[i]=pusBaylor[i]-stAlgC.ucBlackLevel>stAlgC.flThreshold?1023:0;
+		}
+
+
+		
+		std::vector<int> vecX;
+		std::vector<int> vecY;
+		for (int r=0;r<itemshareData.previewParameter->iHeight-1;r++)
+		{
+			for (int c=0;c<itemshareData.previewParameter->iWidth-1;c++)
+			{
+				if(pusChannelCell[r*itemshareData.previewParameter->iWidth+c]==1023){
+					if(pusChannelCell[r*itemshareData.previewParameter->iWidth+c+1]){
+						if(pusChannelCell[(r+1)*itemshareData.previewParameter->iWidth+c]){
+							if(pusChannelCell[(r+1)*itemshareData.previewParameter->iWidth+c+1]){
+								vecX.push_back(c);
+								vecY.push_back(r);
+							}
+						}
+					}
+				}
+			}
+		}
+
+
+		unsigned int subHeight=itemshareData.previewParameter->iHeight/2;
+		unsigned int subWidth=itemshareData.previewParameter->iWidth/2;
+		for (int r=1;r<subHeight-1;r++)
+		{
+			for (int c=1;c<subWidth-1;c++)
+			{
+				if(pusChannelR[r*subHeight+c]==1023){
+					int dp=1;
+					if(pusChannelR[(r-1)*subWidth+c-1])dp++;
+					if(pusChannelR[(r-1)*subWidth+c])dp++;
+					if(pusChannelR[(r-1)*subWidth+c+1])dp++;
+					if(pusChannelR[(r)*subWidth+c-1])dp++;
+					if(pusChannelR[(r)*subWidth+c+1])dp++;
+					if(pusChannelR[(r+1)*subWidth+c-1])dp++;
+					if(pusChannelR[(r+1)*subWidth+c])dp++;
+					if(pusChannelR[(r+1)*subWidth+c+1])dp++;
+
+					if(dp>=stAlgC.flChannelMax){
+						vecX.push_back(c*2);
+						vecY.push_back(r*2);
+					}
+				}
+				
+				if(pusChannelGb[r*subHeight+c]==1023){
+					int dp=1;
+					if(pusChannelGb[(r-1)*subWidth+c-1])dp++;
+					if(pusChannelGb[(r-1)*subWidth+c])dp++;
+					if(pusChannelGb[(r-1)*subWidth+c+1])dp++;
+					if(pusChannelGb[(r)*subWidth+c-1])dp++;
+					if(pusChannelGb[(r)*subWidth+c+1])dp++;
+					if(pusChannelGb[(r+1)*subWidth+c-1])dp++;
+					if(pusChannelGb[(r+1)*subWidth+c])dp++;
+					if(pusChannelGb[(r+1)*subWidth+c+1])dp++;
+
+					if(dp>=stAlgC.flChannelMax){
+						vecX.push_back(c*2);
+						vecY.push_back(r*2);
+					}
+				}
+
+				if(pusChannelGr[r*subHeight+c]==1023){
+					int dp=1;
+					if(pusChannelGr[(r-1)*subWidth+c-1])dp++;
+					if(pusChannelGr[(r-1)*subWidth+c])dp++;
+					if(pusChannelGr[(r-1)*subWidth+c+1])dp++;
+					if(pusChannelGr[(r)*subWidth+c-1])dp++;
+					if(pusChannelGr[(r)*subWidth+c+1])dp++;
+					if(pusChannelGr[(r+1)*subWidth+c-1])dp++;
+					if(pusChannelGr[(r+1)*subWidth+c])dp++;
+					if(pusChannelGr[(r+1)*subWidth+c+1])dp++;
+
+					if(dp>=stAlgC.flChannelMax){
+						vecX.push_back(c*2);
+						vecY.push_back(r*2);
+					}
+				}
+
+				if(pusChannelB[r*subHeight+c]==1023){
+					int dp=1;
+					if(pusChannelB[(r-1)*subWidth+c-1])dp++;
+					if(pusChannelB[(r-1)*subWidth+c])dp++;
+					if(pusChannelB[(r-1)*subWidth+c+1])dp++;
+					if(pusChannelB[(r)*subWidth+c-1])dp++;
+					if(pusChannelB[(r)*subWidth+c+1])dp++;
+					if(pusChannelB[(r+1)*subWidth+c-1])dp++;
+					if(pusChannelB[(r+1)*subWidth+c])dp++;
+					if(pusChannelB[(r+1)*subWidth+c+1])dp++;
+
+					if(dp>=stAlgC.flChannelMax){
+						vecX.push_back(c*2);
+						vecY.push_back(r*2);
+					}
+				}
+			}
+		}
+
+		if(vecX.size()){
+			iresult=-1;
+
+			itemshareData.drawLock.lockForWrite();
+			itemshareData.itemdrawList.resize(vecX.size());
+			theIterator	=	itemshareData.itemdrawList.begin();
+
+			for (int i=0;i<vecX.size();i++)
+			{
+				theIterator->uctype							=	HisDrawType_Block;
+				theIterator->strinfo.stblock.left		=	(vecX.at(i)-1);
+				theIterator->strinfo.stblock.right		=	(vecX.at(i)+1);
+				theIterator->strinfo.stblock.top		=	(vecY.at(i)-1);
+				theIterator->strinfo.stblock.bottom	=	(vecY.at(i)+1);
+				theIterator->usitem							=	blackfielditem;
+				theIterator->stcolor							=	QColor::fromRgb(255,0,0);
+				theIterator++;
+			}
+			
+
+
+			itemshareData.drawLock.unlock();
+
+		}
+
+		if(hisglobalparameter.bDebugMode){
+			QFile file("blackfile_channel1.raw");
+			file.open(QIODevice::ReadWrite);
+			file.write((char*)pusChannelR,itemshareData.previewParameter->iWidth *itemshareData.previewParameter->iHeight *2/4);
+			file.close();
+
+			QFile file1("blackfile_channel2.raw");
+			file1.open(QIODevice::ReadWrite);
+			file1.write((char*)pusChannelGr,itemshareData.previewParameter->iWidth *itemshareData.previewParameter->iHeight *2/4);
+			file1.close();
+
+			QFile file2("blackfile_channel3.raw");
+			file2.open(QIODevice::ReadWrite);
+			file2.write((char*)pusChannelGb,itemshareData.previewParameter->iWidth *itemshareData.previewParameter->iHeight *2/4);
+			file2.close();
+
+			QFile file3("blackfile_channel4.raw");
+			file3.open(QIODevice::ReadWrite);
+			file3.write((char*)pusChannelB,itemshareData.previewParameter->iWidth *itemshareData.previewParameter->iHeight *2/4);
+			file3.close();
+		}
+
+		HisReleaseMalloc(pusChannelR);
+		HisReleaseMalloc(pusChannelGr);
+		HisReleaseMalloc(pusChannelGb);
+		HisReleaseMalloc(pusChannelB);
+		HisReleaseMalloc(pusChannelCell);
+		HisReleaseMalloc(pusBaylor);
 	}
 
 	return iresult;
@@ -12856,7 +13064,7 @@ int itemprocess::setMotorExe(int imotor, int iType)
 			globalFunPointer.SetHisFX3Voltage, globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, \
 			SetHisFX3GPIO, GetHisFX3GPIO, globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, \
 			globalFunPointer.HisFX3LogPush_back, globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, \
-			globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+			globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
 		emit enableinfotimer(0);
 
 		if(iresult){
@@ -13306,8 +13514,8 @@ int itemprocess::otpburn()
 	query.exec();
 	if(query.next()){
 		emit information(QString::fromLocal8Bit("模组已有烧录记录:SN=")+QString::fromStdString(stParameter.strSerialNumber));
-		itemshareData.itemparameterLock.unlock();
-		return HisCCMError_OtpWrite;
+		//itemshareData.itemparameterLock.unlock();
+		//return HisCCMError_OtpWrite;
 	}
 
 	emit information(QString::fromLocal8Bit("SN=")+QString::fromStdString(stParameter.strSerialNumber));
@@ -13355,24 +13563,40 @@ int itemprocess::otpburn()
 	}
 
 	emit enableinfotimer(1);
+	
+	/*
+	globalFunPointer.setbulkSize(128*1024);
+	OutputDebugString(L"GC8034 Start");
+	WCHAR wstr[1024]={0};
+	for (int i=0;i<100;i++)
+	{
+		wsprintf(wstr,L"GC8034 Write Loop %d",i);
+		OutputDebugString(wstr);
 
+		globalFunPointer.WriteHisFX3IIC(stParameter.ucSlave,0xD5,0x01,0x0808,false);
+		OutputDebugString(L"End Write");
 
+	}
+	unsigned long long uiVal;
+	for (int i=0;i<100;i++)
+	{
+		wsprintf(wstr,L"GC8034 read Loop %d",i);
+		OutputDebugString(wstr);
 
+		globalFunPointer.ReadHisFX3IIC(stParameter.ucSlave,0xD5,&uiVal,0x0808);
+		OutputDebugString(L"End Read");
+	}
+
+	globalFunPointer.setbulkSize(1024*1024);*/
+
+	//return 0;
 	iresult	=	writeotp(*globalFunPointer.vectorHisCCMOTPInfoW, &stParameter, globalFunPointer.ReadHisFX3IIC, globalFunPointer.WriteHisFX3IIC, globalFunPointer.SetHisFX3IICSpeed, \
 		globalFunPointer.SetHisFX3Voltage, globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, \
 		globalFunPointer.BatchWriteHisFX3IIC, globalFunPointer.BatchReadHisFX3IIC, SetHisFX3GPIO, GetHisFX3GPIO, globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, \
 		globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, globalFunPointer.HisFX3LogPush_back, \
-		globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+		globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
 	emit enableinfotimer(0);
 
-	//unsigned int uiTempAddr[3]={0x0074,0x0075,0x0076};
-	//unsigned int uiTempVal[3]={0};
-	//unsigned short usTypeArr[3]={0x1608,0x1608,0x1608};
-	/*DWORD stratTime=GetTickCount();
-	//BatchWriteHisFX3IICNoLimitC1(3,&stParameter.ucSlave,uiTempAddr,uiTempVal,usTypeArr,10);
-	WriteHisFX3IICC1(stParameter.ucSlave,0x74,0x05,0x1608,true);
-	//BatchWriteHisFX3IICNoLimitC1(1,&stParameter.ucSlave,uiTempAddr,uiTempVal,usTypeArr,10);
-	DWORD TotalTime=GetTickCount()-stratTime;*/
 
 #if 0 //2017/12/27 
 	//*********************  2017/12/11  *****************
@@ -13567,7 +13791,7 @@ int itemprocess::otpcheck()
 		globalFunPointer.SetHisFX3Voltage, globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, \
 		globalFunPointer.BatchWriteHisFX3IIC, globalFunPointer.BatchReadHisFX3IIC, SetHisFX3GPIO, GetHisFX3GPIO, globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, \
 		globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, globalFunPointer.HisFX3LogPush_back, \
-		globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+		globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
 	emit enableinfotimer(0);
 
 #if 1 //2017/12/27 
@@ -14382,45 +14606,44 @@ int itemprocess::afBurn()
 	stParameter.iMiddleMotor	=	(iMiddlePeakMotorDec==0x00FFFFFF)?(0x00FFFFFF):(iMiddlePeakMotorDec + itemshareData.afburnParameter->iMiddleMotorOffset);
 	stParameter.iInfinitMotor		= (iFarPeakMotorDec==0x00FFFFFF)?(0x00FFFFFF):(iFarPeakMotorDec + itemshareData.afburnParameter->iFarMotorOffset);
 	stParameter.Reserve1.ivalue[0]		=	(iMotorStartDec==0x00FFFFFF)?(0x00FFFFFF):(iMotorStartDec + itemshareData.afburnParameter->iFarMotorOffset);
-
-
 	//*********** Test *****************
 
 	//**********************************
+#if 1
 	if(stParameter.bNear)
 	{
 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("近焦马达最优点：") % QString::number(iNearPeakMotorDec) % \
 			"		OFFSET: " % QString::number(itemshareData.afburnParameter->iNearMotorOffset) % \
-			QTextCodec::codecForName( "GBK")->toUnicode("		烧录值：") % QString::number(stParameter.iNearMotor));
-		if(stParameter.iNearMotor > itemshareData.afburnParameter->iNearMotorMax || stParameter.iNearMotor < itemshareData.afburnParameter->iNearMotorMin){
+			QTextCodec::codecForName( "GBK")->toUnicode("烧录值：") % QString::number(stParameter.iNearMotor));
+		/*if(stParameter.iNearMotor > itemshareData.afburnParameter->iNearMotorMax || stParameter.iNearMotor < itemshareData.afburnParameter->iNearMotorMin){
 			emit information(QTextCodec::codecForName( "GBK")->toUnicode("近焦马达烧录值超出范围"));
 			itemshareData.itemparameterLock.unlock();
 			return HisCCMError_Result;
-		}
+		}*/
 	}
 	if(stParameter.bMiddle)
 	{
 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("中焦马达最优点：") % QString::number(iMiddlePeakMotorDec) % \
 			"		OFFSET: " % QString::number(itemshareData.afburnParameter->iMiddleMotorOffset) % \
-			QTextCodec::codecForName( "GBK")->toUnicode("		烧录值：") % QString::number(stParameter.iMiddleMotor));
-		if(stParameter.iMiddleMotor > itemshareData.afburnParameter->iMiddleMotorMax || stParameter.iMiddleMotor < itemshareData.afburnParameter->iMiddleMotorMin){
+			QTextCodec::codecForName( "GBK")->toUnicode("烧录值：") % QString::number(stParameter.iMiddleMotor));
+		/*if(stParameter.iMiddleMotor > itemshareData.afburnParameter->iMiddleMotorMax || stParameter.iMiddleMotor < itemshareData.afburnParameter->iMiddleMotorMin){
 			emit information(QTextCodec::codecForName( "GBK")->toUnicode("中焦马达烧录值超出范围"));
 			itemshareData.itemparameterLock.unlock();
 			return HisCCMError_Result;
-		}
+		}*/
 	}
 	if(stParameter.bInfinite)
 	{
 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("远焦马达最优点：") % QString::number(iFarPeakMotorDec) % \
 			"		OFFSET: " % QString::number(itemshareData.afburnParameter->iFarMotorOffset) % \
 			QTextCodec::codecForName( "GBK")->toUnicode("		烧录值：") % QString::number(stParameter.iInfinitMotor));
-		if(stParameter.iInfinitMotor > itemshareData.afburnParameter->iFarMotorMax || stParameter.iInfinitMotor < itemshareData.afburnParameter->iFarMotorMin){
+		/*if(stParameter.iInfinitMotor > itemshareData.afburnParameter->iFarMotorMax || stParameter.iInfinitMotor < itemshareData.afburnParameter->iFarMotorMin){
 			emit information(QTextCodec::codecForName( "GBK")->toUnicode("远焦马达烧录值超出范围"));
 			itemshareData.itemparameterLock.unlock();
 			return HisCCMError_Result;
-		}
+		}*/
 	}
-
+#endif
 	QString strSerialNumber;
 	classLog->getserialnumber(strSerialNumber);
 	stParameter.strSerialNumber	=	strSerialNumber.toAscii().data();
@@ -14449,7 +14672,7 @@ int itemprocess::afBurn()
 		globalFunPointer.SetHisFX3Voltage, globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, \
 		SetHisFX3GPIO, GetHisFX3GPIO, globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, \
 		globalFunPointer.HisFX3LogPush_back, globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, \
-		globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+		globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
 	emit enableinfotimer(0);
 
 	itemshareData.itemparameterLock.unlock();
@@ -14548,7 +14771,7 @@ int itemprocess::afBurnCheck() //0:near 1:middle 2:infinite
 		globalFunPointer.SetHisFX3Voltage, globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, \
 		SetHisFX3GPIO, GetHisFX3GPIO, globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, \
 		globalFunPointer.HisFX3LogPush_back, globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, \
-		globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+		globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
 	emit enableinfotimer(0);
 
 	if(iresult)
@@ -17797,7 +18020,7 @@ int itemprocess::MTKPDAFSTEP1_WhitePannel()
 			globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, SetHisFX3GPIO, GetHisFX3GPIO, \
 			globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, \
 			globalFunPointer.HisFX3LogPush_back, globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, \
-			globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+			globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
 		emit enableinfotimer(0);
 		if(iresult){
 			itemshareData.itemparameterLock.unlock();
@@ -17827,7 +18050,7 @@ int itemprocess::MTKPDAFSTEP1_WhitePannel()
 	strLibPath	=	QDir::currentPath() % "/pdaflib/mtk_" % QString::number(itemshareData.pdafParameter->usVersion[3]) % "." % \
 		QString::number(itemshareData.pdafParameter->usVersion[2]) % "." % QString::number(itemshareData.pdafParameter->usVersion[1]) % \
 		"." % QString::number(itemshareData.pdafParameter->usVersion[0]);
-	if(itemshareData.pdafParameter->usVersion[3]==3)
+	if(itemshareData.pdafParameter->usVersion[3]==3&&itemshareData.pdafParameter->usVersion[0]==525)
 	{
 		strLibPath	=	QDir::currentPath() % "/pdaflib/mtk_" % QString::number(itemshareData.pdafParameter->usVersion[3]) % "." % \
 			QString::number(itemshareData.pdafParameter->usVersion[2]) % "." % QString::number(itemshareData.pdafParameter->usVersion[1]) % \
@@ -18059,7 +18282,7 @@ int itemprocess::MTKPDAFSTEP2_20CM()
 		globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, SetHisFX3GPIO, GetHisFX3GPIO, \
 		globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, \
 		globalFunPointer.HisFX3LogPush_back, globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, \
-		globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+		globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
 	emit enableinfotimer(0);
 	if(iresult){
 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("获取远近焦烧录数据失败"));
@@ -18076,7 +18299,7 @@ int itemprocess::MTKPDAFSTEP2_20CM()
 	strLibPath	=	QDir::currentPath() % "/pdaflib/mtk_" % QString::number(itemshareData.pdafParameter->usVersion[3]) % "." % \
 		QString::number(itemshareData.pdafParameter->usVersion[2]) % "." % QString::number(itemshareData.pdafParameter->usVersion[1]) % \
 		"." % QString::number(itemshareData.pdafParameter->usVersion[0]);
-	if(itemshareData.pdafParameter->usVersion[3]==3)
+	if(itemshareData.pdafParameter->usVersion[3]==3&&itemshareData.pdafParameter->usVersion[0]==525)
 	{
 		strLibPath	=	QDir::currentPath() % "/pdaflib/mtk_" % QString::number(itemshareData.pdafParameter->usVersion[3]) % "." % \
 			QString::number(itemshareData.pdafParameter->usVersion[2]) % "." % QString::number(itemshareData.pdafParameter->usVersion[1]) % \
@@ -18218,9 +18441,6 @@ int itemprocess::MTKPDAFSTEP2_20CM()
 	ROPLOW::saveRaw10(strIniPath, strSerialNumber % "_MTK_20CM_Motor_" % QString::number(1)%"_DAC_"%QString::number(iMotorValue), itemshareData.previewParameter->ucDataFormat, \
 	itemshareData.previewParameter->iWidth, itemshareData.previewParameter->iHeight, (void*)(ppusRaw10[0]));
 	}
-
-
-
 	//***************************************************
 
 
@@ -18465,7 +18685,7 @@ int itemprocess::HISIPDAFSTEP1_WhitePannel()
 			globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, SetHisFX3GPIO, GetHisFX3GPIO, \
 			globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, \
 			globalFunPointer.HisFX3LogPush_back, globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, \
-			globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+			globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
 		emit enableinfotimer(0);
 		if(iresult){
 			itemshareData.itemparameterLock.unlock();
@@ -18624,7 +18844,7 @@ int itemprocess::HISIPDAFSTEP2_20CM(){
 		globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, SetHisFX3GPIO, GetHisFX3GPIO, \
 		globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, \
 		globalFunPointer.HisFX3LogPush_back, globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, \
-		globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+		globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
 	emit enableinfotimer(0);
 	if(iresult){
 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("获取远近焦烧录数据失败"));
@@ -18996,7 +19216,7 @@ int itemprocess::QualCommPDAFStep2()
 			globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, SetHisFX3GPIO, GetHisFX3GPIO, \
 			globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, \
 			globalFunPointer.HisFX3LogPush_back, globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, \
-			globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+			globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
 		emit enableinfotimer(0);
 		if(iresult){
 			itemshareData.itemparameterLock.unlock();
@@ -19731,7 +19951,7 @@ int itemprocess::QualCommPDAFStep1()
 			globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, SetHisFX3GPIO, GetHisFX3GPIO, \
 			globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, \
 			globalFunPointer.HisFX3LogPush_back, globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, \
-			globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+			globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
 		emit enableinfotimer(0);
 		if(iresult){
 			itemshareData.itemparameterLock.unlock();
@@ -20097,7 +20317,7 @@ int itemprocess::QualCommPDAF_LVersion_GainCalibration()
 			globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, SetHisFX3GPIO, GetHisFX3GPIO, \
 			globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, \
 			globalFunPointer.HisFX3LogPush_back, globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, \
-			globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+			globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
 		emit enableinfotimer(0);
 		if(iresult){
 			itemshareData.itemparameterLock.unlock();
@@ -20499,7 +20719,7 @@ int itemprocess::QualCommPDAF_LVersion_DCCCalibration()
 			globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, SetHisFX3GPIO, GetHisFX3GPIO, \
 			globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, \
 			globalFunPointer.HisFX3LogPush_back, globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, \
-			globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+			globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
 		emit enableinfotimer(0);
 		if(iresult){
 			itemshareData.itemparameterLock.unlock();
@@ -21234,7 +21454,7 @@ int itemprocess::PDAFCalibration50CM()
 		globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, SetHisFX3GPIO, GetHisFX3GPIO, \
 		globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, \
 		globalFunPointer.HisFX3LogPush_back, globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, \
-		globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+		globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
 	emit enableinfotimer(0);
 	if(iresult){
 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("获取远近焦烧录数据失败"));
@@ -21585,7 +21805,7 @@ int itemprocess::PDAFCalibration15CM()
 		globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, SetHisFX3GPIO, GetHisFX3GPIO, \
 		globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, \
 		globalFunPointer.HisFX3LogPush_back, globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, \
-		globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+		globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
 	emit enableinfotimer(0);
 	if(iresult){
 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("获取远近焦烧录数据失败"));
@@ -22211,7 +22431,7 @@ int  itemprocess::SONYPDAF_DCCCal()
 			globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, SetHisFX3GPIO, GetHisFX3GPIO, \
 			globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, \
 			globalFunPointer.HisFX3LogPush_back, globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, \
-			globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+			globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
 		emit enableinfotimer(0);
 		if(iresult){
 			itemshareData.itemparameterLock.unlock();
@@ -27528,7 +27748,7 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 					emit information(QTextCodec::codecForName( "GBK")->toUnicode("保存文档错误，错误代码：0x") % QString::number(iresult, 16));
 				}else{
 					//************************** 2019/04/16 ************************
-					QString str=QString("./savelog/%1/%2").arg(itemshareData.ccmhardwareParameter->projectname).arg(QDate::currentDate().toString("yyyy-MM-dd"));
+					/*QString str=QString("./savelog/%1/%2").arg(itemshareData.ccmhardwareParameter->projectname).arg(QDate::currentDate().toString("yyyy-MM-dd"));
 					QFile filelog(str+".csv");
 					filelog.open(QIODevice::ReadOnly);
 					QByteArray buffer=filelog.readAll();
@@ -27562,7 +27782,7 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 					md.addData(array1);
 					buffer=md.result();
 					filelogNew.write(buffer.toHex());
-					filelogNew.close();
+					filelogNew.close();*/
 
 
 				}
@@ -30081,7 +30301,7 @@ int itemprocess::Sensor_DPC_FunctionProcess()
 		globalFunPointer.SetHisFX3Voltage, globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, \
 		globalFunPointer.BatchWriteHisFX3IIC, globalFunPointer.BatchReadHisFX3IIC, SetHisFX3GPIO, GetHisFX3GPIO, globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, \
 		globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, globalFunPointer.HisFX3LogPush_back, \
-		globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI);
+		globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
 	emit enableinfotimer(0);
 
 	if(iresult){
