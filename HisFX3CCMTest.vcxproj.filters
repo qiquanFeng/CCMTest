@@ -5,10 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;cxx;c;def</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h</Extensions>
-    </Filter>
     <Filter Include="Form Files">
       <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
       <Extensions>ui</Extensions>
@@ -42,6 +38,10 @@
       <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
       <Extensions>ts</Extensions>
       <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Resource Files\Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -297,9 +297,6 @@
     <ClCompile Include="GeneratedFiles\qrc_hisfx3ccmtest.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_jsl_burnstate.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_jsl_controlpanel.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -411,61 +408,64 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_itemprocess.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_jsl_burnstate.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globaldefine.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\HisFX3Platform.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\HisGlobalDefine.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\HisFX3Log.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\VersionDefine.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\versionswitch.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Serial.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="qoplow.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="JigboardFunction.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="qautomation.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\PDAFCalibrationTools_Rev.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="itemGlobalHeader.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Qualcomm_LSCCalibrationDll.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="json.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="json-forwards.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GC5005_OTP_DD.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cvImageTool.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_cchooseconfigs.h">
       <Filter>Generated Files</Filter>
@@ -809,70 +809,70 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="cchooseconfigs.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="configsetting.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="hardwareop.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="hisfx3ccmtest.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="saveimage.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="hisfx3ccmtest.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
     <CustomBuild Include="importtable.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="qmanualtool.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="qconfigmanage.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="qitemexetool.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="coorconverttool.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="fx3deviceconfig.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="updatefirewaredialog.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="qimageshowconfig.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHButtonExec.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHInfoPanel.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHOpModeSwitch.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHManualModeA.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHTextItemEdit.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHTextInfoPanel.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHBlemishHC.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHDrawTEstItem.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="cchooseconfigs.ui">
       <Filter>Form Files</Filter>
@@ -938,16 +938,16 @@
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHStatisPanel.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHStatisPanel.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="itemprocess.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHMainWindow.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHMainWindow.ui">
       <Filter>Form Files</Filter>
@@ -956,25 +956,25 @@
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHShortcut.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHTableContent.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHTableContent.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHImageFrame.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHImageDebug.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHImageDebug.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHChooseGrabberType.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHChooseGrabberType.ui">
       <Filter>Form Files</Filter>
@@ -983,49 +983,49 @@
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHofflinePath.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="savedebuginfo.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="savedebuginfo.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHRepeatedTest.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHRepeatedTest.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHFontSetting.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="QHFontSetting.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="jsl_logindialog.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="jsl_logindialog.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="jsl_burnstate.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="jsl_burnstate.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="qcustomplot.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="jsl_controlpanel.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="jsl_controlpanel.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="leisaimotion.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

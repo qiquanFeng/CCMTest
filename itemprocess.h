@@ -8,7 +8,6 @@
 #include "QHImageFrame.h"
 #include "inc//RolongoImageTestAlg.h"
 #include <QList>
-
 #include "./include/3L6_PDAF/PdafCalibrationGMCore.h"
 #include "./include/3L6_PDAF/PdafCalibrationDMCore.h"
 #include "./include/3L6_PDAF/PdafVerificationCore.h"
@@ -253,6 +252,11 @@ public:
 	int ReadGolden();
 	int getlsCheckParameter(bool bupdate=false, bool bcheck = true);
 	int LightSourceCheck();
+	int LightSourceVerify();
+	int LightSourceCal();
+	int getLightSourceParam(QString &strMacAddr,QString &strChipID,double &dflCoefR,double &dflCoefB,QDateTime &time);
+	int getGoldenChipID(IN QString strProjectModel,OUT QStringList &list);
+	int getMacAddresses(std::string& macOUT);
 
 	int getsavelogParameter(bool bupdate=false, bool bcheck = true);
 	int getSerialNumber();

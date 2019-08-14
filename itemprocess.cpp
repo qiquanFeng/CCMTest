@@ -5,8 +5,9 @@
 #include "GC5005_OTP_DD.h"
 #include "cvImageTool.h"
 #include "jsl_controlpanel.h"
-
-
+#include "IPTypes.h"
+#include <iphlpapi.h>
+#pragma comment(lib,"Iphlpapi.lib")
 // #include "inc/HisCCMOTP.h"
 // #pragma comment(lib, "./lib/x86/Release/HisCCMOTP32.lib")
 
@@ -2136,12 +2137,11 @@ int itemprocess::lpFA()
 					else
 						ROPLOW::AddDrawLP(vectorRectFov4.at(x).stBlocks[i], stValueLine, stMaxLine, stMinLine, iImgWidth, iImgHeight, pstParameter->vectorLpItem.at(x).flSpecHor, dflValue, 1, vectorDraw, pstParameter->stLpBasic.flGradeMultiple);
 					ROPLOW::LpMFAItemDataAdd(stDataItem, vectorRectFov4.at(x).stBlocks[i], dflValue, x, i);
-				}			
+				}		
 			}
 		}
 
 		ROPLOW::LpMFACaculateResult(stDataItem, pstParameter->stLpBasic.flGradeMultiple);
-
 		_CODE_RJAFA_LP_ASIGNDRAW
 
 			itemshareData.plotLock.lockForWrite();
@@ -2312,7 +2312,7 @@ int itemprocess::getLpAFCParameter(unsigned char uctype, bool bupdate, bool bche
 					else if(strname.at(x) == "motorend")	 pstTheParamter->stTacticsBasic.sMotorEnd	=	strvalue.at(x).toInt();
 					else if(strname.at(x) == "motormin")	 pstTheParamter->stTacticsBasic.sMotorSpecMin	=	strvalue.at(x).toInt();
 					else if(strname.at(x) == "motormax")	 pstTheParamter->stTacticsBasic.sMotorSpecMax	=	strvalue.at(x).toInt();
-					else if(strname.at(x) == "bigstep")	 pstTheParamter->stTacticsBasic.ucBigStep	=	strvalue.at(x).toInt();
+					else if(strname.at(x) == "bigstep")		 pstTheParamter->stTacticsBasic.ucBigStep	=	strvalue.at(x).toInt();
 					else if(strname.at(x) == "middlestep")	 pstTheParamter->stTacticsBasic.ucMiddleStep	=	strvalue.at(x).toInt();
 					else if(strname.at(x) == "smallstep")	 pstTheParamter->stTacticsBasic.ucSmallStep	=	strvalue.at(x).toInt();
 					else if(strname.at(x) == "curvedef")	 pstTheParamter->stTacticsBasic.flCurveValidDef	=	strvalue.at(x).toFloat();
@@ -4017,7 +4017,7 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 			else emit information(QTextCodec::codecForName( "GBK")->toUnicode("远焦最优点马达坐标：") % QString::number(vectorItemData.at(uiSaveIndex).sMotorStep));
 
 			
-			if(vectorItemData.at(uiSaveIndex).sMotorStep < pstParameter->stTacticsBasic.sMotorSpecMin && \
+			if(vectorItemData.at(uiSaveIndex).sMotorStep < pstParameter->stTacticsBasic.sMotorSpecMin || \
 				vectorItemData.at(uiSaveIndex).sMotorStep > pstParameter->stTacticsBasic.sMotorSpecMax){
 					iresult	=	HisCCMError_Result;
 					emit information(QTextCodec::codecForName( "GBK")->toUnicode("最优点点马达位置超出规格"));
@@ -13415,6 +13415,15 @@ int itemprocess::otpburn()
 	QString strData	=	QDir::currentPath() % "/otptemplate/" % itemshareData.ccmhardwareParameter->sensortype;
 	classDir.mkpath(strData);
 
+	QString strMAC,strChipID;
+	double dflCoefR=0;
+	double dflCoefB=0;
+	QDateTime dateTime;
+	if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
+		emit information("错误：获取光源点检数据失败！");
+		return -1;
+	}
+
 	itemshareData.itemparameterLock.lockForRead();
 
 	_HisCCMOTP_Config stParameter;
@@ -13444,8 +13453,8 @@ int itemprocess::otpburn()
 	stParameter.flLSC_WB2CenterMax_B2Gr	=	itemshareData.otpburnParameter->flLSC_WB2CenterMax_B2Gr;
 	stParameter.flLSC_LuxShadingUniform	=	itemshareData.otpburnParameter->flLSC_LuxShadingUniform;
 	stParameter.uiBlockSize	=	itemshareData.otpburnParameter->uiBlockSize;
-	stParameter.dflLightCoeR	=	itemshareData.otpburnParameter->dflLightCoeR;
-	stParameter.dflLightCoeB	=	itemshareData.otpburnParameter->dflLightCoeB;
+	stParameter.dflLightCoeR	=	itemshareData.otpburnParameter->dflLightCoeR=dflCoefR;
+	stParameter.dflLightCoeB	=	itemshareData.otpburnParameter->dflLightCoeB=dflCoefB;
 	stParameter.strproject	=	(itemshareData.ccmhardwareParameter->projectname.toAscii()).data();
 	stParameter.strsensor	=	(itemshareData.ccmhardwareParameter->sensortype.toAscii()).data();
 	stParameter.strFunctionChoose	=	(itemshareData.otpburnParameter->strFunctionChoose.toAscii()).data();
@@ -13505,17 +13514,17 @@ int itemprocess::otpburn()
 		return HisCCMError_Database;
 	}
 
-	QSqlQuery query(dbLotSN);
-	query.prepare("select * from [CurrentBurnLotSN] where 1");
-	query.exec();
-	query.next();
-	QString strLotSN=query.value(0).toString();
-	query.prepare(QString("select * from [")+strLotSN+"] where ChipID='"+ QString::fromStdString(stParameter.strSerialNumber) +"'");
-	query.exec();
-	if(query.next()){
+	QSqlQuery query1(dbLotSN);
+	query1.prepare("select * from [CurrentBurnLotSN] where 1");
+	query1.exec();
+	query1.next();
+	QString strLotSN=query1.value(0).toString();
+	query1.prepare(QString("select * from [")+strLotSN+"] where ChipID='"+ QString::fromStdString(stParameter.strSerialNumber) +"'");
+	query1.exec();
+	if(query1.next()){
 		emit information(QString::fromLocal8Bit("模组已有烧录记录:SN=")+QString::fromStdString(stParameter.strSerialNumber));
-		//itemshareData.itemparameterLock.unlock();
-		//return HisCCMError_OtpWrite;
+		itemshareData.itemparameterLock.unlock();
+		return HisCCMError_OtpWrite;
 	}
 
 	emit information(QString::fromLocal8Bit("SN=")+QString::fromStdString(stParameter.strSerialNumber));
@@ -13564,32 +13573,6 @@ int itemprocess::otpburn()
 
 	emit enableinfotimer(1);
 	
-	/*
-	globalFunPointer.setbulkSize(128*1024);
-	OutputDebugString(L"GC8034 Start");
-	WCHAR wstr[1024]={0};
-	for (int i=0;i<100;i++)
-	{
-		wsprintf(wstr,L"GC8034 Write Loop %d",i);
-		OutputDebugString(wstr);
-
-		globalFunPointer.WriteHisFX3IIC(stParameter.ucSlave,0xD5,0x01,0x0808,false);
-		OutputDebugString(L"End Write");
-
-	}
-	unsigned long long uiVal;
-	for (int i=0;i<100;i++)
-	{
-		wsprintf(wstr,L"GC8034 read Loop %d",i);
-		OutputDebugString(wstr);
-
-		globalFunPointer.ReadHisFX3IIC(stParameter.ucSlave,0xD5,&uiVal,0x0808);
-		OutputDebugString(L"End Read");
-	}
-
-	globalFunPointer.setbulkSize(1024*1024);*/
-
-	//return 0;
 	iresult	=	writeotp(*globalFunPointer.vectorHisCCMOTPInfoW, &stParameter, globalFunPointer.ReadHisFX3IIC, globalFunPointer.WriteHisFX3IIC, globalFunPointer.SetHisFX3IICSpeed, \
 		globalFunPointer.SetHisFX3Voltage, globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, \
 		globalFunPointer.BatchWriteHisFX3IIC, globalFunPointer.BatchReadHisFX3IIC, SetHisFX3GPIO, GetHisFX3GPIO, globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, \
@@ -13688,14 +13671,12 @@ int itemprocess::otpburn()
 	return 0;
 }
 
-int itemprocess::otpcheck()
-{
-#ifdef _HisFX3_Platform_Jigboard
-	return jigboard_OTPCheck_Rule1(&classPlatform);
-#endif
 
+int itemprocess::LightSourceCal()
+{
 	//判断图像是否点亮中
-	if(!threadshareData.GetHisPreviewflag())	return HisCCMError_NotPreivew;
+	if(!threadshareData.GetHisPreviewflag())
+		return HisCCMError_NotPreivew;
 
 	//取得配置参数和规格
 	int iresult	=	getotpburnParameter(false);
@@ -13704,10 +13685,6 @@ int itemprocess::otpcheck()
 	iresult	=	getccmhardwareParameter(false);
 	if(iresult)
 		return iresult;
-
-	QDir classDir;
-	QString strData	=	QDir::currentPath() % "/otptemplate/" % itemshareData.ccmhardwareParameter->sensortype;
-	classDir.mkpath(strData);
 
 	itemshareData.itemparameterLock.lockForRead();
 
@@ -13740,6 +13717,381 @@ int itemprocess::otpcheck()
 	stParameter.uiBlockSize	=	itemshareData.otpburnParameter->uiBlockSize;
 	stParameter.dflLightCoeR	=	itemshareData.otpburnParameter->dflLightCoeR;
 	stParameter.dflLightCoeB	=	itemshareData.otpburnParameter->dflLightCoeB;
+	stParameter.strproject	=	(itemshareData.ccmhardwareParameter->projectname.toAscii()).data();
+	stParameter.strsensor	=	(itemshareData.ccmhardwareParameter->sensortype.toAscii()).data();
+	stParameter.strFunctionChoose	=	(itemshareData.otpburnParameter->strFunctionChoose.toAscii()).data();
+	stParameter.ucSlave		=	itemshareData.previewParameter->ucSlave;
+	stParameter.ucEESlave	=	itemshareData.ccmhardwareParameter->ucEESlave;
+	stParameter.bDebug		=	hisglobalparameter.bDebugMode;
+	stParameter.bBurnOpticalCenter=itemshareData.otpburnParameter->bBurnOpticalCenter;
+
+	stParameter.flLSC_CenterR2GrResult=0xFF;
+	stParameter.flLSC_CenterB2GrResult=0xFF;
+
+	QString strSerialNumber;
+	classLog->getserialnumber(strSerialNumber);
+	stParameter.strSerialNumber	=	strSerialNumber.toAscii().data();
+
+	//************ 返回Golden ChipID 列表 *******************
+	QStringList listChipID;
+	if(getGoldenChipID("6442",listChipID)){
+		emit information(QString::fromLocal8Bit("错误：获取Golden ChipID 列表失败！"));
+		return -1;
+	}
+
+	if(listChipID.lastIndexOf(QString::fromStdString(stParameter.strSerialNumber))<0){
+		emit information(QString::fromLocal8Bit("错误：当前模组不是Golden ！"));
+		return -1;
+	}
+
+#if (defined _WIN64) && (defined _DEBUG)
+	QString strLibPath	=	QDir::currentPath() % "/HisCCMOTP64D";
+#elif (defined _WIN64) && !(defined _DEBUG)
+	QString strLibPath	=	QDir::currentPath() % "/HisCCMOTP64";
+#elif (defined _WIN32) && (defined _DEBUG)
+	QString strLibPath	=	QDir::currentPath() % "/HisCCMOTP32D";
+#else
+	QString strLibPath	=	QDir::currentPath() % "/HisCCMOTP32";
+#endif
+
+	RolongoOTPAPIVersion getRolongoOTPAPIVersion = (RolongoOTPAPIVersion)(QLibrary::resolve(strLibPath, "getRolongoOTPAPIVersion"));
+	Rolongowriteotp writeotp = (Rolongowriteotp)(QLibrary::resolve(strLibPath, "writeotp"));
+
+	if(!(getRolongoOTPAPIVersion && writeotp)){
+		emit information(tr("Resolve HisCCMOTP DLL Function Fail"));
+		itemshareData.itemparameterLock.unlock();
+		return HisCCMError_LoadDLLFuc;
+	}
+
+	QString strData	=	itemshareData.otpburnParameter->pairConfig.remove("(");
+	QStringList stringlist	=	strData.split(")");
+	QStringList stringlist2;
+	stParameter.vectorPair.clear();
+	stParameter.vectorPair.reserve(stringlist.size());
+	int y = 0;
+	for(int x=0; x<stringlist.size();	++x){
+		stringlist2	=	stringlist.at(x).split(":");
+		if(stringlist2.size() == 2){
+			stParameter.vectorPair.resize(y+1);
+			stParameter.vectorPair.at(y).strkey	=	stringlist2.at(0).trimmed().toAscii().data();
+			stParameter.vectorPair.at(y).strvalue	=	stringlist2.at(1).trimmed().toAscii().data();
+			++y;
+		}
+	}
+
+	//********************************
+
+	emit enableinfotimer(1);
+	
+	iresult	=	writeotp(*globalFunPointer.vectorHisCCMOTPInfoW, &stParameter, globalFunPointer.ReadHisFX3IIC, globalFunPointer.WriteHisFX3IIC, globalFunPointer.SetHisFX3IICSpeed, \
+		globalFunPointer.SetHisFX3Voltage, globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, \
+		globalFunPointer.BatchWriteHisFX3IIC, globalFunPointer.BatchReadHisFX3IIC, SetHisFX3GPIO, GetHisFX3GPIO, globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, \
+		globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, globalFunPointer.HisFX3LogPush_back, \
+		globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
+	emit enableinfotimer(0);
+
+	itemshareData.itemparameterLock.unlock();
+	if(abs(stParameter.dflLightCoeR-1.0f)>0.05f){
+		emit information(QString::fromLocal8Bit("错误：光源硬件差异 > 5% ，点检失败！"));
+		return -1;
+	}
+
+	if(iresult)
+		return iresult;
+	//*********************************************** Save DataBase ************************************************************
+	QDir classDir;
+	strData	=	QDir::currentPath() % "/lighttemplate/" % itemshareData.ccmhardwareParameter->projectname;
+	classDir.mkdir(strData);
+
+	QSqlDatabase base=QSqlDatabase::addDatabase("QSQLITE","lightdb");
+	base.setDatabaseName(strData % "/" % "lightcheck");
+	if(!base.open()){
+		base.close();
+		emit information(QString::fromLocal8Bit("错误：光源数据库打开失败！"));
+		iresult=-1;
+		return iresult;
+	}
+	QSqlQuery query(base);
+	query.prepare("select * from sqlite_master where name like 'LightCal' and type like 'table'");
+	query.exec();
+	if(!query.next()){
+		QString strSql=QString("CREATE TABLE LightCal (\
+			MAC VARCHAR (0, 50) PRIMARY KEY NOT NULL,ChipID VARCHAR (0, 50) NOT NULL,coefRG DOUBLE NOT NULL,coefBG DOUBLE NOT NULL,dateTime DATETIME NOT NULL)");
+		emit information("Sql:"%strSql);
+		if(!query.exec(strSql)){
+			emit information(QString::fromLocal8Bit("错误：创建点检表单失败！"));
+			return -1;
+		}
+
+		query.prepare("insert into LightCal values(:MAC,:ChipID,:CoefR,:CoefB,:DateTime)");
+		std::string strMAC;
+		getMacAddresses(strMAC);
+		query.bindValue(":MAC",QString::fromStdString(strMAC));
+		query.bindValue(":ChipID",stParameter.strSerialNumber.c_str());
+		query.bindValue(":CoefR",stParameter.dflLightCoeR);
+		query.bindValue(":CoefB",stParameter.dflLightCoeB);
+		query.bindValue(":DateTime",QDateTime::currentDateTime());
+		if(!query.exec()){
+			emit information(QString::fromLocal8Bit("错误：插入光源系数到表单时错误！"));
+			return -1;
+		}
+		return 0;
+	}
+
+	//******************************* Update **********************************************
+	if(!query.exec("delete from LightCal where 1")){
+		emit information(QString::fromLocal8Bit("错误：更新光源系数到表单时错误！"));
+		return -1;
+	}
+
+	query.prepare("insert into LightCal values(:MAC,:ChipID,:CoefR,:CoefB,:DateTime)");
+	std::string strMAC;
+	getMacAddresses(strMAC);
+	query.bindValue(":MAC",QString::fromStdString(strMAC));
+	query.bindValue(":ChipID",stParameter.strSerialNumber.c_str());
+	query.bindValue(":CoefR",stParameter.dflLightCoeR);
+	query.bindValue(":CoefB",stParameter.dflLightCoeB);
+	query.bindValue(":DateTime",QDateTime::currentDateTime());
+	if(!query.exec()){
+		emit information(QString::fromLocal8Bit("错误：插入光源系数到表单时错误！"));
+		return -1;
+	}
+	
+	return iresult;
+}
+
+int itemprocess::LightSourceVerify(){
+	int iresult=0;
+	QString strMAC,strChipID;
+	double dflCoefR=0;
+	double dflCoefB=0;
+	QDateTime dateTime;
+	if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
+		emit information("错误：获取光源点检数据失败！");
+		return -1;
+	}
+
+	QString str;
+	int sSec=dateTime.secsTo(QDateTime::currentDateTime());
+	int iHour=int(sSec/3600);
+	int iMinute=int((sSec%3600)/60);
+	int iSec=(sSec%3600)%60;
+	str=QString("Time(spec:<12H):%1:%2:%3").arg(iHour).arg(iMinute).arg(iSec);
+	emit information(str);
+	str=QString("LightCoef R/G:%1").arg(dflCoefR);
+	emit information(str);
+	str=QString("LightCoef B/G:%1").arg(dflCoefB);
+	emit information(str);
+
+	if(sSec>3600*12){
+		emit information(QString::fromLocal8Bit("错误：点检时间超过12小时，请重新点检！"));
+		iresult=-1;
+		return iresult;
+	}
+	
+	std::string strCurMac;
+	getMacAddresses(strCurMac);
+	str=QString("Current MAC:%1| Light PC MAC:%2").arg(QString::fromStdString(strCurMac)).arg(strMAC);
+	emit information(str);
+
+	if(strMAC!=QString::fromStdString(strCurMac)){
+		emit information(QString::fromLocal8Bit("错误：当前电脑尚未点检光源，请先点检！"));
+		iresult=-1;
+		return iresult;
+	}
+	
+	return iresult;
+}
+int itemprocess::getLightSourceParam(QString &strMacAddr,QString &strChipID,double &dflCoefR,double &dflCoefB,QDateTime &time){
+	int iresult=0;
+
+	getccmhardwareParameter(false);
+	QString strLightData = QDir::currentPath() % "/lighttemplate/" % itemshareData.ccmhardwareParameter->projectname;
+	QSqlDatabase base=QSqlDatabase::addDatabase("QSQLITE","lightdb");
+	base.setDatabaseName(strLightData % "/" % "lightcheck");
+	if(!base.open()){
+		base.close();
+		emit information(QString::fromLocal8Bit("错误：光源数据库打开失败！"));
+		iresult=-1;
+		return iresult;
+	}
+	QSqlQuery query(base);
+	query.prepare("select * from sqlite_master where name like 'LightCal' and type like 'table'");
+	query.exec();
+	if(!query.next()){
+		emit information(QString::fromLocal8Bit("错误：未找到光源校准记录表！ 请点检光源后重试。"));
+		iresult=-1;
+		base.close();
+		return iresult;
+	}
+
+	//************************ 返回点检数据 ***************************
+	query.prepare("select * from LightCal where 1");
+	query.exec();
+	if(!query.next()){
+		emit information(QString::fromLocal8Bit("错误：未找到光源校准记录'数据'！ 请点检光源后重试。"));
+		iresult=-1;
+		base.close();
+		return iresult;
+	}
+
+	strMacAddr=query.value(0).toString();
+	strChipID = query.value(1).toString();
+	dflCoefR=query.value(2).toDouble();
+	dflCoefB=query.value(3).toDouble();
+	time=query.value(4).toDateTime();
+
+	base.close();
+	return iresult;
+}
+int itemprocess::getMacAddresses(std::string& macOUT){
+	int ret = 0;
+
+	ULONG ulOutBufLen = sizeof(IP_ADAPTER_INFO);
+	PIP_ADAPTER_INFO pAdapterInfo = (IP_ADAPTER_INFO*)malloc(sizeof(IP_ADAPTER_INFO));
+	if(pAdapterInfo == NULL)
+		return false;
+	// Make an initial call to GetAdaptersInfo to get the necessary size into the ulOutBufLen variable
+	if(GetAdaptersInfo(pAdapterInfo, &ulOutBufLen) == ERROR_BUFFER_OVERFLOW) 
+	{
+		free(pAdapterInfo);
+		pAdapterInfo = (IP_ADAPTER_INFO *)malloc(ulOutBufLen);
+		if (pAdapterInfo == NULL) 
+			return false;
+	}
+
+	if(GetAdaptersInfo(pAdapterInfo, &ulOutBufLen) == NO_ERROR)
+	{
+		for(PIP_ADAPTER_INFO pAdapter = pAdapterInfo; pAdapter != NULL; pAdapter = pAdapter->Next)
+		{
+			// 确保是以太网
+			if(pAdapter->Type != MIB_IF_TYPE_ETHERNET)
+				continue;
+			// 确保MAC地址的长度为 00-00-00-00-00-00
+			if(pAdapter->AddressLength != 6)
+				continue;
+			char acMAC[32];
+			sprintf(acMAC, "%02X-%02X-%02X-%02X-%02X-%02X",
+				int (pAdapter->Address[0]),
+				int (pAdapter->Address[1]),
+				int (pAdapter->Address[2]),
+				int (pAdapter->Address[3]),
+				int (pAdapter->Address[4]),
+				int (pAdapter->Address[5]));
+			macOUT = acMAC;
+			ret = true;
+			break;
+		}
+	}
+
+	free(pAdapterInfo);
+	return ret;
+}
+int itemprocess::getGoldenChipID(QString strProjectModel,QStringList &list){
+	int iresult=0;
+	getccmhardwareParameter(false);
+	QString strLightData = QDir::currentPath() % "/lighttemplate";
+	QSqlDatabase base=QSqlDatabase::addDatabase("QSQLITE","lightdb");
+	base.setDatabaseName(strLightData % "/" % "GoldenSampleSN");
+	if(!base.open()){
+		base.close();
+		emit information(QString::fromLocal8Bit("错误：Golden数据库打开失败！"));
+		iresult=-1;
+		return iresult;
+	}
+	QSqlQuery query(base);
+	query.prepare("select * from sqlite_master where name like 'GoldenSampleList' and type like 'table'");
+	query.exec();
+	if(!query.next()){
+		emit information(QString::fromLocal8Bit("错误：未找到Golden 记录表！请添加"));
+		iresult=-1;
+		base.close();
+		return iresult;
+	}
+
+	//************************ 返回点检数据 ***************************
+	query.prepare("select ChipID from GoldenSampleList where Model like :Model");
+	query.bindValue(":Model",strProjectModel);
+	query.exec();
+
+	while (query.next())
+	{
+		list.push_back(query.value(0).toString());
+	}
+	 
+	if(list.size()<=0){
+		emit information(QString::fromLocal8Bit("错误：未找到Golden 记录数据！请添加"));
+		iresult=-1;
+		base.close();
+		return iresult;
+	}
+
+	base.close();
+	return iresult;
+};
+
+int itemprocess::otpcheck()
+{
+#ifdef _HisFX3_Platform_Jigboard
+	return jigboard_OTPCheck_Rule1(&classPlatform);
+#endif
+
+	//判断图像是否点亮中
+	if(!threadshareData.GetHisPreviewflag())	return HisCCMError_NotPreivew;
+
+	//取得配置参数和规格
+	int iresult	=	getotpburnParameter(false);
+	if(iresult)
+		return iresult;
+	iresult	=	getccmhardwareParameter(false);
+	if(iresult)
+		return iresult;
+
+	QDir classDir;
+	QString strData	=	QDir::currentPath() % "/otptemplate/" % itemshareData.ccmhardwareParameter->sensortype;
+	QString strLightData = QDir::currentPath() % "/lighttemplate/" % itemshareData.ccmhardwareParameter->projectname;
+	classDir.mkpath(strData);
+
+	QString strMAC,strChipID;
+	double dflCoefR=0;
+	double dflCoefB=0;
+	QDateTime dateTime;
+	if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
+		emit information("错误：获取光源点检数据失败！");
+		return -1;
+	}
+
+	itemshareData.itemparameterLock.lockForRead();
+
+	_HisCCMOTP_Config stParameter;
+	stParameter.puiIndex	=	&(itemshareData.otpburnParameter->uiIndex);
+	stParameter.iheight		=	itemshareData.previewParameter->iHeight;
+	stParameter.iwidth		=	itemshareData.previewParameter->iWidth;
+	stParameter.uiDataFormat	=	itemshareData.previewParameter->ucDataFormat;
+	stParameter.bburn		=	itemshareData.otpburnParameter->bburn;
+	stParameter.bOnlyCheckBurnData		=	itemshareData.otpburnParameter->bOnlyCheckData;
+	stParameter.uiFrameSleep	=	itemshareData.otpburnParameter->uiFrameSleep;
+	stParameter.uiMID	=	itemshareData.otpburnParameter->uiMID;
+	stParameter.uiLENSID	=	itemshareData.otpburnParameter->uiLENSID;
+	stParameter.uiVCMID	=	itemshareData.otpburnParameter->uiVCMID;
+	stParameter.uiDRIVERICID	=	itemshareData.otpburnParameter->uiDRIVERICID;
+	stParameter.flRangeRatio	=	itemshareData.otpburnParameter->flRangeRatio;
+	stParameter.uiLuxMin	=	itemshareData.otpburnParameter->uiLuxMin;
+	stParameter.uiLuxMax	=	itemshareData.otpburnParameter->uiLuxMax;
+	stParameter.uiDark	=	itemshareData.otpburnParameter->uiDark;
+	stParameter.flLSC_LuxShadingMin	=	itemshareData.otpburnParameter->flLSC_LuxShadingMin;
+	stParameter.flLSC_LuxShadingMax	=	itemshareData.otpburnParameter->flLSC_LuxShadingMax;
+	stParameter.flLSC_LuxSymmMax	=	itemshareData.otpburnParameter->flLSC_LuxSymmMax;
+	stParameter.flLSC_CenterR2GrMin	=	itemshareData.otpburnParameter->flLSC_CenterR2GrMin;
+	stParameter.flLSC_CenterR2GrMax	=	itemshareData.otpburnParameter->flLSC_CenterR2GrMax;
+	stParameter.flLSC_CenterB2GrMin	=	itemshareData.otpburnParameter->flLSC_CenterB2GrMin;
+	stParameter.flLSC_CenterB2GrMax	=	itemshareData.otpburnParameter->flLSC_CenterB2GrMax;
+	stParameter.flLSC_WB2CenterMax_R2Gr	=	itemshareData.otpburnParameter->flLSC_WB2CenterMax_R2Gr;
+	stParameter.flLSC_WB2CenterMax_B2Gr	=	itemshareData.otpburnParameter->flLSC_WB2CenterMax_B2Gr;
+	stParameter.flLSC_LuxShadingUniform	=	itemshareData.otpburnParameter->flLSC_LuxShadingUniform;
+	stParameter.uiBlockSize	=	itemshareData.otpburnParameter->uiBlockSize;
+	stParameter.dflLightCoeR	=	itemshareData.otpburnParameter->dflLightCoeR=dflCoefR;
+	stParameter.dflLightCoeB	=	itemshareData.otpburnParameter->dflLightCoeB=dflCoefB;
 	stParameter.strproject	=	(itemshareData.ccmhardwareParameter->projectname.toAscii()).data();
 	stParameter.strsensor	=	(itemshareData.ccmhardwareParameter->sensortype.toAscii()).data();
 	stParameter.strFunctionChoose	=	(itemshareData.otpburnParameter->strFunctionChoose.toAscii()).data();
@@ -13794,6 +14146,19 @@ int itemprocess::otpcheck()
 		globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
 	emit enableinfotimer(0);
 
+#if 1
+	//******************** 2019/08/13 ***********************
+
+	if(iresult==0){ 
+		global_unit_rg=stParameter.iOpitcalcenterX;
+		global_unit_bg=stParameter.iOpitcalcenterY;
+		global_unit_g=stParameter.uiMachineID;
+		global_burn_group=stParameter.uiHardwareVersion;
+	}
+
+#endif
+
+
 #if 1 //2017/12/27 
 	//*********************  2017/12/11  *****************
 	QSqlDatabase dbLotSN = QSqlDatabase::addDatabase("QSQLITE", "dbLotSN");
@@ -13803,24 +14168,24 @@ int itemprocess::otpcheck()
 		return HisCCMError_Database;
 	}
 
-	QSqlQuery query(dbLotSN);
-	query.prepare("select SN from checkdata where SN=:sn");
-	query.bindValue(":sn",stParameter.strSerialNumber.c_str());
-	query.exec();
-	if(query.next()){
-		query.prepare("update checkdata set DateTime=:datetime,result=:result where SN=:sn");
-		query.bindValue(":datetime",QDateTime::currentDateTime());
-		query.bindValue(":result",iresult==0);
-		query.bindValue(":sn",stParameter.strSerialNumber.c_str());
-		if(!query.exec()){
-			emit information("sqlSave Error:"+query.lastError().text());
+	QSqlQuery query1(dbLotSN);
+	query1.prepare("select SN from checkdata where SN=:sn");
+	query1.bindValue(":sn",stParameter.strSerialNumber.c_str());
+	query1.exec();
+	if(query1.next()){
+		query1.prepare("update checkdata set DateTime=:datetime,result=:result where SN=:sn");
+		query1.bindValue(":datetime",QDateTime::currentDateTime());
+		query1.bindValue(":result",iresult==0);
+		query1.bindValue(":sn",stParameter.strSerialNumber.c_str());
+		if(!query1.exec()){
+			emit information("sqlSave Error:"+query1.lastError().text());
 		}
 	}else{
-		query.prepare("insert into checkdata values(:sn,:datetime,:result)");
-		query.bindValue(":datetime",QDateTime::currentDateTime());
-		query.bindValue(":result",iresult==0);
-		query.bindValue(":sn",stParameter.strSerialNumber.c_str());
-		query.exec();
+		query1.prepare("insert into checkdata values(:sn,:datetime,:result)");
+		query1.bindValue(":datetime",QDateTime::currentDateTime());
+		query1.bindValue(":result",iresult==0);
+		query1.bindValue(":sn",stParameter.strSerialNumber.c_str());
+		query1.exec();
 	}
 
 #endif
@@ -14604,7 +14969,7 @@ int itemprocess::afBurn()
 	stParameter.ucEESlave		=	itemshareData.ccmhardwareParameter->ucEESlave;
 	stParameter.iNearMotor		=	(iNearPeakMotorDec==0x00FFFFFF)?(0x00FFFFFF):(iNearPeakMotorDec + itemshareData.afburnParameter->iNearMotorOffset);
 	stParameter.iMiddleMotor	=	(iMiddlePeakMotorDec==0x00FFFFFF)?(0x00FFFFFF):(iMiddlePeakMotorDec + itemshareData.afburnParameter->iMiddleMotorOffset);
-	stParameter.iInfinitMotor		= (iFarPeakMotorDec==0x00FFFFFF)?(0x00FFFFFF):(iFarPeakMotorDec + itemshareData.afburnParameter->iFarMotorOffset);
+	stParameter.iInfinitMotor		=(iFarPeakMotorDec==0x00FFFFFF)?(0x00FFFFFF):(iFarPeakMotorDec + itemshareData.afburnParameter->iFarMotorOffset);
 	stParameter.Reserve1.ivalue[0]		=	(iMotorStartDec==0x00FFFFFF)?(0x00FFFFFF):(iMotorStartDec + itemshareData.afburnParameter->iFarMotorOffset);
 	//*********** Test *****************
 
@@ -14615,33 +14980,33 @@ int itemprocess::afBurn()
 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("近焦马达最优点：") % QString::number(iNearPeakMotorDec) % \
 			"		OFFSET: " % QString::number(itemshareData.afburnParameter->iNearMotorOffset) % \
 			QTextCodec::codecForName( "GBK")->toUnicode("烧录值：") % QString::number(stParameter.iNearMotor));
-		/*if(stParameter.iNearMotor > itemshareData.afburnParameter->iNearMotorMax || stParameter.iNearMotor < itemshareData.afburnParameter->iNearMotorMin){
+		if(stParameter.iNearMotor > itemshareData.afburnParameter->iNearMotorMax || stParameter.iNearMotor < itemshareData.afburnParameter->iNearMotorMin){
 			emit information(QTextCodec::codecForName( "GBK")->toUnicode("近焦马达烧录值超出范围"));
 			itemshareData.itemparameterLock.unlock();
 			return HisCCMError_Result;
-		}*/
+		}
 	}
 	if(stParameter.bMiddle)
 	{
 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("中焦马达最优点：") % QString::number(iMiddlePeakMotorDec) % \
 			"		OFFSET: " % QString::number(itemshareData.afburnParameter->iMiddleMotorOffset) % \
 			QTextCodec::codecForName( "GBK")->toUnicode("烧录值：") % QString::number(stParameter.iMiddleMotor));
-		/*if(stParameter.iMiddleMotor > itemshareData.afburnParameter->iMiddleMotorMax || stParameter.iMiddleMotor < itemshareData.afburnParameter->iMiddleMotorMin){
+		if(stParameter.iMiddleMotor > itemshareData.afburnParameter->iMiddleMotorMax || stParameter.iMiddleMotor < itemshareData.afburnParameter->iMiddleMotorMin){
 			emit information(QTextCodec::codecForName( "GBK")->toUnicode("中焦马达烧录值超出范围"));
 			itemshareData.itemparameterLock.unlock();
 			return HisCCMError_Result;
-		}*/
+		}
 	}
 	if(stParameter.bInfinite)
 	{
 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("远焦马达最优点：") % QString::number(iFarPeakMotorDec) % \
 			"		OFFSET: " % QString::number(itemshareData.afburnParameter->iFarMotorOffset) % \
 			QTextCodec::codecForName( "GBK")->toUnicode("		烧录值：") % QString::number(stParameter.iInfinitMotor));
-		/*if(stParameter.iInfinitMotor > itemshareData.afburnParameter->iFarMotorMax || stParameter.iInfinitMotor < itemshareData.afburnParameter->iFarMotorMin){
+		if(stParameter.iInfinitMotor > itemshareData.afburnParameter->iFarMotorMax || stParameter.iInfinitMotor < itemshareData.afburnParameter->iFarMotorMin){
 			emit information(QTextCodec::codecForName( "GBK")->toUnicode("远焦马达烧录值超出范围"));
 			itemshareData.itemparameterLock.unlock();
 			return HisCCMError_Result;
-		}*/
+		}
 	}
 #endif
 	QString strSerialNumber;
@@ -27321,6 +27686,25 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 		bUpdateItemStatus	=	true;
 		break;
 #endif
+	case lightcal:
+		updateItemstatus(itemstatus);
+		{
+			if(LightSourceCal()){
+				iresult=-1;
+			}
+		}
+		bUpdateItemStatus	=	true;
+		break;
+	case lightcheck:
+		updateItemstatus(itemstatus);
+		{
+			if(LightSourceVerify()){
+				emit information(QString::fromLocal8Bit("光源检查失败！"));
+				iresult=-1;
+			}
+		}
+		bUpdateItemStatus	=	true;
+		break;
 	case savemtfdata:
 		updateItemstatus(itemstatus);
 		{
@@ -27515,9 +27899,6 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 		break;
 	case startpreviewitem:
 		updateItemstatus(itemstatus);
-		
-		
-
 		for(unsigned int i=0;	i<currentitem.ucloopTime && hisglobalparameter.getrunflag();	++i){
 			if(!(iresult	=	startPreview())){
 				//GC5005_gcore_identify_otp();
@@ -27673,7 +28054,6 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 					
 				emit showresult(itemshareData.totalresult);
 				emit signaldrawframe(itemshareData.totalresult);
-
 			}
 
 			//***************** 2018.01.10 add*****************
@@ -27699,6 +28079,9 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 			bool bburn=false;
 			for(QList<_itemStatus>::iterator theiterator = itemshareData.itemstatusList.begin(); theiterator != itemshareData.itemstatusList.end(); theiterator++){
 				if(theiterator->usitem==otpburnitem){
+					bburn=true;
+					break;
+				}else if(theiterator->usitem==otpcheckitem){
 					bburn=true;
 					break;
 				}
@@ -27748,7 +28131,7 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 					emit information(QTextCodec::codecForName( "GBK")->toUnicode("保存文档错误，错误代码：0x") % QString::number(iresult, 16));
 				}else{
 					//************************** 2019/04/16 ************************
-					/*QString str=QString("./savelog/%1/%2").arg(itemshareData.ccmhardwareParameter->projectname).arg(QDate::currentDate().toString("yyyy-MM-dd"));
+					QString str=QString("./savelog/%1/%2").arg(itemshareData.ccmhardwareParameter->projectname).arg(QDate::currentDate().toString("yyyy-MM-dd"));
 					QFile filelog(str+".csv");
 					filelog.open(QIODevice::ReadOnly);
 					QByteArray buffer=filelog.readAll();
@@ -27782,8 +28165,7 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 					md.addData(array1);
 					buffer=md.result();
 					filelogNew.write(buffer.toHex());
-					filelogNew.close();*/
-
+					filelogNew.close();
 
 				}
 					

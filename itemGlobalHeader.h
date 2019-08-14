@@ -207,9 +207,9 @@ enum _operateItemList{
 	burn_messtatusupdate=0xbA,
 	burncheck_messtatusupdate=0xbB,
 	focus_messtatusupdate=0xbC,
-
-	debugitem										=	0xff
-	
+	lightcal=0xbd,
+	lightcheck = 0xbe,
+	debugitem = 0xff
 };
  
 struct _TestItem_Basic_Info{
@@ -229,6 +229,15 @@ __inline void globalgetListAllTestItem(QList<_TestItem_Basic_Info>& itemList) //
 	itemList.clear(); itemList.reserve(200);
 	_TestItem_Basic_Info stItem;
 
+	//*******************  2019.08.12 feng Add ****************
+	_CODE_GLOBALITEM_PUSHBACK(lightcheck, "lightcal", QTextCodec::codecForName( "GBK")->toUnicode("烧录光源检查"), "other", "", \
+		QTextCodec::codecForName( "GBK")->toUnicode("功能：烧录光源检查！"), \
+		"HisFX3CCMTest");
+
+	_CODE_GLOBALITEM_PUSHBACK(lightcal, "lightcheck", QTextCodec::codecForName( "GBK")->toUnicode("烧录光源校正"), "other", "", \
+		QTextCodec::codecForName( "GBK")->toUnicode("功能：烧录光源校正（加光源系数）!"), \
+		"HisFX3CCMTest");
+
 	//*******************  2018.05.23 feng Add ****************
 #if (defined USE_EQUIPMENT_AFM_JSL_V2)
 	_CODE_GLOBALITEM_PUSHBACK(showcontrolpanel, "showcontrolpanel", QTextCodec::codecForName( "GBK")->toUnicode("显示IO面板"), "other", "", \
@@ -239,6 +248,7 @@ __inline void globalgetListAllTestItem(QList<_TestItem_Basic_Info>& itemList) //
 		QTextCodec::codecForName( "GBK")->toUnicode("功能：MTF调焦"), \
 		"HisFX3CCMTest");
 #endif
+
 	_CODE_GLOBALITEM_PUSHBACK(focus_messtatusupdate, "focus_messtatusupdate", QTextCodec::codecForName( "GBK")->toUnicode("更新focus到MES"), "other", "", \
 		QTextCodec::codecForName( "GBK")->toUnicode("功能：更新调焦站位信息到MES服务器"), \
 		"HisFX3CCMTest");

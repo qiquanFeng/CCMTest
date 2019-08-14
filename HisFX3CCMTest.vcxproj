@@ -312,12 +312,7 @@
     <ClCompile Include="fx3deviceconfig.cpp" />
     <ClCompile Include="GC5005_OTP_DD.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_cchooseconfigs.cpp" />
-    <ClCompile Include="GeneratedFiles\Debug\moc_configsetting.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|x64'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_configsetting.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_coorconverttool.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_fx3deviceconfig.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_hardwareop.cpp" />
