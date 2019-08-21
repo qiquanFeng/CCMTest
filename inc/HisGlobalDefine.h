@@ -2708,6 +2708,32 @@ struct _HisCCMOTP_Config{
 	float flLSC_WB2CenterMax_B2Gr;
 	float flLSC_WB2CenterMaxResult_R2Gr;
 	float flLSC_WB2CenterMaxResult_B2Gr;
+#if 1
+	float flWB_CenterChannelR;
+	float flWB_CenterChannelGr;
+	float flWB_CenterChannelGb;
+	float flWB_CenterChannelB;
+	float flWB_CenterR2G;
+	float flWB_CenterB2G;
+	float flWB_CenterGb2Gr;
+
+	float flCLSC_R2G_LT;
+	float flCLSC_R2G_RT;
+	float flCLSC_R2G_LB;
+	float flCLSC_R2G_RB;
+
+	float flCLSC_B2G_LT;
+	float flCLSC_B2G_RT;
+	float flCLSC_B2G_LB;
+	float flCLSC_B2G_RB;
+
+	float flYLSC_LT;
+	float flYLSC_RT;
+	float flYLSC_LB;
+	float flYLSC_RB;
+	float flYLSC_Diff;
+#endif
+
 	float flR2Gr[121];
 	float flB2Gr[121];
 	float flGr[121];
@@ -2750,6 +2776,32 @@ struct _HisCCMOTP_Config{
 		uiMachineID	=	uiHardwareVersion	=	0;
 		Reserve1.u64value =Reserve2.u64value =Reserve3.u64value= Reserve4.u64value =0;
 		memset(pvReserve, 0, sizeof(void*) *6);
+
+#if 1
+		flWB_CenterChannelR=0.0f;
+		flWB_CenterChannelGr=0.0f;
+		flWB_CenterChannelGb=0.0f;
+		flWB_CenterChannelB=0.0f;
+		flWB_CenterR2G=0.0f;
+		flWB_CenterB2G=0.0f;
+		flWB_CenterGb2Gr=0.0f;
+
+		flCLSC_R2G_LT=0.0f;
+		flCLSC_R2G_RT=0.0f;
+		flCLSC_R2G_LB=0.0f;
+		flCLSC_R2G_RB=0.0f;
+
+		flCLSC_B2G_LT=0.0f;
+		flCLSC_B2G_RT=0.0f;
+		flCLSC_B2G_LB=0.0f;
+		flCLSC_B2G_RB=0.0f;
+
+		flYLSC_LT=0.0f;
+		flYLSC_RT=0.0f;
+		flYLSC_LB=0.0f;
+		flYLSC_RB=0.0f;
+		flYLSC_Diff=0.0f;
+#endif
 	}
 };
 

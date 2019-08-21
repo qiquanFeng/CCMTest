@@ -140,6 +140,7 @@ public:
 
 
 	int IOBitOut(unsigned int uiCardNum, unsigned int uiPort, unsigned int uiBitNum, unsigned int uiValue);
+	int IOBitCheck(unsigned int uiCardNum, unsigned int uiPort, unsigned int uiBitNum, unsigned int uiValue);
 	int MotorMove(unsigned int CardNo,unsigned int axis, double Dist, bool bAbs);
 	int toPosWhitePanel();
 	int toPosBlackPanel();

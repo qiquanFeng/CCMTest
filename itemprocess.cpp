@@ -13419,10 +13419,11 @@ int itemprocess::otpburn()
 	double dflCoefR=0;
 	double dflCoefB=0;
 	QDateTime dateTime;
-	if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
+
+	/*if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
 		emit information("错误：获取光源点检数据失败！");
 		return -1;
-	}
+	}*/
 
 	itemshareData.itemparameterLock.lockForRead();
 
@@ -13661,6 +13662,21 @@ int itemprocess::otpburn()
 		_CODE_LOG_PUSHBACK("OTPBurn_ColorUniformMax_R2Gr", stParameter.flLSC_WB2CenterMaxResult_R2Gr);
 	if(stParameter.flLSC_WB2CenterMaxResult_B2Gr >= 0.0f)
 		_CODE_LOG_PUSHBACK("OTPBurn_ColorUniformMax_B2Gr", stParameter.flLSC_WB2CenterMaxResult_B2Gr);
+
+	if(stParameter.flWB_CenterChannelR >= 0.0f)
+		_CODE_LOG_PUSHBACK("OTPBurn_WB_ChannelR(-OB)", stParameter.flWB_CenterChannelR);
+	if(stParameter.flWB_CenterChannelB >= 0.0f)
+		_CODE_LOG_PUSHBACK("OTPBurn_WB_ChannelB(-OB)", stParameter.flWB_CenterChannelB);
+	if(stParameter.flWB_CenterChannelGr >= 0.0f)
+		_CODE_LOG_PUSHBACK("OTPBurn_WB_ChannelGr(-OB)", stParameter.flWB_CenterChannelGr);
+	if(stParameter.flWB_CenterChannelGb >= 0.0f)
+		_CODE_LOG_PUSHBACK("OTPBurn_WB_ChannelGb(-OB)", stParameter.flWB_CenterChannelGb);
+	if(stParameter.flWB_CenterR2G >= 0.0f)
+		_CODE_LOG_PUSHBACK("OTPBurn_WB_R/G", stParameter.flWB_CenterR2G);
+	if(stParameter.flWB_CenterB2G >= 0.0f)
+		_CODE_LOG_PUSHBACK("OTPBurn_WB_B/G", stParameter.flWB_CenterB2G);
+	if(stParameter.flWB_CenterGb2Gr >= 0.0f)
+		_CODE_LOG_PUSHBACK("OTPBurn_WB_Gb/Gr", stParameter.flWB_CenterGb2Gr);
 
 	if(iresult){
 		itemshareData.itemparameterLock.unlock();
@@ -14056,10 +14072,10 @@ int itemprocess::otpcheck()
 	double dflCoefR=0;
 	double dflCoefB=0;
 	QDateTime dateTime;
-	if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
+	/*if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
 		emit information("错误：获取光源点检数据失败！");
 		return -1;
-	}
+	}*/
 
 	itemshareData.itemparameterLock.lockForRead();
 
@@ -14906,6 +14922,8 @@ int itemprocess::getafburnParameter(bool bupdate, bool bcheck )
 					else if(strname.at(x) == "faroffset") itemshareData.afburnParameter->iFarMotorOffset =	strvalue.at(x).toInt();
 					else if(strname.at(x) == "farmin") itemshareData.afburnParameter->iFarMotorMin =	strvalue.at(x).toInt();
 					else if(strname.at(x) == "farmax") itemshareData.afburnParameter->iFarMotorMax =	strvalue.at(x).toInt();
+					else if(strname.at(x) == "recalspec") itemshareData.afburnParameter->iRecalSpec =strvalue.at(x).toInt();
+					else if(strname.at(x) == "recalaf") itemshareData.afburnParameter->bRecalCheck = (strvalue.at(x) == "on");
 				}
 			}
 		}
@@ -15138,39 +15156,6 @@ int itemprocess::afBurnCheck() //0:near 1:middle 2:infinite
 		globalFunPointer.HisFX3LogPush_back, globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, \
 		globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
 	emit enableinfotimer(0);
-
-	if(iresult)
-	{
-		itemshareData.itemparameterLock.unlock();
-		stLogItem.itemtype	=	classLog->getmaxtypeindex(_HISLOG_CLASSIFY_AFBURNCHECK);
-		stLogItem.itemkey	=	"AFBURNCheck_Result";
-		stLogItem.itemvalue=	"NG";
-		classLog->push_back(stLogItem);
-		return iresult;
-	}
-
-
-
-	//***************** by feng 2018/01/30 Add **************
-	if(hisglobalparameter.bDebugMode){
-		QDir classDir;
-		QString saveDir=QDir::currentPath()%"/savelog";
-		classDir.mkdir(saveDir);
-
-		QFile file(saveDir%"/AF Code.csv");
-		if(!file.exists()){
-			file.open(QIODevice::ReadWrite|QIODevice::Append|QIODevice::Text);
-			file.write("Chip ID,Far,Marco\n");
-		}else{
-			file.open(QIODevice::ReadWrite|QIODevice::Append|QIODevice::Text);
-		}
-
-		QTextStream out(&file);
-		out<<"#"<<strSerialNumber<<","<<stParameter.iInfinitMotor<<","<<stParameter.iNearMotor<<"\n";
-
-		file.close();
-	}
-
 	//*******************************************************
 
 
@@ -15197,9 +15182,45 @@ int itemprocess::afBurnCheck() //0:near 1:middle 2:infinite
 		}
 	}
 
+	int  iNear=(iNearPeakMotorDec==0x00FFFFFF)?(0x00FFFFFF):(iNearPeakMotorDec + itemshareData.afburnParameter->iNearMotorOffset);
+	int  iFar=(iFarPeakMotorDec==0x00FFFFFF)?(0x00FFFFFF):(iFarPeakMotorDec + itemshareData.afburnParameter->iFarMotorOffset);
+	int  iMiddle=(iMiddlePeakMotorDec==0x00FFFFFF)?(0x00FFFFFF):(iMiddlePeakMotorDec + itemshareData.afburnParameter->iMiddleMotorOffset);
+
+	if(itemshareData.afburnParameter->bRecalCheck){
+		if(abs(iNear - stParameter.iNearMotor)>itemshareData.afburnParameter->iRecalSpec){
+			emit information(QTextCodec::codecForName( "GBK")->toUnicode("重计算后近焦马达烧录值超出范围"));
+			iresult=HisCCMError_Result;
+		}
+		if(abs(iMiddle - stParameter.iMiddleMotor)>itemshareData.afburnParameter->iRecalSpec){
+			emit information(QTextCodec::codecForName( "GBK")->toUnicode("重计算后中焦马达烧录值超出范围"));
+			iresult=HisCCMError_Result;
+		}
+		if(abs(iFar - stParameter.iInfinitMotor)>itemshareData.afburnParameter->iRecalSpec){
+			emit information(QTextCodec::codecForName( "GBK")->toUnicode("重计算后远焦马达烧录值超出范围"));
+			iresult=HisCCMError_Result;
+		}
+	}
+
+
+	//************************** Save Data ******************************************
 	stLogItem.itemtype	=	classLog->getmaxtypeindex(_HISLOG_CLASSIFY_AFBURNCHECK);
 	stLogItem.itemkey	=	"AFBURNCheck_Result";
 	stLogItem.itemvalue=	(iresult)?("NG"):("OK");
+	classLog->push_back(stLogItem);
+
+	++(stLogItem.itemtype);
+	stLogItem.itemkey	=	"AF_BURNCheck_Infinite_Motor";
+	stLogItem.itemvalue=	stParameter.iInfinitMotor;
+	classLog->push_back(stLogItem);
+
+	++(stLogItem.itemtype);
+	stLogItem.itemkey	=	"AF_BURNCheck_Middle_Motor";
+	stLogItem.itemvalue=	stParameter.iMiddleMotor;
+	classLog->push_back(stLogItem);
+
+	++(stLogItem.itemtype);
+	stLogItem.itemkey	=	"AF_BURNCheck_Near_Motor";
+	stLogItem.itemvalue=	stParameter.iNearMotor;
 	classLog->push_back(stLogItem);
 
 	itemshareData.itemparameterLock.unlock();
@@ -23952,6 +23973,27 @@ int itemprocess::IOBitOut(unsigned int uiCardNum, unsigned int uiPort, unsigned 
 	return iresult;
 }
 
+int itemprocess::IOBitCheck(unsigned int uiCardNum, unsigned int uiPort, unsigned int uiBitNum, unsigned int uiValue)
+{
+	int iresult = 0;
+#if (defined USE_EQUIPMENT_JSL_RRT_V1) || (defined USE_EQUIPMENT_GB_PDAF) || (defined USE_EQUIPMENT_GB_AFBURN)
+	unsigned int uiRead;
+
+	QString str= QString("%1,%2,%3,%4").arg(uiCardNum).arg(uiPort).arg(uiBitNum).arg(uiValue);
+	emit information(str);
+	if(iresult = classMotion.IOReadInBit(uiCardNum, uiPort, uiBitNum, &uiRead)){
+		emit information("IOReadInBit: " % classMotion.GetLastError());
+	}
+	else{
+		emit information("IOReadInBit 10 Read: " % QString::number(uiRead));
+	}
+
+	if(uiRead!=uiValue)
+		iresult=-1;
+#endif
+	return iresult;
+}
+
 int itemprocess::MotorMove(unsigned int CardNo,unsigned int axis, double Dist, bool bAbs)
 {
 	int iresult = 0;
@@ -28121,7 +28163,6 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 			_His_P8102_LCD_Green(!itemshareData.totalresult);
 #endif
 
-
 			itemshareData.itemstatusLock.unlock();
 
 			_CODE_LOG_PUSHBACK_ALL(_HISLOG_CLASSIFY_TOTALRESULT, "total result", (itemshareData.totalresult)?("NG"):("OK"))
@@ -29123,6 +29164,15 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 			_scotherInfo otherInfo;
 			globalgetShortcutAddInfoUnion(currentitem.usItem, currentitem.strAddInfo, otherInfo);
 			iresult	=	IOBitOut(otherInfo.uidata[0], otherInfo.uidata[1], otherInfo.uidata[2], otherInfo.uidata[3]);
+			bUpdateItemStatus	=	true;
+		}
+		break;
+	case iobitcheckitem:
+		{
+			updateItemstatus(itemstatus);
+			_scotherInfo otherInfo;
+			globalgetShortcutAddInfoUnion(currentitem.usItem, currentitem.strAddInfo, otherInfo);
+			iresult	=	IOBitCheck(otherInfo.uidata[0], otherInfo.uidata[1], otherInfo.uidata[2], otherInfo.uidata[3]);
 			bUpdateItemStatus	=	true;
 		}
 		break;

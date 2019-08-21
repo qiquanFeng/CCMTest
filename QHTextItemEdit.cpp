@@ -598,6 +598,17 @@ QHTextItemEdit::QHTextItemEdit(QWidget *parent,QString Qstr	,QString Qinfo, bool
 			else if(strname.at(x) == "out")			ui.ioOutHighcheckBox->setChecked(strvalue.at(x).toUInt());
 		}
 	}
+	else if(Qstritem	==	"iobitcheckitem")
+	{
+		for(int x=0;	x<strname.size();	++x)
+		{
+			if(strname.at(x) == "card")				ui.ioOutCardIndexspinBox->setValue(strvalue.at(x).toUInt());
+			else if(strname.at(x) == "port")		ui.ioOutPortIndexspinBox->setValue(strvalue.at(x).toUInt());
+			else if(strname.at(x) == "bit")			ui.ioOutBitIndexspinBox->setValue(strvalue.at(x).toUInt());
+			else if(strname.at(x) == "status")		ui.ioOutHighcheckBox->setChecked(strvalue.at(x).toUInt());
+		}
+	}
+
 	else if(Qstritem	==	"camdoracalibrationitem")
 	{
 		for(int x=0;	x<strname.size();	++x)
@@ -813,6 +824,14 @@ void QHTextItemEdit::paramaterok()
 		strname.append("port");			strvalue.append(ui.ioOutPortIndexspinBox->cleanText());
 		strname.append("bit");			strvalue.append(ui.ioOutBitIndexspinBox->cleanText());
 		strname.append("out");			strvalue.append(((ui.ioOutHighcheckBox->isChecked())?("1"):("0")));
+		jointconfigstring(Qstrinfo,strname,strvalue);
+	}
+	else if (Qsitem	==	"iobitcheckitem")
+	{
+		strname.append("card");			strvalue.append(ui.ioOutCardIndexspinBox->cleanText());
+		strname.append("port");			strvalue.append(ui.ioOutPortIndexspinBox->cleanText());
+		strname.append("bit");			strvalue.append(ui.ioOutBitIndexspinBox->cleanText());
+		strname.append("status");			strvalue.append(((ui.ioOutHighcheckBox->isChecked())?("1"):("0")));
 		jointconfigstring(Qstrinfo,strname,strvalue);
 	}
 	else if (Qsitem	==	"motormoveitem")
@@ -1247,6 +1266,7 @@ int QHTextItemEdit::Qstring2ui(QString qStr)
 	else if(qStr == "playaudioitem")									iIndex = 21;
 	else if(qStr == "imageprocessitem")							iIndex = 22;
 	else if(qStr == "iobitoutitem")										iIndex = 23;
+	else if(qStr == "iobitcheckitem")										iIndex = 23;
 	else if(qStr == "motormoveitem")								iIndex = 24;
 	else if(qStr == "chartalignlitem")									iIndex = 25;
 	else if(qStr == "autofocusitem")									iIndex = 26;

@@ -209,6 +209,7 @@ enum _operateItemList{
 	focus_messtatusupdate=0xbC,
 	lightcal=0xbd,
 	lightcheck = 0xbe,
+	iobitcheckitem										=	0xbf,
 	debugitem = 0xff
 };
  
@@ -579,6 +580,11 @@ __inline void globalgetListAllTestItem(QList<_TestItem_Basic_Info>& itemList) //
 	_CODE_GLOBALITEM_PUSHBACK(iobitoutitem, "iobitoutitem", QTextCodec::codecForName( "GBK")->toUnicode("IO输出"), "equipment", "(card:0)(port:0)(bit:0)(out:1)", \
 		QTextCodec::codecForName( "GBK")->toUnicode(" "), \
 		"HisGerneralMotion");
+
+	_CODE_GLOBALITEM_PUSHBACK(iobitcheckitem, "iobitcheckitem", QTextCodec::codecForName( "GBK")->toUnicode("IO状态检查"), "equipment", "(card:0)(port:0)(bit:0)(status:1)", \
+		QTextCodec::codecForName( "GBK")->toUnicode(" "), \
+		"HisGerneralMotion");
+
 	_CODE_GLOBALITEM_PUSHBACK(motormoveitem, "motormoveitem", QTextCodec::codecForName( "GBK")->toUnicode("马达运动"), "equipment", "(card:0)(axis:0)(abs:0)(dis:0.0)", \
 		QTextCodec::codecForName( "GBK")->toUnicode(" "), \
 		"HisGerneralMotion");
@@ -919,6 +925,15 @@ __inline void globalgetShortcutAddInfoUnion(unsigned short usitem, QString strDa
 			else if(strlistname.at(x) == "port")		otherInfo.uidata[1]	=	strlistvalue.at(x).toUInt();
 			else if(strlistname.at(x) == "bit")			otherInfo.uidata[2]	=	strlistvalue.at(x).toUInt();
 			else if(strlistname.at(x) == "out")		otherInfo.uidata[3]	=	strlistvalue.at(x).toUInt();
+		}
+		break;
+	case iobitcheckitem:
+		golbalItempatchconfigstring(strData, strlistname, strlistvalue);
+		for(unsigned int x=0;	x<strlistname.size();	++x){
+			if(strlistname.at(x) == "card")				otherInfo.uidata[0]	=	strlistvalue.at(x).toUInt();
+			else if(strlistname.at(x) == "port")		otherInfo.uidata[1]	=	strlistvalue.at(x).toUInt();
+			else if(strlistname.at(x) == "bit")			otherInfo.uidata[2]	=	strlistvalue.at(x).toUInt();
+			else if(strlistname.at(x) == "status")		otherInfo.uidata[3]	=	strlistvalue.at(x).toUInt();
 		}
 		break;
 	case motormoveitem:

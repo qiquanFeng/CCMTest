@@ -1369,6 +1369,10 @@ struct _afburnParameter{
 	unsigned int uiMachineCode;
 	QString strFunctionChoose;
 
+	//******************* 20190817 **********************************
+	bool bRecalCheck;
+	int iRecalSpec;
+
 	_afburnParameter()
 	{
 		bNear	=	bMiddle	=	bInfinite	=	false;
@@ -1377,6 +1381,8 @@ struct _afburnParameter{
 		iNearMotorOffset	=	iMiddleMotorOffset	=	iFarMotorOffset	=	0;
 		iNearMotorMin		=	iMiddleMotorMin		=	iFarMotorMin		=	0;
 		iNearMotorMax	=	iMiddleMotorMax		=	iFarMotorMax		=	1023;
+		bRecalCheck=false;
+		iRecalSpec=50;
 	}
 };
 

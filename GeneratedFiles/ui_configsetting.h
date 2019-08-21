@@ -2646,6 +2646,11 @@ public:
     QHBoxLayout *horizontalLayout_48;
     QLabel *label_275;
     QSpinBox *afburnMachinespinBox;
+    QHBoxLayout *horizontalLayout_670;
+    QCheckBox *checkBox_ReCal;
+    QHBoxLayout *horizontalLayout_672;
+    QLabel *label_739;
+    QSpinBox *spinBox_AfRecalSpec;
     QGroupBox *groupBox_78;
     QVBoxLayout *verticalLayout_97;
     QCheckBox *afburnMiddlecheckBox;
@@ -23259,6 +23264,41 @@ public:
 
         verticalLayout_94->addLayout(horizontalLayout_48);
 
+        horizontalLayout_670 = new QHBoxLayout();
+        horizontalLayout_670->setSpacing(6);
+        horizontalLayout_670->setObjectName(QString::fromUtf8("horizontalLayout_670"));
+        checkBox_ReCal = new QCheckBox(groupBox_34);
+        checkBox_ReCal->setObjectName(QString::fromUtf8("checkBox_ReCal"));
+
+        horizontalLayout_670->addWidget(checkBox_ReCal);
+
+
+        verticalLayout_94->addLayout(horizontalLayout_670);
+
+        horizontalLayout_672 = new QHBoxLayout();
+        horizontalLayout_672->setSpacing(6);
+        horizontalLayout_672->setObjectName(QString::fromUtf8("horizontalLayout_672"));
+        label_739 = new QLabel(groupBox_34);
+        label_739->setObjectName(QString::fromUtf8("label_739"));
+        sizePolicy1.setHeightForWidth(label_739->sizePolicy().hasHeightForWidth());
+        label_739->setSizePolicy(sizePolicy1);
+        label_739->setMinimumSize(QSize(78, 0));
+        label_739->setFont(font);
+        label_739->setContextMenuPolicy(Qt::NoContextMenu);
+        label_739->setFrameShape(QFrame::NoFrame);
+
+        horizontalLayout_672->addWidget(label_739);
+
+        spinBox_AfRecalSpec = new QSpinBox(groupBox_34);
+        spinBox_AfRecalSpec->setObjectName(QString::fromUtf8("spinBox_AfRecalSpec"));
+        spinBox_AfRecalSpec->setMinimum(-1024);
+        spinBox_AfRecalSpec->setMaximum(1024);
+
+        horizontalLayout_672->addWidget(spinBox_AfRecalSpec);
+
+
+        verticalLayout_94->addLayout(horizontalLayout_672);
+
 
         verticalLayout_51->addWidget(groupBox_34);
 
@@ -27638,7 +27678,7 @@ public:
 
         retranslateUi(configsetting);
 
-        tabWidgetmain->setCurrentIndex(3);
+        tabWidgetmain->setCurrentIndex(6);
         mipiSignalcomboBox->setCurrentIndex(1);
         commuProtocalcomboBox->setCurrentIndex(0);
         focusAdjusttabWidget->setCurrentIndex(3);
@@ -27688,7 +27728,7 @@ public:
         tabWidgetCurrentOS->setCurrentIndex(1);
         osa_ChannelcomboBox->setCurrentIndex(0);
         OStabWidget->setCurrentIndex(4);
-        tabWidgetBurn->setCurrentIndex(2);
+        tabWidgetBurn->setCurrentIndex(1);
         qualcommpdafLibVersioncomboBox->setCurrentIndex(0);
         lightSourcetabWidget->setCurrentIndex(0);
         lightSourceCheckstackedWidget->setCurrentIndex(0);
@@ -29507,6 +29547,8 @@ public:
         label_368->setText(QApplication::translate("configsetting", "Choose Burn & Standard:", 0, QApplication::UnicodeUTF8));
         label_274->setText(QApplication::translate("configsetting", "Delay\357\274\232", 0, QApplication::UnicodeUTF8));
         label_275->setText(QApplication::translate("configsetting", "Device ID\357\274\232", 0, QApplication::UnicodeUTF8));
+        checkBox_ReCal->setText(QApplication::translate("configsetting", "DAC Code \351\207\215\350\256\241\347\256\227", 0, QApplication::UnicodeUTF8));
+        label_739->setText(QApplication::translate("configsetting", "\351\207\215\350\256\241\347\256\227\350\247\204\346\240\274\357\274\232", 0, QApplication::UnicodeUTF8));
         groupBox_78->setTitle(QApplication::translate("configsetting", "Middle Focus", 0, QApplication::UnicodeUTF8));
         afburnMiddlecheckBox->setText(QApplication::translate("configsetting", "Test Middle Focus Burn", 0, QApplication::UnicodeUTF8));
         label_680->setText(QApplication::translate("configsetting", "OFFSET\357\274\232", 0, QApplication::UnicodeUTF8));

@@ -2153,6 +2153,9 @@ void configsetting::afBurn2UI()
 	ui.afburnFarOffsetspinBox->setValue(itemshareData.afburnParameter->iFarMotorOffset);
 	ui.afburnFarMinspinBox->setValue(itemshareData.afburnParameter->iFarMotorMin);
 	ui.afburnFarMaxspinBox->setValue(itemshareData.afburnParameter->iFarMotorMax);
+
+	ui.checkBox_ReCal->setChecked(itemshareData.afburnParameter->bRecalCheck);
+	ui.spinBox_AfRecalSpec->setValue(itemshareData.afburnParameter->iRecalSpec);
 }
 
 int configsetting::saveAfBurnData()
@@ -2201,6 +2204,10 @@ int configsetting::saveAfBurnData()
 			strname.append("faroffset");	strvalue.append(ui.afburnFarOffsetspinBox->cleanText());
 			strname.append("farmin");		strvalue.append(ui.afburnFarMinspinBox->cleanText());
 			strname.append("farmax");		strvalue.append(ui.afburnFarMaxspinBox->cleanText());
+			
+			strname.append("recalaf");		strvalue.append((ui.checkBox_ReCal->isChecked())?("on"):("off"));
+			strname.append("recalspec");		strvalue.append(ui.spinBox_AfRecalSpec->cleanText());
+
 			ROPLOW::jointconfigstring(reserve, strname, strvalue);
 			HISDBCUSTOM::insertItem(stSqlDB, itemshareData.currentTableName, uiIndex, "algorithm", "afburn",  QVariant(), itemsuffix2, key, value1, reserve);
 
