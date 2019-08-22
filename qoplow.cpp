@@ -742,6 +742,40 @@ namespace ROPLOW
 		}
 	}
 
+	void AFCMTFItemDataInitial_G(std::vector<_HisCCMAlg_AFC_MTF_DataItem_EX>& vectorItemData, _mtfAFCParameter* pstParameter, int& iMotor)
+	{
+		unsigned int uiIndex	=	vectorItemData.size();
+		vectorItemData.resize(uiIndex + 1);
+		std::vector<_HisCCMAlg_AFC_MTF_DataItem_EX>::iterator theiterator = vectorItemData.begin() + uiIndex;
+		theiterator->sMotorStep			=	iMotor;
+		theiterator->flWeightValue		=	0.0f;	
+		theiterator->ucStatus				=	0x0;
+		theiterator->dflMarkDistance	=	0.0;
+		theiterator->ucFlag					=	0x0;
+		theiterator->flCenterValue		=	0.0f;
+		theiterator->flCenterWeight	=	pstParameter->stMTFBasic.flcenterweight;
+		theiterator->flCenterSpec		=	pstParameter->stMTFBasic.flcenterspec;
+		theiterator->flCenterGradeB		=	pstParameter->stMTFBasic.flCenterGradeB;
+		memset(&(theiterator->stCenterBlock), 0, sizeof(RECT));
+		
+		unsigned int uiFOVSize	=	pstParameter->vectorMTFItem.size();
+		theiterator->vectorFOV.resize(uiFOVSize);
+		for(unsigned int x=0;	x<uiFOVSize;	++x){
+			theiterator->vectorFOV.at(x).ucStatus	=	0x0;
+			theiterator->vectorFOV.at(x).ucBlockCount		=	pstParameter->vectorMTFItem.at(x).ucBlockCount;
+			theiterator->vectorFOV.at(x).flFOV			=	pstParameter->vectorMTFItem.at(x).flFOV;
+			theiterator->vectorFOV.at(x).flAngle		=	pstParameter->vectorMTFItem.at(x).flAngle;
+			theiterator->vectorFOV.at(x).flWeight		=	pstParameter->vectorMTFItem.at(x).flWeight;
+			theiterator->vectorFOV.at(x).flSpec		=	pstParameter->vectorMTFItem.at(x).flSpec;
+			theiterator->vectorFOV.at(x).flGradeB   =	pstParameter->vectorMTFItem.at(x).flGradeB;
+			theiterator->vectorFOV.at(x).flSpecUniform		=	pstParameter->vectorMTFItem.at(x).flSpecUniform;
+
+			theiterator->vectorFOV.at(x).flUniformValue	=	0.0f;
+			memset(theiterator->vectorFOV.at(x).flValue, 0, sizeof(float) *4);
+			memset(theiterator->vectorFOV.at(x).stBlock, 0, sizeof(RECT) *4);
+		}
+	}
+
 	void MFAMTFItemDataInitial(_HisCCMAlg_AFC_MTF_DataItem& stItemData, _mtffaParameter* pstParameter)
 	{
 		stItemData.sMotorStep			=	0;

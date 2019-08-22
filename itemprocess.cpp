@@ -3470,8 +3470,11 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 	vectorDraw.reserve(50);
 	std::vector<_itemDraw>::iterator iteratorDraw;
 	std::vector<_HisCCMAlg_AFC_MTF_DataItem> vectorItemData;
-	vectorItemData.reserve(30);
+	std::vector<_HisCCMAlg_AFC_MTF_DataItem_EX> vectorItemData_EX;
+	vectorItemData.reserve(30);vectorItemData_EX.reserve(30);
+
 	std::vector<_HisCCMAlg_AFC_MTF_DataItem>::iterator iteratorItemData;
+	std::vector<_HisCCMAlg_AFC_MTF_DataItem_EX>::iterator iteratorItemData_ex;
 
 	float flvalue, flmax, flmin,flHvalue,flVvalue;
 	RECT stMTFAutoROI;
@@ -3486,26 +3489,11 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 	for(unsigned int uistepcount=0; uistepcount < pstParameter->stTacticsBasic.usMaxSteps && hisglobalparameter.getrunflag() && threadshareData.GetHisPreviewflag(); ++uistepcount)
 	{
 		if(iresult	=	GetFreshframe(pucBufRaw, uiRawImgSize, ucFrameType, !uistepcount)) break;
-
-		if(pstParameter->stMTFBasic.algswitch != 7){
-			
-		}else{
-			/*unsigned int uiRawImgSize_raw10	=itemshareData.previewParameter->iWidth * itemshareData.previewParameter->iHeight*2;
-			unsigned char ucFrameType_raw10	=_FrameType_Raw10;
-			pucBufRaw10		=	(unsigned char*)_aligned_malloc(uiRawImgSize_raw10, _HisCacheLine_Aligned);
-			if(!pucBufRaw10){
-				HisReleaseMalloc(pucBufRaw);
-				HisReleaseMalloc(pucBufRaw10);
-				itemshareData.itemparameterLock.unlock();
-				return HisFX3Error_MallocBuffer;
-			}
-			
-			if(iresult	=	GetFreshframe(pucBufRaw10,uiRawImgSize_raw10, ucFrameType_raw10, !uistepcount)) break;*/
-		}
 		
-
 		ROPLOW::AFCMTFItemDataInitial(vectorItemData, pstParameter, iMotorPosNow);
+		ROPLOW::AFCMTFItemDataInitial_G(vectorItemData_EX, pstParameter, iMotorPosNow);
 		iteratorItemData	=	vectorItemData.end() - 1;
+		iteratorItemData_ex	=	vectorItemData_EX.end() - 1;
 
 		vectorDraw.clear();
 		bNext	=	true;
@@ -3529,19 +3517,19 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 			if(iresult	=	classRolongoTest.HisCCMMTF(pucBufRaw, iImgWidth, iImgHeight, stMTFAutoROI, pstParameter->stMTFBasic.algswitch, flvalue)) break;
 		}
 
-		_HisCCMAlg_AFC_MTF_DataItem_EX stItemData_EX; //************** 2018.04.11 Add
-		stItemData_EX.vectorFOV.resize(pstParameter->vectorMTFItem.size());
+		//_HisCCMAlg_AFC_MTF_DataItem_EX stItemData_EX; //************** 2018.04.11 Add
+		//stItemData_EX.vectorFOV.resize(pstParameter->vectorMTFItem.size());
 
 		iteratorItemData->stCenterBlock	=	stMTFAutoROI;
-		stItemData_EX.stCenterBlock=stMTFAutoROI;
+		iteratorItemData_ex->stCenterBlock	=	stMTFAutoROI;
 
 		if(pstParameter->stMTFBasic.algswitch != 7){
 			iteratorItemData->flCenterValue		=	flvalue;
 		}else{
 			iteratorItemData->flCenterValue		=	(flHvalue+flVvalue)/2;
-			stItemData_EX.flCenterValue=(flHvalue+flVvalue)/2;
-			stItemData_EX.flHCenterValue=flHvalue;
-			stItemData_EX.flVCenterValue=flVvalue;
+			iteratorItemData_ex->flCenterValue=(flHvalue+flVvalue)/2;
+			iteratorItemData_ex->flHCenterValue=flHvalue;
+			iteratorItemData_ex->flVCenterValue=flVvalue;
 		}
 
 
@@ -3572,13 +3560,13 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 					iteratorItemData->vectorFOV.at(y).flValue[x]		=	flvalue;
 				}else{
 					iteratorItemData->vectorFOV.at(y).flValue[x]		=	(flHvalue+flVvalue)/2;
-					stItemData_EX.vectorFOV.at(y).flValue[x]=(flHvalue+flVvalue)/2;
-					stItemData_EX.vectorFOV.at(y).flHValue[x]=flHvalue;
-					stItemData_EX.vectorFOV.at(y).flVValue[x]=flVvalue;
+					iteratorItemData_ex->vectorFOV.at(y).flValue[x]=(flHvalue+flVvalue)/2;
+					iteratorItemData_ex->vectorFOV.at(y).flHValue[x]=flHvalue;
+					iteratorItemData_ex->vectorFOV.at(y).flVValue[x]=flVvalue;
 				}
 
 				iteratorItemData->vectorFOV.at(y).stBlock[x]	=	stMTFAutoROI;
-				stItemData_EX.vectorFOV.at(y).stBlock[x]=stMTFAutoROI;
+				iteratorItemData_ex->vectorFOV.at(y).stBlock[x]=stMTFAutoROI;
 				pstTemp++;
 				flmax	=	max(flmax, flvalue);
 				flmin		=	min(flmin, flvalue);
@@ -3592,7 +3580,7 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 		if(pstParameter->stMTFBasic.algswitch != 7){
 			ROPLOW::AddDrawMTFHA(*iteratorItemData, iImgWidth, iImgHeight, vectorDraw, pstParameter->stMTFBasic.flGradeMultiple);
 		}else{
-			ROPLOW::AddDrawMTFHE(stItemData_EX, iImgWidth, iImgHeight, vectorDraw,*pstParameter,pstParameter->stMTFBasic.flGradeMultiple);
+			ROPLOW::AddDrawMTFHE(*iteratorItemData_ex, iImgWidth, iImgHeight, vectorDraw,*pstParameter,pstParameter->stMTFBasic.flGradeMultiple);
 		}
 
 
@@ -3617,68 +3605,13 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 
 			_CODE_RJAFA_LP_ASIGNDRAW
 
-			
-				/*FILE *pfile;
-				fopen_s(&pfile,"AFC_FAR_MTF.csv","rb+");
-				if(!pfile){
-				fopen_s(&pfile,"AFC_FAR_MTF.csv","w+");
-				fprintf(pfile,"S/N,Center_H,Center_V,F0.3_LT_H,F0.3_LT_V,F0.3_RT_H,F0.3_RT_V,F0.3_RB_H,F0.3_RB_V,F0.3_LB_H,F0.3_LB_V,\
-							  F0.4_R_H,F0.4_R_V,F0.4_L_H,F0.4_L_V,F0.7_LT_H,F0.7_LT_V,F0.7_RT_H,F0.7_RT_V,F0.7_RB_H,F0.7_RB_V,F0.7_LB_H,F0.7_LB_V,Distance,area1,area2,length1,length2,\n");
-				}else{
-					fseek(pfile,0,SEEK_END);
-				}
-
-				QString strSerialNumber;
-				classLog->getserialnumber(strSerialNumber);
-
-				fprintf(pfile,"%s,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f\n",strSerialNumber.toLatin1().data(),stItemData_EX.flHCenterValue,stItemData_EX.flVCenterValue,\
-					stItemData_EX.vectorFOV.at(0).flHValue[0],stItemData_EX.vectorFOV.at(0).flVValue[0],\
-					stItemData_EX.vectorFOV.at(0).flHValue[1],stItemData_EX.vectorFOV.at(0).flVValue[1],\
-					stItemData_EX.vectorFOV.at(0).flHValue[2],stItemData_EX.vectorFOV.at(0).flVValue[2],\
-					stItemData_EX.vectorFOV.at(0).flHValue[3],stItemData_EX.vectorFOV.at(0).flVValue[3],\
-					stItemData_EX.vectorFOV.at(1).flHValue[0],stItemData_EX.vectorFOV.at(1).flVValue[0],\
-					stItemData_EX.vectorFOV.at(1).flHValue[1],stItemData_EX.vectorFOV.at(1).flVValue[1],\
-					stItemData_EX.vectorFOV.at(2).flHValue[0],stItemData_EX.vectorFOV.at(2).flVValue[0],\
-					stItemData_EX.vectorFOV.at(2).flHValue[1],stItemData_EX.vectorFOV.at(2).flVValue[1],\
-					stItemData_EX.vectorFOV.at(2).flHValue[2],stItemData_EX.vectorFOV.at(2).flVValue[2],\
-					stItemData_EX.vectorFOV.at(2).flHValue[3],stItemData_EX.vectorFOV.at(2).flVValue[3],\
-					flMarkInfo[0],flMarkInfo[1],flMarkInfo[2],flMarkInfo[3],flMarkInfo[4]
-				);
-
-				fclose(pfile);*/
-				
-				_CODE_AFC_MTF_EXIT1
+			_CODE_AFC_MTF_EXIT1
 
 		}else{
 			iresult = classAlgorithm.HisAFCTactics_MTFHA_DB_HA(pstParameter->stTacticsBasic, vectorItemData, *pstAFCMTFDB, iMotorPosNow);
 		}
+		//**************************************************************************************************************************
 
-
-		//*******************************************
-
-
-
-
-		//******************  2018/01/09 ok2 Code ********************
-		/*if(iresult){
-		vectorItemData.at(0).flCenterSpec=vectorItemData.at(0).flCenterGradeB;
-		for (int i=0;i<vectorItemData.at(0).vectorFOV.size();i++)
-		{
-		vectorItemData.at(0).vectorFOV.at(i).flSpec=vectorItemData.at(0).vectorFOV.at(i).flGradeB;
-		}
-
-		iresult=classAlgorithm.HisAFCTactics_MTFHA_DB_HA(pstParameter->stTacticsBasic, vectorItemData, *pstAFCMTFDB, iMotorPosNow);
-		if(!iresult){
-		vectorDraw.clear();
-		ROPLOW::AddDrawMTFHA(*iteratorItemData, iImgWidth, iImgHeight, vectorDraw, pstParameter->stMTFBasic.flGradeMultiple);
-
-		itemshareData.bOK2=true;
-
-		iresult=0;
-		}
-		}else{
-		break;
-		}*/
 		_CODE_RJAFA_LP_ASIGNDRAW
 			if(iresult)	break;//
 		emit information("next motor: " % QString::number(iMotorPosNow));
@@ -3730,58 +3663,6 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 			emit plotpainter(2);
 		}
 	}
-	/***************************************
-	For end
-	****************************************/  
-
-	//********** 线性 *****************
-	/*if(vectorItemData.size()>2){
-		emit information(QString::fromLocal8Bit("开始检测线性。。。"));
-		FILE *pfile;
-		fopen_s(&pfile,"LineDebug.csv","wb+");
-		fprintf(pfile,"step1,step2,mtf1,mtf2,dist\n");
-		double dflMaxDist=0;
-		for (int i=1;i<vectorItemData.size()-2;i++)
-		{
-			double xdist=(double)abs(vectorItemData.at(i).sMotorStep-vectorItemData.at(i+1).sMotorStep);
-			double ydist=(double)abs(vectorItemData.at(i).flCenterValue-vectorItemData.at(i+1).flCenterValue);
-			double dflDist=ydist/xdist;
-
-			fprintf(pfile,"%d,%d,%f,%f,%f\n",vectorItemData.at(i).sMotorStep,vectorItemData.at(i+1).sMotorStep,\
-				vectorItemData.at(i).flCenterValue,vectorItemData.at(i+1).flCenterValue,dflDist);
-
-			if(vectorItemData.at(i).flCenterValue<vectorItemData.at(i-1).flCenterValue&&vectorItemData.at(i).flCenterValue<vectorItemData.at(i+1).flCenterValue){
-				float fMaxMTF=vectorItemData.at(i-1).flCenterValue>vectorItemData.at(i+1).flCenterValue?vectorItemData.at(i-1).flCenterValue:vectorItemData.at(i+1).flCenterValue;
-				emit information(QString::fromLocal8Bit("凹点高度差:")+QString::number(fMaxMTF-vectorItemData.at(i).flCenterValue));
-
-				if(fMaxMTF-vectorItemData.at(i).flCenterValue>dflDist>vectorItemData.at(0).flCenterGradeB){
-					emit information(QString::fromLocal8Bit("线性规格超标:")+QString::number(dflMaxDist));
-					fclose(pfile);
-					iresult=-1;
-					_CODE_RJAFA_LP_ASIGNDRAW
-						HisReleaseMalloc(pucBufRaw);
-					_CODE_AFC_MTF_EXIT1
-				}
-
-			}
-
-			if(0&&dflDist>vectorItemData.at(0).flCenterGradeB&&ydist>vectorItemData.at(0).flCenterWeight){
-				emit information(QString::fromLocal8Bit("线性规格超标:")+QString::number(dflMaxDist));
-
-				fclose(pfile);
-				iresult=-1;
-				_CODE_RJAFA_LP_ASIGNDRAW
-					HisReleaseMalloc(pucBufRaw);
-				_CODE_AFC_MTF_EXIT1
-			}
-
-			if(dflDist>dflMaxDist){
-				dflMaxDist=dflDist;
-			}
-		}
-		fclose(pfile);
-	
-	}*/
 	//******************************************************
 
 
@@ -3822,25 +3703,6 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 		emit plotpainter(2);
 	}
 
-	//曲线拟合
-	/*
-	if (pstParameter->stTacticsBasic.bCurveFitting && \
-	(pstParameter->stTacticsBasic.ucTactics == _HisCCMAlg_Rolongo_AFC_Tactics_PEAK || pstParameter->stTacticsBasic.ucTactics == _HisCCMAlg_Rolongo_AFC_Tactics_Inflexion))
-	{
-	float peak;
-
-	if (peak > 30000.0f){
-	emit information("curve fitting return error!!!");
-	return HisFX3Error_Other;
-	}
-
-	iMotorPosNow = peak + 0.5f;
-	if(iresult = setMotor(itemshareData.ccmhardwareParameter->motortype.toAscii().data(), itemshareData.previewParameter->ucSlave, \
-	itemshareData.ccmhardwareParameter->projectname.toAscii().data(), iMotorPosNow, globalFunPointer.ReadHisFX3IIC, globalFunPointer.WriteHisFX3IIC, globalFunPointer.SetHisFX3IICSpeed, globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, \
-	globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI)) return iresult;
-	::Sleep(pstParameter->stTacticsBasic.usStepDelay);
-	}
-	*/
 
 	unsigned int uiSaveIndex	=	0xFFFFFFFF;
 	float flMaxWeightValue	=	-10.0f;
@@ -3881,7 +3743,12 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 			iresult = iresult2;
 
 		vectorDraw.clear();
-		ROPLOW::AddDrawMTFHA(vectorItemData.at(uiSaveIndex), iImgWidth, iImgHeight, vectorDraw, pstParameter->stMTFBasic.flGradeMultiple);
+
+		if(pstParameter->stMTFBasic.algswitch != 7){
+			ROPLOW::AddDrawMTFHA(vectorItemData.at(uiSaveIndex), iImgWidth, iImgHeight, vectorDraw, pstParameter->stMTFBasic.flGradeMultiple);
+		}else{
+			ROPLOW::AddDrawMTFHE(vectorItemData_EX.at(uiSaveIndex), iImgWidth, iImgHeight, vectorDraw,*pstParameter,pstParameter->stMTFBasic.flGradeMultiple);
+		}
 		
 		/*{  
 			
@@ -4004,7 +3871,13 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 	}
 
 	if(iresult){
-		ROPLOW::saveMTFHAAFCResult(uctype, false, uiSaveIndex, vectorItemData, stLinearResult, pstParameter, *classLog, iImgWidth, iImgHeight);
+		if (pstParameter->stMTFBasic.algswitch == 7)
+		{
+			ROPLOW::saveMTFHAAFCResult_G(uctype, false,uiSaveIndex,vectorItemData_EX, stLinearResult, pstParameter, *classLog, iImgWidth, iImgHeight);
+		}else{
+			ROPLOW::saveMTFHAAFCResult(uctype, false, uiSaveIndex, vectorItemData, stLinearResult, pstParameter, *classLog, iImgWidth, iImgHeight);
+		}
+		
 		_CODE_AFC_MTF_EXIT1
 	}
 
@@ -4052,7 +3925,12 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 		else iFarPeakMotorDec	=	vectorItemData.at(uiSaveIndex).sMotorStep;
 	}
 
-	ROPLOW::saveMTFHAAFCResult(uctype, !iresult, uiSaveIndex, vectorItemData, stLinearResult, pstParameter, *classLog, iImgWidth, iImgHeight);
+	if (pstParameter->stMTFBasic.algswitch == 7)
+	{
+		ROPLOW::saveMTFHAAFCResult_G(uctype, false,uiSaveIndex,vectorItemData_EX, stLinearResult, pstParameter, *classLog, iImgWidth, iImgHeight);
+	}else{
+		ROPLOW::saveMTFHAAFCResult(uctype, false, uiSaveIndex, vectorItemData, stLinearResult, pstParameter, *classLog, iImgWidth, iImgHeight);
+	}
 
 	if(pstParameter->stTacticsBasic.bDataBase && !iresult){
 		ROPLOW::AFCMTFToDB(uctype, pstParameter, pstAFCMTFDB, vectorItemData, uiSaveIndex, bBoxChannel1);

@@ -83,6 +83,7 @@ namespace ROPLOW
 	void AFCSFRHAItemDataInitial(std::vector<_HisCCMAlg_AFC_SFRHA_DataItem>& vectorItemData, _SFRAFCCAParameter* pstParameter, int& iMotor);
 	void MFASFRHAItemDataInitial(_HisCCMAlg_AFC_SFRHA_DataItem& stItemData, _SFRFACAParameter* pstParameter);
 	void AFCMTFItemDataInitial(std::vector<_HisCCMAlg_AFC_MTF_DataItem>& vectorItemData, _mtfAFCParameter* pstParameter, int& iMotor);
+	void AFCMTFItemDataInitial_G(std::vector<_HisCCMAlg_AFC_MTF_DataItem_EX>& vectorItemData, _mtfAFCParameter* pstParameter, int& iMotor);
 	void MFAMTFItemDataInitial(_HisCCMAlg_AFC_MTF_DataItem& stItemData, _mtffaParameter* pstParameter);
 
 	void showImageLable(QString strPath, int iWidth, int iHeight, unsigned int uiDataFormat);
@@ -4953,6 +4954,79 @@ namespace ROPLOW
 			++(logitem.itemtype);
 		}
 	}
+
+	__inline void saveMTFHAAFCResult_G(unsigned int uiType, bool bResult, unsigned int uiIndex, std::vector<_HisCCMAlg_AFC_MTF_DataItem_EX>& vectorDataItem, \
+		_HisCCMAlg_AFC_Linear_Result& stLinearResult, _mtfAFCParameter* pstParameter, HisFX3Log& classLog, int iWidth, int iHeight)
+	{
+		if(vectorDataItem.empty()) return;
+		_HisLog_Item logitem;
+		QString strKey1;
+		if(uiType == 1) {
+			logitem.itemtype		=	classLog.getmaxtypeindex(_HISLOG_CLASSIFY_MTFFCMIDDLE);
+			strKey1	=	"afc_mtf_middle_";
+		}
+		else if(uiType == 2)	{
+			logitem.itemtype		=	classLog.getmaxtypeindex(_HISLOG_CLASSIFY_MTFFCFAR);
+			strKey1	=	"afc_mtf_far_";
+		}
+		else {
+			logitem.itemtype		=	classLog.getmaxtypeindex(_HISLOG_CLASSIFY_MTFFCNEAR);
+			strKey1	=	"afc_mtf_near_";
+		}
+
+		std::vector<_HisCCMAlg_AFC_MTF_DataItem_EX>::iterator iteratorsave	=	vectorDataItem.begin() + uiIndex;
+
+		logitem.itemkey		=	strKey1 % "result";
+		logitem.itemvalue	=	(bResult)?("OK"):("NG");
+		classLog.push_back(logitem);
+		++(logitem.itemtype);
+
+		QString strKey2, strKey3;
+		strKey2		=	strKey1;
+
+		logitem.itemkey		=	strKey2 % "center_H";
+		logitem.itemvalue	=	iteratorsave->flHCenterValue;
+		classLog.push_back(logitem);
+		++(logitem.itemtype);
+
+		logitem.itemkey		=	strKey2 % "center_V";
+		logitem.itemvalue	=	iteratorsave->flVCenterValue;
+		classLog.push_back(logitem);
+		++(logitem.itemtype);
+
+		for(unsigned int x=0;	x<iteratorsave->vectorFOV.size(); ++x){
+			strKey2		=	strKey1 % "fov" % QString::number(iteratorsave->vectorFOV.at(x).flFOV, 'f', 3) % "_";
+			for(unsigned int i=0;	i<iteratorsave->vectorFOV.at(x).ucBlockCount;	++i){
+				strKey3	=	strKey2 % getBlockName(iteratorsave->vectorFOV.at(x).stBlock[i], iWidth, iHeight)%"_H";
+				logitem.itemkey		=	strKey3;
+				logitem.itemvalue	=	iteratorsave->vectorFOV.at(x).flHValue[i];
+				classLog.push_back(logitem);
+				++(logitem.itemtype);
+
+				strKey3	=	strKey2 % getBlockName(iteratorsave->vectorFOV.at(x).stBlock[i], iWidth, iHeight)%"_V";
+				logitem.itemkey		=	strKey3;
+				logitem.itemvalue	=	iteratorsave->vectorFOV.at(x).flVValue[i];
+				classLog.push_back(logitem);
+				++(logitem.itemtype);
+			}
+		}
+
+		if(pstParameter->stTacticsBasic.ucTactics == _HisCCMAlg_Rolongo_AFC_Tactics_Linear){
+			if(stLinearResult.bTestStartMotor){
+				logitem.itemkey		=	strKey1 % "start_current";
+				logitem.itemvalue	=	stLinearResult.iStartMotor;
+				classLog.push_back(logitem);
+				++(logitem.itemtype);
+			}
+		}
+		else if(pstParameter->stTacticsBasic.ucTactics != _HisCCMAlg_Rolongo_AFC_Tactics_Single){
+			logitem.itemkey		=	strKey1 % "motor_pos";
+			logitem.itemvalue	=	iteratorsave->sMotorStep;
+			classLog.push_back(logitem);
+			++(logitem.itemtype);
+		}
+	}
+
 
 	__inline int AFCMTFHAFromDB(unsigned char uctype, _mtfAFCParameter* pstPara, _HisCCMAlg_AFC_MTF_DB* pDB, bool bChannel1)
 	{
