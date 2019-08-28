@@ -2717,6 +2717,14 @@ struct _HisCCMOTP_Config{
 	float flWB_CenterB2G;
 	float flWB_CenterGb2Gr;
 
+	float flWB_CenterChannelR_3000K;
+	float flWB_CenterChannelGr_3000K;
+	float flWB_CenterChannelGb_3000K;
+	float flWB_CenterChannelB_3000K;
+	float flWB_CenterR2G_3000K;
+	float flWB_CenterB2G_3000K;
+	float flWB_CenterGb2Gr_3000K;
+
 	float flCLSC_R2G_LT;
 	float flCLSC_R2G_RT;
 	float flCLSC_R2G_LB;

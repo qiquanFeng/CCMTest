@@ -13572,6 +13572,21 @@ int itemprocess::otpburn()
 	if(stParameter.flWB_CenterGb2Gr >= 0.0f)
 		_CODE_LOG_PUSHBACK("OTPBurn_WB_Gb/Gr", stParameter.flWB_CenterGb2Gr);
 
+	if(stParameter.flWB_CenterChannelR >= 0.0f)
+		_CODE_LOG_PUSHBACK("3000K_OTPBurn_WB_ChannelR(-OB)", stParameter.flWB_CenterChannelR_3000K);
+	if(stParameter.flWB_CenterChannelB >= 0.0f)
+		_CODE_LOG_PUSHBACK("3000K_OTPBurn_WB_ChannelB(-OB)", stParameter.flWB_CenterChannelB_3000K);
+	if(stParameter.flWB_CenterChannelGr >= 0.0f)
+		_CODE_LOG_PUSHBACK("3000K_OTPBurn_WB_ChannelGr(-OB)", stParameter.flWB_CenterChannelGr_3000K);
+	if(stParameter.flWB_CenterChannelGb >= 0.0f)
+		_CODE_LOG_PUSHBACK("3000K_OTPBurn_WB_ChannelGb(-OB)", stParameter.flWB_CenterChannelGb_3000K);
+	if(stParameter.flWB_CenterR2G >= 0.0f)
+		_CODE_LOG_PUSHBACK("3000K_OTPBurn_WB_R/G", stParameter.flWB_CenterR2G_3000K);
+	if(stParameter.flWB_CenterB2G >= 0.0f)
+		_CODE_LOG_PUSHBACK("3000K_OTPBurn_WB_B/G", stParameter.flWB_CenterB2G_3000K);
+	if(stParameter.flWB_CenterGb2Gr >= 0.0f)
+		_CODE_LOG_PUSHBACK("3000K_OTPBurn_WB_Gb/Gr", stParameter.flWB_CenterGb2Gr_3000K);
+
 	if(iresult){
 		itemshareData.itemparameterLock.unlock();
 		return iresult;
@@ -14135,6 +14150,36 @@ int itemprocess::otpcheck()
 		_CODE_LOG_PUSHBACK("OTPCheck_ColorUniformMax_R2Gr", stParameter.flLSC_WB2CenterMaxResult_R2Gr);
 	if(stParameter.flLSC_WB2CenterMaxResult_B2Gr >= 0.0f)
 		_CODE_LOG_PUSHBACK("OTPCheck_ColorUniformMax_B2Gr", stParameter.flLSC_WB2CenterMaxResult_B2Gr);
+
+	if(stParameter.flWB_CenterChannelR >= 0.0f)
+		_CODE_LOG_PUSHBACK("OTPCheck_WB_ChannelR(-OB)", stParameter.flWB_CenterChannelR);
+	if(stParameter.flWB_CenterChannelB >= 0.0f)
+		_CODE_LOG_PUSHBACK("OTPCheck_WB_ChannelB(-OB)", stParameter.flWB_CenterChannelB);
+	if(stParameter.flWB_CenterChannelGr >= 0.0f)
+		_CODE_LOG_PUSHBACK("OTPCheck_WB_ChannelGr(-OB)", stParameter.flWB_CenterChannelGr);
+	if(stParameter.flWB_CenterChannelGb >= 0.0f)
+		_CODE_LOG_PUSHBACK("OTPCheck_WB_ChannelGb(-OB)", stParameter.flWB_CenterChannelGb);
+	if(stParameter.flWB_CenterR2G >= 0.0f)
+		_CODE_LOG_PUSHBACK("OTPCheck_WB_R/G", stParameter.flWB_CenterR2G);
+	if(stParameter.flWB_CenterB2G >= 0.0f)
+		_CODE_LOG_PUSHBACK("OTPCheck_WB_B/G", stParameter.flWB_CenterB2G);
+	if(stParameter.flWB_CenterGb2Gr >= 0.0f)
+		_CODE_LOG_PUSHBACK("OTPCheck_WB_Gb/Gr", stParameter.flWB_CenterGb2Gr);
+
+	if(stParameter.flWB_CenterChannelR >= 0.0f)
+		_CODE_LOG_PUSHBACK("3000K_OTPCheck_WB_ChannelR(-OB)", stParameter.flWB_CenterChannelR_3000K);
+	if(stParameter.flWB_CenterChannelB >= 0.0f)
+		_CODE_LOG_PUSHBACK("3000K_OTPCheck_WB_ChannelB(-OB)", stParameter.flWB_CenterChannelB_3000K);
+	if(stParameter.flWB_CenterChannelGr >= 0.0f)
+		_CODE_LOG_PUSHBACK("3000K_OTPCheck_WB_ChannelGr(-OB)", stParameter.flWB_CenterChannelGr_3000K);
+	if(stParameter.flWB_CenterChannelGb >= 0.0f)
+		_CODE_LOG_PUSHBACK("3000K_OTPCheck_WB_ChannelGb(-OB)", stParameter.flWB_CenterChannelGb_3000K);
+	if(stParameter.flWB_CenterR2G >= 0.0f)
+		_CODE_LOG_PUSHBACK("3000K_OTPCheck_WB_R/G", stParameter.flWB_CenterR2G_3000K);
+	if(stParameter.flWB_CenterB2G >= 0.0f)
+		_CODE_LOG_PUSHBACK("3000K_OTPCheck_WB_B/G", stParameter.flWB_CenterB2G_3000K);
+	if(stParameter.flWB_CenterGb2Gr >= 0.0f)
+		_CODE_LOG_PUSHBACK("3000K_OTPCheck_WB_Gb/Gr", stParameter.flWB_CenterGb2Gr_3000K);
 
 
 	if(iresult){
