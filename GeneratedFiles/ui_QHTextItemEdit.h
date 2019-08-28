@@ -3091,7 +3091,7 @@ public:
 
         retranslateUi(QHTextItemEdit);
 
-        stackedWidget->setCurrentIndex(30);
+        stackedWidget->setCurrentIndex(6);
         ebaudcomboBox->setCurrentIndex(2);
         eparcomboBox->setCurrentIndex(2);
 
@@ -3142,6 +3142,8 @@ public:
          << QApplication::translate("QHTextItemEdit", "Middle Focus Dec From OTP", 0, QApplication::UnicodeUTF8)
          << QApplication::translate("QHTextItemEdit", "Near Focus Dec From OTP", 0, QApplication::UnicodeUTF8)
          << QApplication::translate("QHTextItemEdit", "Manual Dec", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("QHTextItemEdit", "AR1337_Pos1", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("QHTextItemEdit", "AR1337_Pos2", 0, QApplication::UnicodeUTF8)
         );
         label_30->setText(QApplication::translate("QHTextItemEdit", "Register Setup Group:", 0, QApplication::UnicodeUTF8));
         lscreplacecheckBox->setText(QApplication::translate("QHTextItemEdit", "Replace", 0, QApplication::UnicodeUTF8));

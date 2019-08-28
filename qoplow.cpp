@@ -814,6 +814,44 @@ namespace ROPLOW
 		}
 	}
 
+	void MFAMTFItemDataInitial_Ex(_HisCCMAlg_AFC_MTF_DataItem_EX& stItemData, _mtffaParameter* pstParameter)
+	{
+		stItemData.sMotorStep			=	0;
+		stItemData.flWeightValue		=	0.0f;	
+		stItemData.ucStatus				=	0x0;
+		stItemData.dflMarkDistance	=	0.0;
+		stItemData.ucFlag					=	0x0;
+		stItemData.flCenterValue		=	0.0f;
+		stItemData.flCenterWeight		=	pstParameter->stMTFBasic.flcenterweight;
+		stItemData.flCenterSpec		=	pstParameter->stMTFBasic.flcenterspec;
+		stItemData.ucGrade				=	pstParameter->stMTFBasic.ucGrade;
+		stItemData.flCenterGradeD		=	pstParameter->stMTFBasic.flCenterGradeD;
+		stItemData.flCenterGradeC		=	pstParameter->stMTFBasic.flCenterGradeC;
+		stItemData.flCenterGradeB		=	pstParameter->stMTFBasic.flCenterGradeB;
+		stItemData.flCenterGradeE			=	pstParameter->stMTFBasic.flCenterGradeE;
+		memset(&(stItemData.stCenterBlock), 0, sizeof(RECT));
+
+		unsigned int uiFOVSize	=	pstParameter->vectorMTFItem.size();
+		stItemData.vectorFOV.resize(uiFOVSize);
+		for(unsigned int x=0;	x<uiFOVSize;	++x){
+			stItemData.vectorFOV.at(x).ucStatus	=	0x0;
+			stItemData.vectorFOV.at(x).ucBlockCount		=	pstParameter->vectorMTFItem.at(x).ucBlockCount;
+			stItemData.vectorFOV.at(x).flFOV			=	pstParameter->vectorMTFItem.at(x).flFOV;
+			stItemData.vectorFOV.at(x).flAngle		=	pstParameter->vectorMTFItem.at(x).flAngle;
+			stItemData.vectorFOV.at(x).flWeight		=	pstParameter->vectorMTFItem.at(x).flWeight;
+			stItemData.vectorFOV.at(x).flSpec		=	pstParameter->vectorMTFItem.at(x).flSpec;
+			stItemData.vectorFOV.at(x).flSpecUniform		=	pstParameter->vectorMTFItem.at(x).flSpecUniform;
+			stItemData.vectorFOV.at(x).flGradeD		=	pstParameter->vectorMTFItem.at(x).flGradeD;
+			stItemData.vectorFOV.at(x).flGradeC		=	pstParameter->vectorMTFItem.at(x).flGradeC;
+			stItemData.vectorFOV.at(x).flGradeB			=	pstParameter->vectorMTFItem.at(x).flGradeB;
+			stItemData.vectorFOV.at(x).flGradeE			=	pstParameter->vectorMTFItem.at(x).flGradeE;
+
+			stItemData.vectorFOV.at(x).flUniformValue	=	0.0f;
+			memset(stItemData.vectorFOV.at(x).flValue, 0, sizeof(float) *4);
+			memset(stItemData.vectorFOV.at(x).stBlock, 0, sizeof(RECT) *4);
+		}
+	}
+
 	void LpMFAItemDataAdd(_HisCCMAlg_AFC_LP_DataItem& stItemData, RECT& stROI, double& dflValue, unsigned int uiFOVIndex, unsigned int uiROIIndex)
 	{
 		std::vector<_HisCCMAlg_AFC_LP_DataItem_FOV>::iterator foviterator = stItemData.vectorFOV.begin() + uiFOVIndex;

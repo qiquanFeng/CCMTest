@@ -2958,6 +2958,7 @@ int itemprocess::mtfFA(unsigned int uiOpMode)
 	_HisCCMAlg_AFC_MTF_DataItem stItemData, stMaxItem;
 
 	ROPLOW::MFAMTFItemDataInitial(stItemData, pstParameter);
+	ROPLOW::MFAMTFItemDataInitial_Ex(stItemData_EX, pstParameter);
 	stMaxItem	=	stItemData;
 
 	_ShadingImageInfo ImgInfo;
@@ -3144,25 +3145,27 @@ int itemprocess::mtfFA(unsigned int uiOpMode)
 		Sleep(5);
 	}
 
+	iresult	=	(stItemData.ucStatus != 0)?(0):(HisCCMError_Result);
+	if(uiOpMode != 1)
+	{
+		if(pstParameter->stMTFBasic.algswitch != 7)
+			ROPLOW::saveMTFHAMFAResult(!iresult, stItemData, pstParameter, *classLog, iImgWidth, iImgHeight);
+		else
+			ROPLOW::saveMTFHAMFAResult_G(!iresult, stItemData_EX, pstParameter, *classLog, iImgWidth, iImgHeight);
+	}
+
 	if(iresult){
 		HisReleaseMalloc(pucBufRaw10);
 		_CODE_AFC_MTF_EXIT1
 	}
-		if(!threadshareData.GetHisPreviewflag()){
-			iresult	=	HisCCMError_NotPreivew;
-			HisReleaseMalloc(pucBufRaw10);
-			_CODE_AFC_MTF_EXIT1
-		}
-
-		iresult	=	(stItemData.ucStatus != 0)?(0):(HisCCMError_Result);
-
-		if(uiOpMode != 1)
-		{
-			ROPLOW::saveMTFHAMFAResult(!iresult, stItemData, pstParameter, *classLog, iImgWidth, iImgHeight);
-		}
-
+	if(!threadshareData.GetHisPreviewflag()){
+		iresult	=	HisCCMError_NotPreivew;
 		HisReleaseMalloc(pucBufRaw10);
 		_CODE_AFC_MTF_EXIT1
+	}
+
+	HisReleaseMalloc(pucBufRaw10);
+	_CODE_AFC_MTF_EXIT1
 }
 
 
@@ -3587,6 +3590,8 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 		//************ 2018.04.11 判断 ************** 
 		if(pstParameter->stTacticsBasic.ucTactics == _HisCCMAlg_Rolongo_AFC_Tactics_Single&&pstParameter->stMTFBasic.algswitch == 7){
 			//Center
+			stItemData_EX=*iteratorItemData_ex;
+
 			if(stItemData_EX.flHCenterValue<pstParameter->stMTFBasic.flHcenterspec||stItemData_EX.flVCenterValue<pstParameter->stMTFBasic.flVcenterspec\
 				||stItemData_EX.flCenterValue<pstParameter->stMTFBasic.flcenterspec){
 				iresult=-1;
@@ -3604,7 +3609,8 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 			}
 
 			_CODE_RJAFA_LP_ASIGNDRAW
-
+			if (iresult)
+				ROPLOW::saveMTFHAAFCResult_G(uctype, false,0,vectorItemData_EX, stLinearResult, pstParameter, *classLog, iImgWidth, iImgHeight);
 			_CODE_AFC_MTF_EXIT1
 
 		}else{
@@ -10040,6 +10046,10 @@ int itemprocess::whitePanelShading()
 
 		if(!stShadingData.bResult)	iresult	=	HisCCMError_Result;
 
+		float flMin=min(min(min(stShadingData.flLT,stShadingData.flRT),stShadingData.flLB),stShadingData.flRB);
+		float flMax=max(max(max(stShadingData.flLT,stShadingData.flRT),stShadingData.flLB),stShadingData.flRB);
+		stShadingData.flDev=(flMax-flMin)/flMax;
+
 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("左上角shanding: ") % QString::number(stShadingData.flLT));
 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("右上角shanding: ") % QString::number(stShadingData.flRT));
 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("左下角shanding: ") % QString::number(stShadingData.flLB));
@@ -12881,7 +12891,7 @@ int itemprocess::setMotorExe(int imotor, int iType)
 	int iresult	=		getccmhardwareParameter(false);
 	if(iresult)	return iresult;
 	bool bOTP	=	false;
-	if(iType == 0 || iType == 1 || iType == 2){
+	if(iType == 0 || iType == 1 || iType == 2|| iType == 3|| iType == 4){
 		if(iresult = getafburnParameter(false)) return iresult;
 		bOTP	=	true;
 	}
@@ -12956,15 +12966,21 @@ int itemprocess::setMotorExe(int imotor, int iType)
 			emit information(QTextCodec::codecForName( "GBK")->toUnicode("烧录马达值：") % QString::number(stParameter.iNearMotor) % \
 				QTextCodec::codecForName( "GBK")->toUnicode("减去OFFSET: ") % QString::number(itemshareData.afburnParameter->iNearMotorOffset));
 		}
-		else if(iType	==	0){	
+		else if(iType	==	1){	
 			imotor		=	stParameter.iMiddleMotor - itemshareData.afburnParameter->iMiddleMotorOffset;
 			emit information(QTextCodec::codecForName( "GBK")->toUnicode("烧录马达值：") % QString::number(stParameter.iMiddleMotor) % \
 				QTextCodec::codecForName( "GBK")->toUnicode("减去OFFSET: ") % QString::number(itemshareData.afburnParameter->iMiddleMotorOffset));
 		}
-		else {	
+		else if(iType == 2){	
 			imotor		=	stParameter.iInfinitMotor - itemshareData.afburnParameter->iFarMotorOffset;
 			emit information(QTextCodec::codecForName( "GBK")->toUnicode("烧录马达值：") % QString::number(stParameter.iInfinitMotor) % \
 				QTextCodec::codecForName( "GBK")->toUnicode("减去OFFSET: ") % QString::number(itemshareData.afburnParameter->iFarMotorOffset));
+		}else if(iType ==3){
+			imotor=stParameter.iInfinitMotor+int((stParameter.iNearMotor-stParameter.iInfinitMotor)*0.15f+0.5f);
+			emit information(QTextCodec::codecForName( "GBK")->toUnicode("AR1337_Pos1:")%QString::number(imotor));
+		}else if(iType == 4){
+			imotor=stParameter.iNearMotor-int((stParameter.iNearMotor-stParameter.iInfinitMotor)*0.15f+0.5f);
+			emit information(QTextCodec::codecForName( "GBK")->toUnicode("AR1337_Pos2:")%QString::number(imotor));
 		}
 	}
 
@@ -25707,6 +25723,9 @@ int itemprocess::gereralAutoFA()
 	std::vector<_HisAutoFA_Rolongo_DataItem> vectorItemData;
 	std::vector<_HisAutoFA_Rolongo_DataItem>::iterator iteratorItemData;
 
+	std::vector<_HisAutoFA_Rolongo_DataItem_EX> vectorItemData_Ex;
+	std::vector<_HisAutoFA_Rolongo_DataItem_EX>::iterator iteratorItemData_Ex;
+
 	unsigned char ucRetry1CCW = 0, ucRetry1CW = 0, ucRetry2CCW = 0, ucRetry2CW = 0, ucDirect = 0xFF, ucType = 0x0;
 	unsigned int uiProcess = 0; //0-CCW 1-CW 2-retry1 3-upcheck 4-retry2 5-upcheck2 6-underspin
 	int iCCWStatus = -1, iCWStatus = -1;
@@ -25793,7 +25812,12 @@ int itemprocess::gereralAutoFA()
 			itemshareData.sfrfacaParameter, itemshareData.lpmfaParameter, dflAbsAngle, itemshareData.afaBasicStacticsParameter->uclensleafs, \
 			itemshareData.afaBasicStacticsParameter->dfllenspitch, ucDirect, ucType,  NULL);
 
+		ROPLOW::AFARolongoItemDataInitial(vectorItemData_Ex, itemshareData.afaBasicStacticsParameter, itemshareData.mtffaParameter, \
+			itemshareData.sfrfacaParameter, itemshareData.lpmfaParameter, dflAbsAngle, itemshareData.afaBasicStacticsParameter->uclensleafs, \
+			itemshareData.afaBasicStacticsParameter->dfllenspitch, ucDirect, ucType,  NULL);
+
 		iteratorItemData	=	vectorItemData.end() - 1;
+		iteratorItemData_Ex	=	vectorItemData_Ex.end() - 1;
 
 		pstTemp	=	pstBlock;
 		stMTFAutoROI	=	*pstTemp;
@@ -25812,17 +25836,16 @@ int itemprocess::gereralAutoFA()
 			if(iresult	=	classRolongoTest.HisCCMMTF(pucBufRaw, iImgWidth, iImgHeight, stMTFAutoROI, itemshareData.mtffaParameter->stMTFBasic.algswitch, flvalue)) break;
 		}
 
-		stDataItem_EX.vectorMTFFOV.resize(itemshareData.mtffaParameter->vectorMTFItem.size());
-		stDataItem_EX.stMTFCenterBlock =	stMTFAutoROI;
 		iteratorItemData->stMTFCenterBlock		=	stMTFAutoROI;
+		iteratorItemData_Ex->stMTFCenterBlock		=	stMTFAutoROI;
 
 		if(itemshareData.mtffaParameter->stMTFBasic.algswitch != 7){
 			iteratorItemData->flMTFCenterValue		=	flvalue;
 		}else{
 			iteratorItemData->flMTFCenterValue		=	(flHvalue+flVvalue)/2;
-			stDataItem_EX.flMTFCenterValue		=	(flHvalue+flVvalue)/2;
-			stDataItem_EX.flMTFCenterValue_H		=	flHvalue;
-			stDataItem_EX.flMTFCenterValue_V		=	flVvalue;
+			iteratorItemData_Ex->flMTFCenterValue		=	(flHvalue+flVvalue)/2;
+			iteratorItemData_Ex->flMTFCenterValue_H		=	flHvalue;
+			iteratorItemData_Ex->flMTFCenterValue_V		=	flVvalue;
 		}
 		dflPolyY[i]=iteratorItemData->flMTFCenterValue;
 
@@ -25849,19 +25872,20 @@ int itemprocess::gereralAutoFA()
 						iteratorItemData->vectorMTFFOV.at(y).flValue[x]	=	flvalue;
 					}else{
 						iteratorItemData->vectorMTFFOV.at(y).flValue[x]	=	(flHvalue+flVvalue)/2;
-						stDataItem_EX.vectorMTFFOV.at(y).flValue[x]	=	(flHvalue+flVvalue)/2;
-						stDataItem_EX.vectorMTFFOV.at(y).flHValue[x]=flHvalue;
-						stDataItem_EX.vectorMTFFOV.at(y).flVValue[x]=flVvalue;
+						iteratorItemData_Ex->vectorMTFFOV.at(y).flValue[x]	=	(flHvalue+flVvalue)/2;
+						iteratorItemData_Ex->vectorMTFFOV.at(y).flHValue[x]=flHvalue;
+						iteratorItemData_Ex->vectorMTFFOV.at(y).flVValue[x]=flVvalue;
 					}
 
 					iteratorItemData->vectorMTFFOV.at(y).stBlock[x]	=	stMTFAutoROI;
-					stDataItem_EX.vectorMTFFOV.at(y).stBlock[x]	=	stMTFAutoROI;
+					iteratorItemData_Ex->vectorMTFFOV.at(y).stBlock[x]	=	stMTFAutoROI;
 					pstTemp++;
 					flmax	=	max(flmax, flvalue);
 					flmin		=	min(flmin, flvalue);
 				}
 				if(iresult) break;
 				iteratorItemData->vectorMTFFOV.at(y).flUniformValue	=	flmax - flmin;
+				iteratorItemData_Ex->vectorMTFFOV.at(y).flUniformValue	=	flmax - flmin;
 			}
 
 			if(iresult) break;
@@ -25870,7 +25894,7 @@ int itemprocess::gereralAutoFA()
 			if(itemshareData.mtffaParameter->stMTFBasic.algswitch != 7)
 				ROPLOW::AddDrawMTFHA(*iteratorItemData, iImgWidth, iImgHeight, vectorDraw);
 			else
-				ROPLOW::AddDrawMTFHE(stDataItem_EX, iImgWidth, iImgHeight, vectorDraw,*itemshareData.mtffaParameter);
+				ROPLOW::AddDrawMTFHE(*iteratorItemData_Ex, iImgWidth, iImgHeight, vectorDraw,*itemshareData.mtffaParameter);
 
 			_CODE_RJAFA_LP_ASIGNDRAW
 	}
@@ -25928,8 +25952,12 @@ int itemprocess::gereralAutoFA()
 			itemshareData.sfrfacaParameter, itemshareData.lpmfaParameter, dflAbsAngle, itemshareData.afaBasicStacticsParameter->uclensleafs, \
 			itemshareData.afaBasicStacticsParameter->dfllenspitch, ucDirect, ucType,  NULL);
 
+		ROPLOW::AFARolongoItemDataInitial_Ex(vectorItemData_Ex, itemshareData.afaBasicStacticsParameter, itemshareData.mtffaParameter, \
+			itemshareData.sfrfacaParameter, itemshareData.lpmfaParameter, dflAbsAngle, itemshareData.afaBasicStacticsParameter->uclensleafs, \
+			itemshareData.afaBasicStacticsParameter->dfllenspitch, ucDirect, ucType,  NULL);
 
 		iteratorItemData	=	vectorItemData.end() - 1;
+		iteratorItemData_Ex	=	vectorItemData_Ex.end() - 1;
 #endif
 		/*MTF 计算*/
 #if 1
@@ -25953,17 +25981,16 @@ int itemprocess::gereralAutoFA()
 				if(iresult	=	classRolongoTest.HisCCMMTF(pucBufRaw, iImgWidth, iImgHeight, stMTFAutoROI, itemshareData.mtffaParameter->stMTFBasic.algswitch, flvalue)) break;
 			}
 
-			stDataItem_EX.vectorMTFFOV.resize(itemshareData.mtffaParameter->vectorMTFItem.size());
-			stDataItem_EX.stMTFCenterBlock =	stMTFAutoROI;
 			iteratorItemData->stMTFCenterBlock		=	stMTFAutoROI;
+			iteratorItemData_Ex->stMTFCenterBlock		=	stMTFAutoROI;
 
 			if(itemshareData.mtffaParameter->stMTFBasic.algswitch != 7){
 				iteratorItemData->flMTFCenterValue		=	flvalue;
 			}else{
 				iteratorItemData->flMTFCenterValue		=	(flHvalue+flVvalue)/2;
-				stDataItem_EX.flMTFCenterValue		=	(flHvalue+flVvalue)/2;
-				stDataItem_EX.flMTFCenterValue_H		=	flHvalue;
-				stDataItem_EX.flMTFCenterValue_V		=	flVvalue;
+				iteratorItemData_Ex->flMTFCenterValue		=	(flHvalue+flVvalue)/2;
+				iteratorItemData_Ex->flMTFCenterValue_H		=	flHvalue;
+				iteratorItemData_Ex->flMTFCenterValue_V		=	flVvalue;
 			}
 
 
@@ -25982,11 +26009,6 @@ int itemprocess::gereralAutoFA()
 						if(iresult	=	classAlgorithm.HisCCMMTF(pucBufRaw, iImgWidth, iImgHeight, stMTFAutoROI, itemshareData.mtffaParameter->stMTFBasic.algswitch, flvalue)) break;
 					}else if(itemshareData.mtffaParameter->stMTFBasic.algswitch == 7){
 						if(iresult	=	classRolongoTest.HisCCMMTF(pucBufRaw, iImgWidth, iImgHeight, stMTFAutoROI, itemshareData.mtffaParameter->stMTFBasic.algswitch, flHvalue,flVvalue)) break;
-						/*if(iteratorItemData->vectorMTFFOV.at(y).flFOV==0.7f){
-							if(iresult	=	fnMTF(ImgInfo,stMTFAutoROI,flHvalue,flVvalue,true));
-						}else{
-							if(iresult	=	fnMTF(ImgInfo,stMTFAutoROI,flHvalue,flVvalue,FALSE));
-						}*/
 					}
 					else{
 						if(iresult	=	classRolongoTest.HisCCMMTF(pucBufRaw, iImgWidth, iImgHeight, stMTFAutoROI, itemshareData.mtffaParameter->stMTFBasic.algswitch, flvalue)) break;
@@ -25996,19 +26018,20 @@ int itemprocess::gereralAutoFA()
 						iteratorItemData->vectorMTFFOV.at(y).flValue[x]	=	flvalue;
 					}else{
 						iteratorItemData->vectorMTFFOV.at(y).flValue[x]	=	(flHvalue+flVvalue)/2;
-						stDataItem_EX.vectorMTFFOV.at(y).flValue[x]	=	(flHvalue+flVvalue)/2;
-						stDataItem_EX.vectorMTFFOV.at(y).flHValue[x]=flHvalue;
-						stDataItem_EX.vectorMTFFOV.at(y).flVValue[x]=flVvalue;
+						iteratorItemData_Ex->vectorMTFFOV.at(y).flValue[x]	=	(flHvalue+flVvalue)/2;
+						iteratorItemData_Ex->vectorMTFFOV.at(y).flHValue[x]=flHvalue;
+						iteratorItemData_Ex->vectorMTFFOV.at(y).flVValue[x]=flVvalue;
 					}
 
 					iteratorItemData->vectorMTFFOV.at(y).stBlock[x]	=	stMTFAutoROI;
-					stDataItem_EX.vectorMTFFOV.at(y).stBlock[x]	=	stMTFAutoROI;
+					iteratorItemData_Ex->vectorMTFFOV.at(y).stBlock[x]	=	stMTFAutoROI;
 					pstTemp++;
 					flmax	=	max(flmax, flvalue);
 					flmin		=	min(flmin, flvalue);
 				}
 				if(iresult) break;
 				iteratorItemData->vectorMTFFOV.at(y).flUniformValue	=	flmax - flmin;
+				iteratorItemData_Ex->vectorMTFFOV.at(y).flUniformValue	=	flmax - flmin;
 			}
 
 			if(iresult) break;
@@ -26016,7 +26039,7 @@ int itemprocess::gereralAutoFA()
 			if(itemshareData.mtffaParameter->stMTFBasic.algswitch != 7)
 				ROPLOW::AddDrawMTFHA(*iteratorItemData, iImgWidth, iImgHeight, vectorDraw);
 			else
-				ROPLOW::AddDrawMTFHE(stDataItem_EX, iImgWidth, iImgHeight, vectorDraw,*itemshareData.mtffaParameter);
+				ROPLOW::AddDrawMTFHE(*iteratorItemData_Ex, iImgWidth, iImgHeight, vectorDraw,*itemshareData.mtffaParameter);
 
 			float flMTFPt1X, flMTFPt1Y, flMTFPt2X, flMTFPt2Y;
 			RECT stMTKMark1, stMTKMark2;
@@ -26549,7 +26572,10 @@ int itemprocess::gereralAutoFA()
 	if(itemshareData.afaBasicStacticsParameter->ucChartType == _HisCCMAlg_Rolongo_Chart_MTF_A || \
 		itemshareData.afaBasicStacticsParameter->ucChartType == _HisCCMAlg_Rolongo_Chart_MTF_B)
 	{
-		ROPLOW::saveMTFHAAFAResult(vectorItemData.at(uiSaveIndex), !iresult, itemshareData.mtffaParameter, *classLog, iImgWidth, iImgHeight);
+		if(itemshareData.mtffaParameter->stMTFBasic.algswitch != 7)
+			ROPLOW::saveMTFHAAFAResult(vectorItemData.at(uiSaveIndex), !iresult, itemshareData.mtffaParameter, *classLog, iImgWidth, iImgHeight);
+		else
+			ROPLOW::saveMTFHAAFAResult_G(vectorItemData_Ex.at(uiSaveIndex), !iresult, itemshareData.mtffaParameter, *classLog, iImgWidth, iImgHeight);
 	}
 	else if(itemshareData.afaBasicStacticsParameter->ucChartType == _HisCCMAlg_Rolongo_Chart_SFR_A)
 	{
@@ -28050,7 +28076,7 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 					emit information(QTextCodec::codecForName( "GBK")->toUnicode("保存文档错误，错误代码：0x") % QString::number(iresult, 16));
 				}else{
 					//************************** 2019/04/16 ************************
-					QString str=QString("./savelog/%1/%2").arg(itemshareData.ccmhardwareParameter->projectname).arg(QDate::currentDate().toString("yyyy-MM-dd"));
+					/*QString str=QString("./savelog/%1/%2").arg(itemshareData.ccmhardwareParameter->projectname).arg(QDate::currentDate().toString("yyyy-MM-dd"));
 					QFile filelog(str+".csv");
 					filelog.open(QIODevice::ReadOnly);
 					QByteArray buffer=filelog.readAll();
@@ -28084,7 +28110,7 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 					md.addData(array1);
 					buffer=md.result();
 					filelogNew.write(buffer.toHex());
-					filelogNew.close();
+					filelogNew.close();*/
 
 				}
 					

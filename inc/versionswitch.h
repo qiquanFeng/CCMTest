@@ -12,8 +12,10 @@
 //#define	USE_EQUIPMENT_JSL_FUNCTION_V1
 #define  USE_MANUAL_LENS_BIN // A B¹æ¸ñ
 //#define	USE_EQUIPMENT_JSL_RRT_V1
+//#define USE_AFC_Fitting
 
 #define HisPlatform_BatchI2C
+
 
 
 //#define EXELOG_USE_SUNNEX

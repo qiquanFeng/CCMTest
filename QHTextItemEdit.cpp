@@ -927,6 +927,17 @@ void QHTextItemEdit::paramaterok()
 			strname.append("otp");				
 			strvalue.append("near");
 		}
+		else if (ui.otpcomboBox->currentIndex()	==4)
+		{
+			strname.append("otp");				
+			strvalue.append("AR1337_PD1");
+		}
+		else if (ui.otpcomboBox->currentIndex()	==5)
+		{
+			strname.append("otp");				
+			strvalue.append("AR1337_PD2");
+		}
+
 		jointconfigstring(Qstrinfo,strname,strvalue);
 	}
 	else if (Qsitem	==	"setcustomiicitem")

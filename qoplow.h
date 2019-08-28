@@ -85,6 +85,7 @@ namespace ROPLOW
 	void AFCMTFItemDataInitial(std::vector<_HisCCMAlg_AFC_MTF_DataItem>& vectorItemData, _mtfAFCParameter* pstParameter, int& iMotor);
 	void AFCMTFItemDataInitial_G(std::vector<_HisCCMAlg_AFC_MTF_DataItem_EX>& vectorItemData, _mtfAFCParameter* pstParameter, int& iMotor);
 	void MFAMTFItemDataInitial(_HisCCMAlg_AFC_MTF_DataItem& stItemData, _mtffaParameter* pstParameter);
+	void MFAMTFItemDataInitial_Ex(_HisCCMAlg_AFC_MTF_DataItem_EX& stItemData, _mtffaParameter* pstParameter);
 
 	void showImageLable(QString strPath, int iWidth, int iHeight, unsigned int uiDataFormat);
 
@@ -6468,6 +6469,48 @@ namespace ROPLOW
 		}
 	}
 
+	__inline void saveMTFHAMFAResult_G(bool bResult, _HisCCMAlg_AFC_MTF_DataItem_EX& stItemData, _mtffaParameter* pstParameter, HisFX3Log& classLog, int iWidth, int iHeight)
+	{
+		_HisLog_Item logitem;
+		QString strKey1 = "fa_mtf_";
+
+		logitem.itemtype		=	_HISLOG_CLASSIFY_MTFFA;
+		logitem.itemkey		=	strKey1 % "result";
+		logitem.itemvalue	=	(bResult)?("OK"):("NG");
+		classLog.push_back(logitem);
+		++(logitem.itemtype);
+
+		QString strKey2, strKey3;
+		strKey2		=	strKey1;
+
+		logitem.itemkey		=	strKey2 % "center_H";
+		logitem.itemvalue	=	stItemData.flHCenterValue;
+		classLog.push_back(logitem);
+		++(logitem.itemtype);
+
+		logitem.itemkey		=	strKey2 % "center_V";
+		logitem.itemvalue	=	stItemData.flVCenterValue;
+		classLog.push_back(logitem);
+		++(logitem.itemtype);
+
+		for(unsigned int x=0;	x<stItemData.vectorFOV.size(); ++x){
+			strKey2		=	strKey1 % "fov" % QString::number(stItemData.vectorFOV.at(x).flFOV, 'f', 3) % "_";
+			for(unsigned int i=0;	i<stItemData.vectorFOV.at(x).ucBlockCount;	++i){
+				strKey3		=	strKey2 % getBlockName(stItemData.vectorFOV.at(x).stBlock[i], iWidth, iHeight)% "_H";
+				logitem.itemkey		=	strKey3;
+				logitem.itemvalue	=	stItemData.vectorFOV.at(x).flHValue[i];
+				classLog.push_back(logitem);
+				++(logitem.itemtype);
+
+				strKey3		=	strKey2 % getBlockName(stItemData.vectorFOV.at(x).stBlock[i], iWidth, iHeight)% "_V";
+				logitem.itemkey		=	strKey3;
+				logitem.itemvalue	=	stItemData.vectorFOV.at(x).flHValue[i];
+				classLog.push_back(logitem);
+				++(logitem.itemtype);
+			}
+		}
+	}
+
 	__inline int GetLinearResult(_HisCCMAlg_AFC_Linear_Result& stLinearConfig)
 	{
 		stLinearConfig.bResult = true;
@@ -6501,6 +6544,143 @@ namespace ROPLOW
 		unsigned int uiIndex	=	vectorItemData.size();
 		vectorItemData.resize(uiIndex + 1);
 		std::vector<_HisAutoFA_Rolongo_DataItem>::iterator theiterator = vectorItemData.begin() + uiIndex;
+
+		theiterator->ucStatus				=	0x0;
+		theiterator->dflMarkDistance	=	0.0;
+		theiterator->ucGrade				=	0;
+		theiterator->ucType					=	0;
+		theiterator->flWeightValue		=	0.0f;
+		theiterator->dflAbsAngle			=	dflAbsAngle;
+		theiterator->ucDirect				=	ucDirect;
+		theiterator->ucType					=	ucType;
+
+		if(pstEqupInfo == NULL){
+			theiterator->dflRadius			=	0.0;
+			theiterator->dflLesnAngle	=	0.0;
+			theiterator->dflLaser			=	0.0;
+		}
+		else
+		{
+			theiterator->dflRadius				=	pstEqupInfo->dflLensRadius;
+			theiterator->dflLesnAngle		=	pstEqupInfo->dflLensAngle + dflAbsAngle;
+			theiterator->dflLaser				=	pstEqupInfo->dflLaserValue - dflAbsAngle *dflLenPitch /360.0;
+
+			double dfldata	=	360.0 / static_cast<double>(uclensleafs);
+			int ivalue	=	(int)(theiterator->dflLesnAngle) / 360;
+			theiterator->dflLesnAngle -= (360 *ivalue);
+			if(theiterator->dflLesnAngle > 180.0)
+			{
+				theiterator->dflLesnAngle = theiterator->dflLesnAngle - dfldata;
+				if(theiterator->dflLesnAngle > 180.0)	theiterator->dflLesnAngle = theiterator->dflLesnAngle - dfldata;
+			}
+			else if(theiterator->dflLesnAngle < 0.0)
+			{
+				theiterator->dflLesnAngle	=	theiterator->dflLesnAngle + dfldata;
+				if(theiterator->dflLesnAngle < 0.0)	theiterator->dflLesnAngle = theiterator->dflLesnAngle + dfldata;
+			}
+		}
+
+		if(afaBasicStacticsParameter->ucChartType == _HisCCMAlg_Rolongo_Chart_MTF_A || \
+			afaBasicStacticsParameter->ucChartType == _HisCCMAlg_Rolongo_Chart_MTF_B)
+		{
+			theiterator->flMTFCenterValue		=	0.0f;
+			theiterator->flMTFCenterWeight		=	mtffaParameter->stMTFBasic.flcenterweight;
+			theiterator->flMTFCenterSpec		=	mtffaParameter->stMTFBasic.flcenterspec;
+			memset(&(theiterator->stMTFCenterBlock), 0, sizeof(RECT));
+
+			unsigned int uiFOVSize	=	(unsigned int)mtffaParameter->vectorMTFItem.size();
+			theiterator->vectorMTFFOV.resize(uiFOVSize);
+			for(unsigned int x=0;	x<uiFOVSize;	++x){
+				theiterator->vectorMTFFOV.at(x).ucStatus	=	0x0;
+				theiterator->vectorMTFFOV.at(x).ucBlockCount		=	mtffaParameter->vectorMTFItem.at(x).ucBlockCount;
+				theiterator->vectorMTFFOV.at(x).flFOV			=	mtffaParameter->vectorMTFItem.at(x).flFOV;
+				theiterator->vectorMTFFOV.at(x).flAngle		=	mtffaParameter->vectorMTFItem.at(x).flAngle;
+				theiterator->vectorMTFFOV.at(x).flWeight		=	mtffaParameter->vectorMTFItem.at(x).flWeight;
+				theiterator->vectorMTFFOV.at(x).flSpec		=	mtffaParameter->vectorMTFItem.at(x).flSpec;
+				theiterator->vectorMTFFOV.at(x).flSpecUniform		=	mtffaParameter->vectorMTFItem.at(x).flSpecUniform;
+
+				theiterator->vectorMTFFOV.at(x).flUniformValue	=	0.0f;
+				memset(theiterator->vectorMTFFOV.at(x).flValue, 0, sizeof(float) *4);
+				memset(theiterator->vectorMTFFOV.at(x).stBlock, 0, sizeof(RECT) *4);
+			}
+		}
+		else if(afaBasicStacticsParameter->ucChartType == _HisCCMAlg_Rolongo_Chart_SFR_A)
+		{
+			theiterator->flSFRCenterWeight		=	sfrfacaParameter->stSFRBasic.flCenterWeight;
+			theiterator->bSFR2ndFreq				=	sfrfacaParameter->stSFRBasic.b2ndFreq;
+			theiterator->ucSFRMethod				=	sfrfacaParameter->stSFRBasic.ucMethod;
+			theiterator->flSFRCenterMTF50SpecH				=	sfrfacaParameter->stSFRBasic.flCenterMTF50SpecH;
+			theiterator->flSFRCenterMTF50SpecV				=	sfrfacaParameter->stSFRBasic.flCenterMTF50SpecV;
+			theiterator->flSFRCenter1stFreqSpecH			=	sfrfacaParameter->stSFRBasic.flCenter1stFreqSpecH;
+			theiterator->flSFRCenter1stFreqSpecV				=	sfrfacaParameter->stSFRBasic.flCenter1stFreqSpecV;
+			theiterator->flSFRCenter2ndFreqSpecH			=	sfrfacaParameter->stSFRBasic.flCenter2ndFreqSpecH;
+			theiterator->flSFRCenter2ndFreqSpecV			=	sfrfacaParameter->stSFRBasic.flCenter2ndFreqSpecV;
+
+			memset(&(theiterator->stSFRCenterMTF50), 0, sizeof(_HisCCMAlg_SFRPlusHA_Block_Result));
+			memset(&(theiterator->stSFRCenterFreq1), 0, sizeof(_HisCCMAlg_SFRPlusHA_Block_Result));
+			memset(&(theiterator->stSFRCenterFreq2), 0, sizeof(_HisCCMAlg_SFRPlusHA_Block_Result));
+			memset(&(theiterator->stSFRCenterBlock), 0, sizeof(_SFRBlackROI4));
+
+			unsigned int uiFOVSize	=	sfrfacaParameter->vectorSFRItem.size();
+			theiterator->vectorSFRFOV.resize(uiFOVSize);
+			for(unsigned int x=0;	x<uiFOVSize;	++x){
+				theiterator->vectorSFRFOV.at(x).ucStatus	=	0x0;
+				theiterator->vectorSFRFOV.at(x).flMTF50UnifH	=	0.0f;
+				theiterator->vectorSFRFOV.at(x).flMTF50UnifV	=	0.0f;
+				theiterator->vectorSFRFOV.at(x).flFreq1UnifH	=	0.0f;
+				theiterator->vectorSFRFOV.at(x).flFreq1UnifV	=	0.0f;
+				theiterator->vectorSFRFOV.at(x).flFreq2UnifH	=	0.0f;
+				theiterator->vectorSFRFOV.at(x).flFreq2UnifV	=	0.0f;
+
+				theiterator->vectorSFRFOV.at(x).flFOV		=	sfrfacaParameter->vectorSFRItem.at(x).flFOV;
+				theiterator->vectorSFRFOV.at(x).ucBlockCount		=	sfrfacaParameter->vectorSFRItem.at(x).ucBlockCount;
+				theiterator->vectorSFRFOV.at(x).flAngle		=	sfrfacaParameter->vectorSFRItem.at(x).flAngle;
+				theiterator->vectorSFRFOV.at(x).flWeight		=	sfrfacaParameter->vectorSFRItem.at(x).flWeight;
+				theiterator->vectorSFRFOV.at(x).flMTF50SpecH		=	sfrfacaParameter->vectorSFRItem.at(x).flMTF50SpecH;
+				theiterator->vectorSFRFOV.at(x).flMTF50SpecV		=	sfrfacaParameter->vectorSFRItem.at(x).flMTF50SpecV;
+				theiterator->vectorSFRFOV.at(x).fl1stFreqSpecH		=	sfrfacaParameter->vectorSFRItem.at(x).fl1stFreqSpecH;
+				theiterator->vectorSFRFOV.at(x).fl1stFreqSpecV		=	sfrfacaParameter->vectorSFRItem.at(x).fl1stFreqSpecV;
+				theiterator->vectorSFRFOV.at(x).fl2ndFreqSpecH		=	sfrfacaParameter->vectorSFRItem.at(x).fl2ndFreqSpecH;
+				theiterator->vectorSFRFOV.at(x).fl2ndFreqSpecV		=	sfrfacaParameter->vectorSFRItem.at(x).fl2ndFreqSpecV;
+				theiterator->vectorSFRFOV.at(x).flMTF50SpecUnifH		=	sfrfacaParameter->vectorSFRItem.at(x).flMTF50SpecUnifH;
+				theiterator->vectorSFRFOV.at(x).flMTF50SpecUnifV		=	sfrfacaParameter->vectorSFRItem.at(x).flMTF50SpecUnifV;
+				theiterator->vectorSFRFOV.at(x).fl1stFreqSpecUnifH		=	sfrfacaParameter->vectorSFRItem.at(x).fl1stFreqSpecUnifH;
+				theiterator->vectorSFRFOV.at(x).fl1stFreqSpecUnifV		=	sfrfacaParameter->vectorSFRItem.at(x).fl1stFreqSpecUnifV;
+				theiterator->vectorSFRFOV.at(x).fl2ndFreqSpecUnifH		=	sfrfacaParameter->vectorSFRItem.at(x).fl2ndFreqSpecUnifH;
+				theiterator->vectorSFRFOV.at(x).fl2ndFreqSpecUnifV		=	sfrfacaParameter->vectorSFRItem.at(x).fl2ndFreqSpecUnifV;
+				memset(theiterator->vectorSFRFOV.at(x).stSFRMTF50, 0, sizeof(_HisCCMAlg_SFRPlusHA_Block_Result) *4);
+				memset(theiterator->vectorSFRFOV.at(x).stSFRFreq1, 0, sizeof(_HisCCMAlg_SFRPlusHA_Block_Result) *4);
+				memset(theiterator->vectorSFRFOV.at(x).stSFRFreq2, 0, sizeof(_HisCCMAlg_SFRPlusHA_Block_Result) *4);
+				memset(theiterator->vectorSFRFOV.at(x).stBlock, 0, sizeof(_SFRBlackROI4) *4);
+			}
+		}
+		else{
+			unsigned int uiFOVSize	=	lpmfaParameter->vectorLpItem.size();
+			theiterator->vectorLPFOV.resize(uiFOVSize);
+			for(unsigned int x=0;	x<uiFOVSize;	++x){
+				theiterator->vectorLPFOV.at(x).flFOV		=	lpmfaParameter->vectorLpItem.at(x).flFOV;
+				theiterator->vectorLPFOV.at(x).flAngle	=	lpmfaParameter->vectorLpItem.at(x).flAngle;
+				theiterator->vectorLPFOV.at(x).flSpecHor	=	lpmfaParameter->vectorLpItem.at(x).flSpecHor;
+				theiterator->vectorLPFOV.at(x).flSpecVec	=	lpmfaParameter->vectorLpItem.at(x).flSpecVec;
+				theiterator->vectorLPFOV.at(x).flSpecUniform	=	lpmfaParameter->vectorLpItem.at(x).flSpecUniform;
+				theiterator->vectorLPFOV.at(x).flWeight		=	lpmfaParameter->vectorLpItem.at(x).flWeight;
+				theiterator->vectorLPFOV.at(x).ucStatus	=	0x0;
+				memset(theiterator->vectorLPFOV.at(x).stLpValue, 0, sizeof(_HisCCMAlg_Resolution) *4);
+				memset(theiterator->vectorLPFOV.at(x).stValueLine, 0, sizeof(RECT) *4);
+				memset(theiterator->vectorLPFOV.at(x).stMinLine, 0, sizeof(RECT) *4);
+				memset(theiterator->vectorLPFOV.at(x).stMaxLine, 0, sizeof(RECT) *4);
+				memset(theiterator->vectorLPFOV.at(x).stBlock, 0, sizeof(RECT) *4);
+			}
+		}
+	}
+
+	__inline void AFARolongoItemDataInitial_Ex(std::vector<_HisAutoFA_Rolongo_DataItem_EX>& vectorItemData, _HisAutoFA_BASIC_STACTICS* afaBasicStacticsParameter, \
+		_mtffaParameter* mtffaParameter, _SFRFACAParameter* sfrfacaParameter, _lpMFAParameter* lpmfaParameter, double& dflAbsAngle, \
+		unsigned char uclensleafs, double dflLenPitch, unsigned char ucDirect, unsigned char ucType, _AutoFA_YIOUV1_EQUI_VALUE* pstEqupInfo)
+	{
+		unsigned int uiIndex	=	vectorItemData.size();
+		vectorItemData.resize(uiIndex + 1);
+		std::vector<_HisAutoFA_Rolongo_DataItem_EX>::iterator theiterator = vectorItemData.begin() + uiIndex;
 
 		theiterator->ucStatus				=	0x0;
 		theiterator->dflMarkDistance	=	0.0;
@@ -7151,6 +7331,52 @@ namespace ROPLOW
 		}
 	}
 
+	__inline void saveMTFHAAFAResult_G(_HisAutoFA_Rolongo_DataItem_EX& stItemData, bool bResult, _mtffaParameter* pstParameter, \
+		HisFX3Log& classLog, int iWidth, int iHeight)
+	{
+		_HisLog_Item logitem;
+		QString strKey1 = "fa_mtf_";
+
+		logitem.itemtype		=	_HISLOG_CLASSIFY_MTFFA;
+		logitem.itemkey		=	strKey1 % "result";
+		logitem.itemvalue	=	(bResult)?("OK"):("NG");
+		classLog.push_back(logitem);
+		++(logitem.itemtype);
+
+		QString strKey2, strKey3;
+		strKey2		=	strKey1;
+
+		logitem.itemkey		=	strKey2 % "center_H";
+		logitem.itemvalue	=	stItemData.flMTFCenterValue_H;
+		classLog.push_back(logitem);
+		++(logitem.itemtype);
+
+		logitem.itemkey		=	strKey2 % "center_V";
+		logitem.itemvalue	=	stItemData.flMTFCenterValue_V;
+		classLog.push_back(logitem);
+		++(logitem.itemtype);
+
+		for(unsigned int x=0;	x<stItemData.vectorMTFFOV.size(); ++x){
+			strKey2		=	strKey1 % "fov" % QString::number(stItemData.vectorMTFFOV.at(x).flFOV, 'f', 3) % "_";
+			for(unsigned int i=0;	i<stItemData.vectorMTFFOV.at(x).ucBlockCount;	++i){
+				strKey3	=	strKey2 % getBlockName(stItemData.vectorMTFFOV.at(x).stBlock[i], iWidth, iHeight)%"_H";
+				logitem.itemkey		=	strKey3;
+				logitem.itemvalue	=	stItemData.vectorMTFFOV.at(x).flHValue[i];
+				classLog.push_back(logitem);
+				++(logitem.itemtype);
+
+				strKey3	=	strKey2 % getBlockName(stItemData.vectorMTFFOV.at(x).stBlock[i], iWidth, iHeight)%"_V";
+				logitem.itemkey		=	strKey3;
+				logitem.itemvalue	=	stItemData.vectorMTFFOV.at(x).flVValue[i];
+				classLog.push_back(logitem);
+				++(logitem.itemtype);
+			}
+			logitem.itemkey		=	strKey2 % "Tilt";
+			logitem.itemvalue	=	stItemData.vectorMTFFOV.at(x).flUniformValue;
+			classLog.push_back(logitem);
+			++(logitem.itemtype);
+		}
+	}
 
 	__inline void saveSHRHAAFAResult(_HisAutoFA_Rolongo_DataItem& stItemData, bool bResult, _SFRFACAParameter* pstParameter, \
 		HisFX3Log& classLog, int iWdith, int iHeight)

@@ -856,6 +856,8 @@ __inline void globalgetShortcutAddInfoUnion(unsigned short usitem, QString strDa
 				if(strlistvalue.at(x) == "near") otherInfo.idata[1]	=	0;
 				else if(strlistvalue.at(x) == "middle") otherInfo.idata[1]	=	1;
 				else if(strlistvalue.at(x) == "far") otherInfo.idata[1]	=	2;
+				else if(strlistvalue.at(x) == "AR1337_PD1") otherInfo.idata[1]	=	3;
+				else if(strlistvalue.at(x) == "AR1337_PD2") otherInfo.idata[1]	=	4;
 			}
 		}
 		break;

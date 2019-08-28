@@ -112,7 +112,7 @@ private:
 // #define _HisFX3R2_OS_CURRENT_SORT
 #define _HisFX3V2_CURRENTCAL_COUNT	36
 #define _HisFX3_OS_PinName_MaxByte	12
-#define USE_AFC_Fitting
+
 
 enum _HisFX3_Platform_Type
 {
