@@ -25,7 +25,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>6</number>
+      <number>31</number>
      </property>
      <widget class="QWidget" name="page_2">
       <layout class="QHBoxLayout" name="horizontalLayout">
@@ -3198,6 +3198,74 @@
         </layout>
        </item>
       </layout>
+     </widget>
+     <widget class="QWidget" name="page_31">
+      <widget class="QWidget" name="verticalLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>561</width>
+         <height>331</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_37">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_114">
+          <item>
+           <widget class="QLabel" name="label_109">
+            <property name="text">
+             <string>远焦：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="spinBox_Far_Burn">
+            <property name="maximum">
+             <number>1023</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_115">
+          <item>
+           <widget class="QLabel" name="label_110">
+            <property name="text">
+             <string>中焦：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="spinBox_Mid_Burn">
+            <property name="maximum">
+             <number>1023</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_112">
+          <item>
+           <widget class="QLabel" name="label_105">
+            <property name="text">
+             <string>近焦：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="spinBox_Near_Burn">
+            <property name="maximum">
+             <number>1023</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </widget>
    </item>

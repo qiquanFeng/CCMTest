@@ -298,6 +298,27 @@ QHTextItemEdit::QHTextItemEdit(QWidget *parent,QString Qstr	,QString Qinfo, bool
 				ui.sleepspinBox->setValue(strvalue.at(x).toInt());
 			}
 		}
+		else if (strname.at(x) == "far")
+		{
+			if (Qstritem	==	"afburnitem")
+			{
+				ui.spinBox_Far_Burn->setValue(strvalue.at(x).toInt());
+			}
+		}
+		else if (strname.at(x) == "mid")
+		{
+			if (Qstritem	==	"afburnitem")
+			{
+				ui.spinBox_Mid_Burn->setValue(strvalue.at(x).toInt());
+			}
+		}
+		else if (strname.at(x) == "near")
+		{
+			if (Qstritem	==	"afburnitem")
+			{
+				ui.spinBox_Near_Burn->setValue(strvalue.at(x).toInt());
+			}
+		}
 		else if (strname.at(x) == "otp")
 		{
 			if (strvalue.at(x)	=="no")
@@ -940,6 +961,16 @@ void QHTextItemEdit::paramaterok()
 
 		jointconfigstring(Qstrinfo,strname,strvalue);
 	}
+	else if (Qsitem	==	"afburnitem")
+	{
+		strname.append("far");				
+		strvalue.append(QString::number(ui.spinBox_Far_Burn->value()));
+		strname.append("mid");				
+		strvalue.append(QString::number(ui.spinBox_Mid_Burn->value()));
+		strname.append("near");				
+		strvalue.append(QString::number(ui.spinBox_Near_Burn->value()));
+		jointconfigstring(Qstrinfo,strname,strvalue);
+	}
 	else if (Qsitem	==	"setcustomiicitem")
 	{
 		QString	str	=	QString::number(ui.groupspinBox->value());
@@ -1283,6 +1314,7 @@ int QHTextItemEdit::Qstring2ui(QString qStr)
 	else if(qStr == "autofocusitem")									iIndex = 26;
 	else if(qStr == "tcpsocketsimulateitem")									iIndex = 27;
 	else if(qStr == "camdoracalibrationitem")									iIndex = 30;
+	else if(qStr == "afburnitem") iIndex = 31;
 	return iIndex;
 }
 

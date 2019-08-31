@@ -14892,7 +14892,7 @@ int itemprocess::getafburnParameter(bool bupdate, bool bcheck )
 	return 0;
 }
 
-int itemprocess::afBurn()
+int itemprocess::afBurn(int farcode,int midcode,int nearcode)
 {
 #ifdef _HisFX3_Platform_Jigboard
 	return Jig_afBurn();
@@ -14929,6 +14929,9 @@ int itemprocess::afBurn()
 	stParameter.iInfinitMotor		=(iFarPeakMotorDec==0x00FFFFFF)?(0x00FFFFFF):(iFarPeakMotorDec + itemshareData.afburnParameter->iFarMotorOffset);
 	stParameter.Reserve1.ivalue[0]		=	(iMotorStartDec==0x00FFFFFF)?(0x00FFFFFF):(iMotorStartDec + itemshareData.afburnParameter->iFarMotorOffset);
 	//*********** Test *****************
+	if(farcode) stParameter.iInfinitMotor=farcode;
+	if(midcode) stParameter.iMiddleMotor=midcode;
+	if(nearcode) stParameter.iNearMotor=nearcode;
 
 	//**********************************
 #if 1
@@ -15097,8 +15100,6 @@ int itemprocess::afBurnCheck() //0:near 1:middle 2:infinite
 	emit enableinfotimer(0);
 	//*******************************************************
 
-
-	iresult	=	0;
 	if(stParameter.bNear){
 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("近焦马达烧录值：") % QString::number(stParameter.iNearMotor));
 		if(stParameter.iNearMotor > itemshareData.afburnParameter->iNearMotorMax || stParameter.iNearMotor < itemshareData.afburnParameter->iNearMotorMin){
@@ -28021,7 +28022,7 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 		break;
 	case showresultitem:
 		{
-			int iresult=	GetTotalResult();
+			int iresult = GetTotalResult();
 			if(iresult==_His_ItemStatus_PASS){
 				itemshareData.totalresult=_His_ItemStatus_PASS;
 			}else{
@@ -28097,8 +28098,7 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 					.arg(global_unit_rg).arg(global_unit_bg).arg(global_unit_g).arg(global_burn_group);
 				query.prepare(str);
 				if(!query.exec()){
-					emit information(query.lastError().text());
-					return -1;
+					emit information(query.lastError().text());;
 				}
 
 				emit sigBurnCount();
@@ -28677,8 +28677,10 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 		break;
 	case afburnitem:
 		updateItemstatus(itemstatus);
+		_scotherInfo otherInfo;
+		globalgetShortcutAddInfoUnion(currentitem.usItem, currentitem.strAddInfo, otherInfo);
 		for(unsigned char i=0;	i<currentitem.ucloopTime;	++i){
-			if(!(iresult	=	afBurn()))	break;
+			if(!(iresult	=	afBurn(otherInfo.uidata[0],otherInfo.uidata[1],otherInfo.uidata[2])))	break;
 		}
 		bUpdateItemStatus	=	true;
 		break;

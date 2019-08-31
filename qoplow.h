@@ -6504,7 +6504,7 @@ namespace ROPLOW
 
 				strKey3		=	strKey2 % getBlockName(stItemData.vectorFOV.at(x).stBlock[i], iWidth, iHeight)% "_V";
 				logitem.itemkey		=	strKey3;
-				logitem.itemvalue	=	stItemData.vectorFOV.at(x).flHValue[i];
+				logitem.itemvalue	=	stItemData.vectorFOV.at(x).flVValue[i];
 				classLog.push_back(logitem);
 				++(logitem.itemtype);
 			}

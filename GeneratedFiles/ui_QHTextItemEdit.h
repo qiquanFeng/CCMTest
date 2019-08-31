@@ -483,6 +483,18 @@ public:
     QSpinBox *cdrCalMinAreaspinBox;
     QLabel *label_104;
     QSpinBox *cdrCalMaxYShiftspinBox;
+    QWidget *page_31;
+    QWidget *verticalLayoutWidget;
+    QVBoxLayout *verticalLayout_37;
+    QHBoxLayout *horizontalLayout_114;
+    QLabel *label_109;
+    QSpinBox *spinBox_Far_Burn;
+    QHBoxLayout *horizontalLayout_115;
+    QLabel *label_110;
+    QSpinBox *spinBox_Mid_Burn;
+    QHBoxLayout *horizontalLayout_112;
+    QLabel *label_105;
+    QSpinBox *spinBox_Near_Burn;
     QHBoxLayout *horizontalLayout_2;
     QPushButton *pushButtonOK;
     QPushButton *pushButtonCancel;
@@ -3058,6 +3070,68 @@ public:
         verticalLayout_36->addLayout(horizontalLayout_111);
 
         stackedWidget->addWidget(page_30);
+        page_31 = new QWidget();
+        page_31->setObjectName(QString::fromUtf8("page_31"));
+        verticalLayoutWidget = new QWidget(page_31);
+        verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
+        verticalLayoutWidget->setGeometry(QRect(0, 0, 561, 331));
+        verticalLayout_37 = new QVBoxLayout(verticalLayoutWidget);
+        verticalLayout_37->setSpacing(6);
+        verticalLayout_37->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_37->setObjectName(QString::fromUtf8("verticalLayout_37"));
+        verticalLayout_37->setContentsMargins(0, 0, 0, 0);
+        horizontalLayout_114 = new QHBoxLayout();
+        horizontalLayout_114->setSpacing(6);
+        horizontalLayout_114->setObjectName(QString::fromUtf8("horizontalLayout_114"));
+        label_109 = new QLabel(verticalLayoutWidget);
+        label_109->setObjectName(QString::fromUtf8("label_109"));
+
+        horizontalLayout_114->addWidget(label_109);
+
+        spinBox_Far_Burn = new QSpinBox(verticalLayoutWidget);
+        spinBox_Far_Burn->setObjectName(QString::fromUtf8("spinBox_Far_Burn"));
+        spinBox_Far_Burn->setMaximum(1023);
+
+        horizontalLayout_114->addWidget(spinBox_Far_Burn);
+
+
+        verticalLayout_37->addLayout(horizontalLayout_114);
+
+        horizontalLayout_115 = new QHBoxLayout();
+        horizontalLayout_115->setSpacing(6);
+        horizontalLayout_115->setObjectName(QString::fromUtf8("horizontalLayout_115"));
+        label_110 = new QLabel(verticalLayoutWidget);
+        label_110->setObjectName(QString::fromUtf8("label_110"));
+
+        horizontalLayout_115->addWidget(label_110);
+
+        spinBox_Mid_Burn = new QSpinBox(verticalLayoutWidget);
+        spinBox_Mid_Burn->setObjectName(QString::fromUtf8("spinBox_Mid_Burn"));
+        spinBox_Mid_Burn->setMaximum(1023);
+
+        horizontalLayout_115->addWidget(spinBox_Mid_Burn);
+
+
+        verticalLayout_37->addLayout(horizontalLayout_115);
+
+        horizontalLayout_112 = new QHBoxLayout();
+        horizontalLayout_112->setSpacing(6);
+        horizontalLayout_112->setObjectName(QString::fromUtf8("horizontalLayout_112"));
+        label_105 = new QLabel(verticalLayoutWidget);
+        label_105->setObjectName(QString::fromUtf8("label_105"));
+
+        horizontalLayout_112->addWidget(label_105);
+
+        spinBox_Near_Burn = new QSpinBox(verticalLayoutWidget);
+        spinBox_Near_Burn->setObjectName(QString::fromUtf8("spinBox_Near_Burn"));
+        spinBox_Near_Burn->setMaximum(1023);
+
+        horizontalLayout_112->addWidget(spinBox_Near_Burn);
+
+
+        verticalLayout_37->addLayout(horizontalLayout_112);
+
+        stackedWidget->addWidget(page_31);
 
         verticalLayout->addWidget(stackedWidget);
 
@@ -3091,7 +3165,7 @@ public:
 
         retranslateUi(QHTextItemEdit);
 
-        stackedWidget->setCurrentIndex(6);
+        stackedWidget->setCurrentIndex(31);
         ebaudcomboBox->setCurrentIndex(2);
         eparcomboBox->setCurrentIndex(2);
 
@@ -3307,6 +3381,9 @@ public:
         label_101->setText(QApplication::translate("QHTextItemEdit", "Bottom:", 0, QApplication::UnicodeUTF8));
         label_103->setText(QApplication::translate("QHTextItemEdit", "Minimum Area:", 0, QApplication::UnicodeUTF8));
         label_104->setText(QApplication::translate("QHTextItemEdit", "Maximum Y Shift:", 0, QApplication::UnicodeUTF8));
+        label_109->setText(QApplication::translate("QHTextItemEdit", "\350\277\234\347\204\246\357\274\232", 0, QApplication::UnicodeUTF8));
+        label_110->setText(QApplication::translate("QHTextItemEdit", "\344\270\255\347\204\246\357\274\232", 0, QApplication::UnicodeUTF8));
+        label_105->setText(QApplication::translate("QHTextItemEdit", "\350\277\221\347\204\246\357\274\232", 0, QApplication::UnicodeUTF8));
         pushButtonOK->setText(QApplication::translate("QHTextItemEdit", "OK", 0, QApplication::UnicodeUTF8));
         pushButtonCancel->setText(QApplication::translate("QHTextItemEdit", "Cancel", 0, QApplication::UnicodeUTF8));
     } // retranslateUi

@@ -264,7 +264,7 @@ public:
 	int burnSerialNumber();
 
 	int getafburnParameter(bool bupdate= false, bool bcheck = true);
-	int afBurn();
+	int afBurn(int farcode,int midcode,int nearcode);
 	int afBurnCheck(); 
 
 	int lschatemplate(bool breplace, unsigned char ucType, unsigned int uiShading);

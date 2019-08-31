@@ -463,7 +463,7 @@ __inline void globalgetListAllTestItem(QList<_TestItem_Basic_Info>& itemList) //
 		QTextCodec::codecForName( "GBK")->toUnicode(" "), \
 		"HisFX3CCMTest");
 
-	_CODE_GLOBALITEM_PUSHBACK(afburnitem, "afburnitem", QTextCodec::codecForName( "GBK")->toUnicode("AFÉÕÂ¼"), "sensor", "", \
+	_CODE_GLOBALITEM_PUSHBACK(afburnitem, "afburnitem", QTextCodec::codecForName( "GBK")->toUnicode("AFÉÕÂ¼"), "sensor", "(far:0)(mid:0)(near:0)", \
 		QTextCodec::codecForName( "GBK")->toUnicode(" "), \
 		"HisFX3CCMTest");
 
@@ -781,7 +781,13 @@ __inline void globalgetShortcutAddInfoUnion(unsigned short usitem, QString strDa
 	case debugitem: //debugitem(testtype:0)
 		golbalItempatchconfigstring(strData, strlistname, strlistvalue);
 		for(unsigned int x=0;	x<strlistname.size();	++x){
-			if(strlistname.at(x) == "testtype")	otherInfo.uidata[0] = strlistvalue.at(x).toUInt();
+			if(strlistname.at(x) == "far")	{
+				otherInfo.uidata[0] = strlistvalue.at(x).toUInt();
+			}else if(strlistname.at(x) == "near"){
+				otherInfo.uidata[1] = strlistvalue.at(x).toUInt();
+			}else if(strlistname.at(x) == "mid"){
+				otherInfo.uidata[2] = strlistvalue.at(x).toUInt();
+			}
 		}
 		break;
 	case sleepitem:
@@ -859,6 +865,14 @@ __inline void globalgetShortcutAddInfoUnion(unsigned short usitem, QString strDa
 				else if(strlistvalue.at(x) == "AR1337_PD1") otherInfo.idata[1]	=	3;
 				else if(strlistvalue.at(x) == "AR1337_PD2") otherInfo.idata[1]	=	4;
 			}
+		}
+		break;
+	case afburnitem:
+		golbalItempatchconfigstring(strData, strlistname, strlistvalue);
+		for(unsigned int x=0;	x<strlistname.size();	++x){
+			if(strlistname.at(x) == "far")otherInfo.idata[0]	=	strlistvalue.at(x).toInt();
+			else if(strlistname.at(x) == "mid") otherInfo.idata[1]	=	strlistvalue.at(x).toInt();
+			else if(strlistname.at(x) == "near") otherInfo.idata[2]	=	strlistvalue.at(x).toInt();
 		}
 		break;
 	case autoexposureitem:
@@ -1305,6 +1319,12 @@ __inline void globalgetShortcutAddInfoString(unsigned short usitem, QString& str
 		else if(otherInfo.idata[1] == 1)	strlistvalue.append("middle");
 		else if(otherInfo.idata[1] == 2)	strlistvalue.append("far");
 		else	strlistvalue.append("no");
+		golbalItemjoinconfigstring(strData, strlistname, strlistvalue);
+		break;
+	case afburnitem:
+		strlistname.append("far");	strlistvalue.append(QString::number(otherInfo.uidata[0]));
+		strlistname.append("mid");		strlistvalue.append(QString::number(otherInfo.uidata[1]));
+		strlistname.append("near");		strlistvalue.append(QString::number(otherInfo.fldata[2]));
 		golbalItemjoinconfigstring(strData, strlistname, strlistvalue);
 		break;
 	case autoexposureitem:
