@@ -43,7 +43,7 @@ hardwareop::hardwareop(QWidget *parent,bool bChannel1, _threadshareData& threads
 		ui.dovddVolt_doubleSpinBox->setVisible(false);
 	}
 
-	if(classPlatform.getVoltageSupported(flVoltMin, flVoltMax, _HisFX3_Platform_VlotOn_IIC, bChannel1)){
+	if(0/*classPlatform.getVoltageSupported(flVoltMin, flVoltMax, _HisFX3_Platform_VlotOn_IIC, bChannel1)*/){
 		ui.ioddVolt_checkBox->setText("IODD(0~" % QString::number(flVoltMax, 'f', 1) % "V)");
 		ui.ioddVolt_doubleSpinBox->setMinimum(flVoltMin);
 		ui.ioddVolt_doubleSpinBox->setMaximum(flVoltMax);
@@ -254,7 +254,7 @@ void hardwareop::setVoltage()
 	if(ui.avddVolt_checkBox->isChecked()) uiFlag |= _HisFX3_Platform_VlotOn_AVDD;
 	if(ui.dvddVolt_checkBox->isChecked()) uiFlag |= _HisFX3_Platform_VlotOn_DVDD;
 	if(ui.dovddVolt_checkBox->isChecked()) uiFlag |= _HisFX3_Platform_VlotOn_DOVDD;
-	if(ui.ioddVolt_checkBox->isChecked()) uiFlag |= _HisFX3_Platform_VlotOn_IIC;
+	//if(ui.ioddVolt_checkBox->isChecked()) uiFlag |= _HisFX3_Platform_VlotOn_IIC;
 	if(ui.afVolt_checkBox->isChecked()) uiFlag |= _HisFX3_Platform_VlotOn_AF;
 	if(ui.vfuseVolt_checkBox->isChecked()) uiFlag |= _HisFX3_Platform_VlotOn_OTP;
 	if(ui.powVolt_checkBox->isChecked()) uiFlag |= _HisFX3_Platform_VlotOn_POW;
@@ -457,8 +457,8 @@ void hardwareop::readi2c()
 	}
 	else if(bCurrent)
 	{
-		unsigned int uiTempData;
-		iresult	=	classPlatform.HisFX3ReadCurrentI2C(ucslave, uireg, &uiTempData, ustype);
+		unsigned long long uiTempData;
+		iresult	=	classPlatform.HisFX3ReadI2C(ucslave, uireg, &uiTempData, ustype);
 		ui64data	=	uiTempData;
 	}
 	else
@@ -586,7 +586,7 @@ void hardwareop::writei2c()
 	else if(bOS)
 		iresult	=	classPlatform.HisFX3WriteOSIIC(ucslave, uireg, ui64data, 0x1632);
 	else if(bCurrent)
-		iresult	=	classPlatform.HisFX3WriteCurrentIIC(ucslave, uireg, ui64data, ustype);
+		iresult	=	classPlatform.HisFX3WriteIIC(ucslave, uireg, ui64data, ustype);
 	else
 		iresult	=	globalFunPointer.WriteHisFX3IIC(ucslave, uireg, ui64data, ustype, true);
 

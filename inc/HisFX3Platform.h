@@ -1,916 +1,2175 @@
-//
+ï»¿//
+
 #ifndef HISFX3PLATFORM_H
 #define HISFX3PLATFORM_H
 
-#include <vector>
-#include <string>
+#ifdef HISFX3PLATFORM_EXPORTS
+#define HISFX3PLATFORM_API __declspec(dllexport)
+#else
+#define HISFX3PLATFORM_API __declspec(dllimport)
+#endif
+
 #include "HisGlobalDefine.h"
 
-#define _HISFX3PLATFORM_EXPORT_DUXIN
-#define _HISFX3PLATFORM_EXPORT_HYVISION
- 
-#ifdef HISFX3PLATFORM_LIB
-#define HISFX3PLATFORM_EXPORT /*extern "C"*/ __declspec(dllexport)
-#else
-#define HISFX3PLATFORM_EXPORT /*extern "C"*/ __declspec(dllimport)
-#endif
- 
-//!  ÈíÁú¸ñÍ¼Ïñ²É¼¯¹¤×°·â×°Àà
-/*! µçÄÔÅäÖÃ½¨ÒéÔÚWIN7ÒÔÉÏÏµÍ³£¬ 4GÒÔÉÏÄÚ´æ£¬ INTEL I3ÒÔÉÏ´¦ÀíÆ÷
-*/
-
-struct _RolongoXMLOtherSectionItem
+#ifdef __cplusplus
+extern "C"
 {
-	std::string key;
-	std::string value;
+#endif
+
+namespace RBOXAPI
+{
+	//! è®¾ç½®å·¥è£…å‹å·
+	/*!
+	\param[in] boxType 
+	\param[in] camCount æ¨¡ç»„æ•°é‡
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3SetCurrentPlatformType(_HisFX3_Platform_Type boxType);
+
+	HISFX3PLATFORM_API _HisFX3_Platform_Type HisFX3GetCurrentPlatformType();
+
+	//! è®¾ç½®å®é™…ç”¨çš„å…‰çº¤çº¿æ•°ç›®
+	/*! R8æœ‰æ•ˆ
+	\param[in] num å®é™…ç”¨çš„å…‰çº¤çº¿æ•°ç›®
+	\sa
+	*/
+	HISFX3PLATFORM_API void HisFX3SetFiberNum(int num);
+
+	//! è®¾ç½®æ˜¯å¦è¦åšCPUè¿›ç¨‹ä»¿å°„
+	/*! æ­¤è®¾ç½®é’ˆå¯¹å…‰çº¤å·¥è£…+WIN10ç³»ç»Ÿæœ‰æ•ˆ 
+	\param[in] on
+	\sa
+	*/
+	HISFX3PLATFORM_API void HisFX3CPUAffinity(bool on);
+
+	//! è·å–å·¥è£…æ•°é‡
+	/*! 
+	\return å·¥è£…ä¸ªæ•°
+	\sa HisFX3EnumDev
+	*/
+	HISFX3PLATFORM_API int HisFX3GetDevCount();
+
+	//! æšä¸¾åœ¨çº¿çš„å·¥è£…è®¾å¤‡
+	/*! ä¹‹åå¿…é¡»è°ƒç”¨HisFX3EnumFreeé‡Šæ”¾èµ„æºï¼Œå¦åˆ™ä¼šé€ æˆå†…å­˜æ³„æ¼
+	\param[out] dev å·¥è£…å”¯ä¸€åºåˆ—å·åˆ—è¡¨
+	\param[out] devCount åœ¨çº¿çš„å·¥è£…æ•°é‡
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa HisFX3EnumFree
+	*/
+	HISFX3PLATFORM_API int HisFX3EnumDev(char*** dev, int* devCount);
+
+	//! é‡Šæ”¾HisFX3EnumDevä¸­å¼€è¾Ÿçš„å†…å­˜
+	/*!
+	\param[in] dev å·¥è£…å”¯ä¸€åºåˆ—å·åˆ—è¡¨
+	\param[in] devCount å·¥è£…æ•°é‡
+	\sa HisFX3EnumDev
+	*/
+	HISFX3PLATFORM_API void HisFX3EnumFree(char** dev, int devCount);
+
+	//! æšä¸¾åœ¨çº¿çš„å·¥è£…è®¾å¤‡ï¼Œä½œç”¨å’ŒHisFX3EnumDevä¸€æ ·ï¼Œåªæ˜¯è¿”å›çš„æ ¼å¼ä¸åŒ
+	/*! 
+	\param[out] dev å·¥è£…å”¯ä¸€åºåˆ—å·åˆ—è¡¨ï¼Œå¤šä¸ªåºåˆ—å·ä¹‹é—´ç”¨";"éš”å¼€ï¼›å†…å­˜éœ€è¦ç”¨æˆ·è‡ªå·±ç”³è¯·ï¼Œå»ºè®®ä¸å°‘äº256Bytes;
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3EnumDevStr(char* dev);
+
+	//! æ‰“å¼€å·¥è£…dev, ç¼–å·ä¸ºboxIndex, ç¼–å·ä¸èƒ½è¶…è¿‡_RMAX_BOXS-1
+	/*!
+	\param[in] boxIndex å·¥è£…ç¼–å·
+	\param[in] dev å·¥è£…å”¯ä¸€åºåˆ—å·, å¦‚æœä¸ºNULLï¼Œåˆ™ä¸æ¯”å¯¹åºåˆ—å·ï¼Œéšæœºæ‰“å¼€ä¸€ä¸ªå·¥è£…
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa HisFX3CloseDevice
+	*/
+	HISFX3PLATFORM_API int HisFX3OpenDevice(int boxIndex = 0, char* dev = 0);
+
+	//! å…³é—­å·¥è£…
+	/*!
+	\param[in] boxIndex å·¥è£…ç¼–å·, å¦‚ä½•ä¸º-1åˆ™å…³é—­æ‰€æœ‰å·¥è£…
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3CloseDevice(int boxIndex = 0);
+
+	//! è·å–HisFX3OpenDeviceæ‰“å¼€çš„å·¥è£…çš„åºåˆ—å·
+	/*!
+	\param[out] dev å¦‚æœå‡½æ•°æˆåŠŸï¼Œè¿”å›å½“å‰çš„å·¥è£…åºåˆ—å·ï¼›è‡³å°‘éœ€è¦ç”³è¯·64Byteå†…å­˜å¤§å°ï¼›
+	\param[in] boxIndex å·¥è£…ç¼–å·, å¦‚ä½•ä¸º-1åˆ™å…³é—­æ‰€æœ‰å·¥è£…
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa HisFX3OpenDevice
+	*/
+	HISFX3PLATFORM_API int HisFX3GetCurrentBoxSerial(char* dev, int boxIndex = 0);
+
+	//! åœ¨çº¿å‡çº§FPGAå›ºä»¶
+	/*!
+	\param[in] binPath å‡çº§æ–‡æ¡£è·¯å¾„
+	\param[in] boxIndex å·¥è£…ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3UpdateFPGA(char* binPath, int boxIndex = 0);
+
+	//! è°ƒèŠ‚å·¥è£…ä¸Šä¼ é€Ÿç‡ï¼Œå¯¹R10S, USB3.0å·¥è£…æœ‰æ•ˆ(å¿…é¡»åœ¨OpenDeviceæˆåŠŸä¹‹åè°ƒç”¨)
+	/*!
+	\param[in] speed 0~10000, 0è¡¨ç¤ºæœ€å°é€Ÿç‡ï¼Œ 10000è¡¨ç¤ºæœ€å¤§é€Ÿç‡
+	\param[in] boxIndex å·¥è£…ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3SetUSBSpeed(unsigned int speed, int boxIndex = 0);
+
+	//! è®¾ç½®USBæ”¶å‘åŒ…çš„å¤§å°(R5, S5)
+	/*!
+	\param[in] size å•ä½ï¼š16KB
+	\param[in] boxIndex å·¥è£…ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3SetUSBPktSize(unsigned int size, int boxIndex = 0);
+
+	//! è·å–å·¥è£…FPGAç‰ˆæœ¬å·
+	/*!
+	\param[in] boxIndex å·¥è£…ç¼–å·
+	\return ç‰ˆæœ¬å·
+	\sa
+	*/
+	HISFX3PLATFORM_API unsigned int HisFX3GetFPGAVer(int boxIndex = 0);
+
+	//! è·å–å·¥è£…å¼€çŸ­è·¯å›ºä»¶ç‰ˆæœ¬å·
+	/*!
+	\param[in] boxIndex å·¥è£…ç¼–å·
+	\return ç‰ˆæœ¬å·
+	\sa
+	*/
+	HISFX3PLATFORM_API unsigned int HisFX3GetOSVer(int boxIndex = 0);
+
+	//! è·å–å·¥è£…FX3å›ºä»¶ç‰ˆæœ¬å·
+	/*!
+	\param[in] boxIndex å·¥è£…ç¼–å·
+	\return ç‰ˆæœ¬å·
+	\sa
+	*/
+	HISFX3PLATFORM_API unsigned int HisFX3GetFX3Ver(int boxIndex = 0);
+
+	//! å·¥è£…æ˜¯å¦å·²ç»æ‰“å¼€
+	/*!
+	\param[in] boxIndex å·¥è£…ç¼–å·
+	\return true: å·²æ‰“å¼€   false:è¿˜æœªæ‰“å¼€
+	\sa
+	*/
+	HISFX3PLATFORM_API bool HisFX3IsOpen(int boxIndex = 0);
+
+	//! æµ‹è¯•é€šä¿¡é“¾æ¥æ˜¯å¦æ­£å¸¸
+	/*! ä¸€èˆ¬æƒ…å†µç”¨HisFX3IsOpen
+	\param[in] boxIndex å·¥è£…ç¼–å·
+	\return true: å·²æ‰“å¼€   false:è¿˜æœªæ‰“å¼€
+	\sa
+	*/
+	HISFX3PLATFORM_API bool HisFX3IsConnected(int boxIndex = 0);
+
+
+	//! æ§åˆ¶å·¥è£…ä¸ŠLEDçš„çŠ¶æ€
+	/*!
+	\param[in] on true: é—ªçƒ  false:ç­
+	\param[in] boxIndex å·¥è£…ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int  HisFX3LedControl(bool on, int boxIndex = 0);
+
+	//! æ§åˆ¶å·¥è£…ä¸Šèœ‚é¸£å™¨çš„çŠ¶æ€
+	/*!
+	\param[in] on true: å¼€  false:å…³
+	\param[in] boxIndex å·¥è£…ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3BuzzerControl(bool on, int boxIndex = 0);
+
+	//! æ§åˆ¶å·¥è£…ä¸Šé£æ‰‡çš„è¿è¡Œæ¨¡å¼
+	/*!
+	\param[in] mode 0ï¼šè‡ªåŠ¨  1ï¼šå¼€  2ï¼šå…³
+	\param[in] boxIndex å·¥è£…ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3SetFanMode(unsigned int mode, int boxIndex = 0);
+
+	//! è®¾ç½®é£æ‰‡è‡ªåŠ¨æ¨¡å¼çš„é«˜/ä½æ¸©åº¦
+	/*! 
+	\param[in] low æ¸©åº¦< lowæ—¶å…³é—­
+	\param[in] high æ¸©åº¦> highæ—¶æ‰“å¼€
+	\param[in] boxIndex å·¥è£…ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3SetFanAutoRange(double low, double high, int boxIndex = 0);
+	
+	//! æ§åˆ¶FPGAå½“å‰å†…éƒ¨æ¸©åº¦
+	/*!
+	\param[in] boxIndex å·¥è£…ç¼–å·
+	\return æ¸©åº¦ï¼Œ å•ä½ï¼šæ‘„æ°åº¦
+	\sa
+	*/
+	HISFX3PLATFORM_API double HisFX3GetFPGATemperature(int boxIndex = 0);
+
+	//! çƒ§å†™ç”¨æˆ·è‡ªå®šä¹‰æ•°æ®åˆ°å·¥è£…Flash
+	/*! ç©ºé—´å¤§å°ï¼š8KB; 
+	\param[in] reg å¯„å­˜å™¨åœ°å€ï¼Œä»0x0å¼€å§‹
+	\param[in] data è¦çƒ§å†™çš„æ•°æ®Buffer
+	\param[in] dataSize æ•°æ®é•¿åº¦
+	\param[in] boxIndex å·¥è£…ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3BurnUserData(unsigned int reg, unsigned char* data, unsigned int dataSize, int boxIndex = 0);
+
+	//! ä»å·¥è£…Flashè¯»å–ç”¨æˆ·æ•°æ®
+	/*! ç©ºé—´å¤§å°ï¼š8KB;
+	\param[in] reg å¯„å­˜å™¨åœ°å€ï¼Œä»0x0å¼€å§‹
+	\param[in] data è¦çƒ§å†™çš„æ•°æ®Buffer
+	\param[in] dataSize æ•°æ®é•¿åº¦
+	\param[in] boxIndex å·¥è£…ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3ReadUserData(unsigned int reg, unsigned char* data, unsigned int dataSize, int boxIndex = 0);
+
+	//! FPGAæ˜¯å¦å¼€å¯DDRç¼“å­˜åŠŸèƒ½
+	/*!
+	\param[in] on true : å¼€å¯ï¼› false:å…³é—­ï¼›
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3SetDDR(bool on, int cam = 0);
+
+	//! æ˜¯å¦åªè¾“å‡ºæ­£ç¡®å¸§
+	/*!
+	\param[in] onlyRightFrame b0: è®¾ç½®FPGA;  b1: è®¾ç½®ä¸Šä½æœº;
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3OnlyRightFrame(unsigned char onlyRightFrame, int cam = 0);
+
+	//! å¼€å§‹å‡ºå›¾
+	/*!
+	\param[in] p ç‚¹äº®ç›¸å…³å‚æ•°
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa RBOX_PREVIEW_PARA
+	*/
+	HISFX3PLATFORM_API int HisFX3StartPreview(_HisFX3_PreviewStruct* p, int cam = 0);
+
+	//! åœæ­¢å‡ºå›¾
+	/*!
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3StopPreview(int cam = 0);
+
+	//! ä¸‹ç”µï¼Œåˆ‡æ¢å›¾åƒå°ºå¯¸
+	/*!
+	\param[in] p å¿…è¦çš„å‚æ•°ï¼ŒæŒ‰éœ€é…ç½®, ä¸€èˆ¬éœ€è¦é…RESET,MCLK,port,iic,dataFormat,width,height,cphyRate
+	\param[in] sequence é…ç½®æ—¶åºï¼Œå¦‚æœè®¾ä¸ºNULLï¼Œåˆ™å¯ç”¨é»˜è®¤æ—¶åº
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3SwitchImageSize(_HisFX3_PreviewStruct* p, char* sequence, int cam);
+
+
+	//! è®¾ç½®å›¾åƒæ¥å£ä¿¡æ¯
+	/*!
+	\param[in] port å›¾åƒæ•°æ®æ¥å£ç±»å‹
+	\param[in] lanes å›¾åƒæ•°æ®é€šé“æ•°é‡
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa _HisFX3_MIPILane_Stream
+	*/
+	HISFX3PLATFORM_API int HisFX3SetPortCfg(_HisFX3_MIPILane_Stream port, unsigned char lanes, int cam = 0);
+
+	//! é‡ç½®å›¾åƒæ¥å£è§£ç æ¨¡å—
+	/*!
+	\param[in] port å›¾åƒæ•°æ®æ¥å£ç±»å‹
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa _HisFX3_MIPILane_Stream
+	*/
+	HISFX3PLATFORM_API int HisFX3ResetPortDecoder(_HisFX3_MIPILane_Stream port, int cam = 0);
+
+	//! å¯åŠ¨/åœæ­¢å›¾åƒæ¥å£è§£ç æ¨¡å—, é€šå¸¸å»ºè®®ä½¿ç”¨HisFX3ResetPortDecoder
+	/*!
+	\param[in] port å›¾åƒæ•°æ®æ¥å£ç±»å‹
+	\param[in] on æ˜¯å¦å¯åŠ¨
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa _HisFX3_MIPILane_Stream
+	*/
+	HISFX3PLATFORM_API int HisFX3PortDecoderOnOff(_HisFX3_MIPILane_Stream port, bool on, int cam = 0);
+
+	//! è·å–å›¾åƒæ¥å£è§£ç è§£ç ä¿¡æ¯
+	/*!
+	\param[in] port å›¾åƒæ•°æ®æ¥å£ç±»å‹
+	\param[in][out] info è§£ç ä¿¡æ¯çš„å­—ç¬¦ä¸²è¡¨ç¤ºï¼Œ å†…å­˜å¤§å° >= 512Byte
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa _HisFX3_MIPILane_Stream
+	*/
+	HISFX3PLATFORM_API int HisFX3GetDecoderInfo(_HisFX3_MIPILane_Stream port, char* info, int cam = 0);
+
+	//! è®¾ç½®ä¸Šä¼ å›¾åƒæ•°æ®çš„å¸§ä¿¡æ¯
+	/*!
+	\param[in] dataFormat å›¾åƒæ•°æ®æ ¼å¼
+	\param[in] width å›¾åƒå®½ï¼Œ ä¸åŒ…å«dummyLeft, dummyRight	
+	\param[in] height å›¾åƒå®½ï¼Œ ä¸åŒ…å«dummyTop, dummyBottom
+	\param[in] dummyLeft å›¾åƒå·¦è¾¹éœ€è¦è£æ‰çš„åˆ—æ•°
+	\param[in] dummyRight å›¾åƒå³è¾¹éœ€è¦è£æ‰çš„åˆ—æ•°
+	\param[in] dummyTop å›¾åƒä¸Šè¾¹éœ€è¦è£æ‰çš„è¡Œæ•°
+	\param[in] dummyBottom å›¾åƒä¸‹è¾¹éœ€è¦è£æ‰çš„è¡Œæ•°
+	\param[in] addInfoBytes; å›¾åƒæ•°æ®é™„åŠ ä¿¡æ¯å¤§å°ï¼Œ å•ä½: Byteï¼›æ­£æ•°è¡¨ç¤ºåœ¨å¸§å¤´ä½ç½®ï¼Œ è´Ÿæ•°è¡¨ç¤ºåœ¨å¸§å°¾ä½ç½®
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa _HisFX3_BaylorMode
+	*/
+	HISFX3PLATFORM_API int HisFX3SetFrameCfg(_HisFX3_BaylorMode dataFormat, int width, int height,  \
+		int dummyLeft=0, int dummyRight=0, int dummyTop=0, int dummyBottom=0, int addInfoBytes = 0, int cam = 0);
+	
+	//! è®¾ç½®åˆ†åŒºå—ä¸Šä¼ çš„ROIï¼Œè°ƒæ­¤å‡½æ•°ä¹‹å‰éœ€è°ƒç”¨HisFX3SetFrameCfg
+	/*! 
+	\param[in] streamROI ROIåæ ‡ï¼Œå•ä½ï¼šåƒç´ ï¼›åæ ‡å¿…é¡»ä¸ºå¶æ•°ï¼›å¦‚æœæ˜¯HisFX3GrabFrameå–Compactæ ¼å¼, åˆ™å¿…é¡»æ»¡è¶³Compactçš„æ ¼å¼éœ€æ±‚
+	\param[in] nums ROIæ•°é‡ï¼ŒèŒƒå›´[0, _RMAX_STREAM_ROI_NUMS]
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa HisFX3SetFrameCfg
+	*/
+	HISFX3PLATFORM_API int HisFX3SetUpStreamROI(RRect* streamROI, int nums, int cam = 0);
+
+	//! å¼€å¯å›¾åƒæ•°æ®æŠ“å–çº¿ç¨‹
+	/*!
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3StartCapture(int cam = 0);
+
+	//! å¿½ç•¥frameså¸§ä¹‹åå¼€å¯å›¾åƒæ•°æ®æŠ“å–çº¿ç¨‹
+	/*!
+	\param[in] frames å¿½ç•¥çš„å¸§æ•°
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3StartCaptureWithSkip(unsigned int frames, int cam = 0);
+
+	//! åœæ­¢å›¾åƒæ•°æ®æŠ“å–çº¿ç¨‹
+	/*!
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3StopCapture(int cam = 0);
+
+	//! æ¨¡ç»„æ˜¯å¦å·²å¼€å§‹å‡ºå›¾
+	/*!
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return true: æ­£åœ¨å‡ºå›¾ false: æ²¡æœ‰å‡ºå›¾
+	\sa
+	*/
+	HISFX3PLATFORM_API bool HisFX3IsStart(int cam = 0);
+
+	//! å›¾åƒæ•°æ®æ˜¯å¦æ­£åœ¨ä¸Šä¼ 
+	/*!
+	\param[in] waitTime ç­‰å¾…æ—¶é—´ï¼Œå•ä½:ms
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return true: æ­£åœ¨ä¸Šä¼  false: æ²¡æœ‰æ­£åœ¨ä¸Šä¼ 
+	\sa
+	*/
+	HISFX3PLATFORM_API bool HisFX3IsDataUploading(unsigned int waitTime, int cam = 0);
+
+	//! æŠ“å–ä¸€å¸§å›¾åƒ
+	/*!
+	\param[in] imageBuf å­˜å–å›¾åƒæ•°æ®çš„å†…å­˜æŒ‡é’ˆ
+	\param[in] bufSize imageBufå¤§å°ï¼Œ å•ä½ï¼šByte
+	\param[out] frameIndex å¸§ç´¢å¼•
+	\param[out] errorFrame æ˜¯å¦ä¸ºé”™è¯¯å¸§
+	\param[out] recSize æ”¶åˆ°çš„æ•°æ®å¤§å°ï¼Œå•ä½ï¼šByte
+	\param[in] imageFormat å›¾åƒæ•°æ®æ ¼å¼ï¼Œå¦‚æœå’ŒSENSORæ ¼å¼ä¸ä¸€è‡´ï¼Œä¼šè‡ªåŠ¨è½¬åŒ–ä¸ºimageFormatæ ¼å¼; 0è¡¨ç¤ºå’Œè¾“å…¥ä¿æŒä¸€è‡´
+	\param[in] timeout ç­‰å¾…æ—¶é—´
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3GrabFrame(unsigned char* imageBuf, int bufSize, unsigned int* frameIndex, bool* errorFrame, unsigned int* recSize, unsigned int imageFormat=0, unsigned int timeout = 2000, int cam = 0);
+
+	//! è·å–å½“å‰å¸§ç´¢å¼•
+	/*!
+	\param[out] rightFrame æ€»çš„æ­£ç¡®å¸§æ•°
+	\param[out] errFrame æ€»çš„é”™è¯¯å¸§æ•°
+	\param[in] flag 0: FPGAæ¥æ”¶åˆ°çš„æ€»å¸§æ•°ï¼Œ 1ï¼šPCæ”¶åˆ°çš„æ€»å¸§æ•°
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3GetTotalFrame(unsigned int* rightFrame, unsigned int* errFrame, unsigned int flag, int cam = 0);
+
+	//! è·å–è¿ç»­å¸§ï¼Œ æ³¨æ„ï¼šå…ˆè¦å…³é—­DDRçš„åŠŸèƒ½ï¼Œæ‰èƒ½ä¿è¯è¿ç»­ï¼›
+	/*!
+	\param[in] imageBuf ä¸€ä¸ªæŒ‡é’ˆæ•°ç»„çš„æŒ‡é’ˆ
+	\param[in] frames è¿ç»­å¸§å¸§æ•°
+	\param[in] imageFormat å›¾åƒæ•°æ®æ ¼å¼ï¼Œå¦‚æœå’ŒSENSORæ ¼å¼ä¸ä¸€è‡´ï¼Œä¼šè‡ªåŠ¨è½¬åŒ–ä¸ºimageFormatæ ¼å¼; 0è¡¨ç¤ºå’Œè¾“å…¥ä¿æŒä¸€è‡´
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	sample code:
+	unsigned char** buf = NULL;
+	HisFX3GrabConsecutiveFrames(&buf, 5, 0, 0);
+	*/
+	HISFX3PLATFORM_API int HisFX3GrabConsecutiveFrames(unsigned char*** imageBuf, unsigned int frames, unsigned int imageFormat, int cam);
+
+	//! é‡Šæ”¾HisFX3GrabConsecutiveFramesä¸­å¼€å¯çš„è¿ç»­å¸§å†…å­˜
+	/*!
+	\param[in] imageBuf ä¸€ä¸ªæŒ‡é’ˆæ•°ç»„çš„æŒ‡é’ˆ
+	\param[in] frames è¿ç»­å¸§å¸§æ•°
+	\sa
+	*/
+	HISFX3PLATFORM_API void HisFX3ConsecutiveFramesFree(unsigned char*** imageBuf, unsigned int frames);
+
+	//! æŠ“å–åŒæ­¥å¸§
+	/*!
+	\param[in] imageBuf ä¸€ä¸ªæŒ‡é’ˆæ•°ç»„, ç”¨æˆ·éœ€è¦è‡ªå·±å¼€è¾Ÿå†…å­˜
+	\param[in] imageFormat å›¾åƒæ•°æ®æ ¼å¼ï¼Œå¦‚æœå’ŒSENSORæ ¼å¼ä¸ä¸€è‡´ï¼Œä¼šè‡ªåŠ¨è½¬åŒ–ä¸ºimageFormatæ ¼å¼; 0è¡¨ç¤ºå’Œè¾“å…¥ä¿æŒä¸€è‡´
+	\param[in] cams éœ€è¦æŠ“å–çš„æ¨¡ç»„é€šé“ï¼Œbit0è¡¨ç¤ºcam 0ï¼Œä»¥æ­¤ç±»æ¨
+	\param[in] boxIndex å·¥è£…ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3GrabSyncFrames(unsigned char* imageBuf[], unsigned int imageFormat, unsigned int cams, int boxIndex = 0);
+
+	//! å¼€å¯IIC è‡ªåŠ¨ACKæ¨¡å¼
+	/*! å¼€å¯ä¹‹åï¼Œå½“ACKæ²¡æœ‰å“åº”æ—¶ï¼Œä¼šå¾ªç¯ä¾¦æµ‹ä¸€æ®µæ—¶é—´ï¼Œç›´åˆ°ACKæœ‰å“åº”æˆ–è€…timeout
+	\param[in] enable å¼€å¯/å…³é—­ IICè‡ªåŠ¨ACKæ¨¡å¼
+	\param[in] timeout å•ä½ï¼šms
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3EnableIICAutoAck(bool enable, unsigned int timeout, int cam = 0);
+
+	//! æ£€æµ‹è‡ªåŠ¨ACKæ¨¡å¼æ˜¯å¦å·²ç»å¼€å¯
+	/*! 
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return é0ï¼šå¼€å¯ï¼Œè¿”å›ç­‰å¾…æ—¶é—´ï¼›0ï¼šæœªå¼€å¯
+	\sa
+	*/
+	HISFX3PLATFORM_API unsigned int HisFX3IsIICAutoAckEnabled(int cam = 0);
+
+	//! è®¾ç½®IICé€Ÿç‡
+	/*!
+	\param[in] speed IICé€Ÿç‡ï¼Œ å•ä½ï¼šKHz
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3SetIICSpeed(unsigned int speed, int cam = 0);
+
+	//! è·å–å½“å‰IICé€Ÿç‡
+	/*!
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return å½“å‰IICé€Ÿç‡ï¼Œ å•ä½ï¼šKHz
+	\sa
+	*/
+	HISFX3PLATFORM_API unsigned int HisFX3GetIICSpeed(int cam = 0);
+
+	//! æµ‹è¯•IIC ACKæ˜¯å¦æœ‰å“åº”
+	/*!
+	\param[in] slave è®¾å¤‡åœ°å€
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return true: æœ‰å“åº”ï¼Œ false: æ²¡æœ‰å“åº”
+	\sa
+	*/
+	HISFX3PLATFORM_API bool HisFX3IICResponds(unsigned char slave, int cam = 0);
+
+	//! ç­‰å¾…IICå“åº”ï¼Œ ç›´è‡³timeoutæˆ–è€…IICæœ‰å“åº”
+	/*!
+	\param[in] slave è®¾å¤‡åœ°å€
+	\param[in] timeout å•ä½:ms
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return true: æœ‰å“åº”ï¼Œ false: æ²¡æœ‰å“åº”
+	\sa
+	*/
+	HISFX3PLATFORM_API bool HisFX3WaitIICResponds(unsigned char slave, unsigned int timeout, int cam = 0);
+
+	//! å•æ¡IICå†™å…¥
+	/*!
+	\param[in] slave è®¾å¤‡åœ°å€
+	\param[in] reg å¯„å­˜å™¨åœ°å€
+	\param[in] data æ•°æ®
+	\param[in] type ç±»å‹: 0x0808, 0x1608, 0x1632...
+	\param[in] ack æ˜¯å¦åˆ¤å®šACKå“åº”
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3WriteIIC(unsigned char slave, unsigned int reg, unsigned __int64 data, unsigned short type, bool ack = true, int cam = 0);
+
+	//! å•æ¡IICè¯»å–
+	/*!
+	\param[in] slave è®¾å¤‡åœ°å€
+	\param[in] reg å¯„å­˜å™¨åœ°å€
+	\param[out] data æ•°æ®
+	\param[in] ack æ˜¯å¦åˆ¤å®šACKå“åº”
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3ReadIIC(unsigned char slave, unsigned int reg, unsigned __int64* data, unsigned short type, int cam = 0);
+
+	//! æ‰¹é‡IICå†™å…¥
+	/*!
+	\param[in] count IICæ¡æ•°
+	\param[in] slave è®¾å¤‡åœ°å€
+	\param[in] reg å¯„å­˜å™¨åœ°å€
+	\param[in] data æ•°æ®
+	\param[in] type ç±»å‹: 0x0808, 0x1608, 0x1632...
+	\param[in] delay æ¯æ¡IICå†™å…¥ä¹‹é—´çš„é—´éš”æ—¶é—´ï¼Œ å•ä½:us
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3BatchWriteIICNoLimit(unsigned int count, unsigned char* slave, unsigned int* reg, unsigned int* data, unsigned short* type, unsigned short delay = 10, int cam = 0);
+
+	//! æ‰¹é‡IICè¯»å–
+	/*!
+	\param[in] count IICæ¡æ•°
+	\param[in] slave è®¾å¤‡åœ°å€
+	\param[in] reg å¯„å­˜å™¨åœ°å€
+	\param[out] data æ•°æ®
+	\param[in] type ç±»å‹: 0x0808, 0x1608, 0x1632...
+	\param[in] delay æ¯æ¡IICè¯»å–ä¹‹é—´çš„é—´éš”æ—¶é—´ï¼Œ å•ä½:us
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3BatchReadIICNoLimit(unsigned int count, unsigned char* slave, unsigned int* reg, unsigned int* data, unsigned short* type, unsigned short delay = 10, int cam = 0);
+
+	//! å•æ¡è§¦å‘æ¨¡ç»„IICå†™å…¥
+	/*!
+	\param[in] slave è®¾å¤‡åœ°å€
+	\param[in] reg å¯„å­˜å™¨åœ°å€
+	\param[in] regSize å¯„å­˜å™¨åœ°å€å¤§å°ï¼Œ å•ä½ï¼š Byte
+	\param[in] data æ•°æ®
+	\param[in] dataSize æ•°æ®å¤§å°ï¼Œ å•ä½ï¼š Byte (R5X,R6:æœ€å¤§512)
+	\param[in] delay æ¯ä¸ªByteä¹‹é—´çš„é—´éš”å»¶æ—¶ï¼Œ å•ä½ï¼šåŠä¸ªSCLæ—¶é’Ÿå‘¨æœŸ
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3PageWriteIIC(unsigned int slave, unsigned int reg, unsigned int regSize, unsigned char* data, unsigned int dataSize, unsigned short delay = 4, int cam = 0);
+
+	//! å•æ¡è§¦å‘æ¨¡ç»„IICè¯»å–
+	/*!
+	\param[in] slave è®¾å¤‡åœ°å€
+	\param[in] reg å¯„å­˜å™¨åœ°å€
+	\param[in] regSize å¯„å­˜å™¨åœ°å€å¤§å°ï¼Œ å•ä½ï¼š Byte
+	\param[out] data æ•°æ®
+	\param[in] dataSize æ•°æ®å¤§å°ï¼Œ å•ä½ï¼š Byte (R5X,R6:æœ€å¤§512)
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3PageReadIIC(unsigned int slave, unsigned int reg, unsigned int regSize, unsigned char* data, unsigned int dataSize, int cam = 0);
+
+	//! æ‰¹é‡è§¦å‘æ¨¡ç»„IICå†™å…¥
+	/*!
+	\param[in] slave è®¾å¤‡åœ°å€
+	\param[in] reg å¯„å­˜å™¨åœ°å€
+	\param[in] regSize å¯„å­˜å™¨åœ°å€å¤§å°ï¼Œ å•ä½ï¼š Byte
+	\param[in] data æ•°æ®
+	\param[in] dataSize æ•°æ®å¤§å°ï¼Œ å•ä½ï¼š Byte
+	\param[in] pageSize å•æ¬¡è§¦å‘å†™å…¥çš„æ•°æ®å¤§å°ï¼Œ å•ä½ï¼š Byte (R5X,R6:æœ€å¤§512)
+	\param[in] byteDelay æ¯ä¸ªByteä¹‹é—´çš„é—´éš”å»¶æ—¶ï¼Œ å•ä½ï¼šåŠä¸ªSCLæ—¶é’Ÿå‘¨æœŸ
+	\param[in] pageDelay æ¯æ¬¡è§¦å‘å†™å…¥ä¹‹é—´çš„é—´éš”æ—¶é—´ï¼Œå•ä½:ms
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3PageWriteIICNoLimit(unsigned int slave, unsigned int reg, unsigned int regSize, unsigned char* data, unsigned int dataSize, unsigned int pageSize, unsigned short byteDelay = 4, unsigned int pageDelay = 100, int cam = 0);
+
+	//! æ‰¹é‡è§¦å‘æ¨¡ç»„IICè¯»å–
+	/*!
+	\param[in] slave è®¾å¤‡åœ°å€
+	\param[in] reg å¯„å­˜å™¨åœ°å€
+	\param[in] regSize å¯„å­˜å™¨åœ°å€å¤§å°ï¼Œ å•ä½ï¼š Byte
+	\param[out] data æ•°æ®
+	\param[in] dataSize æ•°æ®å¤§å°ï¼Œ å•ä½ï¼š Byte
+	\param[in] pageSize å•æ¬¡è§¦å‘å†™å…¥çš„æ•°æ®å¤§å°ï¼Œ å•ä½ï¼š Byte (R5X,R6:æœ€å¤§512)
+	\param[in] pageDelay æ¯æ¬¡è§¦å‘å†™å…¥ä¹‹é—´çš„é—´éš”æ—¶é—´ï¼Œå•ä½:ms
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3PageReadIICNoLimit(unsigned int slave, unsigned int reg, unsigned int regSize, unsigned char* data, unsigned int dataSize, unsigned int pageSize, unsigned int pageDelay = 0, int cam = 0);
+
+	//! SONYè½¦è½½èŠ¯ç‰‡Command IICè¯»å†™
+	/*!
+	\param[in] slave è®¾å¤‡åœ°å€
+	\param[in] code å‘½ä»¤ä»£ç (Command Code)
+	\param[in] writeBuf éœ€è¦å†™å…¥çš„æ•°æ®
+	\param[in] writeSize éœ€è¦å†™å…¥çš„æ•°æ®å¤§å°ï¼Œ å•ä½: Byte
+	\param[in] delay å†™å…¥å’Œå›è¯»ä¹‹é—´çš„å»¶æ—¶ç­‰å¾…æ—¶é—´ï¼Œ å•ä½:us
+	\param[out] readBuf å¦‚æœæ˜¯è¯»æ“ä½œï¼Œä¼šæŠŠè¯»å–åˆ°çš„æ•°æ®å­˜åˆ°æ­¤buffer
+	\param[in] readSize å¦‚æœæ˜¯è¯»æ“ä½œï¼Œå¡«è¯»å–çš„å¤§å°ï¼Œå¦åˆ™å¡«0ï¼› å•ä½: Byte
+	\param[out] status å‘½ä»¤æ‰§è¡Œç»“æœçŠ¶æ€ä»£ç 
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3SONYCommandIIC(unsigned int slave, unsigned char code, unsigned char* writeBuf, unsigned int writeSize, unsigned int delay, unsigned char* readBuf, unsigned int readSize, unsigned char* status, int cam = 0);
+	
+	//! è®¾ç½®SPIçš„é€Ÿç‡
+	/*!
+	\param[in] speed SPIé€Ÿç‡ï¼Œå•ä½ï¼šKHz
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3SetSPISpeed(unsigned int speed, int cam = 0);
+
+	//! è·å–å½“å‰SPIçš„é€Ÿç‡
+	/*!
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return å½“å‰SPIé€Ÿç‡ï¼Œå•ä½:KHz
+	\sa
+	*/
+	HISFX3PLATFORM_API unsigned int HisFX3GetSPISpeed(int cam = 0);
+
+	//! å•æ¡SPIå†™å…¥
+	/*!
+	\param[in] slave è®¾å¤‡åœ°å€ï¼Œå½“è®¾0xFFæ—¶ï¼Œ ä¸æ“ä½œè®¾å¤‡åœ°å€
+	\param[in] reg å¯„å­˜å™¨åœ°å€
+	\param[in] data æ•°æ®
+	\param[in] type ç±»å‹: 0x0808, 0x1608, 0x1632...
+	\param[in] csLow CSä¿¡å·æ˜¯å¦æ‹‰ä½
+	\param[in] littleEndian 1ä¸ªBYTEå†…çš„BITæ’åºæ˜¯å¦åœ°ä½åœ¨å‰
+	\param[in] clkHigh true: CLKé»˜è®¤æ˜¯åœ¨é«˜ç”µå¹³ï¼›false: CLKé»˜è®¤æ˜¯åœ¨ä½ç”µå¹³ï¼›éœ€è¦R2C >= 3506
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3WriteSPI(unsigned char slave, unsigned int reg, unsigned __int64 data, \
+		unsigned short type, bool csLow = true, bool littleEndian = true, bool clkHigh = true, int cam = 0);
+
+	//! å•æ¡SPIè¯»å–
+	/*!
+	\param[in] slave è®¾å¤‡åœ°å€ï¼Œå½“è®¾0xFFæ—¶ï¼Œ ä¸æ“ä½œè®¾å¤‡åœ°å€
+	\param[in] reg å¯„å­˜å™¨åœ°å€
+	\param[out] data æ•°æ®
+	\param[in] type ç±»å‹: 0x0808, 0x1608, 0x1632...
+	\param[in] csLow CSä¿¡å·æ˜¯å¦æ‹‰ä½
+	\param[in] littleEndian 1ä¸ªBYTEå†…çš„BITæ’åºæ˜¯å¦åœ°ä½åœ¨å‰
+	\param[in] clkHigh true: CLKé»˜è®¤æ˜¯åœ¨é«˜ç”µå¹³ï¼›false: CLKé»˜è®¤æ˜¯åœ¨ä½ç”µå¹³ï¼›éœ€è¦R2C >= 3506
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3ReadSPI(unsigned char slave, unsigned int reg, unsigned __int64* data, \
+		unsigned short type, bool csLow = true, bool littleEndian = true, bool clkHigh = true, int cam = 0);
+
+	//! å•æ¡è§¦å‘SPIå†™å…¥
+	/*!
+	\param[in] slave è®¾å¤‡åœ°å€ï¼Œå½“è®¾0xFFæ—¶ï¼Œ ä¸æ“ä½œè®¾å¤‡åœ°å€
+	\param[in] reg å¯„å­˜å™¨åœ°å€
+	\param[in] regSize å¯„å­˜å™¨åœ°å€å¤§å°ï¼Œ å•ä½ï¼š Byte
+	\param[in] data æ•°æ®
+	\param[in] dataSize æ•°æ®å¤§å°ï¼Œ å•ä½ï¼š Byte (R5X,R6:æœ€å¤§512)
+	\param[in] csLow CSä¿¡å·æ˜¯å¦æ‹‰ä½
+	\param[in] littleEndian 1ä¸ªBYTEå†…çš„BITæ’åºæ˜¯å¦åœ°ä½åœ¨å‰
+	\param[in] clkHigh true: CLKé»˜è®¤æ˜¯åœ¨é«˜ç”µå¹³ï¼›false: CLKé»˜è®¤æ˜¯åœ¨ä½ç”µå¹³ï¼›éœ€è¦R2C >= 3506
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3PageWriteSPI(unsigned char slave, unsigned int reg, unsigned int regSize, \
+		unsigned char* data, unsigned int dataSize, bool csLow = true, bool littleEndian = true, bool clkHigh = true, int cam = 0);
+
+	//! å•æ¡è§¦å‘SPIè¯»å–
+	/*!
+	\param[in] slave è®¾å¤‡åœ°å€ï¼Œå½“è®¾0xFFæ—¶ï¼Œ ä¸æ“ä½œè®¾å¤‡åœ°å€
+	\param[in] reg å¯„å­˜å™¨åœ°å€
+	\param[in] regSize å¯„å­˜å™¨åœ°å€å¤§å°ï¼Œ å•ä½ï¼š Byte
+	\param[out] data æ•°æ®
+	\param[in] dataSize æ•°æ®å¤§å°ï¼Œ å•ä½ï¼š Byte (R5X,R6:æœ€å¤§512)
+	\param[in] csLow CSä¿¡å·æ˜¯å¦æ‹‰ä½
+	\param[in] littleEndian 1ä¸ªBYTEå†…çš„BITæ’åºæ˜¯å¦åœ°ä½åœ¨å‰
+	\param[in] clkHigh true: CLKé»˜è®¤æ˜¯åœ¨é«˜ç”µå¹³ï¼›false: CLKé»˜è®¤æ˜¯åœ¨ä½ç”µå¹³ï¼›éœ€è¦R2C >= 3506
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int  HisFX3PageReadSPI(unsigned char slave, unsigned int reg, unsigned int regSize, \
+		unsigned char* data, unsigned int dataSize, bool csLow = true, bool littleEndian = true, bool clkHigh = true, int cam = 0);
+
+	//! è®¾ç½®æ¯è·¯ç”µå‹çš„è¿æ¥æ¨¡å¼
+	/*!
+	\param[in] standby BITä½ 1: æ˜¯é™æ€æ¨¡å¼ï¼Œè¿æ¥ç”µé˜»ä¸º100æ¬§  0: æ˜¯å·¥ä½œæ¨¡å¼ï¼Œè¿æ¥ç”µé˜»ä¸º0.1æ¬§
+	\param[in] flag é€šé“é€‰æ‹©,æ”¯æŒä½|æ“ä½œï¼Œ _HisFX3_Platform_VoltFlag
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa _HisFX3_Platform_VoltFlag
+	*/
+	HISFX3PLATFORM_API int HisFX3SetVoltLinkMode(unsigned int standby, unsigned int flag, int cam = 0);
+
+	//! è®¾ç½®ç”µå‹
+	/*!
+	\param[in] volt ç”µå‹, å•ä½ï¼šVã€‚Ps. 5V,12Vé€šé“è®¾ç½®çš„æ–¹å¼ï¼š -1.0(ä¸è®¾ç½®), 0.0(å…³é—­), 1.0(æ‰“å¼€)
+	\param[in] flag é€šé“é€‰æ‹©ï¼Œ _HisFX3_Platform_VoltFlag
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa _HisFX3_Platform_VoltFlag
+	*/
+	HISFX3PLATFORM_API int HisFX3SetVolt(float volt, unsigned int flag, int cam = 0);
+
+	//! è·å–å½“å‰è®¾ç½®çš„ç”µå‹
+	/*!
+	\param[in] flag é€šé“é€‰æ‹©ï¼Œ _HisFX3_Platform_VoltFlag
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return å½“å‰è®¾ç½®çš„ç”µå‹, å•ä½ï¼šV
+	\sa _HisFX3_Platform_VoltFlag
+	*/
+	HISFX3PLATFORM_API float HisFX3GetVoltSetted(_HisFX3_Platform_VoltFlag flag, int cam = 0);
+
+	//! æµ‹é‡å½“å‰çš„è¾“å‡ºç”µå‹å€¼
+	/*!
+	\param[in] flag é€šé“é€‰æ‹©ï¼Œ _HisFX3_Platform_VoltFlag
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return å½“å‰è®¾ç½®çš„ç”µå‹, å•ä½ï¼šV
+	\sa _HisFX3_Platform_VoltFlag
+	*/
+	HISFX3PLATFORM_API float HisFX3ReadVolt(_HisFX3_Platform_VoltFlag flag, int cam = 0);
+
+	//! è®¾ç½®MCLK
+	/*!
+	\param[in] mclké¢‘ç‡ï¼Œ å•ä½:MHz
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3SetMCLK(double mclk, int cam = 0);
+
+	//! è·å–å½“å‰è®¾ç½®çš„MCLK
+	/*!
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return å½“å‰è®¾ç½®çš„MCLKï¼Œ å•ä½:MHz
+	\sa
+	*/
+	HISFX3PLATFORM_API double HisFX3GetMCLK(int cam = 0);
+
+	//! è®¾ç½®RESETä¿¡å·ç”µå¹³
+	/*!
+	\param[in] high æ˜¯å¦æ‹‰é«˜
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3PullReset(bool high, int cam = 0);
+
+	//! è®¾ç½®PWDNä¿¡å·ç”µå¹³
+	/*!
+	\param[in] high æ˜¯å¦æ‹‰é«˜
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3PullPWDN(bool high, int cam = 0);
+
+	//! è®¾ç½®å¹¶å£é‡‡é›†åŒæ­¥ä¿¡å·ç›¸ç§»
+	/*!
+	\param[in] ps  0:ä¸ç›¸ç§»;  1: 90åº¦;  2: 180åº¦;  3: 270åº¦;
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
+	\sa _HisFX3Platform_ErrorCode
+	*/
+	HISFX3PLATFORM_API int HisFX3SetPhaseShift_DVP(int ps, int cam = 0);
+
+	//! è®¾ç½®å¹¶å£å‚æ•°
+	/*!
+	\param[in] dvpLineFormat   0ï¼šé‡‡9:2   1: é‡‡7:0   2ï¼šé‡‡15:0   3ï¼šé‡‡9:0  4ï¼šé‡‡11:0   5ï¼šé‡‡13:0
+	\param[in] vsHigh  VS åŒæ­¥ä¿¡å·è®¾ç½®ã€‚   true: é«˜ç”µå¹³æœ‰æ•ˆï¼›   false: ä½ç”µå¹³æœ‰æ•ˆ
+	\param[in] ps  é‡‡é›†åŒæ­¥ä¿¡å·ç›¸ç§»  0:ä¸ç›¸ç§»;  1: 90åº¦;  2: 180åº¦;  3: 270åº¦; 
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
+	\sa _HisFX3Platform_ErrorCode
+	*/
+	HISFX3PLATFORM_API int HisFX3SetDVP(unsigned int dvpLineFormat, bool vsHigh, int ps, int cam = 0);
+
+	//! è®¾ç½®LVDSéœ€è¦åšæ•°æ®å¯¹é½çš„é€šé“
+	/*!
+	\param[in] pixAlign  b0:1è¡¨ç¤ºé€šé“1éœ€è¦å¯¹é½ï¼Œ ä»¥æ­¤ç±»æ¨...
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
+	\sa _HisFX3Platform_ErrorCode
+	*/
+	HISFX3PLATFORM_API int HisFX3SetPixelAlign_LVDS(unsigned int pixAlign, int cam = 0);
+
+	//! è®¾ç½®LVDS XVS,XVSä¿¡å·
+	/*!
+	\param[in] on  true:éœ€è¦è¾“å‡ºXHS, XVS;		false:ä¸éœ€è¦è¾“å‡ºXHS, XVS;
+	\param[in] xhs
+	\param[in] xvs
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
+	\sa _HisFX3Platform_ErrorCode
+	*/
+	HISFX3PLATFORM_API int HisFX3SetXVSXHS_LVDS(bool on, unsigned int xhs, unsigned int xvs, int cam = 0);
+
+	//! è®¾ç½®DPHY XVS,XVSä¿¡å·(R5Xæ”¯æŒ)
+	/*!
+	\param[in] on  true:éœ€è¦è¾“å‡ºXHS, XVS;		false:ä¸éœ€è¦è¾“å‡ºXHS, XVS;
+	\param[in] xhs
+	\param[in] xvs
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
+	\sa _HisFX3Platform_ErrorCode
+	*/
+	HISFX3PLATFORM_API int HisFX3SetXVSXHS_DPHY(bool on, unsigned int xhs, unsigned int xvs, int cam = 0);
+
+	//! è®¾ç½®DPHYä¿¡å·é‡‡é›†æ¨¡å¼
+	/*!
+	\param[in] mode   0: Power Down  1: SLVS 2:D-PHY
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
+	\sa _HisFX3Platform_ErrorCode
+	*/
+	HISFX3PLATFORM_API int HisFX3SetSignalMode_DPHY(unsigned int mode, int cam = 0);
+
+	//! è®¾ç½®HISPIåè®®çš„é«˜ä½ä½bitæ˜¯å¦éœ€è¦åè½¬
+	/*! æ”¯æŒçš„ç‰ˆæœ¬: R5X(ver>=2019)
+	\param[in] on   true: åè½¬  false: ä¸åè½¬
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
+	\sa _HisFX3Platform_ErrorCode
+	*/
+	HISFX3PLATFORM_API int HisFX3SetBitReverse_HiSPI(bool on, int cam = 0);
+
+	//! è®¾ç½®æ˜¯å¦è§£ç MIPIä¿¡å·çš„è™šæ‹Ÿé€šé“æ•°æ®
+	/*!
+	\param[in] on  true: è§£ç   false:ä¸è§£ç 
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
+	\sa _HisFX3Platform_ErrorCode
+	*/
+	HISFX3PLATFORM_API int HisFX3SetVirtualChannel_MIPI(bool on, int cam = 0);
+
+	//! è®¾ç½®CPHYçš„é€Ÿç‡
+	/*!
+	\param[in] rate  é€Ÿç‡ï¼›å•ä½ï¼šGbpsï¼›æ”¯æŒèŒƒå›´ï¼š(0.1~1.6)(1.96~2.5)
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
+	\sa _HisFX3Platform_ErrorCode
+	*/
+	HISFX3PLATFORM_API int HisFX3SetDataRate_CPHY(double rate, int cam = 0);
+
+	//! æœç´¢CPHYçš„é€Ÿç‡ï¼Œåªæœ‰åœ¨å‡ºå›¾çŠ¶æ€ä¸‹ï¼Œå¹¶ä¸”CPHYæ¨¡å¼ä¸º9çº¿æ¨¡å¼æ‰èƒ½è°ƒç”¨
+	/*!
+	\param[in] rs  æœç´¢èŒƒå›´çš„èµ·å§‹é¢‘ç‡ï¼›å•ä½ï¼šGbpsï¼›æ”¯æŒèŒƒå›´ï¼š(0.1~1.6)(1.96~2.5)
+	\param[in] re  æœç´¢èŒƒå›´çš„ç»“æŸé¢‘ç‡ï¼›å•ä½ï¼šGbpsï¼›æ”¯æŒèŒƒå›´ï¼š(0.1~1.6)(1.96~2.5)
+	\param[in] step  æ¯æ¬¡æœç´¢æ­¥è¿›çš„é¢‘ç‡ï¼›å•ä½ï¼šGbpsï¼›
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return CPHYçš„é€Ÿç‡ï¼Œå•ä½ï¼šGbpsï¼› <0è¡¨ç¤ºæœç´¢å‡ºé”™æˆ–è€…ä¸æ»¡è¶³æ¡ä»¶ ==0è¡¨ç¤ºæœç´¢ä¸åˆ°
+	\sa
+	*/
+	HISFX3PLATFORM_API double HisFX3MeasureDataRate_CPHY(double rs, double re, double step, int cam = 0);
+
+	//! è®¾ç½®CPHYä¿¡å·å¯„å­˜å™¨
+	/*!
+	\param[in] slave è®¾å¤‡åœ°å€,ç¬¬ä¸€çº§ï¼š0xA0,0xA2,0xA4; ç¬¬äºŒçº§:0xB0,0xB2,0xB4
+	\param[in] reg å¯„å­˜å™¨åœ°å€
+	\param[in] data æ•°æ®
+	\param[in] type ç±»å‹: 0x0808, 0x1608, 0x1632...
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa _HisFX3Platform_ErrorCode
+	*/
+	HISFX3PLATFORM_API int HisFX3WriteSigCfg_CPHY(unsigned char slave, unsigned int reg, unsigned __int64 data, unsigned short type, int cam = 0);
+	
+	//! è¯»å–CPHYä¿¡å·å¯„å­˜å™¨
+	/*!
+	\param[in] slave è®¾å¤‡åœ°å€,ç¬¬ä¸€çº§ï¼š0xA0,0xA2,0xA4; ç¬¬äºŒçº§:0xB0,0xB2,0xB4
+	\param[in] reg å¯„å­˜å™¨åœ°å€
+	\param[out] data æ•°æ®
+	\param[in] type ç±»å‹: 0x0808, 0x1608, 0x1632...
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa _HisFX3Platform_ErrorCode
+	*/
+	HISFX3PLATFORM_API int HisFX3ReadSigCfg_CPHY(unsigned char slave, unsigned int reg, unsigned __int64* data, unsigned short type, int cam=0);
+	
+	//! è®¾ç½®CPHYçš„å·¥ä½œæ¨¡å¼
+	/*!
+	\param[in] mode 0:å¸¦å‚è€ƒæ—¶é’Ÿ  1:ä¸å¸¦å‚è€ƒæ—¶é’Ÿ
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa _HisFX3Platform_ErrorCode
+	*/
+	HISFX3PLATFORM_API int HisFX3SetMode_CPHY(unsigned int mode, int cam = 0);
+
+	//! ç”µæµæµ‹é‡
+	/*!
+	\param[out] current æµ‹è¯•çš„ç”µæµæ•°æ®ï¼Œè‡³å°‘ç”³è¯·10ä¸ªçš„æ•°ç»„å¤§å°ï¼Œç»“æœæ’åºä¾æ¬¡ä¸ºAVDD,DVDD,DOVDD,AF,OTP,POW
+	\param[in] flag ç”µæºé€šé“ï¼Œ_HisFX3_Platform_VoltFlagï¼Œæ”¯æŒ | æ“ä½œ
+	\param[in] precision ç²¾åº¦è®¾ç½®ï¼Œ 0ï¼šmA, 1:uA
+	\param[in] samples å–å¹³å‡å€¼çš„é‡‡æ ·æ¬¡æ•°
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa _HisFX3_Platform_VoltFlag
+	*/
+	HISFX3PLATFORM_API int HisFX3MeasureCurrent(double current[], unsigned int flag, unsigned int precision, unsigned int samples = 256, int cam = 0);
+
+	//! è·å–OSæµ‹è¯•çš„PINè„šåç§°åˆ—è¡¨
+	/*!
+	\param[out] pin PINè„šåç§°ï¼Œ ç”¨æˆ·ç”³è¯·çš„æ•°ç»„å¤§å° >= 100
+	\param[out] num å®é™…çš„PINè„šæ•°é‡
+	\param[in] port æ¥å£è®¾ç½®ï¼Œ 0ï¼šDPHY  1:CPHY  2:DVP 3:LVDS
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+ 	HISFX3PLATFORM_API int HisFX3GetOSPinNameList(char pin[][_HisFX3_OS_PinName_MaxByte], int* num, int port, int cam = 0);
+
+	//! OSæµ‹è¯•æºé€‰æ‹©
+	/*!
+	\param[in] src	0: æ’æµæº   1: æ’å‹æº
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3SetOSSource(int src, int cam = 0);
+
+	//! æ­£å‘æµ‹è¯•
+	/*!
+	\param[in] port æ¥å£è®¾ç½®ï¼Œ 0ï¼šDPHY  1:CPHY  2:DVP 3:LVDS
+	\param[in] pin æµ‹è¯•PINè„š
+	\param[in] num æµ‹è¯•PINè„šæ•°é‡
+	\param[in] delay ç”µæµç¨³å®šå»¶æ—¶, å•ä½: us
+	\param[in] current ç”µæºè®¾ç½®ã€‚å¦‚æœä¸ºæ’æµæºï¼Œå•ä½ä¸ºmAï¼›å¦‚æœä¸ºæ’å‹æºï¼Œå•ä½ä¸ºmVã€‚
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa  _HisFX3OS_Positive_Item
+	*/
+ 	HISFX3PLATFORM_API int HisFX3OSPositiveTest(int port, _HisFX3OS_Positive_Item pin[], int num, unsigned int delay = 1000, float current = 1.3, int cam = 0);
+
+	//! è´Ÿå‘æµ‹è¯•
+	/*!
+	\param[in] port æ¥å£è®¾ç½®ï¼Œ 0ï¼šDPHY  1:CPHY  2:DVP 3:LVDS
+	\param[in] pin æµ‹è¯•PINè„š
+	\param[in] num æµ‹è¯•PINè„šæ•°é‡
+	\param[in] delay ç”µæµç¨³å®šå»¶æ—¶, å•ä½: us
+	\param[in] current ç”µæºè®¾ç½®ã€‚å¦‚æœä¸ºæ’æµæºï¼Œå•ä½ä¸ºmAï¼›å¦‚æœä¸ºæ’å‹æºï¼Œå•ä½ä¸ºmVã€‚
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa _HisFX3OS_Negtive_Item
+	*/
+ 	HISFX3PLATFORM_API int HisFX3OSNegtiveTest(int port, _HisFX3OS_Negtive_Item pin[], int num, unsigned int delay = 1000, float current = 1.3, int cam = 0);
+
+	//! çŸ­è·¯æµ‹è¯•
+	/*!
+	\param[in] port æ¥å£è®¾ç½®ï¼Œ 0ï¼šDPHY  1:CPHY  2:DVP 3:LVDS
+	\param[in] pin æµ‹è¯•PINè„šæµ‹è¯•
+	\param[in] num æµ‹è¯•PINè„šæ•°é‡
+	\param[in] delay ç”µæµç¨³å®šå»¶æ—¶, å•ä½: us
+	\param[in] current ç”µæºè®¾ç½®ã€‚å¦‚æœä¸ºæ’æµæºï¼Œå•ä½ä¸ºmAï¼›å¦‚æœä¸ºæ’å‹æºï¼Œå•ä½ä¸ºmVã€‚
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa _RBOXOS_Short_Item
+	*/
+ 	HISFX3PLATFORM_API int HisFX3OSShortTest(int port, _HisFX3OS_Short_Item pin[], int num, unsigned int delay = 1000, float current = 1.3, int cam = 0);
+
+	//! å¼€è·¯æµ‹è¯•
+	/*!
+	\param[in] port æ¥å£è®¾ç½®ï¼Œ 0ï¼šDPHY  1:CPHY  2:DVP 3:LVDS
+	\param[in] pin æµ‹è¯•PINè„šæµ‹è¯•
+	\param[in] num æµ‹è¯•PINè„šæ•°é‡
+	\param[in] delay ç”µæµç¨³å®šå»¶æ—¶, å•ä½: us
+	\param[in] current ç”µæºè®¾ç½®ã€‚å¦‚æœä¸ºæ’æµæºï¼Œå•ä½ä¸ºmAï¼›å¦‚æœä¸ºæ’å‹æºï¼Œå•ä½ä¸ºmVã€‚
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa _HisFX3OS_Open_Item
+	*/
+ 	HISFX3PLATFORM_API int HisFX3OSOpenTest(int port, _HisFX3OS_Open_Item pin[], int num, unsigned int delay = 1000, float current = 1.3, int cam = 0);
+
+	//! ç”µé˜»æµ‹è¯•
+	/*!
+	\param[in] port æ¥å£è®¾ç½®ï¼Œ 0ï¼šDPHY  1:CPHY  2:DVP 3:LVDS
+	\param[in] pin æµ‹è¯•PINè„šæµ‹è¯•
+	\param[in] delay ç”µæµç¨³å®šå»¶æ—¶, å•ä½: us
+	\param[in] current ç”µæµå¤§å°è®¾ç½®ï¼Œå•ä½ï¼šmA
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa _HisFX3OS_OHM_Item
+	*/
+ 	HISFX3PLATFORM_API int HisFX3OSOhmTest(int port, _HisFX3OS_OHM_Item* pin, unsigned int delay = 1000, float current = 1.3, int cam = 0);
+
+	//! è¾“å‡ºIOå£æ§åˆ¶ï¼Œ æ‹‰é«˜ç”µå¹³ == IODD
+	/*!
+	\param[in] status IOè¾“å‡ºçŠ¶æ€ï¼Œä»¥BITä½æ¥ç®¡ç†ï¼Œ 1æ‹‰é«˜ï¼Œ 0æ‹‰ä½
+	\param[in] flag è¦æ“ä½œçš„è¾“å‡ºIOï¼Œ ä»¥BITä½æ¥ç®¡ç†ï¼Œ 1è¦æ“ä½œï¼Œ 0ä¸æ“ä½œ
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3IO_OutPortWrite(unsigned int status, unsigned int flag, int cam = 0);
+
+	//! è¾“å‡ºIOå£çŠ¶æ€è¯»å–ï¼Œ æ‹‰é«˜ç”µå¹³ == IODD
+	/*!
+	\param[out] status IOè¾“å‡ºçŠ¶æ€ï¼Œä»¥BITä½æ¥ç®¡ç†ï¼Œ 1æ‹‰é«˜ï¼Œ 0æ‹‰ä½
+	\param[in] flag è¦è¯»å–çš„è¾“å‡ºIOï¼Œ ä»¥BITä½æ¥ç®¡ç†ï¼Œ 1è¦è¯»å–ï¼Œ 0ä¸è¯»å–
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3IO_OutPortRead(unsigned int* status, unsigned int flag, int cam = 0);
+
+	//! è¾“å…¥IOå£çŠ¶æ€è¯»å–ï¼Œ æ‹‰é«˜ç”µå¹³ == IODD
+	/*!
+	\param[out] status IOè¾“å‡ºçŠ¶æ€ï¼Œä»¥BITä½æ¥ç®¡ç†ï¼Œ 1æ‹‰é«˜ï¼Œ 0æ‹‰ä½
+	\param[in] flag è¦è¯»å–çš„è¾“å‡ºIOï¼Œ ä»¥BITä½æ¥ç®¡ç†ï¼Œ 1è¦è¯»å–ï¼Œ 0ä¸è¯»å–
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3IO_InPortRead(unsigned int* status, unsigned int flag, int cam = 0);
+
+	//! è®¾ç½®SENSOR IICçº¿è¿æ¥æˆ–æ–­å¼€
+	/*!
+	\param[in] on true: é“¾æ¥ï¼› false: æ–­å¼€
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3ConnectSensorIIC(bool on, int cam = 0);
+
+	//! ç”µå‹æ ¡å‡†ï¼Œ æ ¡å‡†å€¼ä¼šè‡ªåŠ¨å†™å…¥å·¥è£…å¯„å­˜åŒº
+	/*!
+	\param[in] boxIndex å·¥è£…ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3VoltCalibration(int boxIndex = 0);
+
+	//! ç”µæµæ ¡å‡†ï¼Œ æ ¡å‡†å€¼ä¼šè‡ªåŠ¨å†™å…¥å·¥è£…å¯„å­˜åŒº
+	/*!
+	\param[in] boxIndex å·¥è£…ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3CurrentCalibration(int boxIndex = 0);
+
+	//! ä»¥å­—ç¬¦ä¸²å‘½ä»¤çš„å½¢å¼æ‰§è¡Œéå¸¸è§„æ“ä½œ
+	/*!
+	\param[in] cmd eg: cmd:current calibration; å°±æ˜¯æ‰§è¡Œç”µæµæ ¡å‡†
+	\param[in] p æ ¹æ®cmdä¸åŒï¼Œ å®šä¹‰ä¸åŒ
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3CmdExec(char* cmd, void* p = NULL, int* size = NULL, int cam = 0);
+
+	//! å¤šä¸ªè¿›ç¨‹æ“ä½œåŒä¸€ä¸ªå·¥è£…
+	/*! ä½¿ç”¨æ–¹æ³•HisFX3SetCurrentPlatformType-->HisFX3SplitBox-->HisFX3OpenDevice
+	\param[in] processCount è¿›ç¨‹æ•°é‡
+	\param[in] processIndex è¿›ç¨‹ç´¢å¼•
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	\sa
+	*/
+	HISFX3PLATFORM_API int HisFX3SplitBox(unsigned int processCount, unsigned int processIndex);
+
+	//! è®¾ç½®UVCæ•°æ®æºæ ¼å¼
+	/*! 
+	\param[in] srcFormat å¿…é¡»å¤§å†™ eg. "H264", "MJPG", "YUYV", "UYVY"
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	*/
+	HISFX3PLATFORM_API int HisFX3SetSrcFormat_UVC(char* srcFormat, int cam = 0);
+
+	//! è·å–æœ€åçš„é”™è¯¯æè¿°
+	/*! åœ¨APIè¿”å›é”™è¯¯çš„æƒ…å†µè°ƒç”¨
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return é”™è¯¯ä¿¡æ¯æŒ‡é’ˆ
+	*/
+ 	HISFX3PLATFORM_API const char* HisFX3GetLastError(int cam = 0);
+
+	//! è®¾ç½®ç¦»çº¿å›¾ç‰‡æ¨¡å¼
+	/*! 
+	\param[in] on å¼€å¯/å…³é—­ ç¦»çº¿å›¾ç‰‡æ¨¡å¼
+	\param[in] path ç¦»çº¿å›¾ç‰‡çš„è·¯å¾„
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	*/
+	HISFX3PLATFORM_API int HisFX3SetOffLineMode(bool on, char* path = NULL, int cam = 0);
+
+	//! FPGAè‡ªåŠ¨å¯¹ç„¦
+	/*!
+	\param[in] cfg å¯¹ç„¦å‚æ•°
+	\param[out] relt å¯¹ç„¦ç»“æœ
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥
+	*/
+	HISFX3PLATFORM_API int HisFX3AF(_HisFX3_FPGAAF_Cfg* cfg, _HisFX3_FPGAAF_Rel* relt, int cam = 0);
+
+	//! è·å–ç¦»çº¿å›¾ç‰‡æ¨¡å¼çš„ä¿¡æ¯
+	/*! åœ¨å¼€å¯ç¦»çº¿æ¨¡å¼çš„æƒ…å†µä¸‹è°ƒç”¨
+	\param[out] width å›¾åƒå®½
+	\param[out] height å›¾åƒé«˜
+	\param[out] dataFormat æ•°æ®æ ¼å¼
+	\param[out] frameBytes ä¸€å¸§å›¾åƒçš„æ•°æ®é‡å¤§å°
+	\param[in] cam æ¨¡ç»„ç¼–å·
+	\return true:æˆåŠŸ false:å¤±è´¥
+	*/
+	HISFX3PLATFORM_API bool HisFX3GetOfflineModeInfo(unsigned int* width = NULL, unsigned int* height = NULL, _HisFX3_BaylorMode* dataFormat = NULL, unsigned int* frameBytes = NULL, int cam = 0);
+
+
+	HISFX3PLATFORM_API int HisFX3PageOSPositiveTest_SUNNY(unsigned int *puiData, unsigned int uiData, unsigned int *puiData_S2, unsigned int uiData_S2,
+		unsigned int *puiData_S3, unsigned int uiData_S3, unsigned int *puiData_S4, unsigned int uiData_S4, unsigned int uiCurrent, unsigned int uiVolt, int boxIndex);
+
+}
+
+namespace RISPAPI
+{
+	HISFX3PLATFORM_API void* malloc_r(size_t size);
+	HISFX3PLATFORM_API void free_r(void* buf);
+	HISFX3PLATFORM_API void safe_free_r(void** buf);
+
+	/*! Compactæ ¼å¼çš„RAW10è½¬æˆunsigned shortè¡¨ç¤ºä¸€ä¸ªåƒç´ çš„RAW10*/
+	HISFX3PLATFORM_API void Cpt2B2_Raw10(void* cptBuf, int width, int height, void* b2Buf);
+}
+
+#ifdef  __cplusplus
+}
+#endif
+
+
+/*! å‘åå…¼å®¹C++æ¥å£*/
+
+struct _HisFX3_PreviewStructCpp
+{
+	unsigned short usDeviceIndex; /*!< è®¾å¤‡åºå·ï¼ŒUVCç”¨ */
+	bool bIsSetRST; /*!< æ˜¯å¦è®¾ç½®bReset_ActiveLow */
+	bool bReset_ActiveLow; /*!< true: ä½ç”µå¹³æœ‰æ•ˆï¼Œå‡ºå›¾æ—¶æ‹‰é«˜ï¼›   false: é«˜ç”µå¹³æœ‰æ•ˆï¼Œå‡ºå›¾æ—¶æ‹‰ä½ */
+	bool bIsSetPWDN; /*!< æ˜¯å¦è®¾ç½®bPWND_ActiveLow */
+	bool bPWND_ActiveLow; /*!< true: ä½ç”µå¹³æœ‰æ•ˆï¼Œå‡ºå›¾æ—¶æ‹‰é«˜ï¼›   false: é«˜ç”µå¹³æœ‰æ•ˆï¼Œå‡ºå›¾æ—¶æ‹‰ä½ */
+	bool bDVP_VS_ActiveHigh; /*!< DVP VS åŒæ­¥ä¿¡å·è®¾ç½®ã€‚   true: é«˜ç”µå¹³æœ‰æ•ˆï¼›   false: ä½ç”µå¹³æœ‰æ•ˆ */
+	bool bDVP_HS_ActiveHigh; /*!< DVP HS åŒæ­¥ä¿¡å·è®¾ç½®ã€‚   true: é«˜ç”µå¹³æœ‰æ•ˆï¼›   false: ä½ç”µå¹³æœ‰æ•ˆ */
+	unsigned char ucDVP_LineFormat; /*!< DVPæ•°æ®çº¿è®¾ç½®  0ï¼šé‡‡9:2   1: é‡‡7:0   2ï¼šé‡‡15:0   3ï¼šé‡‡9:0  4ï¼šé‡‡11:0   5ï¼šé‡‡13:0 */
+	unsigned char ucDVP_PhaseShift; /*!<è®¾ç½®å¹¶å£é‡‡é›†åŒæ­¥ä¿¡å·ç›¸ç§»  0:ä¸ç›¸ç§»;  1: 90åº¦;  2: 180åº¦;  3: 270åº¦; */
+	bool bDebug; /*!< true:è°ƒè¯•æ¨¡å¼ï¼Œä¼šäº§ç”Ÿæ›´å¤šçš„è°ƒè¯•ä¿¡æ¯åˆ°DebugView.exeï¼› false: éè°ƒè¯•æ¨¡å¼ */
+	bool bCheckDeviceAck; /*!< true:IICé€šä¿¡æ—¶ä¾¦æµ‹æ˜¯å¦æœ‰ACKå›é¦ˆï¼› false: ä¸ä¾¦æµ‹ */
+	bool bUseDDR; /*!< è®¾ç½®æ˜¯å¦ä½¿ç”¨DDR3(R5æœ‰æ•ˆ)ã€‚ true:ä½¿ç”¨DDR3ï¼› false: ä¸ä½¿ç”¨DDR3 */
+	bool bSPICSLow; /*!< è®¾ç½®è¯»å†™SPIæ—¶ï¼ŒCSç”µå¹³(R5æœ‰æ•ˆ)ã€‚ true:CSç”µå¹³ä¸ºä½ï¼› false: CSç”µå¹³ä¸ºé«˜ */
+	bool bSPILittleEndian; /*!< è®¾ç½®è¯»å†™SPIæ—¶ï¼Œä½ä½åœ¨å‰è¿˜æ˜¯é«˜ä½åœ¨å‰(R5æœ‰æ•ˆ)ã€‚ true:ä½ä½åœ¨å‰ï¼› false: é«˜ä½åœ¨å‰ */
+	bool bSPIClkHigh; /*! è®¾ç½®SPIæ—¶é’Ÿ  true: CLKé»˜è®¤æ˜¯åœ¨é«˜ç”µå¹³ï¼›false: CLKé»˜è®¤æ˜¯åœ¨ä½ç”µå¹³ï¼›éœ€è¦R2C >= 3506 */
+	bool bVirtualChannel; /*!< è®¾ç½®æ˜¯å¦å¼€å¯è™šæ‹Ÿé€šé“è§£ç [R5æœ‰æ•ˆ] ã€‚ true:å¼€å¯è™šæ‹Ÿé€šé“è§£ç ï¼› false: ä¸å¼€å¯è™šæ‹Ÿé€šé“ */
+	unsigned char ucSignalMode; /*!< è®¾ç½®MIPIä¿¡å·æ¨¡å¼ 1: SLVS 2:D-PHY */
+	bool outputXVSXHS_DPHY; /*!< è®¾ç½®è§£ç D-PHYæ—¶æ˜¯å¦è¾“å‡ºXS, VSä¿¡å·(ä»æœºæ¨¡å¼) */
+	unsigned int XHS_DPHY; /*!< è®¾ç½®è§£ç D-PHYçš„HSåŒæ­¥ä¿¡å· */
+	unsigned int XVS_DPHY; /*!< è®¾ç½®è§£ç D-PHYçš„VSåŒæ­¥ä¿¡å· */
+
+								/*! è®¾ç½®ç‚¹äº®æ—¶çš„ä¸Šç”µæ—¶åº
+								\sa _HisFX3_ImageSenor_Factory
+								*/
+	_HisFX3_ImageSenor_Factory sensorFactory;
+	unsigned int uiVoltSetFlag; /*!< è®¾ç½®è¦æ“ä½œçš„ç”µå‹ï¼Œeg. åªæ“ä½œAVDDå’ŒDVDD:  _HisFX3_Platform_VlotOn_AVDD |  _HisFX3_Platform_VlotOn_DVDDï¼› å…¨æ“ä½œï¼š0xFFFFFFFF*/
+	float ucVolt_DOVDD; /*!< è®¾ç½®DOVDDç”µå‹ï¼Œ0.0~3.5èŒƒå›´å¯è°ƒ, å®é™…æ‰€è®¾ç”µå‹ =  ucVolt_DOVDD *flVoltMultiple */
+	float ucVolt_DVDD; /*!< è®¾ç½®DVDDç”µå‹ï¼Œ0.0~3.5èŒƒå›´å¯è°ƒ, å®é™…æ‰€è®¾ç”µå‹ =  ucVolt_DVDD *flVoltMultiple */
+	float ucVolt_AVDD; /*!< è®¾ç½®AVDDç”µå‹ï¼Œ0.0~3.5èŒƒå›´å¯è°ƒ, å®é™…æ‰€è®¾ç”µå‹ =  ucVolt_AVDD *flVoltMultiple */
+	float ucVolt_AF; /*!< è®¾ç½®AFç”µå‹ï¼Œ0.0~3.5èŒƒå›´å¯è°ƒ, å®é™…æ‰€è®¾ç”µå‹ =  ucVolt_AF *flVoltMultiple */
+	float ucVolt_VFuse; /*!< è®¾ç½®DOVDDç”µå‹ï¼Œ0.0~10.0èŒƒå›´å¯è°ƒ, å®é™…æ‰€è®¾ç”µå‹ =  ucVolt_VFuse *flVoltMultiple */
+	float ucVolt_POW; /*!< è®¾ç½®POWç”µå‹ï¼Œ0.0~3.5èŒƒå›´å¯è°ƒ, å®é™…æ‰€è®¾ç”µå‹ =  ucVolt_POW *flVoltMultiple */
+	float ucVolt_IODD; /*!< è®¾ç½®IODDç”µå‹ã€æ¿å¡å†…éƒ¨IOç”µå¹³ã€‘ã€R5ã€‘ï¼Œ0.0~3.5èŒƒå›´å¯è°ƒ, å®é™…æ‰€è®¾ç”µå‹ =  ucVolt_IODD *flVoltMultiple */
+	float flVoltMultiple;
+	unsigned char ucVolt_5V; /*!< è®¾ç½®5Vç”µå‹å¼€å…³ï¼Œ0ï¼šä¸è¾“å‡º  1ï¼šè¾“å‡º  å…¶ä»–ï¼šä¸æ“ä½œ  */
+	unsigned char ucVolt_12V; /*!< è®¾ç½®12Vç”µå‹å¼€å…³ï¼Œ0ï¼šä¸è¾“å‡º  1ï¼šè¾“å‡º  å…¶ä»–ï¼šä¸æ“ä½œ  */
+	float flVoltageReadDiffMax; /*!< ä¿ç•™ */
+	unsigned char ucCommProtocal; /*!< è®¾ç½®å‘½ä»¤é€šè®¯åè®®ã€‚  0:IICï¼› 1:SPI */
+	bool bIsSetMCLK; /*!< æ˜¯å¦è®¾ç½®MCLK*/
+	float flMCLK; /*!< è®¾ç½®flMCLKã€‚ 0~136MHzèŒƒå›´å¯è°ƒ*/
+				  /*! è®¾ç½®æ¿å¡ä¸Šä¼ çš„æ•°æ®æ ¼å¼
+				  \sa _HisFX3_BaylorMode
+				  */
+	_HisFX3_BaylorMode ucDataFormat;
+	unsigned short usI2CMode; /*!< ä¿ç•™ */
+	unsigned short usI2CSpeed;  /*!< è®¾ç½®IICé€šä¿¡é€Ÿç‡ï¼Œ10KHz~1MHzèŒƒå›´å¯è°ƒ */
+	unsigned short usI2CIntervalTime; /*!< è®¾ç½®ä¸‹å‘IICå‘½ä»¤çš„é—´éš”æ—¶é—´ï¼Œå•ä½ï¼šus */
+	unsigned char ucSlave; /*!< ä¿ç•™ */
+						   /*! è®¾ç½®Sensoræ•°æ®æ ¼å¼
+						   \sa _HisFX3_MIPILane_Stream
+						   */
+	unsigned char ucMIPILane;
+	unsigned char ucLaneNum; /*!< è®¾ç½®C-PHYæˆ–è€…LVDS æ•°æ®Laneæ•° */
+	unsigned int uiFrameByteCount; /*!< è®¾ç½®ä¸€å¸§çš„æ•°æ®é‡ï¼Œå•ä½: byte */
+	unsigned int iWidth; /*!< è®¾ç½®ä¸€å¸§çš„å›¾åƒå®½ï¼Œå•ä½ï¼šåƒç´  */
+	unsigned int iHeight; /*!< è®¾ç½®ä¸€å¸§çš„å›¾åƒé«˜ï¼Œå•ä½ï¼šåƒç´  */
+	unsigned int uiDummyLeft; /*!< è®¾ç½®å›¾åƒå·¦è¾¹çš„Dummy Line */
+	unsigned int uiDummyRight; /*!< è®¾ç½®å›¾åƒå³è¾¹çš„Dummy Line */
+	unsigned int uiDummyTop; /*!< è®¾ç½®å›¾åƒä¸Šè¾¹çš„Dummy Line */
+	unsigned int uiDummyBottom; /*!< è®¾ç½®å›¾åƒä¸‹è¾¹çš„Dummy Line */
+	int addInfoBytes; /*! å›¾åƒæ•°æ®é™„åŠ ä¿¡æ¯å¤§å°ï¼Œ å•ä½: Byteï¼›æ­£æ•°è¡¨ç¤ºåœ¨å¸§å¤´ä½ç½®ï¼Œ è´Ÿæ•°è¡¨ç¤ºåœ¨å¸§å°¾ä½ç½®*/
+
+	bool bOutputXSVS; /*!< è®¾ç½®è§£ç LVDSæ—¶æ˜¯å¦è¾“å‡ºXS, VSä¿¡å· */
+	unsigned int uiLVDS_XHS; /*!< è®¾ç½®è§£ç LVDSçš„HSåŒæ­¥ä¿¡å· */
+	unsigned int uiLVDS_XVS; /*!< è®¾ç½®è§£ç LVDSçš„VSåŒæ­¥ä¿¡å· */
+	unsigned short usLVDSAlign; /*!< è®¾ç½®è§£ç LVDSçš„å¯¹é½æ–¹å¼ */
+
+	char strSensorName[32]; /*!< è®¾ç½®Sensoråç§°ï¼Œæ¯”å¦‚ï¼šimx234,imx081, */
+
+	unsigned short usI2CCount; /*!< è®¾ç½®IICæˆ–è€…SPIçš„å‘½ä»¤æ¡æ•° */
+	unsigned char* pucSlave; /*!< æŒ‡å‘è®¾å¤‡åœ°å€æ•°ç»„æŒ‡é’ˆ */
+	unsigned int* puiReg; /*!< æŒ‡å‘å¯„å­˜å™¨åœ°å€æ•°ç»„æŒ‡é’ˆ */
+	unsigned __int64* pui64Data; /*!< æŒ‡å‘æ•°æ®æ•°ç»„æŒ‡é’ˆ */
+	unsigned short* pusType; /*!< æŒ‡å‘å‘½ä»¤ç±»å‹æ•°ç»„æŒ‡é’ˆï¼ŒåŒ…æ‹¬0x0816, 0x0808,0x1608,0x1616,0x1632 */
+
+							 //RTSP
+	char pstrUrl[128];
+	unsigned short usRTSPFrameDelay;
+	unsigned short usRTSPValidTimeFromKey;
+
+	//CPHY
+	unsigned int cphyMode; /*!< 0x0: SENSORè¾“å‡ºå‚è€ƒæ—¶é’Ÿ; 0x1:SENSORä¸è¾“å‡ºå‚è€ƒæ—¶é’Ÿ(9çº¿æ¨¡å¼) */
+	double cphyRate;  /*!< CPHYé€Ÿç‡ï¼Œ åœ¨cphyMode==0x1æ—¶è®¾ç½®ï¼›å•ä½ï¼šGbpsï¼›æ”¯æŒèŒƒå›´ï¼š(0.1~1.6)(1.96~2.5) */
+
+	unsigned int cphy2ndI2CCount;  /*!< è®¾ç½®ç¬¬2æ‰¹æ¬¡ä¸‹å‘ç»™SENSORçš„å¯„å­˜å™¨æ•°é‡ */
+	unsigned char* cphy2ndSlave; /*!< æŒ‡å‘è®¾å¤‡åœ°å€æ•°ç»„æŒ‡é’ˆ */
+	unsigned int* cphy2ndReg; /*!< æŒ‡å‘å¯„å­˜å™¨åœ°å€æ•°ç»„æŒ‡é’ˆ */
+	unsigned int* cphy2ndData; /*!< æŒ‡å‘æ•°æ®æ•°ç»„æŒ‡é’ˆ */
+	unsigned short* cphy2ndType; /*!< æŒ‡å‘å‘½ä»¤ç±»å‹æ•°ç»„æŒ‡é’ˆï¼ŒåŒ…æ‹¬0x0816, 0x0808,0x1608,0x1616,0x1632 */
+
+	unsigned int cphySigI2CCount; /*!< é…ç½®CPHYä¿¡å·åŠ å¼ºå¯„å­˜å™¨çš„æ•°é‡*/
+	unsigned char* cphySigSlave; /*!< æŒ‡å‘è®¾å¤‡åœ°å€æ•°ç»„æŒ‡é’ˆ */
+	unsigned int* cphySigReg; /*!< æŒ‡å‘å¯„å­˜å™¨åœ°å€æ•°ç»„æŒ‡é’ˆ */
+	unsigned int* cphySigData; /*!< æŒ‡å‘æ•°æ®æ•°ç»„æŒ‡é’ˆ */
+	unsigned short* cphySigType; /*!< æŒ‡å‘å‘½ä»¤ç±»å‹æ•°ç»„æŒ‡é’ˆï¼ŒåŒ…æ‹¬0x0816, 0x0808,0x1608,0x1616,0x1632 */
+
+	/*********************SUNNY*********************/
+	unsigned int iFullWidth;//å¢åŠ å¤§å°ºå¯¸ ç”¨äºå¼€è¾Ÿç©ºé—´crossTalk
+	unsigned int iFullHeight;
+	/***************************************************/
+
+	_HisFX3_PreviewStructCpp(void)
+	{
+		addInfoBytes =cphyMode =usDeviceIndex = 0;
+		bUseDDR = bVirtualChannel = bDebug = false;
+		bSPIClkHigh = bIsSetMCLK = bIsSetPWDN = bIsSetRST = bCheckDeviceAck = true;
+		bDVP_HS_ActiveHigh = true;
+		bDVP_VS_ActiveHigh = false;
+		ucDVP_PhaseShift = ucDVP_LineFormat = 0;
+		bReset_ActiveLow = bPWND_ActiveLow = false;
+		bSPICSLow = true;
+		bSPILittleEndian = false;
+		ucSignalMode = 2;
+		sensorFactory = _HisFX3_ImageSenor_Factory_OV;
+		ucDataFormat = HisBaylor10_BGGR;
+		ucCommProtocal = _HisFX3_CommProtocal_I2C;
+		uiVoltSetFlag = 0xFFFFFFFF;
+		ucVolt_DOVDD = ucVolt_DVDD = ucVolt_AVDD = ucVolt_AF = ucVolt_VFuse = ucVolt_POW = ucVolt_IODD = 0.0f;
+		flVoltMultiple = 0.1f;
+		ucVolt_5V = ucVolt_12V = 2;
+		flVoltageReadDiffMax = 1000.0f;
+		iWidth = iHeight = 0;
+		outputXVSXHS_DPHY = bOutputXSVS = false;
+		XHS_DPHY = uiLVDS_XHS = 1152;
+		XVS_DPHY = uiLVDS_XVS = 3125;
+		usLVDSAlign = 0x0;
+		uiDummyLeft = uiDummyRight = uiDummyTop = uiDummyBottom = 0;
+		flMCLK = 0.0f;
+		usI2CMode = 0x1608;
+		usI2CSpeed = 400;
+		usI2CIntervalTime = 200;
+		ucSlave = 0x6c;
+		ucMIPILane = 6;
+		ucLaneNum = 4;
+		usI2CCount = cphy2ndI2CCount = cphySigI2CCount = 0;
+		pucSlave = cphy2ndSlave = cphySigSlave = 0;
+		puiReg = cphy2ndReg = cphySigReg = 0;
+		pui64Data = 0;
+		pusType = cphy2ndType = cphySigType = 0;
+		cphy2ndData = cphySigData = 0;
+		strSensorName[0] = pstrUrl[0] = '\0';
+		usRTSPFrameDelay = 80;
+		usRTSPValidTimeFromKey = 200;
+		cphyRate = 1.0;
+		iFullWidth = iFullHeight = 0;
+	}
+
+	~_HisFX3_PreviewStructCpp(void)
+	{
+		if (pucSlave) { delete[] pucSlave; pucSlave = 0; }
+		if (puiReg) { delete[] puiReg; puiReg = 0; }
+		if (pui64Data) { delete[] pui64Data; pui64Data = 0; }
+		if (pusType) { delete[] pusType; pusType = 0; }
+		if (cphy2ndSlave) { delete[] cphy2ndSlave; cphy2ndSlave = 0; }
+		if (cphy2ndReg) { delete[] cphy2ndReg; cphy2ndReg = 0; }
+		if (cphy2ndData) { delete[] cphy2ndData; cphy2ndData = 0; }
+		if (cphy2ndType) { delete[] cphy2ndType; cphy2ndType = 0; }
+		if (cphySigSlave) { delete[] cphySigSlave; cphySigSlave = 0; }
+		if (cphySigReg) { delete[] cphySigReg; cphySigReg = 0; }
+		if (cphySigData) { delete[] cphySigData; cphySigData = 0; }
+		if (cphySigType) { delete[] cphySigType; cphySigType = 0; }
+	}
 };
 
-class HISFX3PLATFORM_EXPORT CHisFX3Platform
+class HISFX3PLATFORM_API CHisFX3Platform
 {
 public:
 	CHisFX3Platform(void);
 	~CHisFX3Platform(void);
-	//!  ´ò¿ª¹¤×°£¬ ÔÚÖ´ĞĞÆäËû²Ù×÷Ö®¼ä±ØĞë´ò¿ª¹¤×°
-	/*! ½¨ÒéÔÚ³ÌĞòÒ»¿ªÊ¼µÄÊ±ºò´ò¿ª¹¤×°£¬³ÌĞò½áÊøÊ±¹Ø±Õ¹¤×°
-	\param[in] usPID USB3.0Éè±¸PID£¬ ´Ë²ÎÊıÔİÊ±±£Áô£¬Çë¹Ì¶¨ÉèÎª0
-	\param[in] usVID USB3.0Éè±¸VID£¬ ´Ë²ÎÊıÔİÊ±±£Áô£¬Çë¹Ì¶¨ÉèÎª0
-	\param[in] pstrFriendlyName USB3.0Éè±¸ÃèÊöÃû³Æ£¬ ´Ë²ÎÊıÔİÊ±±£Áô£¬Çë¹Ì¶¨ÉèÎª0
-	\param[in] ucDeviceIndex USB3.0Éè±¸ĞòºÅ£¬ ´Ë²ÎÊıÔİÊ±±£Áô£¬Çë¹Ì¶¨ÉèÎª0xFF
-	\param[in] puiKey ¹¤×°Î¨Ò»ĞòÁĞºÅ£¬ µ±puiKey==NULL,º¯Êı´ò¿ªÁ¬½Óµ½µçÄÔµÄÈÎÒ»¹¤×°£» 
-	                         µ±puiKeyÊÇÖ¸Ïò unsigned int[4]Êı×éµÄÖ¸ÕëÊ±£¬º¯Êı´ò¿ªºÍÊäÈëĞòÁĞºÅÆ¥ÅäµÄ¹¤×°¡£
-							 ´Ë²ÎÊıÖ÷ÒªÓÃÓÚ1¸öµçÄÔÁ¬½Ó¶à¸ö¹¤×°µÄÇé¿ö¡£
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
-	\sa HisFX3CloseDevice()£¬ _HisFX3Platform_ErrorCode
+	//!  æ‰“å¼€å·¥è£…ï¼Œ åœ¨æ‰§è¡Œå…¶ä»–æ“ä½œä¹‹é—´å¿…é¡»æ‰“å¼€å·¥è£…
+	/*! å»ºè®®åœ¨ç¨‹åºä¸€å¼€å§‹çš„æ—¶å€™æ‰“å¼€å·¥è£…ï¼Œç¨‹åºç»“æŸæ—¶å…³é—­å·¥è£…
+	\param[in] usPID USB3.0è®¾å¤‡PIDï¼Œ æ­¤å‚æ•°æš‚æ—¶ä¿ç•™ï¼Œè¯·å›ºå®šè®¾ä¸º0
+	\param[in] usVID USB3.0è®¾å¤‡VIDï¼Œ æ­¤å‚æ•°æš‚æ—¶ä¿ç•™ï¼Œè¯·å›ºå®šè®¾ä¸º0
+	\param[in] pstrFriendlyName USB3.0è®¾å¤‡æè¿°åç§°ï¼Œ æ­¤å‚æ•°æš‚æ—¶ä¿ç•™ï¼Œè¯·å›ºå®šè®¾ä¸º0
+	\param[in] ucDeviceIndex USB3.0è®¾å¤‡åºå·ï¼Œ æ­¤å‚æ•°æš‚æ—¶ä¿ç•™ï¼Œè¯·å›ºå®šè®¾ä¸º0xFF
+	\param[in] puiKey å·¥è£…å”¯ä¸€åºåˆ—å·ï¼Œ å½“puiKey==NULL,å‡½æ•°æ‰“å¼€è¿æ¥åˆ°ç”µè„‘çš„ä»»ä¸€å·¥è£…ï¼›
+	å½“puiKeyæ˜¯æŒ‡å‘ unsigned int[4]æ•°ç»„çš„æŒ‡é’ˆæ—¶ï¼Œå‡½æ•°æ‰“å¼€å’Œè¾“å…¥åºåˆ—å·åŒ¹é…çš„å·¥è£…ã€‚
+	æ­¤å‚æ•°ä¸»è¦ç”¨äº1ä¸ªç”µè„‘è¿æ¥å¤šä¸ªå·¥è£…çš„æƒ…å†µã€‚
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
+	\sa HisFX3CloseDevice()ï¼Œ _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3OpenDevice(unsigned short usPID=0, unsigned short usVID=0, char* pstrFriendlyName=NULL, unsigned char ucDeviceIndex=0xFF, unsigned int* puiKey = NULL, unsigned int uiTransformDelay = 110);
+	int HisFX3OpenDevice(unsigned short usPID = 0, unsigned short usVID = 0, char* pstrFriendlyName = NULL, unsigned char ucDeviceIndex = 0xFF, unsigned int* puiKey = NULL, unsigned int uiTransformDelay = 110);
 
-	//!  »ñÈ¡¹¤×°ÊıÁ¿
-	/*! 
-	\return ¹¤×°ÊıÁ¿
+	//!  è·å–å·¥è£…æ•°é‡
+	/*!
+	\return å·¥è£…æ•°é‡
 	*/
 	unsigned int HisFX3DeviceCount();
 
-	//!  ¹Ø±Õ¹¤×°
-	/*! 
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
-	\sa HisFX3OpenDevice()£¬ _HisFX3Platform_ErrorCode
+	//!  å…³é—­å·¥è£…
+	/*!
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
+	\sa HisFX3OpenDevice()ï¼Œ _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3CloseDevice();
 
-	//! Í¨µÀ1¿ªÊ¼³öÍ¼
-	/*! Èç¹ûÊÇË«Éã¹¤×°£¬´Ëº¯Êı²Ù×÷µÄÊÇÍ¨µÀ1
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
-	\sa _HisFX3_PreviewStruct£¬ HisFX3StopPreview()£¬ _HisFX3Platform_ErrorCode
+	//! é€šé“1å¼€å§‹å‡ºå›¾
+	/*! å¦‚æœæ˜¯åŒæ‘„å·¥è£…ï¼Œæ­¤å‡½æ•°æ“ä½œçš„æ˜¯é€šé“1
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
+	\sa _HisFX3_PreviewStructCppï¼Œ HisFX3StopPreview()ï¼Œ _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3StartPreview(struct _HisFX3_PreviewStruct* pstPrama);
+	int HisFX3StartPreview(struct _HisFX3_PreviewStructCpp* pstPrama);
 
-	//! Í¨µÀ1Í£Ö¹³öÍ¼
-	/*! Èç¹ûÊÇË«Éã¹¤×°£¬´Ëº¯Êı²Ù×÷µÄÊÇÍ¨µÀ1
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
-	\sa HisFX3StartPreview()£¬ _HisFX3Platform_ErrorCode
+	//! é€šé“1åœæ­¢å‡ºå›¾
+	/*! å¦‚æœæ˜¯åŒæ‘„å·¥è£…ï¼Œæ­¤å‡½æ•°æ“ä½œçš„æ˜¯é€šé“1
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
+	\sa HisFX3StartPreview()ï¼Œ _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3StopPreview();
 
-	//! Í¨µÀ2¿ªÊ¼³öÍ¼
-	/*! Ö»ÓĞÔÚË«Éã¹¤×°ÉÏ£¬ ´Ëº¯Êı²ÅÓĞĞ§
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
-	\sa _HisFX3_PreviewStruct£¬ HisFX3StopPreview_S2()£¬ _HisFX3Platform_ErrorCode
+	//! é€šé“2å¼€å§‹å‡ºå›¾
+	/*! åªæœ‰åœ¨åŒæ‘„å·¥è£…ä¸Šï¼Œ æ­¤å‡½æ•°æ‰æœ‰æ•ˆ
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
+	\sa _HisFX3_PreviewStructCppï¼Œ HisFX3StopPreview_S2()ï¼Œ _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3StartPreview_S2(struct _HisFX3_PreviewStruct* pstPrama);
+	int HisFX3StartPreview_S2(struct _HisFX3_PreviewStructCpp* pstPrama);
 
-	//! Í¨µÀ2Í£Ö¹³öÍ¼
-	/*! Ö»ÓĞÔÚË«Éã¹¤×°ÉÏ£¬ ´Ëº¯Êı²ÅÓĞĞ§
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
-	\sa HisFX3StartPreview_S2()£¬ _HisFX3Platform_ErrorCode
+	//! é€šé“2åœæ­¢å‡ºå›¾
+	/*! åªæœ‰åœ¨åŒæ‘„å·¥è£…ä¸Šï¼Œ æ­¤å‡½æ•°æ‰æœ‰æ•ˆ
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
+	\sa HisFX3StartPreview_S2()ï¼Œ _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3StopPreview_S2();
 
-	int reStartPreview(struct _HisFX3_PreviewStruct* pstPrama);
-
-	//! Í¨µÀ1×¥Í¼
-	/*! Èç¹ûÊÇË«Éã¹¤×°£¬´Ëº¯Êı²Ù×÷µÄÊÇÍ¨µÀ1
-	\param[out] ppucBuffer ½ÓÊÕÍ¼ÏñÊı¾İµÄbufferÖ¸Õë£¬±ØĞëÓÃ_aligned_malloc(size, _HisCacheLine_Aligned)ÉêÇëÄÚ´æ¿Õ¼ä¡£
-										  Èç¹û´«ÈëNULL, ÔòÖ»»á·µ»Øui64FramIndex¡£
-	\param[in] uiBufBytes ppucBufferÉêÇëµÄÄÚ´æ´óĞ¡£¬±ØĞë´óÓÚÒ»Ö¡Í¼ÏñËùĞèµÄÄÚ´æ´óĞ¡
-	\param[out] ui64FramIndex µ±Ç°Ö¡Ë÷Òı£¬¿ªÊ¼³öÍ¼Ö®ºóµÄµÚÒ»Ö¡Îª1£¬ÒÔ´ËÀàÍÆ
-	\param[in] uiTimeOut »ñÈ¡ĞÂµÄÒ»Ö¡µÄtimeoutÊ±¼ä
-	\param[in] uiConvertFlag 1:[raw10][raw12] ·µ»Ø[width*height*5/4][width*height*3/2] byte  0: [raw10][raw12] ·µ»Øwidth*height byte
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
-	\sa HisFX3StartPreview()£¬ _HisFX3Platform_ErrorCode
+	//! é€šé“1æŠ“å›¾
+	/*! å¦‚æœæ˜¯åŒæ‘„å·¥è£…ï¼Œæ­¤å‡½æ•°æ“ä½œçš„æ˜¯é€šé“1
+	\param[out] ppucBuffer æ¥æ”¶å›¾åƒæ•°æ®çš„bufferæŒ‡é’ˆï¼Œå¿…é¡»ç”¨_aligned_malloc(size, _HisCacheLine_Aligned)ç”³è¯·å†…å­˜ç©ºé—´ã€‚
+	å¦‚æœä¼ å…¥NULL, åˆ™åªä¼šè¿”å›ui64FramIndexã€‚
+	\param[in] uiBufBytes ppucBufferç”³è¯·çš„å†…å­˜å¤§å°ï¼Œå¿…é¡»å¤§äºä¸€å¸§å›¾åƒæ‰€éœ€çš„å†…å­˜å¤§å°
+	\param[out] ui64FramIndex å½“å‰å¸§ç´¢å¼•ï¼Œå¼€å§‹å‡ºå›¾ä¹‹åçš„ç¬¬ä¸€å¸§ä¸º1ï¼Œä»¥æ­¤ç±»æ¨
+	\param[in] uiTimeOut è·å–æ–°çš„ä¸€å¸§çš„timeoutæ—¶é—´
+	\param[in] uiConvertFlag 1:[raw10][raw12] è¿”å›[width*height*5/4][width*height*3/2] byte  0: [raw10][raw12] è¿”å›width*height byte
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
+	\sa HisFX3StartPreview()ï¼Œ HisFX3GrabFrameSequence(), _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3GrabFrame(unsigned char **ppucBuffer, unsigned int uiBufBytes, unsigned __int64& ui64FramIndex, unsigned int uiTimeOut = 3000, unsigned int uiConvertFlag=0);
+	int HisFX3GrabFrame(unsigned char **ppucBuffer, unsigned int uiBufBytes, unsigned __int64& ui64FramIndex, unsigned int uiTimeOut = 3000, unsigned int uiConvertFlag = 0);
 
-	//! Í¨µÀ2×¥Í¼
-	/*! Èç¹ûÊÇË«Éã¹¤×°£¬´Ëº¯Êı²Ù×÷µÄÊÇÍ¨µÀ2
-	\param[out] ppucBuffer ½ÓÊÕÍ¼ÏñÊı¾İµÄbufferÖ¸Õë£¬±ØĞëÓÃ_aligned_malloc(size, _HisCacheLine_Aligned)ÉêÇëÄÚ´æ¿Õ¼ä¡£
-										  Èç¹û´«ÈëNULL, ÔòÖ»»á·µ»Øui64FramIndex¡£
-	\param[in] uiBufBytes ppucBufferÉêÇëµÄÄÚ´æ´óĞ¡£¬±ØĞë´óÓÚÒ»Ö¡Í¼ÏñËùĞèµÄÄÚ´æ´óĞ¡
-	\param[out] ui64FramIndex µ±Ç°Ö¡Ë÷Òı£¬¿ªÊ¼³öÍ¼Ö®ºóµÄµÚÒ»Ö¡Îª1£¬ÒÔ´ËÀàÍÆ
-	\param[in] uiTimeOut »ñÈ¡ĞÂµÄÒ»Ö¡µÄtimeoutÊ±¼ä
-	\param[in] uiConvertFlag 1:[raw10][raw12] ·µ»Ø[width*height*5/4][width*height*3/2] byte  0: [raw10][raw12] ·µ»Øwidth*height byte
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
-	\sa HisFX3StartPreview()£¬ _HisFX3Platform_ErrorCode
+	//! é€šé“2æŠ“å›¾
+	/*! å¦‚æœæ˜¯åŒæ‘„å·¥è£…ï¼Œæ­¤å‡½æ•°æ“ä½œçš„æ˜¯é€šé“2
+	\param[out] ppucBuffer æ¥æ”¶å›¾åƒæ•°æ®çš„bufferæŒ‡é’ˆï¼Œå¿…é¡»ç”¨_aligned_malloc(size, _HisCacheLine_Aligned)ç”³è¯·å†…å­˜ç©ºé—´ã€‚
+	å¦‚æœä¼ å…¥NULL, åˆ™åªä¼šè¿”å›ui64FramIndexã€‚
+	\param[in] uiBufBytes ppucBufferç”³è¯·çš„å†…å­˜å¤§å°ï¼Œå¿…é¡»å¤§äºä¸€å¸§å›¾åƒæ‰€éœ€çš„å†…å­˜å¤§å°
+	\param[out] ui64FramIndex å½“å‰å¸§ç´¢å¼•ï¼Œå¼€å§‹å‡ºå›¾ä¹‹åçš„ç¬¬ä¸€å¸§ä¸º1ï¼Œä»¥æ­¤ç±»æ¨
+	\param[in] uiTimeOut è·å–æ–°çš„ä¸€å¸§çš„timeoutæ—¶é—´
+	\param[in] uiConvertFlag 1:[raw10][raw12] è¿”å›[width*height*5/4][width*height*3/2] byte  0: [raw10][raw12] è¿”å›width*height byte
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
+	\sa HisFX3StartPreview()ï¼Œ HisFX3GrabFrameSequence_S2(), _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3GrabFrame_S2(unsigned char **ppucBuffer, unsigned int uiBufBytes, unsigned __int64& ui64FramIndex, unsigned int uiTimeOut = 3000, unsigned int uiConvertFlag=0);
+	int HisFX3GrabFrame_S2(unsigned char **ppucBuffer, unsigned int uiBufBytes, unsigned __int64& ui64FramIndex, unsigned int uiTimeOut = 3000, unsigned int uiConvertFlag = 0);
 
-	//! ¹¤×°ÊÇ·ñÒÑ´ò¿ª
-	/*! 
-	\return true: ÒÑ´ò¿ª  false: »¹Î´´ò¿ª
-	\sa HisFX3isstart()£¬ HisFX3OpenDevice, HisFX3CloseDevice
+	//! é€šé“1è¿ç»­æŠ“å¸§
+	/*! å¦‚æœæ˜¯åŒæ‘„å·¥è£…ï¼Œæ­¤å‡½æ•°æ“ä½œçš„æ˜¯é€šé“1
+	\param[out] buf æ¥æ”¶å›¾åƒæ•°æ®çš„bufferæŒ‡é’ˆï¼Œå¿…é¡»ç”¨_aligned_malloc(size, _HisCacheLine_Aligned)ç”³è¯·å†…å­˜ç©ºé—´ã€‚
+	\param[in] uiBufBytes bufç”³è¯·çš„å†…å­˜å¤§å°ï¼Œå¿…é¡»å¤§äºframeså¸§å›¾åƒçš„å¤§å°
+	\param[in] frames è®¾ç½®è¦æŠ“å–çš„å¸§çš„æ•°é‡
+	\param[in] forceSequence true:æŠ“å–çš„å¸§å¿…é¡»ç»å¯¹è¿ç»­  false: ä¸è¦æ±‚æŠ“å–çš„å¸§ç»å¯¹è¿ç»­
+	\param[in] uiTimeOut å•ä½:ms
+	\param[in] uiConvertFlag 1:[raw10][raw12] è¿”å›[width*height*5/4][width*height*3/2] byte  0: [raw10][raw12] è¿”å›width*height byte
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
+	\sa HisFX3StartPreview()ï¼Œ HisFX3GrabFrame(), _HisFX3Platform_ErrorCode
+	*/
+	int HisFX3GrabFrameSequence(void *buf, unsigned int uiBufBytes, int frames, bool forceSequence, unsigned int uiTimeOut = 8000, unsigned int uiConvertFlag = 0);
+
+	//! é€šé“2è¿ç»­æŠ“å¸§
+	/*! å¦‚æœæ˜¯åŒæ‘„å·¥è£…ï¼Œæ­¤å‡½æ•°æ“ä½œçš„æ˜¯é€šé“1
+	\param[out] buf æ¥æ”¶å›¾åƒæ•°æ®çš„bufferæŒ‡é’ˆï¼Œå¿…é¡»ç”¨_aligned_malloc(size, _HisCacheLine_Aligned)ç”³è¯·å†…å­˜ç©ºé—´ã€‚
+	\param[in] uiBufBytes bufç”³è¯·çš„å†…å­˜å¤§å°ï¼Œå¿…é¡»å¤§äºframeså¸§å›¾åƒçš„å¤§å°
+	\param[in] frames è®¾ç½®è¦æŠ“å–çš„å¸§çš„æ•°é‡
+	\param[in] forceSequence true:æŠ“å–çš„å¸§å¿…é¡»ç»å¯¹è¿ç»­  false: ä¸è¦æ±‚æŠ“å–çš„å¸§ç»å¯¹è¿ç»­
+	\param[in] uiTimeOut å•ä½:ms
+	\param[in] uiConvertFlag 1:[raw10][raw12] è¿”å›[width*height*5/4][width*height*3/2] byte  0: [raw10][raw12] è¿”å›width*height byte
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
+	\sa HisFX3StartPreview()ï¼ŒHisFX3GrabFrame_S2(),  _HisFX3Platform_ErrorCode
+	*/
+	int HisFX3GrabFrameSequence_S2(void *buf, unsigned int uiBufBytes, int frames, bool forceSequence, unsigned int uiTimeOut = 8000, unsigned int uiConvertFlag = 0);
+
+	//! å·¥è£…æ˜¯å¦å·²æ‰“å¼€
+	/*!
+	\return true: å·²æ‰“å¼€  false: è¿˜æœªæ‰“å¼€
+	\sa HisFX3isstart()ï¼Œ HisFX3OpenDevice, HisFX3CloseDevice
 	*/
 	bool HisFX3isopen();
 
-	//! Í¨µÀ1Êı¾İÁ÷ÊÇ·ñÒÑ¿ªÆô
-	/*! 
-	\return true: ÒÑ¿ªÆô  false: Î´¿ªÆô
-	\sa HisFX3isopen()£¬ HisFX3StartPreview(), HisFX3StopPreview()
-	*/ 
+	//! é€šé“1æ•°æ®æµæ˜¯å¦å·²å¼€å¯
+	/*!
+	\return true: å·²å¼€å¯  false: æœªå¼€å¯
+	\sa HisFX3isopen()ï¼Œ HisFX3StartPreview(), HisFX3StopPreview()
+	*/
 	bool HisFX3isstart();
 
-	//! Í¨µÀ2Êı¾İÁ÷ÊÇ·ñÒÑ¿ªÆô
-	/*!  Ö»ÓĞÔÚË«Éã¹¤×°ÉÏ£¬ ´Ëº¯Êı²ÅÓĞĞ§
-	\return true: ÒÑ¿ªÆô  false: Î´¿ªÆô
-	\sa HisFX3isopen()£¬ HisFX3StartPreview_S2(), HisFX3StopPreview_S2()
+	//! é€šé“2æ•°æ®æµæ˜¯å¦å·²å¼€å¯
+	/*!  åªæœ‰åœ¨åŒæ‘„å·¥è£…ä¸Šï¼Œ æ­¤å‡½æ•°æ‰æœ‰æ•ˆ
+	\return true: å·²å¼€å¯  false: æœªå¼€å¯
+	\sa HisFX3isopen()ï¼Œ HisFX3StartPreview_S2(), HisFX3StopPreview_S2()
 	*/
 	bool HisFX3isstart_S2();
 
-	//! »ñÈ¡µ±Ç°open¹¤×°µÄÎ¨Ò»ĞòÁĞºÅ
-	/*!  Ö»ÓĞÔÚ³É¹¦µ÷ÓÃHisFX3OpenDeviceÖ®ºó²ÅÄÜµ÷ÓÃ´Ëº¯Êı
-	\param puiKey Ö¸Ïòunsigned int[4], Èç¹ûº¯Êı³É¹¦£¬ »á¸´ÖÆÉè±¸Î¨Ò»ĞòÁĞºÅµ½´ËÊı×é¿Õ¼ä
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
-	\sa getHardwareKeyList, HisFX3OpenDevice()£¬ HisFX3CloseDevice(), _HisFX3Platform_ErrorCode
+	//! è·å–å½“å‰openå·¥è£…çš„å”¯ä¸€åºåˆ—å·
+	/*!  åªæœ‰åœ¨æˆåŠŸè°ƒç”¨HisFX3OpenDeviceä¹‹åæ‰èƒ½è°ƒç”¨æ­¤å‡½æ•°
+	\param puiKey æŒ‡å‘unsigned int[4], å¦‚æœå‡½æ•°æˆåŠŸï¼Œ ä¼šå¤åˆ¶è®¾å¤‡å”¯ä¸€åºåˆ—å·åˆ°æ­¤æ•°ç»„ç©ºé—´
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
+	\sa getHardwareKeyList, HisFX3OpenDevice()ï¼Œ HisFX3CloseDevice(), _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3GetHardwareKey(unsigned int* puiKey);
 
-	//! »ñÈ¡µçÄÔÉÏËùÓĞ¹¤×°µÄÎ¨Ò»ĞòÁĞºÅ
-	/*!  Ö»ÓĞÔÚHisFX3OpenDeviceÖ®Ç°²ÅÄÜµ÷ÓÃ´Ëº¯Êı
-	\param[out] puiKey Ö¸Ïòunsigned int, Èç¹ûº¯Êı³É¹¦£¬ »á¸´ÖÆÉè±¸Î¨Ò»ĞòÁĞºÅµ½´ËÊı×é¿Õ¼ä
-	\param[out] uiKeyCount  ·µ»ØÓĞ¶àÉÙ×éĞòÁĞºÅ£¬Ò»×éĞòÁĞºÅÓÃ4¸öunsigned int±íÊ¾
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
-	\sa HisFX3GetHardwareKey, HisFX3OpenDevice()£¬ HisFX3CloseDevice(), _HisFX3Platform_ErrorCode
+	//! è·å–ç”µè„‘ä¸Šæ‰€æœ‰å·¥è£…çš„å”¯ä¸€åºåˆ—å·
+	/*!  åªæœ‰åœ¨HisFX3OpenDeviceä¹‹å‰æ‰èƒ½è°ƒç”¨æ­¤å‡½æ•°
+	\param[out] puiKey æŒ‡å‘unsigned int, å¦‚æœå‡½æ•°æˆåŠŸï¼Œ ä¼šå¤åˆ¶è®¾å¤‡å”¯ä¸€åºåˆ—å·åˆ°æ­¤æ•°ç»„ç©ºé—´
+	\param[out] uiKeyCount  è¿”å›æœ‰å¤šå°‘ç»„åºåˆ—å·ï¼Œä¸€ç»„åºåˆ—å·ç”¨4ä¸ªunsigned intè¡¨ç¤º
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
+	\sa HisFX3GetHardwareKey, HisFX3OpenDevice()ï¼Œ HisFX3CloseDevice(), _HisFX3Platform_ErrorCode
 	*/
 	int getHardwareKeyList(unsigned int* puiKeyList, unsigned int& uiKeyCount);
-	
-	//! ²Ù×÷Í¨µÀ1 RSTĞÅºÅ
-	/*!  
-	\param bPullHigh true: ÖÃÎª¸ßµçÆ½  false:ÖÃÎªµÍµçÆ½
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+
+	//! æ“ä½œé€šé“1 RSTä¿¡å·
+	/*!
+	\param bPullHigh true: ç½®ä¸ºé«˜ç”µå¹³  false:ç½®ä¸ºä½ç”µå¹³
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3PullPWND(), _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3PullReset(bool bPullHigh);
 
-	//! ²Ù×÷Í¨µÀ2 RSTĞÅºÅ
-	/*!    Ö»ÓĞÔÚË«Éã¹¤×°ÉÏ£¬ ´Ëº¯Êı²ÅÓĞĞ§
-	\param bPullHigh true: ÖÃÎª¸ßµçÆ½  false:ÖÃÎªµÍµçÆ½
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! æ“ä½œé€šé“2 RSTä¿¡å·
+	/*!    åªæœ‰åœ¨åŒæ‘„å·¥è£…ä¸Šï¼Œ æ­¤å‡½æ•°æ‰æœ‰æ•ˆ
+	\param bPullHigh true: ç½®ä¸ºé«˜ç”µå¹³  false:ç½®ä¸ºä½ç”µå¹³
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3PullPWND_S2(), _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3PullReset_S2(bool bPullHigh);
 
-	//! ²Ù×÷Í¨µÀ1 PWDNĞÅºÅ
-	/*!  
-	\param bPullHigh true: ÖÃÎª¸ßµçÆ½  false:ÖÃÎªµÍµçÆ½
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! æ“ä½œé€šé“1 PWDNä¿¡å·
+	/*!
+	\param bPullHigh true: ç½®ä¸ºé«˜ç”µå¹³  false:ç½®ä¸ºä½ç”µå¹³
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3PullReset(), _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3PullPWND(bool bPullHigh);
 
-	//! ²Ù×÷Í¨µÀ2 PWDNĞÅºÅ
-	/*!    Ö»ÓĞÔÚË«Éã¹¤×°ÉÏ£¬ ´Ëº¯Êı²ÅÓĞĞ§
-	\param bPullHigh true: ÖÃÎª¸ßµçÆ½  false:ÖÃÎªµÍµçÆ½
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! æ“ä½œé€šé“2 PWDNä¿¡å·
+	/*!    åªæœ‰åœ¨åŒæ‘„å·¥è£…ä¸Šï¼Œ æ­¤å‡½æ•°æ‰æœ‰æ•ˆ
+	\param bPullHigh true: ç½®ä¸ºé«˜ç”µå¹³  false:ç½®ä¸ºä½ç”µå¹³
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3PullReset_S2(), _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3PullPWND_S2(bool bPullHigh);
 
-	//! µ¥ÌõĞ´IIC
-	/*!    
-	\param[in] ucSlave ´Ó»úÉè±¸µØÖ·
-	\param[in] uiReg ¼Ä´æÆ÷µØÖ·
-	\param[in] ui64Data ÒªĞ´ÈëµÄÊı¾İ
-	\param[in] usType ¼Ä´æÆ÷ºÍÊı¾İ¸ñÊ½, eg:0x1608-±íÊ¾µØÖ·Î»Ğ´Èë16bit, Êı¾İÎ»Ğ´Èë8bit¡£
-							 Ö§³ÖµÄ¸ñÊ½:0x0808,0x0816,0x1608,0x1616,0x1632,0x0008,0x0016,0x0032
-	\param[in] back  true: ÅĞ¶ÏACK  false:²»ÅĞ¶ÏACK(ºÄÊ±¸üÉÙ£¬µ«¸ü²»°²È«)
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! å•æ¡å†™IIC
+	/*!
+	\param[in] ucSlave ä»æœºè®¾å¤‡åœ°å€
+	\param[in] uiReg å¯„å­˜å™¨åœ°å€
+	\param[in] ui64Data è¦å†™å…¥çš„æ•°æ®
+	\param[in] usType å¯„å­˜å™¨å’Œæ•°æ®æ ¼å¼, eg:0x1608-è¡¨ç¤ºåœ°å€ä½å†™å…¥16bit, æ•°æ®ä½å†™å…¥8bitã€‚
+	æ”¯æŒçš„æ ¼å¼:0x0808,0x0816,0x1608,0x1616,0x1632,0x0008,0x0016,0x0032
+	\param[in] back  true: åˆ¤æ–­ACK  false:ä¸åˆ¤æ–­ACK(è€—æ—¶æ›´å°‘ï¼Œä½†æ›´ä¸å®‰å…¨)
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3ReadI2C(), HisFX3BatchWriteIICNoLimit(), HisFX3BatchReadIICNoLimit(), HisFX3PageWriteIIC(), HisFX3PageReadIIC(), _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3WriteIIC(unsigned char ucSlave, unsigned int uiReg, unsigned __int64 ui64Data, unsigned short usType, bool back=true);
+	int HisFX3WriteIIC(unsigned char ucSlave, unsigned int uiReg, unsigned __int64 ui64Data, unsigned short usType, bool back = true);
 
-	//! µ¥ÌõĞ´Í¨µÀ2 IIC
-	/*!    Ö»ÓĞÔÚË«Éã¹¤×°ÉÏ£¬ ´Ëº¯Êı²ÅÓĞĞ§
-	\param[in] ucSlave ´Ó»úÉè±¸µØÖ·
-	\param[in] uiReg ¼Ä´æÆ÷µØÖ·
-	\param[in] ui64Data ÒªĞ´ÈëµÄÊı¾İ
-	\param[in] usType ¼Ä´æÆ÷ºÍÊı¾İ¸ñÊ½, eg:0x1608-±íÊ¾µØÖ·Î»Ğ´Èë16bit, Êı¾İÎ»Ğ´Èë8bit¡£
-							 Ö§³ÖµÄ¸ñÊ½:0x0808,0x0816,0x1608,0x1616,0x1632,0x0008,0x0016,0x0032
-	\param[in] back  true: ÅĞ¶ÏACK  false:²»ÅĞ¶ÏACK(ºÄÊ±¸üÉÙ£¬µ«¸ü²»°²È«)
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! å•æ¡å†™é€šé“2 IIC
+	/*!    åªæœ‰åœ¨åŒæ‘„å·¥è£…ä¸Šï¼Œ æ­¤å‡½æ•°æ‰æœ‰æ•ˆ
+	\param[in] ucSlave ä»æœºè®¾å¤‡åœ°å€
+	\param[in] uiReg å¯„å­˜å™¨åœ°å€
+	\param[in] ui64Data è¦å†™å…¥çš„æ•°æ®
+	\param[in] usType å¯„å­˜å™¨å’Œæ•°æ®æ ¼å¼, eg:0x1608-è¡¨ç¤ºåœ°å€ä½å†™å…¥16bit, æ•°æ®ä½å†™å…¥8bitã€‚
+	æ”¯æŒçš„æ ¼å¼:0x0808,0x0816,0x1608,0x1616,0x1632,0x0008,0x0016,0x0032
+	\param[in] back  true: åˆ¤æ–­ACK  false:ä¸åˆ¤æ–­ACK(è€—æ—¶æ›´å°‘ï¼Œä½†æ›´ä¸å®‰å…¨)
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3ReadI2C_S2(), HisFX3BatchWriteIICNoLimit_S2(), HisFX3BatchReadIICNoLimit_S2(), HisFX3PageWriteIIC_S2(), HisFX3PageReadIIC_S2(), _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3WriteIIC_S2(unsigned char ucSlave, unsigned int uiReg, unsigned __int64 ui64Data, unsigned short usType, bool back=true);
+	int HisFX3WriteIIC_S2(unsigned char ucSlave, unsigned int uiReg, unsigned __int64 ui64Data, unsigned short usType, bool back = true);
 
-	//! µ¥Ìõ¶ÁIIC
-	/*!    
-	\param[in] ucSlave ´Ó»úÉè±¸µØÖ·
-	\param[in] uiReg ¼Ä´æÆ÷µØÖ·
-	\param[out] pui64Data ¶Á³öÀ´µÄÊı¾İ
-	\param[in] usType ¼Ä´æÆ÷ºÍÊı¾İ¸ñÊ½, eg:0x1608-±íÊ¾µØÖ·Î»Ğ´Èë16bit, Êı¾İÎ»Ğ´Èë8bit¡£
-							 Ö§³ÖµÄ¸ñÊ½:0x0808,0x0816,0x1608,0x1616,0x1632,0x0008,0x0016,0x0032
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! å•æ¡è¯»IIC
+	/*!
+	\param[in] ucSlave ä»æœºè®¾å¤‡åœ°å€
+	\param[in] uiReg å¯„å­˜å™¨åœ°å€
+	\param[out] pui64Data è¯»å‡ºæ¥çš„æ•°æ®
+	\param[in] usType å¯„å­˜å™¨å’Œæ•°æ®æ ¼å¼, eg:0x1608-è¡¨ç¤ºåœ°å€ä½å†™å…¥16bit, æ•°æ®ä½å†™å…¥8bitã€‚
+	æ”¯æŒçš„æ ¼å¼:0x0808,0x0816,0x1608,0x1616,0x1632,0x0008,0x0016,0x0032
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3WriteIIC(), HisFX3BatchWriteIICNoLimit(), HisFX3BatchReadIICNoLimit(), HisFX3PageWriteIIC(), HisFX3PageReadIIC(), _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3ReadI2C(unsigned char ucSlave, unsigned int uiReg, unsigned __int64* pui64Data, unsigned short usType); 
+	int HisFX3ReadI2C(unsigned char ucSlave, unsigned int uiReg, unsigned __int64* pui64Data, unsigned short usType);
 
-	//! µ¥Ìõ¶ÁIIC(Í¨µÀ2)
-	/*!    Ö»ÓĞÔÚË«Éã¹¤×°ÉÏ£¬ ´Ëº¯Êı²ÅÓĞĞ§
-	\param[in] ucSlave ´Ó»úÉè±¸µØÖ·
-	\param[in] uiReg ¼Ä´æÆ÷µØÖ·
-	\param[out] pui64Data ¶Á³öÀ´µÄÊı¾İ
-	\param[in] usType ¼Ä´æÆ÷ºÍÊı¾İ¸ñÊ½, eg:0x1608-±íÊ¾µØÖ·Î»Ğ´Èë16bit, Êı¾İÎ»Ğ´Èë8bit¡£
-							 Ö§³ÖµÄ¸ñÊ½:0x0808,0x0816,0x1608,0x1616,0x1632,0x0008,0x0016,0x0032
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! å•æ¡è¯»IIC(é€šé“2)
+	/*!    åªæœ‰åœ¨åŒæ‘„å·¥è£…ä¸Šï¼Œ æ­¤å‡½æ•°æ‰æœ‰æ•ˆ
+	\param[in] ucSlave ä»æœºè®¾å¤‡åœ°å€
+	\param[in] uiReg å¯„å­˜å™¨åœ°å€
+	\param[out] pui64Data è¯»å‡ºæ¥çš„æ•°æ®
+	\param[in] usType å¯„å­˜å™¨å’Œæ•°æ®æ ¼å¼, eg:0x1608-è¡¨ç¤ºåœ°å€ä½å†™å…¥16bit, æ•°æ®ä½å†™å…¥8bitã€‚
+	æ”¯æŒçš„æ ¼å¼:0x0808,0x0816,0x1608,0x1616,0x1632,0x0008,0x0016,0x0032
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3WriteIIC_S2(), HisFX3BatchWriteIICNoLimit_S2(), HisFX3BatchReadIICNoLimit_S2(), HisFX3PageWriteIIC_S2(), HisFX3PageReadIIC_S2(), _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3ReadI2C_S2(unsigned char ucSlave, unsigned int uiReg, unsigned __int64* pui64Data, unsigned short usType); 
+	int HisFX3ReadI2C_S2(unsigned char ucSlave, unsigned int uiReg, unsigned __int64* pui64Data, unsigned short usType);
 
-	//! ÅúÁ¿Ğ´ÈëIIC
-	/*! 
-	\param[in] uiCount  ÒªĞ´ÈëµÄIICµÄÌõÊı
-	\param[in] pucSlave Éè±¸µØÖ·Êı×éÖ¸Õë
-	\param[in] puiReg ¼Ä´æÆ÷µØÖ·Êı×éÖ¸Õë
-	\param[in] puiData Êı¾İÊı×éÖ¸Õë
-	\param[in] pusType ¸ñÊ½Êı×éÖ¸Õë, eg:0x1608-±íÊ¾µØÖ·Î»Ğ´Èë16bit, Êı¾İÎ»Ğ´Èë8bit¡£
-							 Ö§³ÖµÄ¸ñÊ½:0x0808,0x0816,0x1608,0x1616,0x1632
-	\param[in] usDelay ÃüÁîÖ®¼äµÄ¼ä¸ôÊ±¼ä£¬µ¥Î»: us
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! æ‰¹é‡å†™å…¥IIC
+	/*!
+	\param[in] uiCount  è¦å†™å…¥çš„IICçš„æ¡æ•°
+	\param[in] pucSlave è®¾å¤‡åœ°å€æ•°ç»„æŒ‡é’ˆ
+	\param[in] puiReg å¯„å­˜å™¨åœ°å€æ•°ç»„æŒ‡é’ˆ
+	\param[in] puiData æ•°æ®æ•°ç»„æŒ‡é’ˆ
+	\param[in] pusType æ ¼å¼æ•°ç»„æŒ‡é’ˆ, eg:0x1608-è¡¨ç¤ºåœ°å€ä½å†™å…¥16bit, æ•°æ®ä½å†™å…¥8bitã€‚
+	æ”¯æŒçš„æ ¼å¼:0x0808,0x0816,0x1608,0x1616,0x1632
+	\param[in] usDelay å‘½ä»¤ä¹‹é—´çš„é—´éš”æ—¶é—´ï¼Œå•ä½: us
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3WriteIIC(), HisFX3ReadIIC(), HisFX3BatchReadIICNoLimit(), HisFX3PageWriteIIC(), HisFX3PageReadIIC(), _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3BatchWriteIICNoLimit(unsigned int uiCount, unsigned char* pucSlave, unsigned int* puiReg, unsigned int* puiData, unsigned short* pusType, unsigned short usDelay=10);
+	int HisFX3BatchWriteIICNoLimit(unsigned int uiCount, unsigned char* pucSlave, unsigned int* puiReg, unsigned int* puiData, unsigned short* pusType, unsigned short usDelay = 10);
 
-	//! ÅúÁ¿Ğ´ÈëIIC(Í¨µÀ2)
-	/*! 
-	\param[in] uiCount  ÒªĞ´ÈëµÄIICµÄÌõÊı
-	\param[in] pucSlave Éè±¸µØÖ·Êı×éÖ¸Õë
-	\param[in] puiReg ¼Ä´æÆ÷µØÖ·Êı×éÖ¸Õë
-	\param[in] puiData Êı¾İÊı×éÖ¸Õë
-	\param[in] pusType ¸ñÊ½Êı×éÖ¸Õë, eg:0x1608-±íÊ¾µØÖ·Î»Ğ´Èë16bit, Êı¾İÎ»Ğ´Èë8bit¡£
-							 Ö§³ÖµÄ¸ñÊ½:0x0808,0x0816,0x1608,0x1616,0x1632
-	\param[in] usDelay ÃüÁîÖ®¼äµÄ¼ä¸ôÊ±¼ä£¬µ¥Î»: us
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! æ‰¹é‡å†™å…¥IIC(é€šé“2)
+	/*!
+	\param[in] uiCount  è¦å†™å…¥çš„IICçš„æ¡æ•°
+	\param[in] pucSlave è®¾å¤‡åœ°å€æ•°ç»„æŒ‡é’ˆ
+	\param[in] puiReg å¯„å­˜å™¨åœ°å€æ•°ç»„æŒ‡é’ˆ
+	\param[in] puiData æ•°æ®æ•°ç»„æŒ‡é’ˆ
+	\param[in] pusType æ ¼å¼æ•°ç»„æŒ‡é’ˆ, eg:0x1608-è¡¨ç¤ºåœ°å€ä½å†™å…¥16bit, æ•°æ®ä½å†™å…¥8bitã€‚
+	æ”¯æŒçš„æ ¼å¼:0x0808,0x0816,0x1608,0x1616,0x1632
+	\param[in] usDelay å‘½ä»¤ä¹‹é—´çš„é—´éš”æ—¶é—´ï¼Œå•ä½: us
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3WriteIIC_S2(), HisFX3ReadIIC_S2(), HisFX3BatchReadIICNoLimit_S2(), HisFX3PageWriteIIC_S2(), HisFX3PageReadIIC_S2(), _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3BatchWriteIICNoLimit_S2(unsigned int uiCount, unsigned char* pucSlave, unsigned int* puiReg, unsigned int* puiData, unsigned short* pusType, unsigned short usDelay=10);
-	
-	//! ÅúÁ¿¶ÁÈ¡IIC
-	/*! 
-	\param[in] uiCount  ÒªĞ´ÈëµÄIICµÄÌõÊı
-	\param[in] pucSlave Éè±¸µØÖ·Êı×éÖ¸Õë
-	\param[in] puiReg ¼Ä´æÆ÷µØÖ·Êı×éÖ¸Õë
-	\param[out] puiData Êı¾İÊı×éÖ¸Õë
-	\param[in] pusType ¸ñÊ½Êı×éÖ¸Õë, eg:0x1608-±íÊ¾µØÖ·Î»Ğ´Èë16bit, Êı¾İÎ»Ğ´Èë8bit¡£
-							 Ö§³ÖµÄ¸ñÊ½:0x0808,0x0816,0x1608,0x1616,0x1632
-	\param[in] usDelay ÃüÁîÖ®¼äµÄ¼ä¸ôÊ±¼ä£¬µ¥Î»: us
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	int HisFX3BatchWriteIICNoLimit_S2(unsigned int uiCount, unsigned char* pucSlave, unsigned int* puiReg, unsigned int* puiData, unsigned short* pusType, unsigned short usDelay = 10);
+
+	//! æ‰¹é‡è¯»å–IIC
+	/*!
+	\param[in] uiCount  è¦å†™å…¥çš„IICçš„æ¡æ•°
+	\param[in] pucSlave è®¾å¤‡åœ°å€æ•°ç»„æŒ‡é’ˆ
+	\param[in] puiReg å¯„å­˜å™¨åœ°å€æ•°ç»„æŒ‡é’ˆ
+	\param[out] puiData æ•°æ®æ•°ç»„æŒ‡é’ˆ
+	\param[in] pusType æ ¼å¼æ•°ç»„æŒ‡é’ˆ, eg:0x1608-è¡¨ç¤ºåœ°å€ä½å†™å…¥16bit, æ•°æ®ä½å†™å…¥8bitã€‚
+	æ”¯æŒçš„æ ¼å¼:0x0808,0x0816,0x1608,0x1616,0x1632
+	\param[in] usDelay å‘½ä»¤ä¹‹é—´çš„é—´éš”æ—¶é—´ï¼Œå•ä½: us
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3WriteIIC(), HisFX3ReadIIC(), HisFX3BatchWriteIICNoLimit(), HisFX3PageWriteIIC(), HisFX3PageReadIIC(), _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3BatchReadIICNoLimit(unsigned int uiCount, unsigned char* pucSlave, unsigned int* puiReg, unsigned int* puiData, unsigned short* pusType, unsigned short usDelay=10);
-	
-	//! ÅúÁ¿¶ÁÈ¡IIC(Í¨µÀ2)
-	/*! 
-	\param[in] uiCount  ÒªĞ´ÈëµÄIICµÄÌõÊı
-	\param[in] pucSlave Éè±¸µØÖ·Êı×éÖ¸Õë
-	\param[in] puiReg ¼Ä´æÆ÷µØÖ·Êı×éÖ¸Õë
-	\param[out] puiData Êı¾İÊı×éÖ¸Õë
-	\param[in] pusType ¸ñÊ½Êı×éÖ¸Õë, eg:0x1608-±íÊ¾µØÖ·Î»Ğ´Èë16bit, Êı¾İÎ»Ğ´Èë8bit¡£
-							 Ö§³ÖµÄ¸ñÊ½:0x0808,0x0816,0x1608,0x1616,0x1632
-	\param[in] usDelay ÃüÁîÖ®¼äµÄ¼ä¸ôÊ±¼ä£¬µ¥Î»: us
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	int HisFX3BatchReadIICNoLimit(unsigned int uiCount, unsigned char* pucSlave, unsigned int* puiReg, unsigned int* puiData, unsigned short* pusType, unsigned short usDelay = 10);
+
+	//! æ‰¹é‡è¯»å–IIC(é€šé“2)
+	/*!
+	\param[in] uiCount  è¦å†™å…¥çš„IICçš„æ¡æ•°
+	\param[in] pucSlave è®¾å¤‡åœ°å€æ•°ç»„æŒ‡é’ˆ
+	\param[in] puiReg å¯„å­˜å™¨åœ°å€æ•°ç»„æŒ‡é’ˆ
+	\param[out] puiData æ•°æ®æ•°ç»„æŒ‡é’ˆ
+	\param[in] pusType æ ¼å¼æ•°ç»„æŒ‡é’ˆ, eg:0x1608-è¡¨ç¤ºåœ°å€ä½å†™å…¥16bit, æ•°æ®ä½å†™å…¥8bitã€‚
+	æ”¯æŒçš„æ ¼å¼:0x0808,0x0816,0x1608,0x1616,0x1632
+	\param[in] usDelay å‘½ä»¤ä¹‹é—´çš„é—´éš”æ—¶é—´ï¼Œå•ä½: us
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3WriteIIC_S2(), HisFX3ReadIIC_S2(), HisFX3BatchWriteIICNoLimit_S2(), HisFX3PageWriteIIC_S2(), HisFX3PageReadIIC_S2(), _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3BatchReadIICNoLimit_S2(unsigned int uiCount, unsigned char* pucSlave, unsigned int* puiReg, unsigned int* puiData, unsigned short* pusType, unsigned short usDelay=10);
+	int HisFX3BatchReadIICNoLimit_S2(unsigned int uiCount, unsigned char* pucSlave, unsigned int* puiReg, unsigned int* puiData, unsigned short* pusType, unsigned short usDelay = 10);
 
-	//! PageĞ´ÈëIIC
-	/*!    
-	\param[in] ucSlave ´Ó»úÉè±¸µØÖ·
-	\param[in] uiReg ¼Ä´æÆ÷µØÖ·
-	\param[in] uiRegSize ¼Ä´æÆ÷µØÖ·×Ö½Ú³¤¶È£¬1,2,4¿ÉÑ¡
-	\param[in] pucData Êı¾İÊı×éÖ¸Õë
-	\param[in] uiDataSize ÒªĞ´ÈëµÄÊı¾İ³¤¶È£¬µ¥Î»:byte
-	\param[in] usDelay Ã¿¸öBYTEÑÓÊ±usDelay *0.5¸öÊ¼ÖÕÖÜÆÚ
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! Pageå†™å…¥IIC
+	/*!
+	\param[in] ucSlave ä»æœºè®¾å¤‡åœ°å€
+	\param[in] uiReg å¯„å­˜å™¨åœ°å€
+	\param[in] uiRegSize å¯„å­˜å™¨åœ°å€å­—èŠ‚é•¿åº¦ï¼Œ1,2,4å¯é€‰
+	\param[in] pucData æ•°æ®æ•°ç»„æŒ‡é’ˆ
+	\param[in] uiDataSize è¦å†™å…¥çš„æ•°æ®é•¿åº¦ï¼Œå•ä½:byte
+	\param[in] usDelay æ¯ä¸ªBYTEå»¶æ—¶usDelay *0.5ä¸ªå§‹ç»ˆå‘¨æœŸ
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3ReadI2C(), HisFX3WriteI2C(), HisFX3BatchWriteIICNoLimit(), HisFX3BatchReadIICNoLimit(), HisFX3PageReadIIC(), _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3PageWriteIIC(unsigned char ucSlave, unsigned int uiReg, unsigned int uiRegSize, unsigned char* pucData, unsigned int uiDataSize, unsigned short usDelay = 4);
 
-	//! PageÄ£Ê½Ğ´ÈëIIC(Í¨µÀ2)
-	/*!    
-	\param[in] ucSlave ´Ó»úÉè±¸µØÖ·
-	\param[in] uiReg ¼Ä´æÆ÷µØÖ·
-	\param[in] uiRegSize ¼Ä´æÆ÷µØÖ·×Ö½Ú³¤¶È£¬1,2,4¿ÉÑ¡
-	\param[in] pucData Êı¾İÊı×éÖ¸Õë
-	\param[in] uiDataSize ÒªĞ´ÈëµÄÊı¾İ³¤¶È£¬µ¥Î»:byte
-	\param[in] usDelay Ã¿¸öBYTEÑÓÊ±usDelay *0.5¸öÊ¼ÖÕÖÜÆÚ
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! Pageæ¨¡å¼å†™å…¥IIC(é€šé“2)
+	/*!
+	\param[in] ucSlave ä»æœºè®¾å¤‡åœ°å€
+	\param[in] uiReg å¯„å­˜å™¨åœ°å€
+	\param[in] uiRegSize å¯„å­˜å™¨åœ°å€å­—èŠ‚é•¿åº¦ï¼Œ1,2,4å¯é€‰
+	\param[in] pucData æ•°æ®æ•°ç»„æŒ‡é’ˆ
+	\param[in] uiDataSize è¦å†™å…¥çš„æ•°æ®é•¿åº¦ï¼Œå•ä½:byte
+	\param[in] usDelay æ¯ä¸ªBYTEå»¶æ—¶usDelay *0.5ä¸ªå§‹ç»ˆå‘¨æœŸ
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3ReadI2C_S2(), HisFX3WriteI2C_S2(), HisFX3BatchWriteIICNoLimit_S2(), HisFX3BatchReadIICNoLimit_S2(), HisFX3PageReadIIC_S2(), _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3PageWriteIIC_S2(unsigned char ucSlave, unsigned int uiReg, unsigned int uiRegSize, unsigned char* pucData, unsigned int uiDataSize, unsigned short usDelay = 4);
-	
-	//! PageÄ£Ê½¶ÁÈ¡IIC
-	/*!    
-	\param[in] ucSlave ´Ó»úÉè±¸µØÖ·
-	\param[in] uiReg ¼Ä´æÆ÷µØÖ·
-	\param[in] uiRegSize ¼Ä´æÆ÷µØÖ·×Ö½Ú³¤¶È£¬1,2,4¿ÉÑ¡
-	\param[out] pucData Êı¾İÊı×éÖ¸Õë
-	\param[in] uiDataSize Òª¶ÁÈ¡µÄÊı¾İ³¤¶È£¬µ¥Î»:byte
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+
+	//! Pageæ¨¡å¼è¯»å–IIC
+	/*!
+	\param[in] ucSlave ä»æœºè®¾å¤‡åœ°å€
+	\param[in] uiReg å¯„å­˜å™¨åœ°å€
+	\param[in] uiRegSize å¯„å­˜å™¨åœ°å€å­—èŠ‚é•¿åº¦ï¼Œ1,2,4å¯é€‰
+	\param[out] pucData æ•°æ®æ•°ç»„æŒ‡é’ˆ
+	\param[in] uiDataSize è¦è¯»å–çš„æ•°æ®é•¿åº¦ï¼Œå•ä½:byte
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3ReadI2C(), HisFX3WriteI2C(), HisFX3BatchWriteIICNoLimit(), HisFX3BatchReadIICNoLimit(), HisFX3PageWriteIIC(), _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3PageReadIIC(unsigned char ucSlave, unsigned int uiReg, unsigned int uiRegSize, unsigned char* pucData, unsigned int uiDataSize);
-	
-	//! PageÄ£Ê½¶ÁÈ¡IIC(Í¨µÀ2)
-	/*!    
-	\param[in] ucSlave ´Ó»úÉè±¸µØÖ·
-	\param[in] uiReg ¼Ä´æÆ÷µØÖ·
-	\param[in] uiRegSize ¼Ä´æÆ÷µØÖ·×Ö½Ú³¤¶È£¬1,2,4¿ÉÑ¡
-	\param[out] pucData Êı¾İÊı×éÖ¸Õë
-	\param[in] uiDataSize Òª¶ÁÈ¡µÄÊı¾İ³¤¶È£¬µ¥Î»:byte
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+
+	//! Pageæ¨¡å¼è¯»å–IIC(é€šé“2)
+	/*!
+	\param[in] ucSlave ä»æœºè®¾å¤‡åœ°å€
+	\param[in] uiReg å¯„å­˜å™¨åœ°å€
+	\param[in] uiRegSize å¯„å­˜å™¨åœ°å€å­—èŠ‚é•¿åº¦ï¼Œ1,2,4å¯é€‰
+	\param[out] pucData æ•°æ®æ•°ç»„æŒ‡é’ˆ
+	\param[in] uiDataSize è¦è¯»å–çš„æ•°æ®é•¿åº¦ï¼Œå•ä½:byte
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3ReadI2C_S2(), HisFX3WriteI2C_S2(), HisFX3BatchWriteIICNoLimit_S2(), HisFX3BatchReadIICNoLimit_S2(), HisFX3PageWriteIIC_S2(), _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3PageReadIIC_S2(unsigned char ucSlave, unsigned int uiReg, unsigned int uiRegSize, unsigned char* pucData, unsigned int uiDataSize);
 
-	//! PageĞ´ÈëIIC, ÎŞ³¤¶ÈÏŞÖÆ(Í¨µÀ1)
-	/*!    
-	\param[in] ucSlave ´Ó»úÉè±¸µØÖ·
-	\param[in] uiReg ¼Ä´æÆ÷µØÖ·
-	\param[in] uiRegSize ¼Ä´æÆ÷µØÖ·×Ö½Ú³¤¶È£¬1,2,4¿ÉÑ¡
-	\param[in] pucData Êı¾İÊı×éÖ¸Õë
-	\param[in] uiDataSize ÒªĞ´ÈëµÄÊı¾İ³¤¶È£¬µ¥Î»:byte
-	\param[in] uiPageSize Ò»¸öPageµÄ´óĞ¡£¬ĞèÒª²éÔÄEEPROMµÄ¹æ¸ñÊé£¬Ò»°ãÊÇ128,256,512,1024...
-	\param[in] usByteDelay Ã¿¸öBYTEÑÓÊ±usDelay *0.5¸öÊ¼ÖÕÖÜÆÚ
-	\param[in] uiPageDelay Ã¿¸öPageĞ´ÈëÖ®¼äµÄÑÓÊ±£¬µ¥Î»:ms
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! Pageå†™å…¥IIC, æ— é•¿åº¦é™åˆ¶(é€šé“1)
+	/*!
+	\param[in] ucSlave ä»æœºè®¾å¤‡åœ°å€
+	\param[in] uiReg å¯„å­˜å™¨åœ°å€
+	\param[in] uiRegSize å¯„å­˜å™¨åœ°å€å­—èŠ‚é•¿åº¦ï¼Œ1,2,4å¯é€‰
+	\param[in] pucData æ•°æ®æ•°ç»„æŒ‡é’ˆ
+	\param[in] uiDataSize è¦å†™å…¥çš„æ•°æ®é•¿åº¦ï¼Œå•ä½:byte
+	\param[in] uiPageSize ä¸€ä¸ªPageçš„å¤§å°ï¼Œéœ€è¦æŸ¥é˜…EEPROMçš„è§„æ ¼ä¹¦ï¼Œä¸€èˆ¬æ˜¯128,256,512,1024...
+	\param[in] usByteDelay æ¯ä¸ªBYTEå»¶æ—¶usDelay *0.5ä¸ªå§‹ç»ˆå‘¨æœŸ
+	\param[in] uiPageDelay æ¯ä¸ªPageå†™å…¥ä¹‹é—´çš„å»¶æ—¶ï¼Œå•ä½:ms
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3PageWriteIIC(), HisFX3ReadI2C(), HisFX3WriteI2C(), HisFX3BatchWriteIICNoLimit(), HisFX3BatchReadIICNoLimit(), HisFX3PageReadIIC(), _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3PageWriteIICNoLimit(unsigned char ucSlave, unsigned int uiReg, unsigned int uiRegSize, unsigned char* pucData, unsigned int uiDataSize, unsigned int uiPageSize, unsigned short usByteDelay = 4, unsigned int uiPageDelay= 100);
-	
-	//! PageĞ´ÈëIIC, ÎŞ³¤¶ÈÏŞÖÆ(Í¨µÀ2)
-	/*!    
-	\param[in] ucSlave ´Ó»úÉè±¸µØÖ·
-	\param[in] uiReg ¼Ä´æÆ÷µØÖ·
-	\param[in] uiRegSize ¼Ä´æÆ÷µØÖ·×Ö½Ú³¤¶È£¬1,2,4¿ÉÑ¡
-	\param[in] pucData Êı¾İÊı×éÖ¸Õë
-	\param[in] uiDataSize ÒªĞ´ÈëµÄÊı¾İ³¤¶È£¬µ¥Î»:byte
-	\param[in] uiPageSize Ò»¸öPageµÄ´óĞ¡£¬ĞèÒª²éÔÄEEPROMµÄ¹æ¸ñÊé£¬Ò»°ãÊÇ128,256,512,1024...
-	\param[in] usByteDelay Ã¿¸öBYTEÑÓÊ±usDelay *0.5¸öÊ¼ÖÕÖÜÆÚ
-	\param[in] uiPageDelay Ã¿¸öPageĞ´ÈëÖ®¼äµÄÑÓÊ±£¬µ¥Î»:ms
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	int HisFX3PageWriteIICNoLimit(unsigned char ucSlave, unsigned int uiReg, unsigned int uiRegSize, unsigned char* pucData, unsigned int uiDataSize, unsigned int uiPageSize, unsigned short usByteDelay = 4, unsigned int uiPageDelay = 100);
+
+	//! Pageå†™å…¥IIC, æ— é•¿åº¦é™åˆ¶(é€šé“2)
+	/*!
+	\param[in] ucSlave ä»æœºè®¾å¤‡åœ°å€
+	\param[in] uiReg å¯„å­˜å™¨åœ°å€
+	\param[in] uiRegSize å¯„å­˜å™¨åœ°å€å­—èŠ‚é•¿åº¦ï¼Œ1,2,4å¯é€‰
+	\param[in] pucData æ•°æ®æ•°ç»„æŒ‡é’ˆ
+	\param[in] uiDataSize è¦å†™å…¥çš„æ•°æ®é•¿åº¦ï¼Œå•ä½:byte
+	\param[in] uiPageSize ä¸€ä¸ªPageçš„å¤§å°ï¼Œéœ€è¦æŸ¥é˜…EEPROMçš„è§„æ ¼ä¹¦ï¼Œä¸€èˆ¬æ˜¯128,256,512,1024...
+	\param[in] usByteDelay æ¯ä¸ªBYTEå»¶æ—¶usDelay *0.5ä¸ªå§‹ç»ˆå‘¨æœŸ
+	\param[in] uiPageDelay æ¯ä¸ªPageå†™å…¥ä¹‹é—´çš„å»¶æ—¶ï¼Œå•ä½:ms
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3PageWriteIIC_S2(), HisFX3ReadI2C(), HisFX3WriteI2C(), HisFX3BatchWriteIICNoLimit(), HisFX3BatchReadIICNoLimit(), HisFX3PageReadIIC(), _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3PageWriteIICNoLimit_S2(unsigned char ucSlave, unsigned int uiReg, unsigned int uiRegSize, unsigned char* pucData, unsigned int uiDataSize, unsigned int uiPageSize, unsigned short usByteDelay = 4, unsigned int uiPageDelay= 100);
+	int HisFX3PageWriteIICNoLimit_S2(unsigned char ucSlave, unsigned int uiReg, unsigned int uiRegSize, unsigned char* pucData, unsigned int uiDataSize, unsigned int uiPageSize, unsigned short usByteDelay = 4, unsigned int uiPageDelay = 100);
 
-	//! PageÄ£Ê½¶ÁÈ¡IIC, ÎŞ³¤¶ÈÏŞÖÆ(Í¨µÀ1)
-	/*!    
-	\param[in] ucSlave ´Ó»úÉè±¸µØÖ·
-	\param[in] uiReg ¼Ä´æÆ÷µØÖ·
-	\param[in] uiRegSize ¼Ä´æÆ÷µØÖ·×Ö½Ú³¤¶È£¬1,2,4¿ÉÑ¡
-	\param[out] pucData Êı¾İÊı×éÖ¸Õë
-	\param[in] uiDataSize Òª¶ÁÈ¡µÄÊı¾İ³¤¶È£¬µ¥Î»:byte
-	\param[in] uiPageSize Ò»¸öPageµÄ´óĞ¡£¬ĞèÒª²éÔÄEEPROMµÄ¹æ¸ñÊé£¬Ò»°ãÊÇ128,256,512,1024...
-	\param[in] uiPageDelay Ã¿¸öPage¶ÁÈ¡Ö®¼äµÄÑÓÊ±£¬µ¥Î»:ms
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! Pageæ¨¡å¼è¯»å–IIC, æ— é•¿åº¦é™åˆ¶(é€šé“1)
+	/*!
+	\param[in] ucSlave ä»æœºè®¾å¤‡åœ°å€
+	\param[in] uiReg å¯„å­˜å™¨åœ°å€
+	\param[in] uiRegSize å¯„å­˜å™¨åœ°å€å­—èŠ‚é•¿åº¦ï¼Œ1,2,4å¯é€‰
+	\param[out] pucData æ•°æ®æ•°ç»„æŒ‡é’ˆ
+	\param[in] uiDataSize è¦è¯»å–çš„æ•°æ®é•¿åº¦ï¼Œå•ä½:byte
+	\param[in] uiPageSize ä¸€ä¸ªPageçš„å¤§å°ï¼Œéœ€è¦æŸ¥é˜…EEPROMçš„è§„æ ¼ä¹¦ï¼Œä¸€èˆ¬æ˜¯128,256,512,1024...
+	\param[in] uiPageDelay æ¯ä¸ªPageè¯»å–ä¹‹é—´çš„å»¶æ—¶ï¼Œå•ä½:ms
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3PageReadIIC(), HisFX3ReadI2C(), HisFX3WriteI2C(), HisFX3BatchWriteIICNoLimit(), HisFX3BatchReadIICNoLimit(), HisFX3PageWriteIIC(), _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3PageReadIICNoLimit(unsigned char ucSlave, unsigned int uiReg, unsigned int uiRegSize, unsigned char* pucData, unsigned int uiDataSize, unsigned int uiPageSize, unsigned int uiPageDelay = 0);
 
-	//! PageÄ£Ê½¶ÁÈ¡IIC, ÎŞ³¤¶ÈÏŞÖÆ(Í¨µÀ2)
-	/*!    
-	\param[in] ucSlave ´Ó»úÉè±¸µØÖ·
-	\param[in] uiReg ¼Ä´æÆ÷µØÖ·
-	\param[in] uiRegSize ¼Ä´æÆ÷µØÖ·×Ö½Ú³¤¶È£¬1,2,4¿ÉÑ¡
-	\param[out] pucData Êı¾İÊı×éÖ¸Õë
-	\param[in] uiDataSize Òª¶ÁÈ¡µÄÊı¾İ³¤¶È£¬µ¥Î»:byte
-	\param[in] uiPageSize Ò»¸öPageµÄ´óĞ¡£¬ĞèÒª²éÔÄEEPROMµÄ¹æ¸ñÊé£¬Ò»°ãÊÇ128,256,512,1024...
-	\param[in] uiPageDelay Ã¿¸öPage¶ÁÈ¡Ö®¼äµÄÑÓÊ±£¬µ¥Î»:ms
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! Pageæ¨¡å¼è¯»å–IIC, æ— é•¿åº¦é™åˆ¶(é€šé“2)
+	/*!
+	\param[in] ucSlave ä»æœºè®¾å¤‡åœ°å€
+	\param[in] uiReg å¯„å­˜å™¨åœ°å€
+	\param[in] uiRegSize å¯„å­˜å™¨åœ°å€å­—èŠ‚é•¿åº¦ï¼Œ1,2,4å¯é€‰
+	\param[out] pucData æ•°æ®æ•°ç»„æŒ‡é’ˆ
+	\param[in] uiDataSize è¦è¯»å–çš„æ•°æ®é•¿åº¦ï¼Œå•ä½:byte
+	\param[in] uiPageSize ä¸€ä¸ªPageçš„å¤§å°ï¼Œéœ€è¦æŸ¥é˜…EEPROMçš„è§„æ ¼ä¹¦ï¼Œä¸€èˆ¬æ˜¯128,256,512,1024...
+	\param[in] uiPageDelay æ¯ä¸ªPageè¯»å–ä¹‹é—´çš„å»¶æ—¶ï¼Œå•ä½:ms
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3PageReadIIC_S2(), HisFX3ReadI2C(), HisFX3WriteI2C(), HisFX3BatchWriteIICNoLimit(), HisFX3BatchReadIICNoLimit(), HisFX3PageWriteIIC(), _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3PageReadIICNoLimit_S2(unsigned char ucSlave, unsigned int uiReg, unsigned int uiRegSize, unsigned char* pucData, unsigned int uiDataSize, unsigned int uiPageSize, unsigned int uiPageDelay = 0);
 
-	//! PageÄ£Ê½Ğ´ÈëSPI
-	/*!    
-	\param[in] ucSlave ´Ó»úÉè±¸µØÖ·
-	\param[in] uiReg ¼Ä´æÆ÷µØÖ·
-	\param[in] uiRegSize ¼Ä´æÆ÷µØÖ·×Ö½Ú³¤¶È£¬1,2,4¿ÉÑ¡
-	\param[in] pucData Êı¾İÊı×éÖ¸Õë
-	\param[in] uiDataSize ÒªĞ´ÈëµÄÊı¾İ³¤¶È£¬µ¥Î»:byte
-	\param[in] bCSLow ÉèÖÃ²Ù×÷SPIÊ±µÄCSĞÅºÅµçÆ½¡£ true:µÍµçÆ½£» false:¸ßµçÆ½
-	\param[in] bLowFirst true: µÍÎ»ÔÚÇ°£» false:¸ßÎ»ÔÚÇ°
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! Pageæ¨¡å¼å†™å…¥SPI
+	/*!
+	\param[in] ucSlave ä»æœºè®¾å¤‡åœ°å€
+	\param[in] uiReg å¯„å­˜å™¨åœ°å€
+	\param[in] uiRegSize å¯„å­˜å™¨åœ°å€å­—èŠ‚é•¿åº¦ï¼Œ1,2,4å¯é€‰
+	\param[in] pucData æ•°æ®æ•°ç»„æŒ‡é’ˆ
+	\param[in] uiDataSize è¦å†™å…¥çš„æ•°æ®é•¿åº¦ï¼Œå•ä½:byte
+	\param[in] bCSLow è®¾ç½®æ“ä½œSPIæ—¶çš„CSä¿¡å·ç”µå¹³ã€‚ true:ä½ç”µå¹³ï¼› false:é«˜ç”µå¹³
+	\param[in] bLowFirst true: ä½ä½åœ¨å‰ï¼› false:é«˜ä½åœ¨å‰
+	\param[in] clkHigh true: CLKé»˜è®¤æ˜¯åœ¨é«˜ç”µå¹³ï¼›false: CLKé»˜è®¤æ˜¯åœ¨ä½ç”µå¹³ï¼›éœ€è¦R2C >= 3506
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa  HisFX3PageReadSPI(), HisFX3WriteSPI(), HisFX3ReadSPI(), _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3PageWriteSPI(unsigned char ucSlave, unsigned int uiReg, unsigned int uiRegSize, unsigned char* pucData, unsigned int uiDataSize, bool bCSLow=true, bool bLowFirst=true);
-	
-	//! PageÄ£Ê½¶ÁÈ¡SPI
-	/*!    
-	\param[in] ucSlave ´Ó»úÉè±¸µØÖ·
-	\param[in] uiReg ¼Ä´æÆ÷µØÖ·
-	\param[in] uiRegSize ¼Ä´æÆ÷µØÖ·×Ö½Ú³¤¶È£¬1,2,4¿ÉÑ¡
-	\param[out] pucData Êı¾İÊı×éÖ¸Õë
-	\param[in] uiDataSize ÒªĞ´ÈëµÄÊı¾İ³¤¶È£¬µ¥Î»:byte
-	\param[in] bCSLow ÉèÖÃ²Ù×÷SPIÊ±µÄCSĞÅºÅµçÆ½¡£ true:µÍµçÆ½£» false:¸ßµçÆ½
-	\param[in] bLowFirst true: µÍÎ»ÔÚÇ°£» false:¸ßÎ»ÔÚÇ°
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	int HisFX3PageWriteSPI(unsigned char ucSlave, unsigned int uiReg, unsigned int uiRegSize, \
+		unsigned char* pucData, unsigned int uiDataSize, bool bCSLow = true, bool bLowFirst = true, bool clkHigh = true);
+
+	//! Pageæ¨¡å¼è¯»å–SPI
+	/*!
+	\param[in] ucSlave ä»æœºè®¾å¤‡åœ°å€
+	\param[in] uiReg å¯„å­˜å™¨åœ°å€
+	\param[in] uiRegSize å¯„å­˜å™¨åœ°å€å­—èŠ‚é•¿åº¦ï¼Œ1,2,4å¯é€‰
+	\param[out] pucData æ•°æ®æ•°ç»„æŒ‡é’ˆ
+	\param[in] uiDataSize è¦å†™å…¥çš„æ•°æ®é•¿åº¦ï¼Œå•ä½:byte
+	\param[in] bCSLow è®¾ç½®æ“ä½œSPIæ—¶çš„CSä¿¡å·ç”µå¹³ã€‚ true:ä½ç”µå¹³ï¼› false:é«˜ç”µå¹³
+	\param[in] bLowFirst true: ä½ä½åœ¨å‰ï¼› false:é«˜ä½åœ¨å‰
+	\param[in] clkHigh true: CLKé»˜è®¤æ˜¯åœ¨é«˜ç”µå¹³ï¼›false: CLKé»˜è®¤æ˜¯åœ¨ä½ç”µå¹³ï¼›éœ€è¦R2C >= 3506
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa  HisFX3PageWriteSPI(), HisFX3WriteSPI(), HisFX3ReadSPI(), _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3PageReadSPI(unsigned char ucSlave, unsigned int uiReg, unsigned int uiRegSize, unsigned char* pucData, unsigned int uiDataSize, bool bCSLow=true, bool bLowFirst=true);
+	int HisFX3PageReadSPI(unsigned char ucSlave, unsigned int uiReg, unsigned int uiRegSize, unsigned char* pucData, \
+		unsigned int uiDataSize, bool bCSLow = true, bool bLowFirst = true, bool clkHigh = true);
 
-	//! µ¥ÌõĞ´SPI
-	/*!    
-	\param[in] ucSlave ´Ó»úÉè±¸µØÖ·
-	\param[in] uiReg ¼Ä´æÆ÷µØÖ·
-	\param[in] ui64Data ÒªĞ´ÈëµÄÊı¾İ
-	\param[in] usType ¼Ä´æÆ÷ºÍÊı¾İ¸ñÊ½, eg:0x1608-±íÊ¾µØÖ·Î»Ğ´Èë16bit, Êı¾İÎ»Ğ´Èë8bit¡£
-							 Ö§³ÖµÄ¸ñÊ½:0x0808,0x0816,0x1608,0x1616,0x1632,0x0008,0x0016,0x0032
-	\param[in] bCSLow ÉèÖÃ²Ù×÷SPIÊ±µÄCSĞÅºÅµçÆ½¡£ true:µÍµçÆ½£» false:¸ßµçÆ½
-	\param[in] bLowFirst true: µÍÎ»ÔÚÇ°£» false:¸ßÎ»ÔÚÇ°
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! å•æ¡å†™SPI
+	/*!
+	\param[in] ucSlave ä»æœºè®¾å¤‡åœ°å€
+	\param[in] uiReg å¯„å­˜å™¨åœ°å€
+	\param[in] ui64Data è¦å†™å…¥çš„æ•°æ®
+	\param[in] usType å¯„å­˜å™¨å’Œæ•°æ®æ ¼å¼, eg:0x1608-è¡¨ç¤ºåœ°å€ä½å†™å…¥16bit, æ•°æ®ä½å†™å…¥8bitã€‚
+	æ”¯æŒçš„æ ¼å¼:0x0808,0x0816,0x1608,0x1616,0x1632,0x0008,0x0016,0x0032
+	\param[in] bCSLow è®¾ç½®æ“ä½œSPIæ—¶çš„CSä¿¡å·ç”µå¹³ã€‚ true:ä½ç”µå¹³ï¼› false:é«˜ç”µå¹³
+	\param[in] bLowFirst true: ä½ä½åœ¨å‰ï¼› false:é«˜ä½åœ¨å‰
+	\param[in] clkHigh true: CLKé»˜è®¤æ˜¯åœ¨é«˜ç”µå¹³ï¼›false: CLKé»˜è®¤æ˜¯åœ¨ä½ç”µå¹³ï¼›éœ€è¦R2C >= 3506
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3ReadSPI(), HisFX3PageWriteSPI(), HisFX3PageReadSPI(), _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3WriteSPI(unsigned char ucSlave, unsigned int uiReg, unsigned __int64 ui64Data, unsigned short usType, bool bCSLow=true, bool bLowFirst=true);
-	
-	//! µ¥Ìõ¶ÁÈ¡SPI
-	/*!    
-	\param[in] ucSlave ´Ó»úÉè±¸µØÖ·
-	\param[in] uiReg ¼Ä´æÆ÷µØÖ·
-	\param[out] pui64Data ¶ÁÈ¡µÄÊı¾İ
-	\param[in] usType ¼Ä´æÆ÷ºÍÊı¾İ¸ñÊ½, eg:0x1608-±íÊ¾µØÖ·Î»Ğ´Èë16bit, Êı¾İÎ»Ğ´Èë8bit¡£
-							 Ö§³ÖµÄ¸ñÊ½:0x0808,0x0816,0x1608,0x1616,0x1632,0x0008,0x0016,0x0032
-	\param[in] bCSLow ÉèÖÃ²Ù×÷SPIÊ±µÄCSĞÅºÅµçÆ½¡£ true:µÍµçÆ½£» false:¸ßµçÆ½
-	\param[in] bLowFirst true: µÍÎ»ÔÚÇ°£» false:¸ßÎ»ÔÚÇ°
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	int HisFX3WriteSPI(unsigned char ucSlave, unsigned int uiReg, unsigned __int64 ui64Data, \
+		unsigned short usType, bool bCSLow = true, bool bLowFirst = true, bool clkHigh = true);
+
+	//! å•æ¡è¯»å–SPI
+	/*!
+	\param[in] ucSlave ä»æœºè®¾å¤‡åœ°å€
+	\param[in] uiReg å¯„å­˜å™¨åœ°å€
+	\param[out] pui64Data è¯»å–çš„æ•°æ®
+	\param[in] usType å¯„å­˜å™¨å’Œæ•°æ®æ ¼å¼, eg:0x1608-è¡¨ç¤ºåœ°å€ä½å†™å…¥16bit, æ•°æ®ä½å†™å…¥8bitã€‚
+	æ”¯æŒçš„æ ¼å¼:0x0808,0x0816,0x1608,0x1616,0x1632,0x0008,0x0016,0x0032
+	\param[in] bCSLow è®¾ç½®æ“ä½œSPIæ—¶çš„CSä¿¡å·ç”µå¹³ã€‚ true:ä½ç”µå¹³ï¼› false:é«˜ç”µå¹³
+	\param[in] bLowFirst true: ä½ä½åœ¨å‰ï¼› false:é«˜ä½åœ¨å‰
+	\param[in] clkHigh true: CLKé»˜è®¤æ˜¯åœ¨é«˜ç”µå¹³ï¼›false: CLKé»˜è®¤æ˜¯åœ¨ä½ç”µå¹³ï¼›éœ€è¦R2C >= 3506
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3WriteSPI(), HisFX3PageWriteSPI(), HisFX3PageReadSPI(), _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3ReadSPI(unsigned char ucSlave, unsigned int uiReg, unsigned __int64* pui64Data, unsigned short usType, bool bCSLow=true, bool bLowFirst=true);
+	int HisFX3ReadSPI(unsigned char ucSlave, unsigned int uiReg, unsigned __int64* pui64Data, \
+		unsigned short usType, bool bCSLow = true, bool bLowFirst = true, bool clkHigh = true);
 
-	//! ÏòÏÂ¼æÈİAPI, ½¨Òé²»Ê¹ÓÃ
-	int HisFX3BatchWriteIIC(unsigned int uiCount, unsigned char* pucSlave, unsigned int* puiReg, unsigned int* puiData, unsigned short usType, unsigned short usDelay=10);
-	
-	//! ÏòÏÂ¼æÈİAPI, ½¨Òé²»Ê¹ÓÃ
-	int HisFX3BatchReadIIC(unsigned int uiCount, unsigned char* pucSlave, unsigned int* puiReg, unsigned int* puiData, unsigned short usType, unsigned short usDelay=10);
-	
-	//! ÏòÏÂ¼æÈİAPI, ½¨Òé²»Ê¹ÓÃ
-	int HisFX3BatchWriteIIC_V2(unsigned int uiCount, unsigned char* pucSlave, unsigned int* puiReg, unsigned int* puiData, unsigned short* pusType, unsigned short usDelay);
-	
-	//! ÏòÏÂ¼æÈİAPI, ½¨Òé²»Ê¹ÓÃ
-	int HisFX3BatchReadIIC_V2(unsigned int uiCount, unsigned char* pucSlave, unsigned int* puiReg, unsigned int* puiData, unsigned short* pusType, unsigned short usDelay);
-
-	//! ÉèÖÃIICÍ¨ĞÅËÙ¶È
-	/*!    
-	\param[in] us1kMultiple 10KHz~1MHz·¶Î§¿Éµ÷
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! è®¾ç½®IICé€šä¿¡é€Ÿåº¦
+	/*!
+	\param[in] us1kMultiple 10KHz~1MHzèŒƒå›´å¯è°ƒ
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3GetIICSpeed(), _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3SetIICSpeed(unsigned short us1kMultiple);
 
-	//! ÉèÖÃIICÍ¨ĞÅËÙ¶È(Í¨µÀ2)
-	/*!    
-	\param[in] us1kMultiple 10KHz~1MHz·¶Î§¿Éµ÷
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! è®¾ç½®IICé€šä¿¡é€Ÿåº¦(é€šé“2)
+	/*!
+	\param[in] us1kMultiple 10KHz~1MHzèŒƒå›´å¯è°ƒ
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3GetIICSpeed_S2(), _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3SetIICSpeed_S2(unsigned short us1kMultiple);
 
-	//! »ñÈ¡µ±Ç°IICÍ¨ĞÅËÙ¶È
-	/*!    
-	\param[out] pus1kMultiple µ¥Î»£ºKHz
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! è·å–å½“å‰IICé€šä¿¡é€Ÿåº¦
+	/*!
+	\param[out] pus1kMultiple å•ä½ï¼šKHz
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3SetIICSpeed(), _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3GetIICSpeed(unsigned short* pus1kMultiple);
 
-	//! »ñÈ¡µ±Ç°IICÍ¨ĞÅËÙ¶È(Í¨µÀ2)
-	/*!    
-	\param[out] pus1kMultiple µ¥Î»£ºKHz
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! è·å–å½“å‰IICé€šä¿¡é€Ÿåº¦(é€šé“2)
+	/*!
+	\param[out] pus1kMultiple å•ä½ï¼šKHz
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3SetIICSpeed_S2(), _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3GetIICSpeed_S2(unsigned short* pus1kMultiple);
 
-	//! ÉèÖÃSPIÍ¨ĞÅËÙ¶È
-	/*!    
-	\param[in] us1kMultiple 10KHz~25MHz·¶Î§¿Éµ÷, µ¥Î»: KHz
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! è®¾ç½®SPIé€šä¿¡é€Ÿåº¦
+	/*!
+	\param[in] us1kMultiple 10KHz~25MHzèŒƒå›´å¯è°ƒ, å•ä½: KHz
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3GetSPISpeed(), _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3SetSPISpeed(unsigned short us1kMultiple);
 
-	//! »ñÈ¡µ±Ç°SPIÍ¨ĞÅËÙ¶È
-	/*!    
-	\param[out] pus1kMultiple µ¥Î»£ºKHz
-	\return 0:³É¹¦  ·Ç0:Ê§°ÜµÄ´íÎó´úÂë, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! è·å–å½“å‰SPIé€šä¿¡é€Ÿåº¦
+	/*!
+	\param[out] pus1kMultiple å•ä½ï¼šKHz
+	\return 0:æˆåŠŸ  é0:å¤±è´¥çš„é”™è¯¯ä»£ç , è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3SetSPISpeed(), _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3GetSPISpeed(unsigned short* pus1kMultiple);
 
-	//! Õì²âÍ¨µÀ1µÄ´ÓÉè±¸µØÖ·ÏìÓ¦
-	/*!    
-	\param[in] ucSlave ´ÓÉè±¸µÄÉè±¸µØÖ·
-	\return 0:ÓĞÏìÓ¦  ·Ç0:Î´ÏìÓ¦, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! ä¾¦æµ‹é€šé“1çš„ä»è®¾å¤‡åœ°å€å“åº”
+	/*!
+	\param[in] ucSlave ä»è®¾å¤‡çš„è®¾å¤‡åœ°å€
+	\return 0:æœ‰å“åº”  é0:æœªå“åº”, è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3SlaveResponds(unsigned char ucSlave);
 
-	//! Õì²âÍ¨µÀ2µÄ´ÓÉè±¸µØÖ·ÏìÓ¦
-	/*!    
-	\param[in] ucSlave ´ÓÉè±¸µÄÉè±¸µØÖ·
-	\return 0:ÓĞÏìÓ¦  ·Ç0:Î´ÏìÓ¦, Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! ä¾¦æµ‹é€šé“2çš„ä»è®¾å¤‡åœ°å€å“åº”
+	/*!
+	\param[in] ucSlave ä»è®¾å¤‡çš„è®¾å¤‡åœ°å€
+	\return 0:æœ‰å“åº”  é0:æœªå“åº”, è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3SlaveResponds_S2(unsigned char ucSlave);
 
-	//! ±£Áô
-	int HisFX3GetMIPIDataType(_HisFX3_ImageSenor_DataType* pDataType);
+	//! è®¾ç½®é£æ‰‡æ¨¡å¼ã€R3Xã€‘
+	/*!
+	\param[in] mode 0ï¼šè‡ªåŠ¨  1ï¼šå¼€  2ï¼šå…³
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
+	\sa _HisFX3Platform_ErrorCode
+	*/
+	int HisFX3SetFanMode(unsigned char mode);
 
-	//! ¿ª¹Ø5V12VµçÑ¹Êä³ö¡¾R5¡¿
-	/*!    
-	\param[in] uiV5 0£º5V¹Ø±Õ  1£º5V´ò¿ª  2£º5V²»ÉèÖÃ
-	\param[in] uiV12 0£º12V¹Ø±Õ  1£º12V´ò¿ª  2£º12V²»ÉèÖÃ
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! å¼€å…³5V12Vç”µå‹è¾“å‡ºã€R5ã€‘
+	/*!
+	\param[in] uiV5 0ï¼š5Vå…³é—­  1ï¼š5Væ‰“å¼€  2ï¼š5Vä¸è®¾ç½®
+	\param[in] uiV12 0ï¼š12Vå…³é—­  1ï¼š12Væ‰“å¼€  2ï¼š12Vä¸è®¾ç½®
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa HisFX3SetVolt, HisFX3SetVolt_S2, _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3Set5V12V(unsigned int uiV5 = 2, unsigned int uiV12 = 2);
 
-	//! ÉèÖÃÍ¨µÀ1µçÑ¹
-	/*!    
-	\param[in] flDOVDD 0.0V~3.5V·¶Î§¿Éµ÷, Êµ¼ÊËùÉèµçÑ¹= flDOVDD *flMultiple
-	\param[in] flAVDD 0.0V~3.5V·¶Î§¿Éµ÷, Êµ¼ÊËùÉèµçÑ¹= flAVDD *flMultiple
-	\param[in] flDVDD 0.0V~3.5V·¶Î§¿Éµ÷, Êµ¼ÊËùÉèµçÑ¹= flDVDD *flMultiple
-	\param[in] flAF 0.0V~3.5V·¶Î§¿Éµ÷, Êµ¼ÊËùÉèµçÑ¹= flAF *flMultiple
-	\param[in] flVFuse 0.0V~10.0V·¶Î§¿Éµ÷, Êµ¼ÊËùÉèµçÑ¹= flVFuse *flMultiple
-	\param[in] flPOW 0.0V~3.5V·¶Î§¿Éµ÷¡¾R5¡¿¡¾R3X¡¿¡¾R5X¡¿, Êµ¼ÊËùÉèµçÑ¹= flPOW *flMultiple
-	\param[in] flIODD 0.0V~3.5V·¶Î§¿Éµ÷¡¾°å¿¨ÄÚ²¿IOµçÆ½¡¿¡¾R5¡¿, Êµ¼ÊËùÉèµçÑ¹= flIODD *flMultiple
-	\param[in] usSwitch ÉèÖÃµçÑ¹¿ª¹Ø£¬ _HisFX3_Platform_VoltFlag£¬
-									  eg,ÉèÖÃAVDDºÍDVDDµçÑ¹£¬ _HisFX3_Platform_VlotOn_AVDD | _HisFX3_Platform_VlotOn_DVDD
-	\param[in] flMultiple µçÑ¹ÖµÏµÊı
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! è®¾ç½®é€šé“1ç”µå‹
+	/*!
+	\param[in] flDOVDD 0.0V~3.5VèŒƒå›´å¯è°ƒ, å®é™…æ‰€è®¾ç”µå‹= flDOVDD *flMultiple
+	\param[in] flAVDD 0.0V~3.5VèŒƒå›´å¯è°ƒ, å®é™…æ‰€è®¾ç”µå‹= flAVDD *flMultiple
+	\param[in] flDVDD 0.0V~3.5VèŒƒå›´å¯è°ƒ, å®é™…æ‰€è®¾ç”µå‹= flDVDD *flMultiple
+	\param[in] flAF 0.0V~3.5VèŒƒå›´å¯è°ƒ, å®é™…æ‰€è®¾ç”µå‹= flAF *flMultiple
+	\param[in] flVFuse 0.0V~10.0VèŒƒå›´å¯è°ƒ, å®é™…æ‰€è®¾ç”µå‹= flVFuse *flMultiple
+	\param[in] flPOW 0.0V~3.5VèŒƒå›´å¯è°ƒã€R5ã€‘ã€R3Xã€‘ã€R5Xã€‘, å®é™…æ‰€è®¾ç”µå‹= flPOW *flMultiple
+	\param[in] flIODD 0.0V~3.5VèŒƒå›´å¯è°ƒã€æ¿å¡å†…éƒ¨IOç”µå¹³ã€‘ã€R5ã€‘, å®é™…æ‰€è®¾ç”µå‹= flIODD *flMultiple
+	\param[in] usSwitch è®¾ç½®ç”µå‹å¼€å…³ï¼Œ _HisFX3_Platform_VoltFlagï¼Œ
+	eg,è®¾ç½®AVDDå’ŒDVDDç”µå‹ï¼Œ _HisFX3_Platform_VlotOn_AVDD | _HisFX3_Platform_VlotOn_DVDD
+	\param[in] flMultiple ç”µå‹å€¼ç³»æ•°
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa  HisFX3Set5V12V, HisFX3SetVolt_S2, HisFX3GetVolt, _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3SetVolt(float flDOVDD=0.0f, float flAVDD=0.0f, float flDVDD=0.0f, float flAF = 0.0f, float flVFuse=0.0f, float flPOW=0.0f, float flIODD = 0.0f, unsigned short usSwitch=0xFF, float flMultiple = 0.1f);
-	
-	//! ÉèÖÃÍ¨µÀ2µçÑ¹
-	/*!    
-	\param[in] flDOVDD 0.0V~3.5V·¶Î§¿Éµ÷, Êµ¼ÊËùÉèµçÑ¹= flDOVDD *flMultiple
-	\param[in] flAVDD 0.0V~3.5V·¶Î§¿Éµ÷, Êµ¼ÊËùÉèµçÑ¹= flAVDD *flMultiple
-	\param[in] flDVDD 0.0V~3.5V·¶Î§¿Éµ÷, Êµ¼ÊËùÉèµçÑ¹= flDVDD *flMultiple
-	\param[in] flAF 0.0V~3.5V·¶Î§¿Éµ÷, Êµ¼ÊËùÉèµçÑ¹= flAF *flMultiple
-	\param[in] flVFuse 0.0V~10.0V·¶Î§¿Éµ÷, Êµ¼ÊËùÉèµçÑ¹= flVFuse *flMultiple
-	\param[in] flPOW 0.0V~3.5V·¶Î§¿Éµ÷¡¾R5¡¿, Êµ¼ÊËùÉèµçÑ¹= flPOW *flMultiple
-	\param[in] flIODD 0.0V~3.5V·¶Î§¿Éµ÷¡¾°å¿¨ÄÚ²¿IOµçÆ½¡¿¡¾R5¡¿, Êµ¼ÊËùÉèµçÑ¹= flIODD *flMultiple
-	\param[in] usSwitch ÉèÖÃµçÑ¹¿ª¹Ø£¬ _HisFX3_Platform_VoltFlag£¬
-									  eg,ÉèÖÃAVDDºÍDVDDµçÑ¹£¬ _HisFX3_Platform_VlotOn_AVDD | _HisFX3_Platform_VlotOn_DVDD
-	\param[in] flMultiple µçÑ¹ÖµÏµÊı
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	int HisFX3SetVolt(float flDOVDD = 0.0f, float flAVDD = 0.0f, float flDVDD = 0.0f, float flAF = 0.0f, float flVFuse = 0.0f, float flPOW = 0.0f, float flIODD = 0.0f, unsigned short usSwitch = 0xFF, float flMultiple = 0.1f);
+
+	//! è®¾ç½®é€šé“2ç”µå‹
+	/*!
+	\param[in] flDOVDD 0.0V~3.5VèŒƒå›´å¯è°ƒ, å®é™…æ‰€è®¾ç”µå‹= flDOVDD *flMultiple
+	\param[in] flAVDD 0.0V~3.5VèŒƒå›´å¯è°ƒ, å®é™…æ‰€è®¾ç”µå‹= flAVDD *flMultiple
+	\param[in] flDVDD 0.0V~3.5VèŒƒå›´å¯è°ƒ, å®é™…æ‰€è®¾ç”µå‹= flDVDD *flMultiple
+	\param[in] flAF 0.0V~3.5VèŒƒå›´å¯è°ƒ, å®é™…æ‰€è®¾ç”µå‹= flAF *flMultiple
+	\param[in] flVFuse 0.0V~10.0VèŒƒå›´å¯è°ƒ, å®é™…æ‰€è®¾ç”µå‹= flVFuse *flMultiple
+	\param[in] flPOW 0.0V~3.5VèŒƒå›´å¯è°ƒã€R5ã€‘, å®é™…æ‰€è®¾ç”µå‹= flPOW *flMultiple
+	\param[in] flIODD 0.0V~3.5VèŒƒå›´å¯è°ƒã€æ¿å¡å†…éƒ¨IOç”µå¹³ã€‘ã€R5ã€‘, å®é™…æ‰€è®¾ç”µå‹= flIODD *flMultiple
+	\param[in] usSwitch è®¾ç½®ç”µå‹å¼€å…³ï¼Œ _HisFX3_Platform_VoltFlagï¼Œ
+	eg,è®¾ç½®AVDDå’ŒDVDDç”µå‹ï¼Œ _HisFX3_Platform_VlotOn_AVDD | _HisFX3_Platform_VlotOn_DVDD
+	\param[in] flMultiple ç”µå‹å€¼ç³»æ•°
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa  HisFX3Set5V12V, HisFX3SetVolt, HisFX3GetVolt_S2, _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3SetVolt_S2(float flDOVDD=0, float flAVDD=0, float flDVDD=0, float flAF = 0, float flVFuse=0, float flPOW=0, float flIODD = 0, unsigned short usSwitch=0xFF, float flMultiple=0.1f);
+	int HisFX3SetVolt_S2(float flDOVDD = 0, float flAVDD = 0, float flDVDD = 0, float flAF = 0, float flVFuse = 0, float flPOW = 0, float flIODD = 0, unsigned short usSwitch = 0xFF, float flMultiple = 0.1f);
 
-	//! »ñÈ¡Í¨µÀ1µ±Ç°ÉèÖÃµçÑ¹
-	/*!    
-	\param[out] pflDOVDD µ±Ç°DOVDDÉèÖÃµçÑ¹
-	\param[out] pflAVDD µ±Ç°AVDDÉèÖÃµçÑ¹
-	\param[out] pflDVDD µ±Ç°DVDDÉèÖÃµçÑ¹
-	\param[out] pflAF µ±Ç°AFÉèÖÃµçÑ¹
-	\param[out] pflVFuse µ±Ç°VFuseÉèÖÃµçÑ¹
-	\param[out] pflPOW µ±Ç°POWÉèÖÃµçÑ¹
-	\param[out] pflIODD µ±Ç°IODDÉèÖÃµçÑ¹
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! è·å–é€šé“1å½“å‰è®¾ç½®ç”µå‹
+	/*!
+	\param[out] pflDOVDD å½“å‰DOVDDè®¾ç½®ç”µå‹
+	\param[out] pflAVDD å½“å‰AVDDè®¾ç½®ç”µå‹
+	\param[out] pflDVDD å½“å‰DVDDè®¾ç½®ç”µå‹
+	\param[out] pflAF å½“å‰AFè®¾ç½®ç”µå‹
+	\param[out] pflVFuse å½“å‰VFuseè®¾ç½®ç”µå‹
+	\param[out] pflPOW å½“å‰POWè®¾ç½®ç”µå‹
+	\param[out] pflIODD å½“å‰IODDè®¾ç½®ç”µå‹
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa  HisFX3SetVolt,  _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3GetVolt(float* pflDOVDD=NULL, float* pflAVDD=NULL, float* pflDVDD=NULL, float* pflAF=NULL, float* pflVFuse=NULL, float* pflPOW=NULL, float* pflIODD=NULL);
+	int HisFX3GetVolt(float* pflDOVDD = NULL, float* pflAVDD = NULL, float* pflDVDD = NULL, float* pflAF = NULL, float* pflVFuse = NULL, float* pflPOW = NULL, float* pflIODD = NULL);
 
-	//! »ñÈ¡Í¨µÀ2µ±Ç°ÉèÖÃµçÑ¹
-	/*!    
-	\param[out] pflDOVDD µ±Ç°DOVDDÉèÖÃµçÑ¹
-	\param[out] pflAVDD µ±Ç°AVDDÉèÖÃµçÑ¹
-	\param[out] pflDVDD µ±Ç°DVDDÉèÖÃµçÑ¹
-	\param[out] pflAF µ±Ç°AFÉèÖÃµçÑ¹
-	\param[out] pflVFuse µ±Ç°VFuseÉèÖÃµçÑ¹
-	\param[out] pflPOW µ±Ç°POWÉèÖÃµçÑ¹
-	\param[out] pflIODD µ±Ç°IODDÉèÖÃµçÑ¹
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! è·å–é€šé“2å½“å‰è®¾ç½®ç”µå‹
+	/*!
+	\param[out] pflDOVDD å½“å‰DOVDDè®¾ç½®ç”µå‹
+	\param[out] pflAVDD å½“å‰AVDDè®¾ç½®ç”µå‹
+	\param[out] pflDVDD å½“å‰DVDDè®¾ç½®ç”µå‹
+	\param[out] pflAF å½“å‰AFè®¾ç½®ç”µå‹
+	\param[out] pflVFuse å½“å‰VFuseè®¾ç½®ç”µå‹
+	\param[out] pflPOW å½“å‰POWè®¾ç½®ç”µå‹
+	\param[out] pflIODD å½“å‰IODDè®¾ç½®ç”µå‹
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa  HisFX3SetVolt_S2,  _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3GetVolt_S2(float* pflDOVDD=NULL, float* pflAVDD=NULL, float* pflDVDD=NULL, float* pflAF=NULL, float* pflVFuse=NULL, float* pflPOW=NULL, float* pflIODD=NULL);
+	int HisFX3GetVolt_S2(float* pflDOVDD = NULL, float* pflAVDD = NULL, float* pflDVDD = NULL, float* pflAF = NULL, float* pflVFuse = NULL, float* pflPOW = NULL, float* pflIODD = NULL);
 
-	//! ·ÏÆú
-	int HisFX3SetVFuseVolt(unsigned char ucVFUSE);
-
-	//! ·ÏÆú
-	int HisFX3GetVFuseVolt(float* pflVFUSE = NULL);
-
-	//! ÉèÖÃÍ¨µÀ1 MCLKÊ±ÖÓ
-	/*!    
-	\param[in] flMCLK 0~136MHz¿Éµ÷£¬ µ¥Î»: MHz
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! è®¾ç½®é€šé“1 MCLKæ—¶é’Ÿ
+	/*!
+	\param[in] flMCLK 0~136MHzå¯è°ƒï¼Œ å•ä½: MHz
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa  HisFX3GetMCLK,  _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3SetMCLK(float flMCLK);
 
-	//! ÉèÖÃÍ¨µÀ2 MCLKÊ±ÖÓ
-	/*!    
-	\param[in] flMCLK 0~136MHz¿Éµ÷£¬ µ¥Î»: MHz
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! è®¾ç½®é€šé“2 MCLKæ—¶é’Ÿ
+	/*!
+	\param[in] flMCLK 0~136MHzå¯è°ƒï¼Œ å•ä½: MHz
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa  HisFX3GetMCLK_S2,  _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3SetMCLK_S2(float flMCLK);
 
-	//! »ñÈ¡Í¨µÀ1µ±Ç°MCLKÉèÖÃÊ±ÖÓ
-	/*!    
-	\param[out] pflMCLK µ¥Î»: MHz
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! è·å–é€šé“1å½“å‰MCLKè®¾ç½®æ—¶é’Ÿ
+	/*!
+	\param[out] pflMCLK å•ä½: MHz
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa  HisFX3SetMCLK,  _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3GetMCLK(float* pflMCLK);
 
-	//! »ñÈ¡Í¨µÀ2µ±Ç°MCLKÉèÖÃÊ±ÖÓ
-	/*!    
-	\param[out] pflMCLK µ¥Î»: MHz
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! è·å–é€šé“2å½“å‰MCLKè®¾ç½®æ—¶é’Ÿ
+	/*!
+	\param[out] pflMCLK å•ä½: MHz
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa  HisFX3SetMCLK_S2,  _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3GetMCLK_S2(float* pflMCLK);
 
-	//! ÉèÖÃÍ¨µÀ1 SensorÊı¾İ¸ñÊ½
-	/*! 
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
-	\sa HisFX3GetMIPILane, _HisFX3_MIPILane_Stream
-	*/
-	int HisFX3SetMIPILane(unsigned char ucLane);
-
-	//! ÉèÖÃÍ¨µÀ2 SensorÊı¾İ¸ñÊ½
-	/*! 
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
-	\sa HisFX3GetMIPILane, _HisFX3_MIPILane_Stream
-	*/
-	int HisFX3SetMIPILane_S2(unsigned char ucLane);
-
-	//! »ñÈ¡µ±Ç°ÉèÖÃµÄÍ¨µÀ1 SensorÊı¾İ¸ñÊ½
-	/*! 
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
-	\sa HisFX3SetMIPILane, _HisFX3_MIPILane_Stream
-	*/
-	int HisFX3GetMIPILane(unsigned char* pucLane);	
-
-	//! »ñÈ¡µ±Ç°ÉèÖÃµÄÍ¨µÀ2 SensorÊı¾İ¸ñÊ½
-	/*! 
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
-	\sa HisFX3SetMIPILane_S2, _HisFX3_MIPILane_Stream
-	*/
-	int HisFX3GetMIPILane_S2(unsigned char* pucLane);
-
-	//! ÉèÖÃ²¢¿ÚVS, HSÍ¬²½ĞÅºÅ
-	/*! Ò»°ãÖ»ĞèÒªÉèÖÃVSĞÅºÅ£¬ HSĞÅºÅ±£³ÖÄ¬ÈÏ
-	\param[in] bDVP_VS_ActiveHigh VSĞÅºÅ£¬ true:¸ßµçÆ½Êı¾İÓĞĞ§£¬ false: µÍµçÆ½Êı¾İÓĞĞ§
-	\param[in] bDVP_HS_ActiveHigh HSĞÅºÅ£¬ true:¸ßµçÆ½Êı¾İÓĞĞ§£¬ false: µÍµçÆ½Êı¾İÓĞĞ§
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
-	\sa HisFX3GetDVPHSVS, _HisFX3Platform_ErrorCode
-	*/
-	int HisFX3SetDVPHSVS(bool bDVP_VS_ActiveHigh=false, bool bDVP_HS_ActiveHigh=true);
-
-	//! »ñÈ¡µ±Ç°ÉèÖÃµÄ²¢¿ÚVS, HSÍ¬²½ĞÅºÅ
-	/*! 
-	\param[out] pbDVP_VS_ActiveHigh VSĞÅºÅ
-	\param[out] pbDVP_HS_ActiveHigh HSĞÅºÅ
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
-	\sa HisFX3SetDVPHSVS, _HisFX3Platform_ErrorCode
-	*/
-	int HisFX3GetDVPHSVS(bool* pbDVP_VS_ActiveHigh=NULL, bool* pbDVP_HS_ActiveHigh=NULL);
-
-	//! ÉèÖÃ²¢¿Ú²É¼¯Í¬²½ĞÅºÅÏàÒÆ
-	/*! 
-	\param[in] sCountPs18  0:²»ÏàÒÆ;  1: 90¶È;  2: 180¶È;  3: 270¶È;
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! è®¾ç½®å¹¶å£é‡‡é›†åŒæ­¥ä¿¡å·ç›¸ç§»
+	/*!
+	\param[in] sCountPs18  0:ä¸ç›¸ç§»;  1: 90åº¦;  2: 180åº¦;  3: 270åº¦;
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3DVPPCLKPhaseShift(short sCountPs18);
 
-	//! »ñÈ¡FPGA³ÌĞò°æ±¾ºÅ
-	/*!    
-	\param[out] puiversion °æ±¾ºÅ
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! è·å–FPGAç¨‹åºç‰ˆæœ¬å·
+	/*!
+	\param[out] puiversion ç‰ˆæœ¬å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa   HisFX3OpenDevice,  _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3GetHardwareVersion(unsigned int* puiversion);
 
-	//! »ñÈ¡¿ª¶ÌÂ·³ÌĞò°æ±¾ºÅ
-	/*!    
-	\param[out] pusversion °æ±¾ºÅ
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! è·å–å¼€çŸ­è·¯ç¨‹åºç‰ˆæœ¬å·
+	/*!
+	\param[out] pusversion ç‰ˆæœ¬å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa   HisFX3OpenDevice,  _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3GetOSVersion(unsigned short* pusversion);
 
-	//! »ñÈ¡FX3³ÌĞò°æ±¾ºÅ
-	/*!    
-	\param[out] pusversion °æ±¾ºÅ
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! è·å–FX3ç¨‹åºç‰ˆæœ¬å·
+	/*!
+	\param[out] pusversion ç‰ˆæœ¬å·
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa   HisFX3OpenDevice,  _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3GetFX3Version(unsigned short* pusversion);
 
-	//! ±£Áô
-	int HisFX3GetHardGeneration(unsigned int* puiGernation);
+	int HisFX3CurrentCalibration();
 
 	int HisFX3CurrentCalibration(unsigned int* puiKey, _HisFX3_Current_Calibration* pstCal);
-	int HisFX3CurrentCalibration_S2(unsigned int* puiKey, _HisFX3_Current_Calibration* pstCal);
-
 	int HisFX3SetCurrentCalData(_HisFX3_Current_Calibration* pstCal);
-	int HisFX3SetCurrentCalData_S2(_HisFX3_Current_Calibration* pstCal);
-
-	//! ²âÁ¿Í¨µÀ1¹¤×÷µçÁ÷
-	/*!    
-	\param[out] flAVDD ·µ»ØµÄAVDDµçÁ÷
-	\param[out] flDVDD ·µ»ØµÄDVDDµçÁ÷
-	\param[out] flDOVDD ·µ»ØµÄDOVDDµçÁ÷
-	\param[out] flAF ·µ»ØµÄAFµçÁ÷
-	\param[out] flVFuse ·µ»ØµÄVFuseµçÁ÷
-	\param[out] flPOW ·µ»ØµÄPOWµçÁ÷¡¾R5¡¿¡¾R3X¡¿¡¾R5X¡¿
-	\param[in] uiFlag ÉèÖÃÒª²âÄÄĞ©Â·µÄµçÁ÷Öµ£¬ _HisFX3_Platform_VoltFlag£¬
-									 eg,Òª²âAVDDºÍDVDDµçÁ÷£¬ _HisFX3_Platform_VlotOn_AVDD | _HisFX3_Platform_VlotOn_DVDD
-	\param[in] uiAverageTimes È¡uiAverageTimes´ÎÊı¾İ£¬È»ºóÇóÆ½¾ù
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	int HisFX3VlotageCalibration(unsigned int* puiKey, _HisFX3_Voltage_Calibration* pstCal);
+	int HisFX3SetVoltageCalData(_HisFX3_Voltage_Calibration* pstCal);
+	//! æµ‹é‡é€šé“1å·¥ä½œç”µæµ
+	/*!
+	\param[out] flAVDD è¿”å›çš„AVDDç”µæµ
+	\param[out] flDVDD è¿”å›çš„DVDDç”µæµ
+	\param[out] flDOVDD è¿”å›çš„DOVDDç”µæµ
+	\param[out] flAF è¿”å›çš„AFç”µæµ
+	\param[out] flVFuse è¿”å›çš„VFuseç”µæµ
+	\param[out] flPOW è¿”å›çš„POWç”µæµã€R5ã€‘ã€R3Xã€‘ã€R5Xã€‘
+	\param[in] uiFlag è®¾ç½®è¦æµ‹å“ªäº›è·¯çš„ç”µæµå€¼ï¼Œ _HisFX3_Platform_VoltFlagï¼Œ
+	eg,è¦æµ‹AVDDå’ŒDVDDç”µæµï¼Œ _HisFX3_Platform_VlotOn_AVDD | _HisFX3_Platform_VlotOn_DVDD
+	\param[in] uiAverageTimes å–uiAverageTimesæ¬¡æ•°æ®ï¼Œç„¶åæ±‚å¹³å‡
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa   HisFX3GetStandbyCurrent,  HisFX3GetWorkCurrent_S2, HisFX3GetStandbyCurrent_S2, _HisFX3_Platform_VoltFlag,  _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3GetWorkCurrent(float& flAVDD, float& flDVDD, float& flDOVDD, float& flAF, float& flVFuse, float& flPOW, unsigned int uiFlag=0xFF, unsigned int uiAverageTimes = 17);
+	int HisFX3GetWorkCurrent(float& flAVDD, float& flDVDD, float& flDOVDD, float& flAF, float& flVFuse, float& flPOW, unsigned int uiFlag = 0xFF, unsigned int uiAverageTimes = 64);
 
-	//! ²âÁ¿Í¨µÀ2¹¤×÷µçÁ÷
-	/*!    
-	\param[out] flAVDD ·µ»ØµÄAVDDµçÁ÷
-	\param[out] flDVDD ·µ»ØµÄDVDDµçÁ÷
-	\param[out] flDOVDD ·µ»ØµÄDOVDDµçÁ÷
-	\param[out] flAF ·µ»ØµÄAFµçÁ÷
-	\param[out] flVFuse ·µ»ØµÄVFuseµçÁ÷
-	\param[out] flPOW ·µ»ØµÄPOWµçÁ÷¡¾R5¡¿¡¾R3X¡¿¡¾R5X¡¿
-	\param[in] uiFlag ÉèÖÃÒª²âÄÄĞ©Â·µÄµçÁ÷Öµ£¬ _HisFX3_Platform_VoltFlag£¬
-									 eg,Òª²âAVDDºÍDVDDµçÁ÷£¬ _HisFX3_Platform_VlotOn_AVDD | _HisFX3_Platform_VlotOn_DVDD
-	\param[in] uiAverageTimes È¡uiAverageTimes´ÎÊı¾İ£¬È»ºóÇóÆ½¾ù
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! æµ‹é‡é€šé“2å·¥ä½œç”µæµ
+	/*!
+	\param[out] flAVDD è¿”å›çš„AVDDç”µæµ
+	\param[out] flDVDD è¿”å›çš„DVDDç”µæµ
+	\param[out] flDOVDD è¿”å›çš„DOVDDç”µæµ
+	\param[out] flAF è¿”å›çš„AFç”µæµ
+	\param[out] flVFuse è¿”å›çš„VFuseç”µæµ
+	\param[out] flPOW è¿”å›çš„POWç”µæµã€R5ã€‘ã€R3Xã€‘ã€R5Xã€‘
+	\param[in] uiFlag è®¾ç½®è¦æµ‹å“ªäº›è·¯çš„ç”µæµå€¼ï¼Œ _HisFX3_Platform_VoltFlagï¼Œ
+	eg,è¦æµ‹AVDDå’ŒDVDDç”µæµï¼Œ _HisFX3_Platform_VlotOn_AVDD | _HisFX3_Platform_VlotOn_DVDD
+	\param[in] uiAverageTimes å–uiAverageTimesæ¬¡æ•°æ®ï¼Œç„¶åæ±‚å¹³å‡
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa   HisFX3GetStandbyCurrent,  HisFX3GetWorkCurrent, HisFX3GetStandbyCurrent_S2, _HisFX3_Platform_VoltFlag,  _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3GetWorkCurrent_S2(float& flAVDD, float& flDVDD, float& flDOVDD, float& flAF, float& flVFuse, float& flPOW, unsigned int uiFlag=0xFF, unsigned int uiAverageTimes = 17);
-	
-	//! ²âÁ¿Í¨µÀ1¾²Ì¬µçÁ÷
-	/*!    
-	\param[out] flAVDD ·µ»ØµÄAVDDµçÁ÷
-	\param[out] flDVDD ·µ»ØµÄDVDDµçÁ÷
-	\param[out] flDOVDD ·µ»ØµÄDOVDDµçÁ÷
-	\param[out] flAF ·µ»ØµÄAFµçÁ÷
-	\param[out] flPOW ·µ»ØµÄPOWµçÁ÷¡¾R5¡¿¡¾R3X¡¿¡¾R5X¡¿
-	\param[in] uiFlag ÉèÖÃÒª²âÄÄĞ©Â·µÄµçÁ÷Öµ£¬ _HisFX3_Platform_VoltFlag£¬
-									 eg,Òª²âAVDDºÍDVDDµçÁ÷£¬ _HisFX3_Platform_VlotOn_AVDD | _HisFX3_Platform_VlotOn_DVDD
-	\param[in] bPWND	true:À­PWND½øÈë´ı»úÄ£Ê½£¬  false:ÎŞĞèÀ­PWNDĞÅºÅ
-	\param[in] bReset	true:À­RST½øÈë´ı»úÄ£Ê½£¬  false:ÎŞĞèÀ­RSTĞÅºÅ
-	\param[in] bMCLK	true:MCLKÉèÎª0MHz½øÈë´ı»úÄ£Ê½£¬  false:ÎŞĞè°ÑMCLKÊ¼ÖÕÉèÎª0MHz
-	\param[in] bDVDD	true:DVDDÉèÎª0V½øÈë´ı»úÄ£Ê½£¬  false:ÎŞĞè°ÑDVDD½øÈë0V
-	\param[in] uiDelay	½øÈë´ı»úÄ£Ê½ºóÑÓÊ±uiDelay msÖ®ºóÔÙ²â´ı»úµçÁ÷
-	\param[in] uiAverageTimes È¡uiAverageTimes´ÎÊı¾İ£¬È»ºóÇóÆ½¾ù
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	int HisFX3GetWorkCurrent_S2(float& flAVDD, float& flDVDD, float& flDOVDD, float& flAF, float& flVFuse, float& flPOW, unsigned int uiFlag = 0xFF, unsigned int uiAverageTimes = 64);
+
+	//! æµ‹é‡é€šé“1é™æ€ç”µæµ
+	/*!
+	\param[out] flAVDD è¿”å›çš„AVDDç”µæµ
+	\param[out] flDVDD è¿”å›çš„DVDDç”µæµ
+	\param[out] flDOVDD è¿”å›çš„DOVDDç”µæµ
+	\param[out] flAF è¿”å›çš„AFç”µæµ
+	\param[out] flPOW è¿”å›çš„POWç”µæµã€R5ã€‘ã€R3Xã€‘ã€R5Xã€‘
+	\param[in] uiFlag è®¾ç½®è¦æµ‹å“ªäº›è·¯çš„ç”µæµå€¼ï¼Œ _HisFX3_Platform_VoltFlagï¼Œ
+	eg,è¦æµ‹AVDDå’ŒDVDDç”µæµï¼Œ _HisFX3_Platform_VlotOn_AVDD | _HisFX3_Platform_VlotOn_DVDD
+	\param[in] bPWND	true:æ‹‰PWNDè¿›å…¥å¾…æœºæ¨¡å¼ï¼Œ  false:æ— éœ€æ‹‰PWNDä¿¡å·
+	\param[in] bReset	true:æ‹‰RSTè¿›å…¥å¾…æœºæ¨¡å¼ï¼Œ  false:æ— éœ€æ‹‰RSTä¿¡å·
+	\param[in] bMCLK	true:MCLKè®¾ä¸º0MHzè¿›å…¥å¾…æœºæ¨¡å¼ï¼Œ  false:æ— éœ€æŠŠMCLKå§‹ç»ˆè®¾ä¸º0MHz
+	\param[in] bDVDD	true:DVDDè®¾ä¸º0Vè¿›å…¥å¾…æœºæ¨¡å¼ï¼Œ  false:æ— éœ€æŠŠDVDDè¿›å…¥0V
+	\param[in] uiDelay	è¿›å…¥å¾…æœºæ¨¡å¼åå»¶æ—¶uiDelay msä¹‹åå†æµ‹å¾…æœºç”µæµ
+	\param[in] uiAverageTimes å–uiAverageTimesæ¬¡æ•°æ®ï¼Œç„¶åæ±‚å¹³å‡
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa   HisFX3GetWorkCurrent,  HisFX3GetWorkCurrent_S2, HisFX3GetStandbyCurrent_S2, _HisFX3_Platform_VoltFlag,  _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3GetStandbyCurrent(float& flAVDD, float& flDVDD, float& flDOVDD, float& flAF, float& flPOW, unsigned int uiFlag=0xFF, \
-		bool bPWND=true, bool bReset=true,  bool bMCLK=true, bool bDVDD=false, unsigned int uiDelay=5000, unsigned int uiAverageTimes = 7);
+	int HisFX3GetStandbyCurrent(float& flAVDD, float& flDVDD, float& flDOVDD, float& flAF, float& flPOW, unsigned int uiFlag = 0xFF, \
+		bool bPWND = true, bool bReset = true, bool bMCLK = true, bool bDVDD = false, unsigned int uiDelay = 5000, unsigned int uiAverageTimes = 7);
 
-	//! ²âÁ¿Í¨µÀ2¾²Ì¬µçÁ÷
-	/*!    
-	\param[out] flAVDD ·µ»ØµÄAVDDµçÁ÷
-	\param[out] flDVDD ·µ»ØµÄDVDDµçÁ÷
-	\param[out] flDOVDD ·µ»ØµÄDOVDDµçÁ÷
-	\param[out] flAF ·µ»ØµÄAFµçÁ÷
-	\param[out] flPOW ·µ»ØµÄPOWµçÁ÷¡¾R5¡¿¡¾R3X¡¿¡¾R5X¡¿
-	\param[in] uiFlag ÉèÖÃÒª²âÄÄĞ©Â·µÄµçÁ÷Öµ£¬ _HisFX3_Platform_VoltFlag£¬
-									 eg,Òª²âAVDDºÍDVDDµçÁ÷£¬ _HisFX3_Platform_VlotOn_AVDD | _HisFX3_Platform_VlotOn_DVDD
-	\param[in] bPWND	true:À­PWND½øÈë´ı»úÄ£Ê½£¬  false:ÎŞĞèÀ­PWNDĞÅºÅ
-	\param[in] bReset	true:À­RST½øÈë´ı»úÄ£Ê½£¬  false:ÎŞĞèÀ­RSTĞÅºÅ
-	\param[in] bMCLK	true:MCLKÉèÎª0MHz½øÈë´ı»úÄ£Ê½£¬  false:ÎŞĞè°ÑMCLKÊ¼ÖÕÉèÎª0MHz
-	\param[in] bDVDD	true:DVDDÉèÎª0V½øÈë´ı»úÄ£Ê½£¬  false:ÎŞĞè°ÑDVDD½øÈë0V
-	\param[in] uiDelay	½øÈë´ı»úÄ£Ê½ºóÑÓÊ±uiDelay msÖ®ºóÔÙ²â´ı»úµçÁ÷
-	\param[in] uiAverageTimes È¡uiAverageTimes´ÎÊı¾İ£¬È»ºóÇóÆ½¾ù
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	//! æµ‹é‡é€šé“2é™æ€ç”µæµ
+	/*!
+	\param[out] flAVDD è¿”å›çš„AVDDç”µæµ
+	\param[out] flDVDD è¿”å›çš„DVDDç”µæµ
+	\param[out] flDOVDD è¿”å›çš„DOVDDç”µæµ
+	\param[out] flAF è¿”å›çš„AFç”µæµ
+	\param[out] flPOW è¿”å›çš„POWç”µæµã€R5ã€‘ã€R3Xã€‘ã€R5Xã€‘
+	\param[in] uiFlag è®¾ç½®è¦æµ‹å“ªäº›è·¯çš„ç”µæµå€¼ï¼Œ _HisFX3_Platform_VoltFlagï¼Œ
+	eg,è¦æµ‹AVDDå’ŒDVDDç”µæµï¼Œ _HisFX3_Platform_VlotOn_AVDD | _HisFX3_Platform_VlotOn_DVDD
+	\param[in] bPWND	true:æ‹‰PWNDè¿›å…¥å¾…æœºæ¨¡å¼ï¼Œ  false:æ— éœ€æ‹‰PWNDä¿¡å·
+	\param[in] bReset	true:æ‹‰RSTè¿›å…¥å¾…æœºæ¨¡å¼ï¼Œ  false:æ— éœ€æ‹‰RSTä¿¡å·
+	\param[in] bMCLK	true:MCLKè®¾ä¸º0MHzè¿›å…¥å¾…æœºæ¨¡å¼ï¼Œ  false:æ— éœ€æŠŠMCLKå§‹ç»ˆè®¾ä¸º0MHz
+	\param[in] bDVDD	true:DVDDè®¾ä¸º0Vè¿›å…¥å¾…æœºæ¨¡å¼ï¼Œ  false:æ— éœ€æŠŠDVDDè¿›å…¥0V
+	\param[in] uiDelay	è¿›å…¥å¾…æœºæ¨¡å¼åå»¶æ—¶uiDelay msä¹‹åå†æµ‹å¾…æœºç”µæµ
+	\param[in] uiAverageTimes å–uiAverageTimesæ¬¡æ•°æ®ï¼Œç„¶åæ±‚å¹³å‡
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa   HisFX3GetStandbyCurrent,  HisFX3GetWorkCurrent_S2, HisFX3GetWorkCurrent, _HisFX3_Platform_VoltFlag,  _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3GetStandbyCurrent_S2(float& flAVDD, float& flDVDD, float& flDOVDD, float& flAF, float& flPOW, unsigned int uiFlag=0xFF, \
-		bool bPWND=true, bool bReset=true,  bool bMCLK=true, bool bDVDD=false, unsigned int uiDelay=5000, unsigned int uiAverageTimes = 7);
-	
-	int HisFX3VlotageCalibration(unsigned int* puiKey, _HisFX3_Voltage_Calibration* pstCal);
-	int HisFX3VlotageCalibration_S2(unsigned int* puiKey, _HisFX3_Voltage_Calibration* pstCal);
-	int HisFX3SetVoltageCalData(_HisFX3_Voltage_Calibration* pstCal);
-	int HisFX3SetVoltageCalData_S2(_HisFX3_Voltage_Calibration* pstCal);
+	int HisFX3GetStandbyCurrent_S2(float& flAVDD, float& flDVDD, float& flDOVDD, float& flAF, float& flPOW, unsigned int uiFlag = 0xFF, \
+		bool bPWND = true, bool bReset = true, bool bMCLK = true, bool bDVDD = false, unsigned int uiDelay = 5000, unsigned int uiAverageTimes = 7);
 
-	//! ÕıÏò¶ÔµØ¿ªÂ·²âÊÔ
+	int HisFX3VlotageCalibration();
+
+
+	//! æ­£å‘å¯¹åœ°å¼€è·¯æµ‹è¯•
 	/*!
-	\param[in] ucSwitch   0£º²âÊÔµÚÒ»Â·MIPI  1£º²âÊÔ²¢¿Ú	2£º²âÊÔµÚ¶şÂ·MIPI
-	\param[inout]   vectorConfigconst  ÅäÖÃÒª½øĞĞ¿ªÂ·²âÊÔµÄPIN½Å
-	\param[in] cuiCurrentWaitTime µçÁ÷ÎÈ¶¨Ê±¼ä£ºcuiCurrentWaitTime (ms)
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	\param[in] ucSwitch   0ï¼šæµ‹è¯•ç¬¬ä¸€è·¯MIPI  1ï¼šæµ‹è¯•å¹¶å£	2ï¼šæµ‹è¯•ç¬¬äºŒè·¯MIPI  3: CPHY
+	\param[inout]   vectorConfigconst  é…ç½®è¦è¿›è¡Œå¼€è·¯æµ‹è¯•çš„PINè„š
+	\param[in] cuiCurrentWaitTime ç”µæµç¨³å®šæ—¶é—´ï¼šcuiCurrentWaitTime (ms)
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa  HisFX3OSNegtiveTest,  HisFX3OSShortTest, HisFX3OSOhmTest, _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3OSPositiveTest(unsigned char ucSwitch, std::vector<_HisFX3OS_Positive_Item>& vectorConfigconst, const unsigned int cuiCurrentWaitTime=4);
+	int HisFX3OSPositiveTest(unsigned char ucSwitch, std::vector<_HisFX3OS_Positive_Item>& vectorConfigconst, const unsigned int cuiCurrentWaitTime = 4);
 
-	//! ¸ºÏò¶ÔDOVDD¿ªÂ·²âÊÔ
+	//! è´Ÿå‘å¯¹DOVDDå¼€è·¯æµ‹è¯•
 	/*!
-	\param[in] ucSwitch   0£º²âÊÔµÚÒ»Â·MIPI  1£º²âÊÔ²¢¿Ú	2£º²âÊÔµÚ¶şÂ·MIPI
-	\param[inout]   vectorConfig  ÅäÖÃÒª½øĞĞ²âÊÔµÄPIN½Å
-	\param[in] cuiCurrentWaitTime µçÁ÷ÎÈ¶¨Ê±¼ä£ºcuiCurrentWaitTime (ms)
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	\param[in] ucSwitch   0ï¼šæµ‹è¯•ç¬¬ä¸€è·¯MIPI  1ï¼šæµ‹è¯•å¹¶å£	2ï¼šæµ‹è¯•ç¬¬äºŒè·¯MIPI
+	\param[inout]   vectorConfig  é…ç½®è¦è¿›è¡Œæµ‹è¯•çš„PINè„š
+	\param[in] cuiCurrentWaitTime ç”µæµç¨³å®šæ—¶é—´ï¼šcuiCurrentWaitTime (ms)
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa  _HisFX3OS_Positive_Item,  HisFX3OSShortTest, HisFX3OSOhmTest, _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3OSNegtiveTest(unsigned char ucSwitch, std::vector<_HisFX3OS_Negtive_Item>& vectorConfig, const unsigned int cuiCurrentWaitTime=4);
+	int HisFX3OSNegtiveTest(unsigned char ucSwitch, std::vector<_HisFX3OS_Negtive_Item>& vectorConfig, const unsigned int cuiCurrentWaitTime = 4);
 
-	//! ¶ÌÂ·²âÊÔ
+	//! çŸ­è·¯æµ‹è¯•
 	/*!
-	\param[in] ucSwitch   0£º²âÊÔµÚÒ»Â·MIPI  1£º²âÊÔ²¢¿Ú	2£º²âÊÔµÚ¶şÂ·MIPI
-	\param[inout]   vectorConfig  ÅäÖÃÒª½øĞĞ²âÊÔµÄPIN½Å
-	\param[in] cuiCurrentWaitTime µçÁ÷ÎÈ¶¨Ê±¼ä£ºcuiCurrentWaitTime (ms)
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	\param[in] ucSwitch   0ï¼šæµ‹è¯•ç¬¬ä¸€è·¯MIPI  1ï¼šæµ‹è¯•å¹¶å£	2ï¼šæµ‹è¯•ç¬¬äºŒè·¯MIPI
+	\param[inout]   vectorConfig  é…ç½®è¦è¿›è¡Œæµ‹è¯•çš„PINè„š
+	\param[in] cuiCurrentWaitTime ç”µæµç¨³å®šæ—¶é—´ï¼šcuiCurrentWaitTime (ms)
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa  _HisFX3OS_Positive_Item,  HisFX3OSNegtiveTest, HisFX3OSOhmTest, _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3OSShortTest(unsigned char ucSwitch, std::vector<_HisFX3OS_Short_Item>& vectorConfig, const unsigned int cuiCurrentWaitTime=4);
+	int HisFX3OSShortTest(unsigned char ucSwitch, std::vector<_HisFX3OS_Short_Item>& vectorConfig, const unsigned int cuiCurrentWaitTime = 4);
 
-	//! ¿ªÂ·²âÊÔ
+	//! å¼€è·¯æµ‹è¯•
 	/*!
-	\param[in] ucSwitch   0£º²âÊÔMIPI  1£º²âÊÔ²¢¿Ú
-	\param[inout]   vectorConfig  ÅäÖÃÒª½øĞĞ²âÊÔµÄPIN½Å
-	\param[in] cuiCurrentWaitTime µçÁ÷ÎÈ¶¨Ê±¼ä£ºcuiCurrentWaitTime (ms)
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	\param[in] ucSwitch   0ï¼šæµ‹è¯•MIPI  1ï¼šæµ‹è¯•å¹¶å£
+	\param[inout]   vectorConfig  é…ç½®è¦è¿›è¡Œæµ‹è¯•çš„PINè„š
+	\param[in] cuiCurrentWaitTime ç”µæµç¨³å®šæ—¶é—´ï¼šcuiCurrentWaitTime (ms)
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa  _HisFX3OS_Positive_Item,  HisFX3OSNegtiveTest, HisFX3OSShortTest, HisFX3OSOhmTest, _HisFX3Platform_ErrorCode
 	*/
 	int HisFX3OSOpenTest(unsigned char ucSwitch, std::vector<_HisFX3OS_Open_Item>& vectorConfig, unsigned int cuiCurrentWaitTime);
 
 
-	//! ×èÖµ²âÊÔ
+	//! é˜»å€¼æµ‹è¯•
 	/*!
-	\param[in] ucSwitch   0£º²âÊÔµÚÒ»Â·MIPI  1£º²âÊÔ²¢¿Ú	2£º²âÊÔµÚ¶şÂ·MIPI
-	\param[inout]   stConfig  ÅäÖÃÒª½øĞĞ²âÊÔµÄPIN½Å
-	\param[in] flCurrent ²âÊÔ×èÖµÊ±ËùÓÃµÄµçÁ÷£¬ ÉèÎª0.0ÔòÎª1.3mA, Ò»°ã¿ÉÒÔ±£³ÖÄ¬ÈÏÖµ
-	\param[in] cuiCurrentWaitTime µçÁ÷ÎÈ¶¨Ê±¼ä£ºcuiCurrentWaitTime (ms)
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	\param[in] ucSwitch   0ï¼šæµ‹è¯•ç¬¬ä¸€è·¯MIPI  1ï¼šæµ‹è¯•å¹¶å£	2ï¼šæµ‹è¯•ç¬¬äºŒè·¯MIPI
+	\param[inout]   stConfig  é…ç½®è¦è¿›è¡Œæµ‹è¯•çš„PINè„š
+	\param[in] flCurrent æµ‹è¯•é˜»å€¼æ—¶æ‰€ç”¨çš„ç”µæµï¼Œ è®¾ä¸º0.0åˆ™ä¸º1.3mA, ä¸€èˆ¬å¯ä»¥ä¿æŒé»˜è®¤å€¼
+	\param[in] cuiCurrentWaitTime ç”µæµç¨³å®šæ—¶é—´ï¼šcuiCurrentWaitTime (ms)
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa  _HisFX3OS_Positive_Item,  HisFX3OSNegtiveTest, HisFX3OSOhmTest, _HisFX3Platform_ErrorCode
 	*/
-	int HisFX3OSOhmTest(unsigned char ucSwitch, _HisFX3OS_OHM_Item& stConfig, float flCurrent = 0.0f, const unsigned int cuiCurrentWaitTime=4);
+	int HisFX3OSOhmTest(unsigned char ucSwitch, _HisFX3OS_OHM_Item& stConfig, float flCurrent = 0.0f, const unsigned int cuiCurrentWaitTime = 4);
 
-	int measureExteralVoltage(unsigned int uiChannel, float& flVolt);
-
-	//! ÉèÖÃÍ¨µÀ1µÄÊä³öIOµÄµçÆ½
+	//! è®¾ç½®é€šé“1çš„è¾“å‡ºIOçš„ç”µå¹³
 	/*!
-	\param[in] uiStatus  Bit0: ÉèÖÃOut0µçÆ½ 1-¸ßµçÆ½£¬0-µÍµçÆ½£» ÒÔ´ËÀàÍÆ...
-	\param[in] uiFlag  Bit0: ÊÇ·ñÒªÉèÖÃOut0µçÆ½ 1-ÒªÉèÖÃ£¬0-²»ÉèÖÃ£» ÒÔ´ËÀàÍÆ...
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	\param[in] uiStatus  Bit0: è®¾ç½®Out0ç”µå¹³ 1-é«˜ç”µå¹³ï¼Œ0-ä½ç”µå¹³ï¼› ä»¥æ­¤ç±»æ¨...
+	\param[in] uiFlag  Bit0: æ˜¯å¦è¦è®¾ç½®Out0ç”µå¹³ 1-è¦è®¾ç½®ï¼Œ0-ä¸è®¾ç½®ï¼› ä»¥æ­¤ç±»æ¨...
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa  HisFX3IO_OutPortRead, HisFX3IO_InPortRead
 	*/
 	int HisFX3IO_OutPortWrite(unsigned int uiStatus, unsigned int uiFlag = 0xFF);
 
-	//! ÉèÖÃÍ¨µÀ2µÄÊä³öIOµÄµçÆ½
+	//! è®¾ç½®é€šé“2çš„è¾“å‡ºIOçš„ç”µå¹³
 	/*!
-	\param[in] uiStatus  Bit0: ÉèÖÃOut0µçÆ½ 1-¸ßµçÆ½£¬0-µÍµçÆ½£» ÒÔ´ËÀàÍÆ...
-	\param[in] uiFlag  Bit0: ÊÇ·ñÒªÉèÖÃOut0µçÆ½ 1-ÒªÉèÖÃ£¬0-²»ÉèÖÃ£» ÒÔ´ËÀàÍÆ...
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	\param[in] uiStatus  Bit0: è®¾ç½®Out0ç”µå¹³ 1-é«˜ç”µå¹³ï¼Œ0-ä½ç”µå¹³ï¼› ä»¥æ­¤ç±»æ¨...
+	\param[in] uiFlag  Bit0: æ˜¯å¦è¦è®¾ç½®Out0ç”µå¹³ 1-è¦è®¾ç½®ï¼Œ0-ä¸è®¾ç½®ï¼› ä»¥æ­¤ç±»æ¨...
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa  HisFX3IO_OutPortRead_S2, HisFX3IO_InPortRead_S2
 	*/
 	int HisFX3IO_OutPortWrite_S2(unsigned int uiStatus, unsigned int uiFlag = 0xFF);
 
-	//! »ñÈ¡Í¨µÀ1Êä³öIO¿ÚµÄµçÆ½×´Ì¬
+	//! è·å–é€šé“1è¾“å‡ºIOå£çš„ç”µå¹³çŠ¶æ€
 	/*!
-	\param[in] uiStatus  Bit0: Out0µçÆ½ 1-¸ßµçÆ½£¬0-µÍµçÆ½£» ÒÔ´ËÀàÍÆ...
-	\param[in] uiFlag  Bit0: ÊÇ·ñÒª»ñÈ¡Out0µçÆ½ 1-Òª»ñÈ¡£¬0-²»»ñÈ¡£» ÒÔ´ËÀàÍÆ...
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	\param[in] uiStatus  Bit0: Out0ç”µå¹³ 1-é«˜ç”µå¹³ï¼Œ0-ä½ç”µå¹³ï¼› ä»¥æ­¤ç±»æ¨...
+	\param[in] uiFlag  Bit0: æ˜¯å¦è¦è·å–Out0ç”µå¹³ 1-è¦è·å–ï¼Œ0-ä¸è·å–ï¼› ä»¥æ­¤ç±»æ¨...
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa  HisFX3IO_OutPortWrite, HisFX3IO_InPortRead
 	*/
 	int HisFX3IO_OutPortRead(unsigned int& uiStatus, unsigned int uiFlag = 0xFF);
 
-	//! »ñÈ¡Í¨µÀ2Êä³öIO¿ÚµÄµçÆ½×´Ì¬
+	//! è·å–é€šé“2è¾“å‡ºIOå£çš„ç”µå¹³çŠ¶æ€
 	/*!
-	\param[in] uiStatus  Bit0: Out0µçÆ½ 1-¸ßµçÆ½£¬0-µÍµçÆ½£» ÒÔ´ËÀàÍÆ...
-	\param[in] uiFlag  Bit0: ÊÇ·ñÒª»ñÈ¡Out0µçÆ½ 1-Òª»ñÈ¡£¬0-²»»ñÈ¡£» ÒÔ´ËÀàÍÆ...
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	\param[in] uiStatus  Bit0: Out0ç”µå¹³ 1-é«˜ç”µå¹³ï¼Œ0-ä½ç”µå¹³ï¼› ä»¥æ­¤ç±»æ¨...
+	\param[in] uiFlag  Bit0: æ˜¯å¦è¦è·å–Out0ç”µå¹³ 1-è¦è·å–ï¼Œ0-ä¸è·å–ï¼› ä»¥æ­¤ç±»æ¨...
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa  HisFX3IO_OutPortWrite_S2, HisFX3IO_InPortRead_S2
 	*/
 	int HisFX3IO_OutPortRead_S2(unsigned int& uiStatus, unsigned int uiFlag = 0xFF);
 
-	//! »ñÈ¡Í¨µÀ1ÊäÈëIO¿ÚµÄµçÆ½×´Ì¬
+	//! è·å–é€šé“1è¾“å…¥IOå£çš„ç”µå¹³çŠ¶æ€
 	/*!
-	\param[in] uiStatus  Bit0: In0µçÆ½ 1-¸ßµçÆ½£¬0-µÍµçÆ½£» ÒÔ´ËÀàÍÆ...
-	\param[in] uiFlag  Bit0: ÊÇ·ñÒª»ñÈ¡In0µçÆ½ 1-Òª»ñÈ¡£¬0-²»»ñÈ¡£» ÒÔ´ËÀàÍÆ...
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	\param[in] uiStatus  Bit0: In0ç”µå¹³ 1-é«˜ç”µå¹³ï¼Œ0-ä½ç”µå¹³ï¼› ä»¥æ­¤ç±»æ¨...
+	\param[in] uiFlag  Bit0: æ˜¯å¦è¦è·å–In0ç”µå¹³ 1-è¦è·å–ï¼Œ0-ä¸è·å–ï¼› ä»¥æ­¤ç±»æ¨...
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa  HisFX3IO_OutPortWrite, HisFX3IO_OutPortRead
 	*/
 	int HisFX3IO_InPortRead(unsigned int& uiStatus, unsigned int uiFlag = 0xFF);
 
-	//! »ñÈ¡Í¨µÀ2ÊäÈëIO¿ÚµÄµçÆ½×´Ì¬
+	//! è·å–é€šé“2è¾“å…¥IOå£çš„ç”µå¹³çŠ¶æ€
 	/*!
-	\param[in] uiStatus  Bit0: In0µçÆ½ 1-¸ßµçÆ½£¬0-µÍµçÆ½£» ÒÔ´ËÀàÍÆ...
-	\param[in] uiFlag  Bit0: ÊÇ·ñÒª»ñÈ¡In0µçÆ½ 1-Òª»ñÈ¡£¬0-²»»ñÈ¡£» ÒÔ´ËÀàÍÆ...
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	\param[in] uiStatus  Bit0: In0ç”µå¹³ 1-é«˜ç”µå¹³ï¼Œ0-ä½ç”µå¹³ï¼› ä»¥æ­¤ç±»æ¨...
+	\param[in] uiFlag  Bit0: æ˜¯å¦è¦è·å–In0ç”µå¹³ 1-è¦è·å–ï¼Œ0-ä¸è·å–ï¼› ä»¥æ­¤ç±»æ¨...
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa  HisFX3IO_OutPortWrite_S2, HisFX3IO_OutPortRead_S2
 	*/
 	int HisFX3IO_InPortRead_S2(unsigned int& uiStatus, unsigned int uiFlag = 0xFF);
@@ -922,49 +2181,18 @@ public:
 	int getOSPinNameList(unsigned char ucSwitch, std::vector<std::string>& vecOSPin);
 	int getOSPositiveGNDPinName(unsigned char ucSwitch, std::vector<std::string>& vecOSPin);
 	int getOSNegtiveDOVDDPinName(unsigned char ucSwitch, std::vector<std::string>& vecOSPin);
-	
-	//! ±£Áô
-	int HisFX3R2OSSwitch(bool bOS);
 
-	int HisFX3R2OSCalibration(unsigned int* puiKey, _HisFX3R2_OSCal_Item* pstCal, unsigned int uiItemCount);
-	int HisFX3SetOSCalData(_HisFX3R2_OSCal_Item* pstCal, unsigned int uiItemCount);
-	 
-	//! ±£Áô
-	int HisFX3GetLInfo(unsigned char* pucGeneration, unsigned char* pucApplication, \
-		unsigned char* pucFactory, unsigned char* pucAuthorization, unsigned char* pucReserve1, unsigned char* pucReserve2);
-	 
-	//! ±£Áô
-	int HisFX3WriteOSIIC(unsigned char ucSlave, unsigned int uiReg, unsigned int uiData, unsigned short usType);
-
-	//! ±£Áô
-	int HisFX3ReadOSIIC(unsigned char ucSlave, unsigned int uiReg, unsigned int* puiData, unsigned short usType);
-
-	//! ±£Áô
-	int HisFX3WriteCurrentIIC(unsigned char ucSlave, unsigned int uiReg, unsigned int uiData, unsigned short usType);
-
-	//! ±£Áô
-	int HisFX3ReadCurrentI2C(unsigned char ucSlave, unsigned int uiReg, unsigned int* puiData, unsigned short usType);
-
-/*
+	/*
 	int HisFX3GetContinusFrames(bool bC1, bool bC2, unsigned int& uiFrameCount, unsigned int uiBufByte1=0, unsigned char** ppBuffer1=0, unsigned int uiBufByte2=0, unsigned char** ppBuffer2=0);
-*/
+	*/
 
-	int HIsFX3ReadVoltageValue(float* pflDOVDD=0, float* pflAVDD=0, float* pflDVDD=0, float* pflAF=0, float* pflVFuse=0, float* pflPOW=0);
-	int HIsFX3ReadVoltageValue_S2(float* pflDOVDD=0, float* pflAVDD=0, float* pflDVDD=0, float* pflAF=0, float* pflVFuse=0, float* pflPOW=0);
+	int HIsFX3ReadVoltageValue(float* pflDOVDD = 0, float* pflAVDD = 0, float* pflDVDD = 0, float* pflAF = 0, float* pflVFuse = 0, float* pflPOW = 0);
+	int HIsFX3ReadVoltageValue_S2(float* pflDOVDD = 0, float* pflAVDD = 0, float* pflDVDD = 0, float* pflAF = 0, float* pflVFuse = 0, float* pflPOW = 0);
 
-	//! ±£Áô
-	bool isDataStreaming(unsigned int uiTimeOut = 25);
-
-	//! ±£Áô
-	bool isDataStreaming_S2(unsigned int uiTimeOut = 25);
-
-	//! ±£Áô
-	int HisFX3VoltMonitorPin8(float* pflVoltage, unsigned short usFlag);
-
-	int HisFX3UpdateFPGA(wchar_t* pwstrPath);
-	int HisFX3SetOffLineMode(bool bEnable, wchar_t* pwstrPath);
+	int HisFX3UpdateFPGA(char* pstrPath);
+	int HisFX3SetOffLineMode(bool bEnable, char* path);
 	bool HisFX3GetOfflineModeInfo(unsigned int* puiWidth, unsigned int* puiHeight, _HisFX3_BaylorMode* pucDataformat, unsigned int* puiFrameByte);
-	int HisFX3SetOffLineMode_S2(bool bEnable, wchar_t* pwstrPath);
+	int HisFX3SetOffLineMode_S2(bool bEnable, char* path);
 	bool HisFX3GetOfflineModeInfo_S2(unsigned int* puiWidth, unsigned int* puiHeight, _HisFX3_BaylorMode* pucDataformat, unsigned int* puiFrameByte);
 	void getFPGADecodeInfo(std::string& strInfo);
 	void getFPGADecodeInfo_S2(std::string& strInfo);
@@ -972,7 +2200,7 @@ public:
 	void getProtocalSupported(std::vector<unsigned int>& vecList, bool bChannel1 = true);
 	int getDataFormatSupported(std::vector<_HisFX3_BaylorMode>& vecDataFormat);
 	bool isWorkCurrentSupported(unsigned int uiFlag, bool bChannel1 = true);
-	bool isStandbyCurrentSupported(unsigned int uiFlag, bool bChannel1 = true); 
+	bool isStandbyCurrentSupported(unsigned int uiFlag, bool bChannel1 = true);
 	bool isOpenShortSupported(bool* bAllPin);
 	bool getVoltageSupported(float& flmin, float& flmax, unsigned int uiFlag, bool bChannel1 = true);
 	bool getCommunicationProtocalSupported(unsigned int uiFlag, bool bChannel1 = true);
@@ -981,70 +2209,69 @@ public:
 	unsigned int getCameraCountSupported();
 	_HisFX3_Platform_Type getCurrentPlatformType();
 
-	//! ÉèÖÃUSB°üµÄ´óĞ¡
+	//! è®¾ç½®USBåŒ…çš„å¤§å°
 	/*!
-	\param[in] lsize   µ¥Î»£ºByte  ·¶Î§£º256*1024~4*1024*1024  ×¢Òâ±ØĞëÊÇ256*1024µÄÕûÊı±¶
+	\param[in] lsize   å•ä½ï¼šByte  èŒƒå›´ï¼š256*1024~4*1024*1024  æ³¨æ„å¿…é¡»æ˜¯256*1024çš„æ•´æ•°å€
 	\sa  getCurrentBulkTransformSize
 	*/
-	void setBulkTransformSize(LONG lsize);
+	void setBulkTransformSize(int lsize);
 
-	//! ÉèÖÃµ±Ç°USB°üµÄ´óĞ¡
+	//! è®¾ç½®å½“å‰USBåŒ…çš„å¤§å°
 	/*!
-	\return °üµÄ´óĞ¡£¬µ¥Î»£ºByte
+	\return åŒ…çš„å¤§å°ï¼Œå•ä½ï¼šByte
 	\sa  setBulkTransformSize
 	*/
-	LONG getCurrentBulkTransformSize();
+	int getCurrentBulkTransformSize();
 
-	//! »ñÈ¡Í¨µÀ1ÉãÏñÍ·SensorÊä³ö¶ËÖ¡Ë÷Òı
+	//! è·å–é€šé“1æ‘„åƒå¤´Sensorè¾“å‡ºç«¯å¸§ç´¢å¼•
 	/*!
-	\return Ö¡Ë÷Òı
+	\return å¸§ç´¢å¼•
 	\sa  getSensorFrameIndex_S2, getUploadFrameIndex, getUploadFrameIndex_S2
 	*/
 	unsigned __int64 getSensorFrameIndex();
 
-	//! »ñÈ¡Í¨µÀ2ÉãÏñÍ·SensorÊä³ö¶ËÖ¡Ë÷Òı
+	//! è·å–é€šé“2æ‘„åƒå¤´Sensorè¾“å‡ºç«¯å¸§ç´¢å¼•
 	/*!
-	\return Ö¡Ë÷Òı
+	\return å¸§ç´¢å¼•
 	\sa  getSensorFrameIndex, getUploadFrameIndex, getUploadFrameIndex_S2
 	*/
 	unsigned __int64 getSensorFrameIndex_S2();
 
-	//! »ñÈ¡Í¨µÀ1ÉãÏñÍ·Sensor´íÎóÖ¡Ë÷Òı
+	//! è·å–é€šé“1æ‘„åƒå¤´Sensoré”™è¯¯å¸§ç´¢å¼•
 	/*!
-	\return Ö¡Ë÷Òı
+	\return å¸§ç´¢å¼•
 	\sa  getSensorFrameIndex_S2, getUploadFrameIndex, getUploadFrameIndex_S2
 	*/
 	unsigned __int64 getErrorFrameIndex();
 
-	//! »ñÈ¡Í¨µÀ1ÉãÏñÍ·Sensor´íÎóÖ¡Ë÷Òı
+	//! è·å–é€šé“1æ‘„åƒå¤´Sensoré”™è¯¯å¸§ç´¢å¼•
 	/*!
-	\return Ö¡Ë÷Òı
+	\return å¸§ç´¢å¼•
 	\sa  getSensorFrameIndex_S2, getUploadFrameIndex, getUploadFrameIndex_S2
 	*/
 	unsigned __int64 getErrorFrameIndex_S2();
 
-	//! »ñÈ¡Í¨µÀ1ÉÏ´«Ö¡Ë÷Òı
+	//! è·å–é€šé“1ä¸Šä¼ å¸§ç´¢å¼•
 	/*!
-	\return Ö¡Ë÷Òı
+	\return å¸§ç´¢å¼•
 	\sa  getUploadFrameIndex_S2, getSensorFrameIndex, getSensorFrameIndex_S2
 	*/
 	unsigned __int64 getUploadFrameIndex();
 
-	//! »ñÈ¡Í¨µÀ2ÉÏ´«Ö¡Ë÷Òı
+	//! è·å–é€šé“2ä¸Šä¼ å¸§ç´¢å¼•
 	/*!
-	\return Ö¡Ë÷Òı
+	\return å¸§ç´¢å¼•
 	\sa  getUploadFrameIndex, getSensorFrameIndex, getSensorFrameIndex_S2
 	*/
 	unsigned __int64 getUploadFrameIndex_S2();
 
 
-	void testComputerCompatibility(float* pflErrorRate, float* pflErrorRead);
 	void setCurrentPlatformType(_HisFX3_Platform_Type platformType);
 
-	//! ÉèÖÃUSB´«ÊäËÙÂÊ
+	//! è®¾ç½®USBä¼ è¾“é€Ÿç‡
 	/*!
-	\param[in] uiDelay   ·¶Î§£º10~240 Ê±ÖÓÖÜÆÚ£¬ Ô½Ğ¡ËÙÂÊÔ½´ó
-	\return 0:³É¹¦  ·Ç0:Ê§°Ü Çë²Î¿¼_HisFX3Platform_ErrorCode
+	\param[in] uiDelay   èŒƒå›´ï¼š10~240 æ—¶é’Ÿå‘¨æœŸï¼Œ è¶Šå°é€Ÿç‡è¶Šå¤§
+	\return 0:æˆåŠŸ  é0:å¤±è´¥ è¯·å‚è€ƒ_HisFX3Platform_ErrorCode
 	\sa  _HisFX3Platform_ErrorCode
 	*/
 	int setUSBSpeed(unsigned int uiDelay);
@@ -1052,323 +2279,81 @@ public:
 	int LedControl(bool bOn);
 	int BuzzerControl(bool bOn);
 
-	int HisFX3StartAudio();
-	int HisFX3StopAudio();
-	int HisFX3GrabAudioBuffer(_HisPlatformAudio_Buffer* pstBuf, unsigned int uiTimeOut = 1500);
-	int UVCSetProperty(int aProperty, float aValue, int aAuto = 0);
 
-	//! »ñÈ¡´íÎóĞÅÏ¢µÄ×Ö·û´®ÃèÊö
-	/*! Èç¹û ÊôĞÔ->C/C++ ->ÓïÑÔ->½«WChar_tÊÓÎªÄÚÖÃÀàĞÍ ÉèÎª·ñ£¬Ôòµ÷ÓÃ´Ëº¯Êı£»ÉèÎªÊÇ£¬Ôòµ÷ÓÃGetLastErrorMB
-	\return ´íÎóĞÅÏ¢×Ö·û´®Ö¸Õë
-	\sa  GetLastErrorMB, ClearError
-	*/
-	const wchar_t* GetLastError(void);
+	/*! è·å–é”™è¯¯ä¿¡æ¯çš„å­—ç¬¦ä¸²æè¿° */
+	const char* GetLastError(void);
 
 	bool HisFX3IsOpenLight();
 
-	//! »ñÈ¡´íÎóĞÅÏ¢µÄ×Ö·û´®ÃèÊö
-	/*! Èç¹û ÊôĞÔ->C/C++ ->ÓïÑÔ->½«WChar_tÊÓÎªÄÚÖÃÀàĞÍ ÉèÎªÊÇ£¬Ôòµ÷ÓÃ´Ëº¯Êı£»ÉèÎª·ñ£¬Ôòµ÷ÓÃGetLastError
-		 eg. wchar_t* pstrError = (wchar_t*)GetLastErrorMB();
-	\return ´íÎóĞÅÏ¢×Ö·û´®Ö¸Õë
-	\sa  GetLastError, ClearError
-	*/
-	unsigned short* GetLastErrorMB(void);
-
-	//! Çå³ı´íÎóĞÅÏ¢
-	/*! 
-	\sa  GetLastError, GetLastErrorMB
-	*/
-	void ClearError(void);
 
 
-	int DothinkeyINI2Rolongo(char* pstrRolongoIniPath, _HisFX3_PreviewStruct& stPreivewConfig);
+	/************************SUNNY**************************/
+	//-------------------------------------æ–°å¢æ¥å£åŠ¨æ€æ”¹å˜å›¾åƒå°ºå¯¸-------------------------------------------
+	int HisFX3ChangeImageSize(unsigned int ucDataFormat, unsigned int uiWidth, unsigned int uiHeight);
+	int HisFX3ChangeImageSize_S2(unsigned int ucDataFormat, unsigned int uiWidth, unsigned int uiHeight);
 
-	int decodeRolongoXML_A(char* pstrPath, _HisFX3_PreviewStruct& previewConfig, std::vector<_RolongoXMLOtherSectionItem>& vecPair);
+	//æ–°å¢å·¥è£…é™æ€ç”µæµ
+	int HisFX3WriteStaticCurrent(bool bWorkCurrent, float flAVDD, float flDVDD, float flDOVDD, float flAF, float flVFuse, float flPOW);
+	int HisFX3WriteStaticCurrent_S2(bool bWorkCurrent, float flAVDD, float flDVDD, float flDOVDD, float flAF, float flVFuse, float flPOW);
+	int HisFX3ReadStaticCurrent(bool bWorkCurrent, float &flAVDD, float &flDVDD, float &flDOVDD, float &flAF, float &flVFuse, float &flPOW);
+	int HisFX3ReadStaticCurrent_S2(bool bWorkCurrent, float &flAVDD_S2, float &flDVDD_S2, float &flDOVDD_S2, float &flAF_S2, float &flVFuse_S2, float &flPOW_S2);
+	int HisFX3WriteEEpromFlag(unsigned int uiFlag);
+	int HisFX3ReadEEpromFlag(unsigned int &uiFlag);
 
-	//! ±£Áô
-	void test();
-
-	//! ±£Áô
-	bool checkSenseShieldEnabled(unsigned int uiLincenseID, unsigned char ucClient, unsigned char ucProduct);
-
-	//! ±£Áô
-	int getPlatformType(unsigned short usPID, unsigned short usVID, char* pstrFriendlyName, unsigned char ucDeviceIndex, unsigned int* puiKey);
-
-	//ÄÚ²¿Ê¹ÓÃ£¬²»Òª²Ù×÷***
-	std::wstring wstrLastError;
-	void* classInterLayer;
-
-private:
-	void* classRTSP;
-
-	bool bOfflineMode;
-	std::wstring wstrOfflineImagePath;
-	unsigned __int64 ui64OfflineFrameIndex; 
-
-	bool bOfflineMode_S2;
-	std::wstring wstrOfflineImagePath_S2;
-	unsigned __int64 ui64OfflineFrameIndex_S2; 
-
-	//1: construct class fail
-
-	std::string strSensorName;
-	
-
+	int HisFX3SetMIPILane(unsigned char ucLane, bool bDVP_VS_ActiveHigh = false, bool bDVP_HS_ActiveHigh = true);
+	int HisFX3GetMIPILane(unsigned char* pucLane, bool* pbDVP_VS_ActiveHigh = NULL, bool* pbDVP_HS_ActiveHigh = NULL);
+	int HisFX3SetMIPILane_S2(unsigned char ucLane);
+	int HisFX3GetMIPILane_S2(unsigned char* pucLane);
+	int HisFX3GetHardGeneration(unsigned int* puiGernation);
+	int HisFX3WriteOSIIC(unsigned char ucSlave, unsigned int uiReg, unsigned int uiData, unsigned short usType = 0x1632);
+	int HisFX3ReadOSIIC(unsigned char ucSlave, unsigned int uiReg, unsigned int* puiData, unsigned short usType = 0x1632);
+	int HisFX3R2OSSwitch(bool bOS);
+	int HisFX3R2OSCalibration(unsigned int* puiKey, _HisFX3R2_OSCal_Item* pstCal, unsigned int uiItemCount);
+	int HisFX3SetOSCalData(_HisFX3R2_OSCal_Item* pstCal, unsigned int uiItemCount);
+	int HisFX3SetGPIO(unsigned short usIO1, unsigned short usIO2);
+	int HisFX3GetGPIO(unsigned short* pusIO1, unsigned short* pusIO2);
+	int HisFX3OSPositiveTest(unsigned char ucSwitch, _HisFX3OS_Positive_Item* vectorConfig, unsigned int uiItemCount, unsigned int cuiCurrentWaitTime = 2);
+	int HisFX3OSNegtiveTest(unsigned char ucSwitch, _HisFX3OS_Negtive_Item* vectorConfig, unsigned int uiItemCount, unsigned int cuiCurrentWaitTime = 2);
+	int HisFX3OSShortTest(unsigned char ucSwitch, _HisFX3OS_Short_Item* vectorConfig, unsigned int uiItemCount, unsigned int cuiCurrentWaitTime = 2);
+	int HisFX3OSOpenTest(unsigned char ucSwitch, _HisFX3OS_Open_Item* vectorConfig, unsigned int uiItemCount, unsigned int cuiCurrentWaitTime = 2);
+	int HisFX3OSPositiveTestOld(unsigned char ucSwitch, _HisFX3OS_Positive_Item* vectorConfig, unsigned int uiItemCount, unsigned int cuiCurrentWaitTime = 2);
+	int HisFX3OSNegtiveTestOld(unsigned char ucSwitch, _HisFX3OS_Negtive_Item* vectorConfig, unsigned int uiItemCount, unsigned int cuiCurrentWaitTime = 2);
+	int HisFX3OSShortTestOld(unsigned char ucSwitch, _HisFX3OS_Short_Item* vectorConfig, unsigned int uiItemCount, unsigned int cuiCurrentWaitTime = 2);
+	int HisFX3OSOhmTestOld(unsigned char ucSwitch, _HisFX3OS_OHM_Item& stConfig, float flCurrent = 0.0f, const unsigned int cuiCurrentWaitTime = 4);
+	int HisFX3WriteMIPIIICAPI(unsigned char ucSlave, unsigned int uiReg, unsigned int uiData, unsigned short usType);
+	int HisFX3ReadMIPII2CAPI(unsigned char ucSlave, unsigned int uiReg, unsigned int* puiData, unsigned short usType);
+	int HisFX3GetContinusFrames(bool bC1, bool bC2, unsigned int& uiFrameCount, unsigned int uiBufByte1 = 0, unsigned char** ppBuffer1 = 0, unsigned int uiBufByte2 = 0, unsigned char** ppBuffer2 = 0);
+	int HisFX3GetDeivceCount();
+	int HIsFX3ReadVoltageValue(float* pflAVDD, float* pflDVDD, float* pflDOVDD, float* pflAF, float* pflVFuse, float* pflPOW, unsigned int uiFlag);
+	int HIsFX3ReadVoltageValue_S2(float* pflAVDD, float* pflDVDD, float* pflDOVDD, float* pflAF, float* pflVFuse, float* pflPOW, unsigned int uiFlag);
 	int HisFX3SetDataMode(unsigned char ucdataformat, unsigned int uiWidth, unsigned int uiHeight);
-	int HisFX3ResetVolt();
-	int getFPGADSN(unsigned char* ucnumber, unsigned int* puiFX3SerialNumber);
+	int HisFX3ImageDataOnOff_S2(bool bOn);
+	int HisFX3ImageDataOnOff(bool bOn);
+	int HisFX3GetFPGAFrameRate(float* pflRateMIPI1 = 0, float* pflRateMIPI2 = 0, float* pflRateDVP = 0, float* pflRateLVDS = 0, unsigned int uiDelay = 1000);
+	int HisFX3GetMIPIInfo(bool& bDataValid, unsigned char& ucDataType, unsigned char& ucLaneNum, unsigned int& uiFrameCount, unsigned int& uiErrorFrameCount, \
+		unsigned int& uiVitual0LineCount, unsigned int& uiVitual1LineCount);
+	int HisFX3GetMIPIInfo_S2(bool& bDataValid, unsigned char& ucDataType, unsigned char& ucLaneNum, unsigned int& uiFrameCount, unsigned int& uiErrorFrameCount, \
+		unsigned int& uiVitual0LineCount, unsigned int& uiVitual1LineCount);
+	void setTransfromSize(unsigned int uiSize = 4194304);
+	int HisFX3WriteNoneLoadingCurrentValue(bool bS2, float fCurrent[8][5]);
+	int HisFX3ReadNoneLoadingStaticCurrent(bool bS2, float fVolVcm, float fVolAvdd, float fVolDvdd, float fVolDovdd, float fVolPow, float &flAF, float &flAVDD, float &flDVDD, float &flDOVDD, float &flPOW);
+	int HisFX3GetVolt(unsigned char* pucDOVDD = NULL, unsigned char* pucAVDD = NULL, unsigned char* pucDVDD = NULL, unsigned char* pucAF = NULL, unsigned char* pucVFuse = NULL);
+	int HisFX3GetVolt_S2(unsigned char* pucDOVDD = NULL, unsigned char* pucAVDD = NULL, unsigned char* pucDVDD = NULL, unsigned char* pucAF = NULL, unsigned char* pucVFuse = NULL);
+	int HisFX3SetVFuseVolt(unsigned char ucVFUSE);
+	int HisFX3GetVFuseVolt(unsigned char* pucVFUSE);
+	int HisFX3SetVFuseVolt_S2(unsigned char ucVFUSE);
+	int HisFX3GetVFuseVolt_S2(unsigned char* pucVFUSE);
+	/************************SUNNY**************************/
 
-	 
-#ifdef _HisFX3_Platform_Jigboard
-	HMODULE Jig_m_hDllHandle;
-	int HisFX3OpenDevice_Jigboard(wchar_t* szYB);
-	int HisFX3CloseDevice_Jigboard();
-	int HisFX3StartPreview_Jigboard();
-	int HisFX3StopPreview_Jigboard();
-	int HisFX3GrabFrame_Jigboard(unsigned char **ppucBuffer, unsigned int uiBufBytes, unsigned __int64& ui64FramIndex);
-	unsigned __int64 Jig_ui64FramIndex;
-	wchar_t Jig_strIniPath[MAX_PATH];
-#endif
-};
 
-//!  ÉèÖÃUSB°üµÄ´óĞ¡
-/*! µ±Àà¶ÔÏóÎö¹¹µÄÊ±ºò£¬»á×Ô¶¯Éè»ØÔ­À´µÄ´óĞ¡
-*/
-class HISFX3PLATFORM_EXPORT QHisFX3PlatformAutoTransformSize
-{
-public:
-	QHisFX3PlatformAutoTransformSize(CHisFX3Platform* classPlatform2, LONG lNewSize);
-	~QHisFX3PlatformAutoTransformSize(void);
+	int boxIndex;
 
 private:
-	LONG lOriginalSize;
-	CHisFX3Platform* classPlatform;
+	int cc;
+	int bulkSize;
+	void PreviewCfpCpp2C(_HisFX3_PreviewStructCpp* cppcfg, _HisFX3_PreviewStruct* ccfg);
+	double mclkSetted[2];
+	_HisFX3_PreviewStruct pcfg[2];
 };
 
-#ifdef _HISFX3PLATFORM_EXPORT_DUXIN
-typedef struct _SensorTab_RLG
-{
-	/// @brief SENSOR¿í¶È
-	USHORT width;          ///<SENSOR¿í¶È
-	/// @brief SENSOR¸ß¶È
-	USHORT height;         ///<SENSOR¸ß¶È
-	/// @brief SENSORÊı¾İÀàĞÍ
-	BYTE type;             ///<SENSORÊı¾İÀàĞÍ
-	/// @brief SENSORµÄRESETºÍPWDNÒı½ÅÉèÖÃ
-	BYTE pin;              ///<SENSORµÄRESETºÍPWDNÒı½ÅÉèÖÃ
-	/// @brief SENSORµÄÆ÷¼şµØÖ·
-	BYTE SlaveID;          ///<SENSORµÄÆ÷¼şµØÖ·
-	/// @brief SENSORµÄI2CÄ£Ê½
-	BYTE mode;						 ///<SENSORµÄI2CÄ£Ê½
-	/// @brief SENSOR±êÖ¾¼Ä´æÆ÷1.
-	USHORT FlagReg;				 ///<SENSOR±êÖ¾¼Ä´æÆ÷1.
-	/// @brief SENSOR±êÖ¾¼Ä´æÆ÷1µÄÖµ
-	USHORT FlagData;			 ///<SENSOR±êÖ¾¼Ä´æÆ÷1µÄÖµ
-	/// @brief SENSOR±êÖ¾¼Ä´æÆ÷1µÄÑÚÂëÖµ
-	USHORT FlagMask;			 ///<SENSOR±êÖ¾¼Ä´æÆ÷1µÄÑÚÂëÖµ
-	/// @brief SENSOR±êÖ¾¼Ä´æÆ÷2.
-	USHORT FlagReg1;			 ///<SENSOR±êÖ¾¼Ä´æÆ÷2.
-	/// @brief SENSOR±êÖ¾¼Ä´æÆ÷2µÄÖµ
-	USHORT FlagData1;			 ///<SENSOR±êÖ¾¼Ä´æÆ÷2µÄÖµ
-	/// @brief SENSOR±êÖ¾¼Ä´æÆ÷2µÄÑÚÂëÖµ
-	USHORT FlagMask1;			 ///<SENSOR±êÖ¾¼Ä´æÆ÷2µÄÑÚÂëÖµ
-	/// @brief SENSORµÄÃû³Æ
-	char name[64];				///<SENSORµÄÃû³Æ
-
-	/// @brief ³õÊ¼»¯SENSORÊı¾İ±í
-	USHORT* ParaList;			///<³õÊ¼»¯SENSORÊı¾İ±í
-	/// @brief ³õÊ¼»¯SENSORÊı¾İ±í´óĞ¡£¬µ¥Î»×Ö½Ú
-	USHORT  ParaListSize; ///<³õÊ¼»¯SENSORÊı¾İ±í´óĞ¡£¬µ¥Î»×Ö½Ú
-
-	/// @brief SENSOR½øÈëPLATFORMSHARE::SleepÄ£Ê½µÄ²ÎÊı±í
-	USHORT* SleepParaList;	///<SENSOR½øÈëPLATFORMSHARE::SleepÄ£Ê½µÄ²ÎÊı±í
-	/// @brief SENSOR½øÈëPLATFORMSHARE::SleepÄ£Ê½µÄ²ÎÊı±í´óĞ¡£¬µ¥Î»×Ö½Ú
-	USHORT  SleepParaListSize;///<SENSOR½øÈëPLATFORMSHARE::SleepÄ£Ê½µÄ²ÎÊı±í´óĞ¡£¬µ¥Î»×Ö½Ú
-
-	/// @brief SENSORÊä³öÊı¾İ¸ñÊ½£¬YUV//0:YCbYCr;	//1:YCrYCb;	//2:CbYCrY;	//3:CrYCbY.
-	BYTE outformat;         ///<SENSORÊä³öÊı¾İ¸ñÊ½£¬YUV//0:YCbYCr;	//1:YCrYCb;	//2:CbYCrY;	//3:CrYCbY.
-	/// @brief SENSORµÄÊäÈëÊ±ÖÓMCLK£¬0:12M; 1:24M; 2:48M.
-	int mclk;               ///<SENSORµÄÊäÈëÊ±ÖÓMCLK£¬0:12M; 1:24M; 2:48M.
-	/// @brief SENSORµÄAVDDµçÑ¹Öµ
-	BYTE avdd;              ///<SENSORµÄAVDDµçÑ¹Öµ
-	/// @brief SENSORµÄDOVDDµçÑ¹Öµ
-	BYTE dovdd;             ///<SENSORµÄDOVDDµçÑ¹Öµ
-	/// @brief SENSORµÄDVDDµçÑ¹Öµ		
-	BYTE dvdd;							///<SENSORµÄDVDDµçÑ¹Öµ
-
-	/// @brief SENSORµÄÊı¾İ½Ó¿ÚÀàĞÍ
-	BYTE port; 							///<SENSORµÄÊı¾İ½Ó¿ÚÀàĞÍ
-	USHORT Ext0;
-	USHORT Ext1;
-	USHORT Ext2; 
-
-	/// @brief AF³õÊ¼»¯²ÎÊı±í
-	USHORT* AF_InitParaList;        ///<AF³õÊ¼»¯²ÎÊı±í
-	/// @brief AF³õÊ¼»¯²ÎÊı±í´óĞ¡£¬µ¥Î»×Ö½Ú
-	USHORT  AF_InitParaListSize;		///<AF³õÊ¼»¯²ÎÊı±í´óĞ¡£¬µ¥Î»×Ö½Ú
-
-	/// @brief AF_AUTO²ÎÊı±í
-	USHORT* AF_AutoParaList;				///<AF_AUTO²ÎÊı±í
-	/// @brief AF_AUTO²ÎÊı±í´óĞ¡£¬µ¥Î»×Ö½Ú
-	USHORT  AF_AutoParaListSize;		///<AF_AUTO²ÎÊı±í´óĞ¡£¬µ¥Î»×Ö½Ú
-
-	/// @brief AF_FAR²ÎÊı±í
-	USHORT* AF_FarParaList;					///<AF_FAR²ÎÊı±í
-	/// @brief AF_FAR²ÎÊı±í´óĞ¡£¬µ¥Î»×Ö½Ú
-	USHORT  AF_FarParaListSize;			///<AF_FAR²ÎÊı±í´óĞ¡£¬µ¥Î»×Ö½Ú
-
-	/// @brief AF_NEAR²ÎÊı±í
-	USHORT* AF_NearParaList;				///<AF_NEAR²ÎÊı±í
-	/// @brief AF_NEAR²ÎÊı±í´óĞ¡£¬µ¥Î»×Ö½Ú
-	USHORT  AF_NearParaListSize;		///<AF_NEAR²ÎÊı±í´óĞ¡£¬µ¥Î»×Ö½Ú
-
-	/// @brief ÆØ¹â²ÎÊı±í
-	USHORT* Exposure_ParaList;      ///<ÆØ¹â²ÎÊı±í
-	/// @brief ÆØ¹â²ÎÊı±í´óĞ¡£¬µ¥Î»×Ö½Ú
-	USHORT  Exposure_ParaListSize;	///<ÆØ¹â²ÎÊı±í´óĞ¡£¬µ¥Î»×Ö½Ú
-
-	/// @brief ÔöÒæ²ÎÊı±í
-	USHORT* Gain_ParaList;          ///<ÔöÒæ²ÎÊı±í
-	/// @brief ÔöÒæ²ÎÊı±í´óĞ¡£¬µ¥Î»×Ö½Ú
-	USHORT	Gain_ParaListSize;			///<ÔöÒæ²ÎÊı±í´óĞ¡£¬µ¥Î»×Ö½Ú 
-
-	_SensorTab_RLG()
-	{
-		width=0;
-		height=0;
-		type=0;
-		pin=0;
-		SlaveID=0;
-		mode=0;
-		FlagReg=0;
-		FlagData=0;
-		FlagMask=0;
-		FlagReg1=0;
-		FlagData1=0;
-		FlagMask1=0;
-		memset(name,0,sizeof(name));
-
-		ParaList=NULL;
-		ParaListSize=0;
-		SleepParaList=NULL;
-		SleepParaListSize=0;
-
-		outformat=0;
-		mclk=0;               //0:12M; 1:24M; 2:48M.
-		avdd=0;               // 
-		dovdd=0;              //
-		dvdd=0;
-
-		port=0; 	
-		Ext0=0;
-		Ext1=0;
-		Ext2=0; 
-
-		AF_InitParaList=NULL;        //AF_InitParaList
-		AF_InitParaListSize=0;
-
-		AF_AutoParaList=NULL;
-		AF_AutoParaListSize=0;
-
-		AF_FarParaList=NULL;
-		AF_FarParaListSize=0;
-
-		AF_NearParaList=NULL;
-		AF_NearParaListSize=0;
-
-		Exposure_ParaList=NULL;      //ÆØ¹â
-		Exposure_ParaListSize=0;
-
-		Gain_ParaList=NULL;          //ÔöÒæ
-		Gain_ParaListSize=0;
-	}
-}SensorTab_RLG, *pSensorTab_RLG;
-
-extern "C"
-{	
-
-namespace RLGDX
-{
-	HISFX3PLATFORM_EXPORT int EnumerateDevice(char *DeviceName[],int iDeviceNumMax,int *pDeviceNum);
-	HISFX3PLATFORM_EXPORT BOOL IsDevConnect( int CurDev=-1);
-	HISFX3PLATFORM_EXPORT int OpenDevice(const char *pszDeviceName,int *pDevID,int CurDev=0);
-	HISFX3PLATFORM_EXPORT void CloseDevice( int CurDev=-1);
-	HISFX3PLATFORM_EXPORT CHisFX3Platform* GetPlatformPoniter(int CurDev=-1);
-	HISFX3PLATFORM_EXPORT void SetCurrentDeviceObject( int CurDev = 0);
-	HISFX3PLATFORM_EXPORT void SetAlarm(USHORT beeptime, BYTE beepcount, int CurDev=-1);	
-	HISFX3PLATFORM_EXPORT DWORD GetKitType( int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int SetSensorI2cRate( BOOL  b400K,  int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int SetSensorI2cRate_S2( BOOL  b400K,  int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int WriteSensorReg(UCHAR  uAddr,  USHORT  uReg,  USHORT  uValue,  BYTE  byMode,  int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int WriteSensorReg_S2(UCHAR  uAddr,  USHORT  uReg,  USHORT  uValue,  BYTE  byMode,  int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int ReadSensorReg(UCHAR  uAddr,  USHORT  uReg,  USHORT *  pValue,  BYTE  byMode,  int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int ReadSensorReg_S2(UCHAR  uAddr,  USHORT  uReg,  USHORT *  pValue,  BYTE  byMode,  int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int WriteSensorI2c(UCHAR  uDevAddr,  USHORT  uRegAddr,  UCHAR  uRegAddrSize,  BYTE *  pData,  USHORT  uSize,  int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int WriteSensorI2c_S2(UCHAR  uDevAddr,  USHORT  uRegAddr,  UCHAR  uRegAddrSize,  BYTE *  pData,  USHORT  uSize,  int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int ReadSensorI2c(UCHAR  uDevAddr,  USHORT  uRegAddr,  UCHAR  uRegAddrSize,  BYTE *  pData,  USHORT  uSize,  BOOL  bNoStop = FALSE,  int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int ReadSensorI2c_S2(UCHAR  uDevAddr,  USHORT  uRegAddr,  UCHAR  uRegAddrSize,  BYTE *  pData,  USHORT  uSize,  BOOL  bNoStop = FALSE,  int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int SetSensorClock( BOOL  bOnOff,  USHORT  uHundKhz,  int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int SetSensorClock_S2( BOOL  bOnOff,  USHORT  uHundKhz,  int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int SetSpiRate( int  Rate,  int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int PmuSetVoltage(unsigned int Power[],  int  Voltage[],  int  iCount,  int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int PmuGetVoltage(unsigned int  Power[],  int  Voltage[],  int  iCount,  int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int PmuGetCurrent(unsigned int  Power[],  int  Current[],  int  iCount,  int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int SensorEnable(BYTE  byPin,  BOOL  bEnable,  int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int SensorEnable_S2(BYTE  byPin,  BOOL  bEnable,  int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int SetGrabTimeout(ULONG  uTimeOut,  int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int SetGrabTimeout_S2(ULONG  uTimeOut,  int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int GrabFrame(BYTE *  pInBuffer,  ULONG  uBufferSize,  ULONG *  pGrabSize = 0,  unsigned __int64*  p64FrameIndex = 0,  int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int GrabFrame_S2(BYTE *  pInBuffer,  ULONG  uBufferSize,  ULONG *  pGrabSize = 0,  unsigned __int64*  p64FrameIndex = 0,  int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int DXPara2RLGPara(SensorTab_RLG *  pInfo,  _HisFX3_PreviewStruct* pstPreviewInfo); 
-	HISFX3PLATFORM_EXPORT void AddGernerPreviewPara(_HisFX3_PreviewStruct* pstPreviewInfo, bool bDebug=false, bool bUseDDR=false, bool bCheckDeviceAck=false, \
-		_HisFX3_ImageSenor_Factory sensorFactory=_HisFX3_ImageSenor_Factory_OV, unsigned char ucCommProtocal=0,unsigned short usI2CSpeed=100,unsigned short usI2CIntervalTime=100, \
-		unsigned char ucMIPILane=_HisFX3_MIPILane_Stream_Lane4_FPGA);
-	HISFX3PLATFORM_EXPORT void AddDVPPreviewPara(_HisFX3_PreviewStruct* pstPreviewInfo, bool bDVP_VS_ActiveHigh=false, bool bDVP_HS_ActiveHigh=true,unsigned char ucDVP_LineFormat =1, unsigned char ucDVP_PhaseShift =0);
-	HISFX3PLATFORM_EXPORT void AddLVDSPreviewPara(_HisFX3_PreviewStruct* pstPreviewInfo, bool bSPICSLow=true,bool bSPILittleEndian=false, unsigned char ucLaneNum=10, \
-		bool bOutputXSVS=true, unsigned int uiLVDS_XHS=1152,unsigned int uiLVDS_XVS=3125,unsigned short usLVDSAlign=0x0);
-	HISFX3PLATFORM_EXPORT int StartPreview(_HisFX3_PreviewStruct*  pstPreviewInfo, int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int StartPreview_S2(_HisFX3_PreviewStruct*  pstPreviewInfo, int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int StopPreview(int  iDevID = -1);
-	HISFX3PLATFORM_EXPORT int StopPreview_S2(int  iDevID = -1);
-}
-
-}
 #endif
-
-#ifdef _HISFX3PLATFORM_EXPORT_HYVISION
-extern "C"
-{	
-	namespace RLGHV
-	{
-		HISFX3PLATFORM_EXPORT CHisFX3Platform* GetPlatformPonit(int nBoard=0);
-		HISFX3PLATFORM_EXPORT int OpenDAQDevice(char **DeviceName = 0);
-		HISFX3PLATFORM_EXPORT BOOL CloseDAQDevice(void);
-		HISFX3PLATFORM_EXPORT BOOL  LVDS_Init_Mul_Key(const char *pszDeviceName,int *pDevID);
-		HISFX3PLATFORM_EXPORT BOOL  LVDS_Init_Mul(int nBoard);
-		HISFX3PLATFORM_EXPORT BOOL  LVDS_GetVersion_Mul(int nBoard, int *nFpgaVer, int *nFirmVer);
-		HISFX3PLATFORM_EXPORT BOOL  LVDS_SetDataMode_Mul(int nBoard, int nMode);
-		HISFX3PLATFORM_EXPORT BOOL  I2C_SYS_Read_Mul(int nBoard, BYTE slAddr, DWORD nAddrLen, DWORD nAddr, DWORD nCnt, unsigned char* buf);
-		HISFX3PLATFORM_EXPORT BOOL  I2C_SYS_Write_Mul(int nBoard, BYTE slAddr, DWORD nAddrLen, DWORD nAddr, DWORD nCnt, unsigned char* buf);
-		HISFX3PLATFORM_EXPORT BOOL  LVDS_GetResolution_Mul(int nBoard, DWORD *xRes, DWORD *yRes);
-		HISFX3PLATFORM_EXPORT BOOL  LVDS_Start_Mul(int nBoard);
-		HISFX3PLATFORM_EXPORT BOOL  LVDS_Stop_Mul(int nBoard);
-		HISFX3PLATFORM_EXPORT BOOL  LVDS_GetFrame_Mul(int nBoard, DWORD* nCnt, unsigned char* buf);
-		//ch_index  0:DVDD 1:AVDD 2:DOVDD 3:AF  4:OTP 
-		HISFX3PLATFORM_EXPORT int	_stdcall Program_PowerSetM(int ch_index, float fvolt, int index);
-		HISFX3PLATFORM_EXPORT int	_stdcall	Program_PowerOnOff_Fix36M(BOOL bPowerOn, int index);
-		HISFX3PLATFORM_EXPORT int	_stdcall 	IOlevel_SetM(float fvolt, int index); //1.6 ~ 3.5 range ¹× table ¼öÁ¤. (2006. 3/13)
-		HISFX3PLATFORM_EXPORT int	_stdcall 	Program_PowerOffM(int ch_index, int index);
-		HISFX3PLATFORM_EXPORT int	_stdcall 	Program_PowerOffAllM(int index);
-		HISFX3PLATFORM_EXPORT int	_stdcall	Program_PowerIOSetAllM(float fch0volt, float fch1volt, float fch2volt, float fch3volt, float fch4volt, BOOL bch5on, float fIOvolt, int index);		  //Power: 1.2~3.0V, IO:1.6~3.0V
-		HISFX3PLATFORM_EXPORT int	_stdcall	DynamicMeasureM(int ch_index, int offset_value, float *measure_value, int iMeasureConut=17, int index=0);
-		HISFX3PLATFORM_EXPORT int	_stdcall	StandbyMeasureM(int ch_index, int offset_value, float *measure_value, int iMeasureConut=7, int index=0);
-		HISFX3PLATFORM_EXPORT BOOL CLK_Set_Mul(int nBoard, DWORD val);
-		HISFX3PLATFORM_EXPORT DWORD CLK_Get_Mul(int nBoard);
-		HISFX3PLATFORM_EXPORT BOOL  SEN_Reset_Mul(int nBoard, BOOL bReset);
-		HISFX3PLATFORM_EXPORT BOOL  SEN_Enable_Mul(int nBoard, BOOL bEnble);
-	}
-}
-#endif
-
-#endif
-

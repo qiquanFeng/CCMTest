@@ -320,12 +320,12 @@ int __stdcall GetHisFX3LaneC2(unsigned char* pucLane)
 
 int __stdcall SetHisFX3DVPHSVSC1(bool bDVP_VS_ActiveHigh, bool bDVP_HS_ActiveHigh)
 {
-	return classPlatform.HisFX3SetDVPHSVS(bDVP_VS_ActiveHigh, bDVP_HS_ActiveHigh);
+	return 0;//classPlatform.HisFX3SetDVPHSVS(bDVP_VS_ActiveHigh, bDVP_HS_ActiveHigh);
 }
 
 int __stdcall GetHisFX3DVPHSVSC1(bool* pbDVP_VS_ActiveHigh, bool* pbDVP_HS_ActiveHigh)
 {
-	return classPlatform.HisFX3GetDVPHSVS(pbDVP_VS_ActiveHigh, pbDVP_HS_ActiveHigh);
+	return 0;//classPlatform.HisFX3GetDVPHSVS(pbDVP_VS_ActiveHigh, pbDVP_HS_ActiveHigh);
 }
 
 int __stdcall SetHisFX3GPIO(unsigned char ucGPIO0, unsigned char ucGPIO1, unsigned char ucGPIO2, unsigned char ucGPIO3, unsigned int uiFlag)
@@ -350,12 +350,12 @@ int __stdcall GetHisFX3SlaveResponseC2(unsigned char ucSlave)
 
 bool __stdcall IsHisFX3DataStreamingC1(unsigned int uiTimeOut)
 {
-	return classPlatform.isDataStreaming(uiTimeOut);
+	return 0;//classPlatform.isDataStreaming(uiTimeOut);
 }
 
 bool __stdcall IsHisFX3DataStreamingC2(unsigned int uiTimeOut)
 {
-	return classPlatform.isDataStreaming_S2(uiTimeOut);
+	return 0;//classPlatform.isDataStreaming_S2(uiTimeOut);
 }
 
 unsigned __int64 __stdcall getSensorFrameIndexC1()
@@ -658,7 +658,6 @@ unsigned int GetLanugage()
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
-
 
 	QString strText;
 	QStringList listKeyValue;

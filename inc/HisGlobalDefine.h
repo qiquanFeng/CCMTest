@@ -18,115 +18,35 @@
 #define HisCloseHandle(x)  {if(x!=NULL) {CloseHandle(x); x = NULL;}}
 #define HisAlignedMalloc(x) _aligned_malloc(x, _HisCacheLine_Aligned)
 
-class QHisFX3MallocAlignedManage
-{
-public:
-	QHisFX3MallocAlignedManage(void* pvBuf2)
-	{
-		pvBuf	=	pvBuf2;
-	}
-
-	~QHisFX3MallocAlignedManage()
-	{
-		HisReleaseMalloc(pvBuf)
-	}
-
-	void Release()
-	{
-		HisReleaseMalloc(pvBuf)
-	}
-
-private:
-	void* pvBuf;
-};
-
-template <class T> class QHisFX3NewObjectManage
-{
-public: 	
-	QHisFX3NewObjectManage(T* aVar)
-	{
-		mVar = aVar;
-	}
-
-	~QHisFX3NewObjectManage()
-	{
-		if(mVar != 0){
-			delete mVar;
-			mVar = 0;
-		}
-	}
-
-	void Release()
-	{
-		if(mVar != 0){
-			delete mVar;
-			mVar = 0;
-		}
-	}
-
-private:
-	T *mVar;
-};
-
-template <class T> class QHisFX3NewBufManage
-{
-public: 	
-	QHisFX3NewBufManage(T * aVar)
-	{
-		mVar = aVar;
-	}
-
-	~QHisFX3NewBufManage()
-	{
-		if(mVar != 0){
-			delete[] mVar;
-			mVar = 0;
-		}
-	}
-
-	void Release()
-	{
-		if(mVar != 0){
-			delete[] mVar;
-			mVar = 0;
-		}
-	}
-
-private:
-	T *mVar;
-};
-
-/**************platform *****************/
 
 
- 
-// #define _HisFX3_Platform_MIPI_R1
-// #define _HisFX3_Platform_MIPI_R2R3
-// #define _HisFX3_Platform_MIPI_R4
-// #define _HisFX3_Platform_LVDS_R1
-// #define _HisFX3_Platform_ANALOG_R1
-// #define _HisFX3_Platform_JIGBOARD
-// #define _HisFX3_Platform_UVC
-// #define _HisFX3_Platform_R3X
+#if 1/**********  新SDK用 *****************/
+#define _RMAX_BOXS 8
+#define _RMAX_CHANNEL 8
+#define _RMAX_STREAM_ROI_NUMS 17
 
-// #define _HisFX3R2_OS_CURRENT_SORT
 #define _HisFX3V2_CURRENTCAL_COUNT	36
 #define _HisFX3_OS_PinName_MaxByte	12
 
-
 enum _HisFX3_Platform_Type
 {
-	_HisFX3_Platform_Type_UnKnowed	=	0x0,
-	_HisFX3_Platform_Type_R1				=	0x1,
-	_HisFX3_Platform_Type_R2R3			=	0x2,
-	_HisFX3_Platform_Type_LVDS			=	0x3,
-	_HisFX3_Platform_Type_R5				=	0x4,
-	_HisFX3_Platform_Type_R3X			=	0x5,
-	_HisFX3_Platform_Type_UVC			=	0x6,
-	_HisFX3_Platform_Type_RTSPM		=	0x7,
-	_HisFX3_Platform_Type_R5X			=	0x8,
-	_HisFX3_Platform_Type_HDMI			=	0x9,
-	_HisFX3_Platform_Type_R6				=	0xA  //C-PHY
+	_HisFX3_Platform_Type_UnKnowed		=	0x0,
+	_HisFX3_Platform_Type_R2R3					=	0x2, /*! 此版SDK不支持*/
+	_HisFX3_Platform_Type_R5						=	0x4, /*! 此版SDK暂不支持*/
+	_HisFX3_Platform_Type_R3X					=	0x5,
+	_HisFX3_Platform_Type_UVC					=	0x6, /*! 标准协议UVC 模组*/
+	_HisFX3_Platform_Type_RTSPM				=	0x7, /*! RTSP网络相机*/
+	_HisFX3_Platform_Type_R5X					=	0x8,
+	_HisFX3_Platform_Type_HDMI					=	0x9,  /*! HDMI PCIE卡*/
+	_HisFX3_Platform_Type_R6						=	0xA,  /*! C-PHY双摄 */
+	_HisFX3_Platform_Type_R6_Sunny			 = 0xF,  /*! C-PHY双摄 Sunny版本*/
+	_HisFX3_Platform_Type_R10_Sunny			= 0xB,		/*! 万兆*/
+	_HisFX3_Platform_Type_R8						= 0xC,		/*! 万兆 */
+	_HisFX3_Platform_Type_R2C					= 0xD,
+	_HisFX3_Platform_Type_R5_Sunny			= 0xE,	/*! DPHY双摄 Sunny版本*/
+	_HisFX3_Platform_Type_R11					= 0x10, /*! 2CPHY/2DPHY + 2DPHY光纤*/
+	_HisFX3_Platform_Type_R12					= 0x11, /*! 1CPHY/1DPHY 光纤*/
+	_HisFX3_Platform_Type_R15					= 0x12 /*! 4C4D		光纤x2*/
 };
 
 enum _HisFX3_CommunicationProtocal{
@@ -183,7 +103,9 @@ enum _HisFX3_ImageSenor_DataType{
 	_HisFX3_ImageSenor_DataType_OTHER				=	0xFF
 };
 
-enum _HisFX3_MIPILane_Stream{
+/*! 接口及协议*/
+enum _HisFX3_MIPILane_Stream
+{
 	_HisFX3_MIPILane_Stream_DVP									=	0x0,
 	_HisFX3_MIPILane_Stream_Lane1_FPGA					=	0x1,
 	_HisFX3_MIPILane_Stream_Lane2_FPGA					=	0x2,
@@ -192,15 +114,22 @@ enum _HisFX3_MIPILane_Stream{
 	_HisFX3_MIPILane_Stream_Lane8_FPGA					=	0x8,
 	_HisFX3_MIPILane_Stream_Lane1_ST							=	0x5,
 	_HisFX3_MIPILane_Stream_Lane2_ST							=	0x6,
+	_HisFX3_MIPILane_Stream_DPHY									= 0x0F,
 	_HisFX3_MIPILane_Stream_SubLVDS_SONY				=	0x10,
 	_HisFX3_MIPILane_Stream_SubLVDS_CMOSIS			=	0x11,
 	_HisFX3_MIPILane_Stream_SubLVDS_END				=	0x1F,
 	_HisFX3_MIPILane_Stream_Analog_Interleave				=	0x20,
 	_HisFX3_MIPILane_Stream_Analog_Progressive			=	0x21,
+	_HisFX3_MIPILane_Stream_SPI_BT656_Lane1			=	0x22, //BT656
+	_HisFX3_MIPILane_Stream_SPI_BT656_Lane2			=	0x23,
+	_HisFX3_MIPILane_Stream_SPI_BT656_Lane4			=	0x24,
 	_HisFX3_MIPILane_Stream_BT1120M1_Interleave		=	0x26, //mode 1
 	_HisFX3_MIPILane_Stream_BT1120M1_Progressive	=	0x27,
 	_HisFX3_MIPILane_Stream_BT1120M2_Interleave		=	0x28, //mode2
 	_HisFX3_MIPILane_Stream_BT1120M2_Progressive	=	0x2A,
+	_HisFX3_MIPILane_Stream_SPI_MTK_Lane1				=	0x2B, //MTK
+	_HisFX3_MIPILane_Stream_SPI_MTK_Lane2				=	0x2C,
+	_HisFX3_MIPILane_Stream_SPI_MTK_Lane4				=	0x2D,
 	_HisFX3_MIPILane_Stream_DVP_HDMI						=	0xFF,
 	_HisFX3_MIPILane_Stream_UVC									=	0x30,
 	_HisFX3_MIPILane_Stream_HDMI									=	0x31,
@@ -210,7 +139,9 @@ enum _HisFX3_MIPILane_Stream{
 	_HisFX3_MIPILane_Stream_HiSPI_Streaming_SP		=	0x51,
 	_HisFX3_MIPILane_Stream_HiSPI_Streaming_S			=	0x52,
 	_HisFX3_MIPILane_Stream_HiSPI_ActiveStart_SP8	=	0x53,
-	_HisFX3_MIPILane_Stream_HiSPI_END						=	0x5F
+	_HisFX3_MIPILane_Stream_HiSPI_END						= 0x5F,
+	_HisFX3_MIPILane_Stream_CPHY								=	0x60
+	
 };
 
 enum _HisFX3_Deinterlace_Method{
@@ -233,204 +164,356 @@ enum _HisFX3_BaylorMode{
 	HisBaylor12_GRBG			=	0x43, 
 	HisBaylor12_GBRG			=	0x44,
 	HisBaylor12_MONO			=	0x47,
+	HisBaylor14_BGGR			=	0x51,
+	HisBaylor14_RGGB			=	0x52,
+	HisBaylor14_GRBG			=	0x53, 
+	HisBaylor14_GBRG			=	0x54,
+	HisBaylor14_MONO			=	0x57,
+	HisBaylor_Compact			 = 0x80000000, /*! 数据排列变成高位在前，低位合并为1个Byte */
 	HisYUV8_422_YUYV			=	0x21, //YUYV
 	HisYUV8_422_UYVY			=	0x22,
 	HisYUV8_422_YVYU			=	0x23,
 	HisYUV8_422_VYUY			=	0x24,
 	HisYUV8_422P					=	0x25,
 	HisYUV8_420P					=	0x26,
-	HisRGB_RGB24					=	0x30
+	HisRGB_RGB24					=	0x30,
+	HisRGB_BGR24					= 0x31,
+	HisGray_Y8							= 0x61,
+	HisRGB_Bilinear					=0x10000000, /*! 双线性差值算法，和HisRGB_RGB24, HisRGB_BGR24一起使用，eg: HisRGB_RGB24 | HisRGB_Bilinear*/
+	HisOutputAddInfo				=0x20000000
 };
 
 enum _HisFX3_Platform_VoltFlag{
-	_HisFX3_Platform_VlotOn_AVDD	=	0x01,
-	_HisFX3_Platform_VlotOn_DVDD	=	0x02,
-	_HisFX3_Platform_VlotOn_DOVDD	=	0x04,
-	_HisFX3_Platform_VlotOn_AF		=	0x08,
-	_HisFX3_Platform_VlotOn_OTP		=	0x10,
-	_HisFX3_Platform_VlotOn_POW		=	0x20,
-	_HisFX3_Platform_VlotOn_IIC			=	0x40
+	_HisFX3_Platform_VlotOn_AVDD = 0x0001,
+	_HisFX3_Platform_VlotOn_DVDD = 0x0002,
+	_HisFX3_Platform_VlotOn_DOVDD = 0x0004,
+	_HisFX3_Platform_VlotOn_AF = 0x0008,
+	_HisFX3_Platform_VlotOn_OTP = 0x0010,
+	_HisFX3_Platform_VlotOn_POW = 0x0020,
+	_HisFX3_Platform_VlotOn_IODD = 0x0040,
+	_HisFX3_Platform_VlotOn_V5 = 0x0080,
+	_HisFX3_Platform_VlotOn_V12					= 0x0100
 };
 
-enum _HisFX3_Platform_GPIOFlag{
-	_HisFX3_Platform_MIPI_GPIO0		=	0x01,
-	_HisFX3_Platform_MIPI_GPIO1		=	0x02,
-	_HisFX3_Platform_DVP_GPIO2		=	0x04,
-	_HisFX3_Platform_DVP_GPIO3		=	0x08,
-};
+typedef struct _RRect
+{
+	int    left; /*！包含此坐标*/
+	int    top; /*! 包含此坐标*/
+	int    right;  /*！不包含此坐标*/
+	int    bottom; /*！不包含此坐标*/
 
+	_RRect() { left = top = right = bottom = 0; }
+	_RRect(int left2, int top2, int right2, int bottom2)
+	{
+		this->left = left2;
+		this->top = top2;
+		this->right = right2;
+		this->bottom = bottom2;
+	}
+
+	_RRect(const _RRect& src)
+	{
+		this->left = src.left;
+		this->top = src.top;
+		this->right = src.right;
+		this->bottom = src.bottom;
+	}
+
+	_RRect& operator = (const _RRect& src)
+	{
+		this->left = src.left;
+		this->top = src.top;
+		this->right = src.right;
+		this->bottom = src.bottom;
+		return *this;
+	}
+
+	bool IsEqual(const _RRect& d)
+	{
+		return (this->left == d.left) && (this->right == d.right) && (this->top == d.top) && (this->bottom == d.bottom);
+	}
+} RRect, *PRRect;
  
-struct _HisFX3_PreviewStruct{
-	unsigned short usDeviceIndex; /*!< 设备序号，UVC用 */
+typedef struct _HisFX3_PreviewStruct
+{
+	unsigned int ver; /*! 结构体版本号， 固定值， 不要修改*/
+	unsigned int uiVoltSetFlag; /*!< 设置要操作的电压，eg. 只操作AVDD和DVDD:  _HisFX3_Platform_VlotOn_AVDD |  _HisFX3_Platform_VlotOn_DVDD； 全操作：0xFFFFFFFF*/
+	float volt_DOVDD; /*!< 设置DOVDD电压，0.0~3.5范围可调, 实际所设电压 =  volt_DOVDD */
+	float volt_DVDD; /*!< 设置DVDD电压，0.0~3.5范围可调, 实际所设电压 =  volt_DVDD */
+	float volt_AVDD; /*!< 设置AVDD电压，0.0~3.5范围可调, 实际所设电压 =  volt_AVDD */
+	float volt_AF; /*!< 设置AF电压，0.0~3.5范围可调, 实际所设电压 =  volt_AF */
+	float volt_OTP; /*!< 设置DOVDD电压，0.0~10.0范围可调, 实际所设电压 =  volt_VFuse */
+	float volt_POW; /*!< 设置POW电压，0.0~3.5范围可调, 实际所设电压 =  volt_POW */
+	float volt_IODD; /*!< 设置IODD电压【板卡内部IO电平】【R5】，0.0~3.5范围可调, 实际所设电压 =  volt_IODD */
+	float maxVoltDiff;  /*!< 每路电压设置后回读电压值，差异过大则断电返回错误； 单位：V； (maxVoltDiff < 10)时生效 */
+	float volt_5V; /*!< 设置5V电压开关，0：不输出  1：输出 其他：不操作  */
+	float volt_12V; /*!< 设置12V电压开关，0：不输出  1：输出  其他：不操作  */
 	bool bIsSetRST; /*!< 是否设置bReset_ActiveLow */
 	bool bReset_ActiveLow; /*!< true: 低电平有效，出图时拉高；   false: 高电平有效，出图时拉低 */
 	bool bIsSetPWDN; /*!< 是否设置bPWND_ActiveLow */
 	bool bPWND_ActiveLow; /*!< true: 低电平有效，出图时拉高；   false: 高电平有效，出图时拉低 */
-	bool bDVP_VS_ActiveHigh; /*!< DVP VS 同步信号设置。   true: 高电平有效；   false: 低电平有效 */
-	bool bDVP_HS_ActiveHigh; /*!< DVP HS 同步信号设置。   true: 高电平有效；   false: 低电平有效 */
-	unsigned char ucDVP_LineFormat; /*!< DVP数据线设置  0：采9:2   1: 采7:0   2：采15:0   3：采9:0  4：采11:0   5：采13:0 */
-	unsigned char ucDVP_PhaseShift; /*!<设置并口采集同步信号相移  0:不相移;  1: 90度;  2: 180度;  3: 270度; */
-	bool bDebug; /*!< true:调试模式，会产生更多的调试信息到DebugView.exe； false: 非调试模式 */
-	bool bCheckDeviceAck; /*!< true:IIC通信时侦测是否有ACK回馈； false: 不侦测 */
-	bool bUseDDR; /*!< 设置是否使用DDR3(R5有效)。 true:使用DDR3； false: 不使用DDR3 */
-	bool bSPICSLow; /*!< 设置读写SPI时，CS电平(R5有效)。 true:CS电平为低； false: CS电平为高 */
-	bool bSPILittleEndian; /*!< 设置读写SPI时，低位在前还是高位在前(R5有效)。 true:低位在前； false: 高位在前 */
-	bool bVirtualChannel; /*!< 设置是否开启虚拟通道解码[R5有效] 。 true:开启虚拟通道解码； false: 不开启虚拟通道 */
-	unsigned char ucSignalMode; /*!< 设置MIPI信号模式 1: SLVS 2:D-PHY */
-	/*! 设置点亮时的上电时序
-	\sa _HisFX3_ImageSenor_Factory
-	*/
-	_HisFX3_ImageSenor_Factory sensorFactory; 
-	unsigned int uiVoltSetFlag; /*!< 设置要操作的电压，eg. 只操作AVDD和DVDD:  _HisFX3_Platform_VlotOn_AVDD |  _HisFX3_Platform_VlotOn_DVDD； 全操作：0xFFFFFFFF*/
-	float ucVolt_DOVDD; /*!< 设置DOVDD电压，0.0~3.5范围可调, 实际所设电压 =  ucVolt_DOVDD *flVoltMultiple */
-	float ucVolt_DVDD; /*!< 设置DVDD电压，0.0~3.5范围可调, 实际所设电压 =  ucVolt_DVDD *flVoltMultiple */
-	float ucVolt_AVDD; /*!< 设置AVDD电压，0.0~3.5范围可调, 实际所设电压 =  ucVolt_AVDD *flVoltMultiple */
-	float ucVolt_AF; /*!< 设置AF电压，0.0~3.5范围可调, 实际所设电压 =  ucVolt_AF *flVoltMultiple */
-	float ucVolt_VFuse; /*!< 设置DOVDD电压，0.0~10.0范围可调, 实际所设电压 =  ucVolt_VFuse *flVoltMultiple */
-	float ucVolt_POW; /*!< 设置POW电压，0.0~3.5范围可调, 实际所设电压 =  ucVolt_POW *flVoltMultiple */
-	float ucVolt_IODD; /*!< 设置IODD电压【板卡内部IO电平】【R5】，0.0~3.5范围可调, 实际所设电压 =  ucVolt_IODD *flVoltMultiple */
-	float flVoltMultiple; 
-	unsigned char ucVolt_5V; /*!< 设置5V电压开关，0：不输出  1：输出  其他：不操作  */
-	unsigned char ucVolt_12V; /*!< 设置12V电压开关，0：不输出  1：输出  其他：不操作  */
-	float flVoltageReadDiffMax; /*!< 保留 */
-	unsigned char ucCommProtocal; /*!< 设置命令通讯协议。  0:IIC； 1:SPI */
 	bool bIsSetMCLK; /*!< 是否设置MCLK*/
-	float flMCLK; /*!< 设置flMCLK。 0~136MHz范围可调*/
+	double mclk; /*!< 设置mclk。 0~136MHz范围可调*/
+	unsigned char onlyRightFrame; /*!< 是否只输出正确帧	b0: 设置FPGA;  b1: 设置上位机; */
+	unsigned char ddr; /*!< 是否开启DDR缓存功能   0：关闭；1：开启；2：:不设置 */
+	/*! 设置点亮时的上电时序
+	 \sa _HisFX3_ImageSenor_Factory
+	*/
+	_HisFX3_ImageSenor_Factory sensorFactory;
+	/*! 
+	当工装类型 == _HisFX3_Platform_Type_RTSPM时， 表示URL；
+	当sensorFactory == _HisFX3_ImageSenor_Factory_CUSTOM时， 由用户自定义上电时序；
+	*/
+	char powerUpSequence[256]; 
 	/*! 设置板卡上传的数据格式
 	\sa _HisFX3_BaylorMode
 	*/
-	_HisFX3_BaylorMode ucDataFormat;
-	unsigned short usI2CMode; /*!< 保留 */
-	unsigned short usI2CSpeed;  /*!< 设置IIC通信速率，10KHz~1MHz范围可调 */
-	unsigned short usI2CIntervalTime; /*!< 设置下发IIC命令的间隔时间，单位：us */
-	unsigned char ucSlave; /*!< 保留 */
-	/*! 设置Sensor数据格式
-	\sa _HisFX3_MIPILane_Stream
-	*/
-	unsigned char ucMIPILane; 
-	unsigned char ucLaneNum; /*!< 设置MIPI或者LVDS 数据Lane数 */
-	unsigned int uiFrameByteCount; /*!< 设置一帧的数据量，单位: byte */
+	_HisFX3_BaylorMode dataFormat;
 	unsigned int iWidth; /*!< 设置一帧的图像宽，单位：像素 */
 	unsigned int iHeight; /*!< 设置一帧的图像高，单位：像素 */
 	unsigned int uiDummyLeft; /*!< 设置图像左边的Dummy Line */
 	unsigned int uiDummyRight; /*!< 设置图像右边的Dummy Line */
 	unsigned int uiDummyTop; /*!< 设置图像上边的Dummy Line */
 	unsigned int uiDummyBottom; /*!< 设置图像下边的Dummy Line */
+	int addInfoBytes; /*! 图像数据附加信息大小， 单位: Byte；正数表示在帧头位置， 负数表示在帧尾位置*/
+	RRect streamROI[_RMAX_STREAM_ROI_NUMS]; /*! 分块上传数据流，区块坐标设置*/
+	unsigned int streamROINums; /*! 分块上传数据流，块数量，范围：[0,_RMAX_STREAM_ROI_NUMS]；0表示不分块*/
+	/*! 设置Sensor数据接口
+	\sa _HisFX3_MIPILane_Stream
+	*/
+	_HisFX3_MIPILane_Stream port;
+	unsigned char ucLaneNum; /*!< 设置C-PHY, D-PHY, LVDS 数据Lane数 */
 
-	bool bOutputXSVS; /*!< 设置解码LVDS时是否输出XS, VS信号 */
-	unsigned int uiLVDS_XHS; /*!< 设置解码LVDS的HS同步信号 */
-	unsigned int uiLVDS_XVS; /*!< 设置解码LVDS的VS同步信号 */
-	unsigned short usLVDSAlign; /*!< 设置解码LVDS的对齐方式 */
 
-	char strSensorName[32]; /*!< 设置Sensor名称，比如：imx234,imx081, */
-
-	unsigned short usI2CCount; /*!< 设置IIC或者SPI的命令条数 */
+	unsigned char ucCommProtocal; /*!< 设置命令通讯协议。  0:IIC； 1:SPI */
+	bool bCheckDeviceAck; /*!< true:IIC通信时侦测是否有ACK回馈； false: 不侦测 */
+	bool bSPICSLow; /*!< 设置读写SPI时，CS电平(R5有效)。 true:CS电平为低； false: CS电平为高 */
+	bool bSPILittleEndian; /*!< 设置读写SPI时，低位在前还是高位在前(R5有效)。 true:低位在前； false: 高位在前 */
+	bool bSPIClkHigh; /*! 设置SPI时钟  true: CLK默认是在高电平；false: CLK默认是在低电平；需要R2C >= 3506 */
+	unsigned int usI2CSpeed;  /*!< 设置IIC通信速率，1KHz~1MHz范围可调 */
+	unsigned short usI2CIntervalTime; /*!< 设置下发IIC命令的间隔时间，单位：us */
+	unsigned int usI2CCount; /*!< 设置IIC或者SPI的命令条数 */
 	unsigned char* pucSlave; /*!< 指向设备地址数组指针 */
 	unsigned int* puiReg; /*!< 指向寄存器地址数组指针 */
-	unsigned __int64* pui64Data; /*!< 指向数据数组指针 */
+	unsigned int* puiData; /*!< 指向数据数组指针 */
 	unsigned short* pusType; /*!< 指向命令类型数组指针，包括0x0816, 0x0808,0x1608,0x1616,0x1632 */
 
-	//RTSP
-	char pstrUrl[128];
-	unsigned short usRTSPFrameDelay;
-	unsigned short usRTSPValidTimeFromKey;
+	unsigned int timeout; /*!< 等待图像数据的时间(单位:ms), 0为不等待*/
+	bool virtualChannel; /*!< 设置是否开启虚拟通道解码 。 true:开启虚拟通道解码； false: 不开启虚拟通道 */
+	unsigned int virtualSize; /*!< 虚拟通道的数据量， 单位：Byte*/
 
-	unsigned char timeTestMode; /*!< 保留 */
-	unsigned int testedTime; /*!< 保留 */
+	//D-PHY
+	unsigned char ucSignalMode; /*!< 设置DPHY信号模式 0: Power Down 1: SLVS 2:D-PHY */
+	bool outputXVSXHS_DPHY; /*!< 设置解码D-PHY时是否输出XS, VS信号(从机模式) */
+	unsigned int XHS_DPHY; /*!< 设置解码D-PHY的HS同步信号 */
+	unsigned int XVS_DPHY; /*!< 设置解码D-PHY的VS同步信号 */
 
-	_HisFX3_PreviewStruct(void)
+	//DVP
+	bool bDVP_VS_ActiveHigh; /*!< DVP VS 同步信号设置。   true: 高电平有效；   false: 低电平有效 */
+	bool bDVP_HS_ActiveHigh; /*!< DVP HS 同步信号设置。   true: 高电平有效；   false: 低电平有效 */
+	unsigned char ucDVP_LineFormat; /*!< DVP数据线设置  0：采9:2   1: 采7:0   2：采15:0   3：采9:0  4：采11:0   5：采13:0 */
+	int DVP_PhaseShift; /*!<设置并口采集同步信号相移  0:不相移;  1: 90度;  2: 180度;  3: 270度; */
+
+	//LVDS
+	bool bOutputXSVS; /*!< 设置解码LVDS时是否输出XS, VS信号 */
+	unsigned int LVDS_XHS; /*!< 设置解码LVDS的HS同步信号 */
+	unsigned int LVDS_XVS; /*!< 设置解码LVDS的VS同步信号 */
+	unsigned int LVDSAlign; /*!< 设置解码LVDS的对齐方式 */
+
+	char strSensorName[64]; /*!< 设置Sensor名称，比如：imx234,imx081, */
+
+	//CPHY
+	unsigned int cphyMode; /*!< 0x0: SENSOR输出参考时钟; 0x1:SENSOR不输出参考时钟(9线模式) */
+	double cphyRate;  /*!< CPHY速率， 在cphyMode==0x1时设置；单位：Gbps；支持范围：(0.1~1.6)(1.96~2.5) */
+	
+	unsigned int cphy2ndI2CCount;  /*!< 设置第2批次下发给SENSOR的寄存器数量 */
+	unsigned char* cphy2ndSlave; /*!< 指向设备地址数组指针 */
+	unsigned int* cphy2ndReg; /*!< 指向寄存器地址数组指针 */
+	unsigned int* cphy2ndData; /*!< 指向数据数组指针 */
+	unsigned short* cphy2ndType; /*!< 指向命令类型数组指针，包括0x0816, 0x0808,0x1608,0x1616,0x1632 */
+	
+	unsigned int cphySigI2CCount; /*!< 配置CPHY信号加强寄存器的数量*/
+	unsigned char* cphySigSlave; /*!< 指向设备地址数组指针 */
+	unsigned int* cphySigReg; /*!< 指向寄存器地址数组指针 */
+	unsigned int* cphySigData; /*!< 指向数据数组指针 */
+	unsigned short* cphySigType; /*!< 指向命令类型数组指针，包括0x0816, 0x0808,0x1608,0x1616,0x1632 */
+
+	_HisFX3_PreviewStruct()
 	{
-		timeTestMode =testedTime =usDeviceIndex				=	0;
-		bUseDDR	=bVirtualChannel	=bDebug			=	false;
-		bIsSetMCLK = bIsSetPWDN = bIsSetRST =bCheckDeviceAck	=	true;
-		bDVP_HS_ActiveHigh	=	true;
-		bDVP_VS_ActiveHigh	=	false;
-		ucDVP_PhaseShift =ucDVP_LineFormat	=	0;
-		bReset_ActiveLow	= bPWND_ActiveLow	=	false;
-		bSPICSLow					=	true;
-		bSPILittleEndian			=	false;
-		ucSignalMode				=	2;
-		sensorFactory				=	_HisFX3_ImageSenor_Factory_OV;
-		ucDataFormat				=	HisBaylor10_BGGR;
-		ucCommProtocal		=	_HisFX3_CommProtocal_I2C;
-		uiVoltSetFlag				=	0xFFFFFFFF;
-		ucVolt_DOVDD	=	ucVolt_DVDD = ucVolt_AVDD =ucVolt_AF =ucVolt_VFuse =ucVolt_POW = ucVolt_IODD =0.0f;
-		flVoltMultiple	=	0.1f;
-		ucVolt_5V	=	ucVolt_12V	=	2;
-		flVoltageReadDiffMax	=	1000.0f;
-		iWidth		=iHeight		=	0;
-		bOutputXSVS				=	true;
-		uiLVDS_XHS				=	1152;
-		uiLVDS_XVS				=	3125;
-		usLVDSAlign				=	0x0;
-		uiDummyLeft = uiDummyRight = uiDummyTop = uiDummyBottom = 0;	
-		flMCLK							=	0.0f;
-		usI2CMode					=	0x1608;
-		usI2CSpeed				=	400;
-		usI2CIntervalTime		=	200;
-		ucSlave						=	0x6c;
-		ucMIPILane					=	6;
-		ucLaneNum					=	4;
-		usI2CCount					=	0;
-		pucSlave						=	NULL;
-		puiReg							=	NULL;
-		pui64Data					=	NULL;
-		pusType						=	NULL;
-		strSensorName[0]		=	'\0';
-		pstrUrl[0]						=	'\0';
-		usRTSPFrameDelay				=	80;
-		usRTSPValidTimeFromKey	=	200;
+		ver = 1;
+		onlyRightFrame = 0x03;
+		streamROINums =addInfoBytes =virtualSize =LVDSAlign = timeout = DVP_PhaseShift = ucDVP_LineFormat = iWidth = iHeight =0;
+		bSPILittleEndian =bDVP_VS_ActiveHigh = virtualChannel = false;
+		bSPIClkHigh =bSPICSLow =bDVP_HS_ActiveHigh = bIsSetMCLK = bIsSetPWDN = bIsSetRST = bCheckDeviceAck = true;
+		bReset_ActiveLow = bPWND_ActiveLow = false;
+		ddr	=ucSignalMode = 2;
+		sensorFactory = _HisFX3_ImageSenor_Factory_OV;
+		dataFormat = HisBaylor10_BGGR;
+		ucCommProtocal = _HisFX3_CommProtocal_I2C;
+		uiVoltSetFlag = 0xFFFFFFFF;
+		mclk =volt_DOVDD = volt_DVDD = volt_AVDD = volt_AF = volt_OTP = volt_POW = volt_IODD = 0.0f;
+		maxVoltDiff = 1000.0f;
+		cphyRate = -1.0;
+		volt_5V = volt_12V = -1.0f;
+		outputXVSXHS_DPHY	=bOutputXSVS = false;
+		XHS_DPHY = LVDS_XHS = 1152;
+		XVS_DPHY = LVDS_XVS = 3125;
+		cphyMode =uiDummyLeft = uiDummyRight = uiDummyTop = uiDummyBottom = 0;
+		usI2CSpeed = 400;
+		usI2CIntervalTime = 200;
+		port = _HisFX3_MIPILane_Stream_DPHY;
+		ucLaneNum = 4;
+		cphySigI2CCount =usI2CCount = cphy2ndI2CCount = 0;
+		cphySigSlave =pucSlave = cphy2ndSlave = 0;
+		cphySigReg	=puiReg = cphy2ndReg = 0;
+		cphySigData	=puiData = cphy2ndData = 0;
+		cphySigType	=pusType = cphy2ndType = 0;
+		powerUpSequence[0] = strSensorName[0] = '\0';
 	}
 
-	~_HisFX3_PreviewStruct(void)
+	~_HisFX3_PreviewStruct()
 	{
-		HisReleaseNewB(pucSlave);
-		HisReleaseNewB(puiReg);
-		HisReleaseNewB(pui64Data);
-		HisReleaseNewB(pusType);
-	}
-};
+		if (pucSlave) { delete[] pucSlave; pucSlave = 0; }
+		if (puiReg) { delete[] puiReg; puiReg = 0; }
+		if (puiData) { delete[] puiData; puiData = 0; }
+		if (pusType) { delete[] pusType; pusType = 0; }
 
-struct _HisPlatformAudio_Buffer
-{
-	int samplerate;
-	int channels;
-	int sampleSize;
-	unsigned char* pucBuf;
-	unsigned int uiBufSize;
-	unsigned int uiPrivateMollacSize;
+		if (cphy2ndSlave) { delete[] cphy2ndSlave; cphy2ndSlave = 0; }
+		if (cphy2ndReg) { delete[] cphy2ndReg; cphy2ndReg = 0; }
+		if (cphy2ndData) { delete[] cphy2ndData; cphy2ndData = 0; }
+		if (cphy2ndType) { delete[] cphy2ndType; cphy2ndType = 0; }
 
-	_HisPlatformAudio_Buffer(void)
-	{
-		pucBuf = 0;
-		uiPrivateMollacSize	=uiBufSize	=	0;
+		if (cphySigSlave) { delete[] cphySigSlave; cphySigSlave = 0; }
+		if (cphySigReg) { delete[] cphySigReg; cphySigReg = 0; }
+		if (cphySigData) { delete[] cphySigData; cphySigData = 0; }
+		if (cphySigType) { delete[] cphySigType; cphySigType = 0; }
 	}
 
-	~_HisPlatformAudio_Buffer(void)
+	_HisFX3_PreviewStruct& operator = (const _HisFX3_PreviewStruct& src)
 	{
-		HisReleaseMalloc(pucBuf);
-		uiPrivateMollacSize	=uiBufSize	=	0;
-	}
+		if (this == &src) return *this;
 
-	void clear(void)
-	{
-		HisReleaseMalloc(pucBuf);
-		uiPrivateMollacSize	=uiBufSize	=	0;
-	}
+		if (this->pucSlave) { delete[] this->pucSlave; this->pucSlave = 0; }
+		if (this->puiReg) { delete[] this->puiReg; this->puiReg = 0; }
+		if (this->puiData) { delete[] this->puiData; this->puiData = 0; }
+		if (this->pusType) { delete[] this->pusType; this->pusType = 0; }
 
-	void h_malloc(unsigned int uiSize)
-	{
-		if(uiSize > uiPrivateMollacSize)
+		if (this->cphy2ndSlave) { delete[] this->cphy2ndSlave; this->cphy2ndSlave = 0; }
+		if (this->cphy2ndReg) { delete[] this->cphy2ndReg; this->cphy2ndReg = 0; }
+		if (this->cphy2ndData) { delete[] this->cphy2ndData; this->cphy2ndData = 0; }
+		if (this->cphy2ndType) { delete[] this->cphy2ndType; this->cphy2ndType = 0; }
+
+		if (this->cphySigSlave) { delete[] this->cphySigSlave; this->cphySigSlave = 0; }
+		if (this->cphySigReg) { delete[] this->cphySigReg; this->cphySigReg = 0; }
+		if (this->cphySigData) { delete[] this->cphySigData; this->cphySigData = 0; }
+		if (this->cphySigType) { delete[] this->cphySigType; this->cphySigType = 0; }
+
+		
+		this->ver = src.ver;
+		this->uiVoltSetFlag = src.uiVoltSetFlag;
+		this->volt_DOVDD = src.volt_DOVDD;
+		this->volt_DVDD = src.volt_DVDD;
+		this->volt_AVDD = src.volt_AVDD;
+		this->volt_AF = src.volt_AF;
+		this->volt_OTP = src.volt_OTP;
+		this->volt_POW = src.volt_POW;
+		this->volt_IODD = src.volt_IODD;
+		this->maxVoltDiff = src.maxVoltDiff;
+		this->volt_5V = src.volt_5V;
+		this->volt_12V = src.volt_12V;
+		this->bIsSetRST = src.bIsSetRST;
+		this->bReset_ActiveLow = src.bReset_ActiveLow;
+		this->bIsSetPWDN = src.bIsSetPWDN;
+		this->bPWND_ActiveLow = src.bPWND_ActiveLow;
+		this->bIsSetMCLK = src.bIsSetMCLK;
+		this->mclk = src.mclk;
+		this->onlyRightFrame = src.onlyRightFrame;
+		this->ddr = src.ddr;
+		this->sensorFactory = src.sensorFactory;
+		memcpy(this->powerUpSequence, src.powerUpSequence, 256 *sizeof(char));
+		this->dataFormat = src.dataFormat;
+		this->iWidth = src.iWidth;
+		this->iHeight = src.iHeight;
+		this->uiDummyLeft = src.uiDummyLeft;
+		this->uiDummyRight = src.uiDummyRight;
+		this->uiDummyTop = src.uiDummyTop;
+		this->uiDummyBottom = src.uiDummyBottom;
+		this->addInfoBytes = src.addInfoBytes;
+		this->streamROINums = src.streamROINums;
+		memcpy(this->streamROI, src.streamROI, _RMAX_STREAM_ROI_NUMS * sizeof(_RRect));
+		this->port = src.port;
+		this->ucLaneNum = src.ucLaneNum;
+		this->ucCommProtocal = src.ucCommProtocal;
+		this->bCheckDeviceAck = src.bCheckDeviceAck;
+		this->bSPICSLow = src.bSPICSLow;
+		this->bSPILittleEndian = src.bSPILittleEndian;
+		this->bSPIClkHigh = src.bSPIClkHigh;
+		this->usI2CSpeed = src.usI2CSpeed;
+		this->usI2CIntervalTime = src.usI2CIntervalTime;
+		this->usI2CCount = src.usI2CCount;
+		this->timeout = src.timeout;
+		this->virtualChannel = src.virtualChannel;
+		this->virtualSize = src.virtualSize;
+		this->ucSignalMode = src.ucSignalMode;
+		this->bDVP_VS_ActiveHigh = src.bDVP_VS_ActiveHigh;
+		this->bDVP_HS_ActiveHigh = src.bDVP_HS_ActiveHigh;
+		this->ucDVP_LineFormat = src.ucDVP_LineFormat;
+		this->DVP_PhaseShift = src.DVP_PhaseShift;
+		this->bOutputXSVS = src.bOutputXSVS;
+		this->LVDS_XHS = src.LVDS_XHS;
+		this->LVDS_XVS = src.LVDS_XVS;
+		this->LVDSAlign = src.LVDSAlign;
+		this->outputXVSXHS_DPHY = src.outputXVSXHS_DPHY;
+		this->XHS_DPHY = src.XHS_DPHY;
+		this->XVS_DPHY = src.XVS_DPHY;
+		memcpy(this->strSensorName, src.strSensorName, 64 *sizeof(char));
+		this->cphyMode = src.cphyMode;
+		this->cphyRate = src.cphyRate;
+		this->cphy2ndI2CCount = src.cphy2ndI2CCount;
+		this->cphySigI2CCount = src.cphySigI2CCount;
+
+		if (src.usI2CCount && src.pucSlave && src.puiReg && src.puiData && src.pusType)
 		{
-			HisReleaseMalloc(pucBuf);
-			pucBuf		= (unsigned char*)HisAlignedMalloc(uiSize);
-			uiPrivateMollacSize	=	uiSize;
+			this->pucSlave = new unsigned char[src.usI2CCount];
+			memcpy(this->pucSlave, src.pucSlave, src.usI2CCount * sizeof(unsigned char));
+			this->puiReg = new unsigned int[src.usI2CCount];
+			memcpy(this->puiReg, src.puiReg, src.usI2CCount * sizeof(unsigned int));
+			this->puiData = new unsigned int[src.usI2CCount];
+			memcpy(this->puiData, src.puiData, src.usI2CCount * sizeof(unsigned int));
+			this->pusType = new unsigned short[src.usI2CCount];
+			memcpy(this->pusType, src.pusType, src.usI2CCount * sizeof(unsigned short));
 		}
-		uiBufSize	=	uiSize;
-	}
-};
 
-struct _HisFX3_Current_Calibration{
+		if (src.cphy2ndI2CCount && src.cphy2ndSlave && src.cphy2ndReg && src.cphy2ndData && src.cphy2ndType)
+		{
+			this->cphy2ndSlave = new unsigned char[src.cphy2ndI2CCount];
+			memcpy(this->cphy2ndSlave, src.cphy2ndSlave, src.cphy2ndI2CCount * sizeof(unsigned char));
+			this->cphy2ndReg = new unsigned int[src.cphy2ndI2CCount];
+			memcpy(this->cphy2ndReg, src.cphy2ndReg, src.cphy2ndI2CCount * sizeof(unsigned int));
+			this->cphy2ndData = new unsigned int[src.cphy2ndI2CCount];
+			memcpy(this->cphy2ndData, src.cphy2ndData, src.cphy2ndI2CCount * sizeof(unsigned int));
+			this->cphy2ndType = new unsigned short[src.cphy2ndI2CCount];
+			memcpy(this->cphy2ndType, src.cphy2ndType, src.cphy2ndI2CCount * sizeof(unsigned short));
+		}
+
+		if (src.cphySigI2CCount && src.cphySigSlave && src.cphySigReg && src.cphySigData && src.cphySigType)
+		{
+			this->cphySigSlave = new unsigned char[src.cphySigI2CCount];
+			memcpy(this->cphySigSlave, src.cphySigSlave, src.cphySigI2CCount * sizeof(unsigned char));
+			this->cphySigReg = new unsigned int[src.cphySigI2CCount];
+			memcpy(this->cphySigReg, src.cphySigReg, src.cphySigI2CCount * sizeof(unsigned int));
+			this->cphySigData = new unsigned int[src.cphySigI2CCount];
+			memcpy(this->cphySigData, src.cphySigData, src.cphySigI2CCount * sizeof(unsigned int));
+			this->cphySigType = new unsigned short[src.cphySigI2CCount];
+			memcpy(this->cphySigType, src.cphySigType, src.cphySigI2CCount * sizeof(unsigned short));
+		}
+
+		return *this;
+	}
+}HisFX3_PreviewStruct;
+
+struct _HisFX3_Current_Calibration
+{
 	float flWorkAVDD[_HisFX3V2_CURRENTCAL_COUNT];
 	float flWorkDVDD[_HisFX3V2_CURRENTCAL_COUNT];
 	float flWorkDOVDD[_HisFX3V2_CURRENTCAL_COUNT];
@@ -459,7 +542,8 @@ struct _HisFX3_Current_Calibration{
 	}
 };
 
-struct _HisFX3_Voltage_Calibration{
+struct _HisFX3_Voltage_Calibration
+{
 	float flVlotAVDD[_HisFX3V2_CURRENTCAL_COUNT];
 	float flVlotDVDD[_HisFX3V2_CURRENTCAL_COUNT];
 	float flVlotDOVDD[_HisFX3V2_CURRENTCAL_COUNT];
@@ -478,7 +562,8 @@ struct _HisFX3_Voltage_Calibration{
 	}
 };
 
-struct _HisFX3R2_OSCal_Item{
+struct _HisFX3R2_OSCal_Item
+{
 	unsigned char ucSwitch;
 	char str1stName[_HisFX3_OS_PinName_MaxByte];
 	char str2ndName[_HisFX3_OS_PinName_MaxByte];
@@ -501,12 +586,6 @@ enum _HisFX3_Current_Switch{
 	_HisFX3_Current_AF				=	0x3
 };
 
-enum _HisFX3_Current_Grade{
-	_HisFX3_Current_Grade1		=	0x0,  //0.3R(0mA~400mA)(12.5uA)
-	_HisFX3_Current_Grade2		=	0x1,  //2R(0mA~128mA)(4uA)
-	_HisFX3_Current_Grade3		=	0x2	//2K(0uA~160uA)(0.005uA)
-};
-
 enum _HisFX3_OS_PIN_INDEX{
 	_HisFX3_OS_PIN_VPPS		=	0x0,
 	_HisFX3_OS_PIN_AVDDS		=	0x1,
@@ -522,195 +601,289 @@ enum _HisFX3_OS_PIN_INDEX{
 	_HisFX3_OS_PIN_SDA			=	0xb
 };
 
-struct _HisFX3OS_Positive_Item{
-	/*! PIN脚名称
-	R5并口PIN脚列表: IO_IN0,D0,D1,D2,D3,D4,D5,D6,AGND,DGND,D7,D8,D9,D10,D11,D12,D13,D14,D15,PCLK,HSYNC,VSYNC,IO_OUT1,MCLK,PWDN,RST,SCL,SDA,AVDD,DOVDD,DVDD,AF-VCC
-	R5 MIPI 第1通道PIN脚列表: IO_IN0,IO_OUT0,IO_OUT1,SDA,SCL,RST,PWD,MCLK,AGND,DGND,LAN3-P,LAN3-N,LAN2-P,LAN2-N,LAN1-P,LAN1-N,LAN0-P,LAN0-N,MCP,MCN,OTP,AVDD,DOVDD,DVDD,AF-VCC,5V,POW
-	R5 MIPI 第2通道PIN脚列表: IO_IN0,IO_OUT0,IO_OUT1,SDA,SCL,RST,PWDN,MCLK,AGND,DGND,LAN3-P,LAN3-N,LAN2-P,LAN2-N,LAN1-P,LAN1-N,LAN0-P,LAN0-N,MCP,MCN,OTP,AVDD,DOVDD,DVDD,AF-VCC,5V,POW
-
-	R3并口PIN脚列表: DGND,AGND,IO0,D1,D3,D0,D2,SDA,SCL,AF-VCC,AVDD,DVDD,DOVDD,IO1,MCLK,PWDN,RST,D9,D8,PCLK,D7,D6,VSYNC,D5,HSYNC,D4
-	R3 MIPI PIN脚列表: DGND,AGND,MCP0,MCN0,LAN0-P,LAN0-N,LAN1-P,LAN1-N,LAN3-P,LAN3-N,5V,AF-VCC,VPP,AVDD,DVDD,DOVDD,IO4,LAN2-N,LAN2-P,PWDN,RST,MCLK,SDA,SCL,IO3,IO2
-	\sa _HisFX3_ImageSenor_Factory
+struct _HisFX3OS_Positive_Item
+{
+	/*! PIN脚名称, 可以调用HisFX3GetOSPinNameList查看所有的PIN脚名称
+	\sa HisFX3GetOSPinNameList
 	*/
 	char strName[_HisFX3_OS_PinName_MaxByte];
-	bool bTest; /*!< true：测试		false：不测试 */
-	bool bAGND; /*!< true：对AGND做开路测试		false：对DGND做开路测试 。如果是全PIN脚测试版本，并且设置了strGNDName， 则此参数不起作用*/
-	/*! 对全PIN脚的OS版本，可以设定GND PIN脚，如果不设，程序会根据bAGND自动选取其中某个GND PIN脚进行测试
-	R3X MIPI GND PIN脚列表：AGND(默认),DGND0,DGND1,DGND2,DGND3,DGND4(默认),DGND5,DGND6,DGND7,DGND8,DGND9
-	R3X DVP GND PIN脚列表：AGND0(默认),AGND1,DGND0(默认),DGND1
-	R5X MIPI GND PIN脚列表：AGND0(默认),DGND0,DGND1,DGND2,DGND3,DGND4(默认),DGND5,DGND6,DGND7,DGND8,DGND9,[2]AGND0,[2]DGND0,[2]DGND1,[2]DGND2,[2]DGND3,[2]DGND4,[2]DGND5,[2]DGND6,[2]DGND7,[2]DGND8,[2]DGND9
-	R5X DVP GND PIN脚列表：AGND0(默认),AGND1,DGND0(默认),DGND1
+	/*! GND脚名称
+	\sa HisFX3GetOSPinNameList
 	*/
-	char strGNDName[_HisFX3_OS_PinName_MaxByte];
-	unsigned char ucLine; /*!< 内部使用， 不用设置 */
+	char strGNDName[_HisFX3_OS_PinName_MaxByte];	
 	float flSpecMin; /*!< 可设可不设， 库内部没有用到 */
 	float flSpecMax; /*!< 可设可不设， 库内部没有用到 */
 	float flVoltValue; /*!< 测试完成之后，此PIN脚的电压值会存入flVoltValue，单位：mV*/
+	bool bTest; /*!< true：测试		false：不测试 */
+	int cam; /*! -1:默认 其他：模组编号*/
+	int port; /*! -1: 默认  0：DPHY  1:CPHY  2:DVP 3:LVDS*/
+	unsigned int reserve; /*! 保留*/
+
 	_HisFX3OS_Positive_Item()
 	{
-		bTest			=	false;
-		bAGND		=	false;
 		flVoltValue	=	0.0f;
-		strName[0]	=	'\0';
-		strGNDName[0]	=	'\0';
+		strName[0]	= strGNDName[0] = '\0';
+		port = cam = -1;
+		reserve = 0;
+		bTest = true;
+	}
+
+	_HisFX3OS_Positive_Item& operator = (const _HisFX3OS_Positive_Item& src)
+	{
+		memcpy(this->strName, src.strName, _HisFX3_OS_PinName_MaxByte * sizeof(char));
+		memcpy(this->strGNDName, src.strGNDName, _HisFX3_OS_PinName_MaxByte * sizeof(char));
+		this->flSpecMin = src.flSpecMin;
+		this->flSpecMax = src.flSpecMax;
+		this->flVoltValue = src.flVoltValue;
+		this->bTest = src.bTest;
+		this->cam = src.cam;
+		this->port = src.port;
+		this->reserve = src.reserve;
+		return *this;
 	}
 };
 
-struct _HisFX3OS_Negtive_Item{
-	/*! PIN脚名称
-	\sa _HisFX3OS_Positive_Item
+struct _HisFX3OS_Negtive_Item
+{
+	/*! PIN脚名称, 可以调用HisFX3GetOSPinNameList查看所有的PIN脚名称
+	\sa HisFX3GetOSPinNameList
 	*/
 	char strName[_HisFX3_OS_PinName_MaxByte];
-	/*! 对全PIN脚的OS版本，可以设定DOVDD PIN脚，如果不设，程序会自动选取其中某个DOVDD PIN脚进行测试
-	R5X MIPI GND PIN脚列表：DOVDD1(默认),DOVDD2
-	R5X DVP GND PIN脚列表：DOVDD1(默认),DOVDD2
-	R5X MIPI GND PIN脚列表：DOVDD1(默认),DOVDD2,[2]DOVDD1,[2]DOVDD2
-	R5X DVP GND PIN脚列表：DOVDD1(默认),DOVDD2
+	/*! DOVDD脚名称
+	\sa HisFX3GetOSPinNameList
 	*/
 	char strDOVDDName[_HisFX3_OS_PinName_MaxByte];
-	bool bTest; /*!< true：测试		false：不测试 */
-	unsigned char ucLine; /*!< 内部使用， 不用设置 */
 	float flSpecMin; /*!< 可设可不设， 库内部没有用到 */
 	float flSpecMax;  /*!< 可设可不设， 库内部没有用到 */
 	float flVoltValue; /*!< 测试完成之后，此PIN脚的电压值会存入flVoltValue，单位：mV*/
+	bool bTest; /*!< true：测试		false：不测试 */
+	int cam; /*! -1:默认 其他：模组编号*/
+	int port; /*! -1: 默认  0：DPHY  1:CPHY  2:DVP 3:LVDS*/
+	unsigned int reserve; /*! 保留*/
+
 	_HisFX3OS_Negtive_Item()
 	{
-		bTest			=	false;
 		flVoltValue	=	0.0f;
-		strName[0]		=	'\0';
-		strDOVDDName[0] = '\0';
+		strName[0]		= strDOVDDName[0] = '\0';
+		port = cam = -1;
+		reserve = 0;
+		bTest = true;
+	}
+
+	_HisFX3OS_Negtive_Item& operator = (const _HisFX3OS_Negtive_Item& src)
+	{
+		memcpy(this->strName, src.strName, _HisFX3_OS_PinName_MaxByte * sizeof(char));
+		memcpy(this->strDOVDDName, src.strDOVDDName, _HisFX3_OS_PinName_MaxByte * sizeof(char));
+		this->flSpecMin = src.flSpecMin;
+		this->flSpecMax = src.flSpecMax;
+		this->flVoltValue = src.flVoltValue;
+		this->bTest = src.bTest;
+		this->cam = src.cam;
+		this->port = src.port;
+		this->reserve = src.reserve;
+		return *this;
 	}
 };
 
-struct _HisFX3OS_Short_Item{
-	/*! 测试PIN脚名称
-	\sa _HisFX3OS_Positive_Item
+struct _HisFX3OS_Short_Item
+{
+	/*! PIN脚名称, 可以调用HisFX3GetOSPinNameList查看所有的PIN脚名称
+	\sa HisFX3GetOSPinNameList
 	*/
 	char strName[_HisFX3_OS_PinName_MaxByte];
-	/*! 当ucShortIndex != 0时，可以查看strShortName得到与此PIN脚短路的PIN脚名称
-	\sa _HisFX3OS_Positive_Item
+	/*! 当shortIndex != 0时，可以查看strShortName得到与此PIN脚短路的PIN脚名称
+	\sa HisFX3GetOSPinNameList
 	*/
 	char strShortName[_HisFX3_OS_PinName_MaxByte];
-	bool bTest; /*!< true：测试		false：不测试 */
-	unsigned char ucLine; /*!< 内部使用， 不用设置 */
 	float flShortSpec; /*!< 小于flShortSpec，则为短路， 单位：mV */
 	float flVoltValue; /*!< 测试完成之后，此PIN脚的电压值会存入flVoltValue，单位：mV*/
-	unsigned char ucShortIndex; /*!< ucShortIndex != 0, 就表示此PIN脚有短路  */
+	unsigned int shortIndex; /*!< ucShortIndex != 0, 就表示此PIN脚有短路  */
+	bool bTest; /*!< true：测试		false：不测试 */
+	int cam; /*! -1:默认 其他：模组编号(如果|0x8000 为单摄模式, 否则为双摄模式)*/
+	int port; /*! -1: 默认  0：DPHY  1:CPHY  2:DVP 3:LVDS*/
+	unsigned int reserve; /*! 保留*/
+
 	_HisFX3OS_Short_Item()
 	{
-		bTest			=	false;
-		ucShortIndex	=	0;
+		shortIndex =	0;
 		flVoltValue	=	0.0f;
-		strName[0]	=	'\0';
-		strShortName[0] = '\0';
+		strName[0]	= strShortName[0] =  '\0';
+		port = cam = -1;
+		reserve = 0;
+		bTest = true;
+	}
+
+	_HisFX3OS_Short_Item& operator = (const _HisFX3OS_Short_Item& src)
+	{
+		memcpy(this->strName, src.strName, _HisFX3_OS_PinName_MaxByte * sizeof(char));
+		memcpy(this->strShortName, src.strShortName, _HisFX3_OS_PinName_MaxByte * sizeof(char));
+		this->flShortSpec = src.flShortSpec;
+		this->flVoltValue = src.flVoltValue;
+		this->shortIndex = src.shortIndex;
+		this->bTest = src.bTest;
+		this->cam = src.cam;
+		this->port = src.port;
+		this->reserve = src.reserve;
+		return *this;
 	}
 };
 
-struct _HisFX3OS_Open_Item{
-	/*! 测试PIN脚名称
-	\sa _HisFX3OS_Positive_Item
+struct _HisFX3OS_Open_Item
+{
+	/*! PIN脚名称, 可以调用HisFX3GetOSPinNameList查看所有的PIN脚名称
+	\sa HisFX3GetOSPinNameList
 	*/
 	char strName[_HisFX3_OS_PinName_MaxByte];
-	/*! 当ucOpenIndex != 0时，可以查看strOpenName得到与此PIN脚开路的PIN脚名称
+	/*! 当openIndex != 0时，可以查看strOpenName得到与此PIN脚开路的PIN脚名称
 	\sa _HisFX3OS_Positive_Item
 	*/
 	char strOpenName[_HisFX3_OS_PinName_MaxByte];
-	bool bTest; /*!< true：测试		false：不测试 */
-	unsigned char ucLine; /*!< 内部使用， 不用设置 */
-	float flOpenSpec; /*!> 小于flOpenSpec，则为开路， 单位：mV */
+	float flOpenSpec; /*!> 大于flOpenSpec，则为开路， 单位：mV */
 	float flVoltValue; /*!< 测试完成之后，此PIN脚的电压值会存入flVoltValue，单位：mV*/
-	unsigned char ucOpenIndex; /*!< ucOpenIndex != 0, 就表示此PIN脚开路  */
+	unsigned int openIndex; /*!< ucOpenIndex != 0, 就表示此PIN脚开路  */
+	bool bTest; /*!< true：测试		false：不测试 */
+	int cam; /*! -1:默认 其他：模组编号*/
+	int port; /*! -1: 默认  0：DPHY  1:CPHY  2:DVP 3:LVDS*/
+	unsigned int reserve; /*! 保留*/
+
 	_HisFX3OS_Open_Item()
 	{
-		bTest			=	false;
-		ucOpenIndex	=	0;
+		openIndex =	0;
 		flVoltValue	=	0.0f;
-		strName[0]	=	'\0';
-		strOpenName[0]	=	'\0';
+		strName[0]	= strOpenName[0] = '\0';
+		port = cam = -1;
+		reserve = 0;
+		bTest = true;
+	}
+
+	_HisFX3OS_Open_Item& operator = (const _HisFX3OS_Open_Item& src)
+	{
+		memcpy(this->strName, src.strName, _HisFX3_OS_PinName_MaxByte * sizeof(char));
+		memcpy(this->strOpenName, src.strOpenName, _HisFX3_OS_PinName_MaxByte * sizeof(char));
+		this->flOpenSpec = src.flOpenSpec;
+		this->flVoltValue = src.flVoltValue;
+		this->openIndex = src.openIndex;
+		this->bTest = src.bTest;
+		this->cam = src.cam;
+		this->port = src.port;
+		this->reserve = src.reserve;
+		return *this;
 	}
 };
 
-struct _HisFX3OS_OHM_Item{
-	/*! 测试PIN脚 1名称
-	\sa _HisFX3OS_Positive_Item
+struct _HisFX3OS_OHM_Item
+{
+	/*! PIN脚1 名称, 可以调用HisFX3GetOSPinNameList查看所有的PIN脚名称
+	\sa HisFX3GetOSPinNameList
 	*/
 	char str1stName[_HisFX3_OS_PinName_MaxByte];
-	/*! 测试PIN脚 2名称
-	\sa _HisFX3OS_Positive_Item
+	/*! PIN脚2 名称, 可以调用HisFX3GetOSPinNameList查看所有的PIN脚名称
+	\sa HisFX3GetOSPinNameList
 	*/
 	char str2ndName[_HisFX3_OS_PinName_MaxByte];
-	unsigned char uc1stLine; /*!< 内部使用， 不用设置 */
-	unsigned char uc2ndLine; /*!< 内部使用， 不用设置 */
 	float flOhmValue; /*!< 测试完成之后，此PIN脚的阻值会存入flOhmValue，单位：欧姆*/
 	float flSpecMin; /*!< 可设可不设， 库内部没有用到 */
 	float flSpecMax; /*!< 可设可不设， 库内部没有用到 */
+	int cam; /*! -1:默认 其他：模组编号*/
+	int port; /*! -1: 默认  0：DPHY  1:CPHY  2:DVP 3:LVDS*/
+	unsigned int reserve; /*! 保留*/
+
 	_HisFX3OS_OHM_Item()
 	{
-		str1stName[0] = '\0';
-		str2ndName[0] = '\0';
+		str1stName[0] = str2ndName[0] = '\0';
+		port = cam = -1;
+		reserve = 0;
+	}
+
+	_HisFX3OS_OHM_Item& operator = (const _HisFX3OS_OHM_Item& src)
+	{
+		memcpy(this->str1stName, src.str1stName, _HisFX3_OS_PinName_MaxByte * sizeof(char));
+		memcpy(this->str2ndName, src.str2ndName, _HisFX3_OS_PinName_MaxByte * sizeof(char));
+		this->flOhmValue = src.flOhmValue;
+		this->flSpecMin = src.flSpecMin;
+		this->flSpecMax = src.flSpecMax;
+		this->cam = src.cam;
+		this->port = src.port;
+		this->reserve = src.reserve;
+		return *this;
 	}
 };
 
-/**************platform *****************/
-
-#define RJ_AFAM_CCW_INDEX		1.0
-#define RJ_AFAM_CW_INDEX		-1.0
-
-#define _HisAlg_SWITCH_A				0
-#define _HisAlg_SWITCH_B				1
-#define _HisAlg_SWITCH_C				2
-#define _HisAlg_SWITCH_D				3
-#define _HisAlg_SWITCH_E				4
-#define _HisAlg_SWITCH_F				5
-#define _HisAlg_SWITCH_G				6
-#define _HisAlg_SWITCH_H				7
-
-#define _HisCCMDraw_NotRemove_Mask	0x8000
-#define _HisCCMDraw_TestRemove_Mask	0x7fff
-
-#define _HisAlg_InvalidValueDefine_Double_0				0.0
-#define _HisAlg_InvalidValueDefine_Double_999999	999999.0
-
 enum _HisFX3Platform_ErrorCode{
-	HisFX3Error_Construct			=	0x0100,
-	HisFX3Error_CloseUSB3		=	0x0200,			//关闭usb3.0平台失败
-	HisFX3Error_Timeout				=	0x0300,			//操作超时
-	HisFX3Error_Parameter			=	0x0400,			//参数配置错误
-	HisFX3Error_IsNotOpen			=	0x0500,
-	HisFX3Error_IsNotPreview		=	0x0600,
-	HisFX3Error_MallocBuffer		=	0x0700,			//申请内存失败
-	HisFX3Error_USBDataOut		=	0x0800,			//USB下传数据失败
-	HisFX3Error_Hardware			=	0x0900,			//平台硬件
-	HisFX3Error_Other					=	0x0A00,
-	HisFX3Error_NotSuperSpeed	=	0x0B00,
-	HisFX3Error_CreateThread	=	0x0C00,			//创建线程失败
-	HisFX3Error_License				=	0x0D00,			//license 错误
-	HisFX3Error_NoRespond		=	0x0E00,
-	HisFX3Error_WirteIIC				=	0x0F00,
-	HisFX3Error_Check				=	0x1000	,			//数据不匹配
+	HisFX3Error_Construct			=	0x0100,	/*!< 类构造失败*/
+	HisFX3Error_CloseUSB3		=	0x0200,	/*!< 关闭usb3.0失败 */
+	HisFX3Error_Timeout				=	0x0300,	/*!< 操作超时 */
+	HisFX3Error_Parameter			=	0x0400,	/*!< 参数错误 */
+	HisFX3Error_IsNotOpen			=	0x0500,	/*!< 设备还未打开*/
+	HisFX3Error_IsNotPreview		=	0x0600,	/*!< 还未出图*/
+	HisFX3Error_MallocBuffer		=	0x0700,	/*!< 申请内存失败 */
+	HisFX3Error_USBDataOut		=	0x0800,	/*!< 下发数据失败 */
+	HisFX3Error_Hardware			=	0x0900,	/*!< 其他硬件错误 */
+	HisFX3Error_Other					=	0x0A00,	/*!< 其他错误*/
+	HisFX3Error_NotSuperSpeed	=	0x0B00,	/*!< 不是超速模式*/
+	HisFX3Error_CreateThread	=	0x0C00,		/*!< 创建线程失败 */
+	HisFX3Error_License				=	0x0D00,		/*!< license 错误 */
+	HisFX3Error_NoRespond		=	0x0E00,		/*!< IIC没响应*/
+	HisFX3Error_WirteIIC				=	0x0F00,	/*!< 写IIC失败*/
+	HisFX3Error_Check				=	0x1000	,	/*!< 校验码出错 */
 	HisFX3Error_AlgData				=	0x1100,				//导入算法的数据部符合要求
-	HisFX3Error_CreateEvent		=	0x1200,
-	HisFX3Error_MemNotEnough	=	0x1300,
-	HisFX3Error_FuntionNotSupport	=	0x1400,
-	HisFX3Error_ShortTestAbort	=	0x1500,
-	HisFX3Error_NegOpenTestAbort	=	0x1600,
-	HisFX3Error_PosOpenTestAbort	=	0x1700,
-	HisFX3Error_ImgBufConvert			=	0x1800,
-	HisFX3Error_NoHardware				=	0x1900,
+	HisFX3Error_CreateEvent		=	0x1200,	/*!< 创建事件失败*/
+	HisFX3Error_MemNotEnough	=	0x1300,	/*!< 内存空间不满足要求*/
+	HisFX3Error_FuntionNotSupport	=	0x1400,	/*!< 此函数不支持*/
+	HisFX3Error_ShortTestAbort	=	0x1500,	/*!< OS短路测试异常*/
+	HisFX3Error_NegOpenTestAbort	=	0x1600,	/*!< OS负向测试异常*/
+	HisFX3Error_PosOpenTestAbort	=	0x1700, /*!< OS正向测试异常*/
+	HisFX3Error_ImgBufConvert			=	0x1800,	/*!< 图像格式转换错误*/
+	HisFX3Error_NoHardware				=	0x1900,	/*!< 没有硬件*/
 	HisFX3Error_Connect					=	0x1A00,
 	HisFX3Error_CameraON					=	0x1B00,
-	HisFX3Error_GrabFrame					=	0x1C00,
-	HisFX3Error_OSAbort						=	0x1D00,
-	HisFX3Error_VersionNotMatch		=	0x1E00,
-	HisFX3Error_UpdateHW					=	0x1F00,
-	HisFX3Error_NoGrabber					=	0x2000,
+	HisFX3Error_GrabFrame					=	0x1C00,	/*!< 抓帧失败*/
+	HisFX3Error_OSAbort						=	0x1D00,	/*!< OS测试异常*/
+	HisFX3Error_VersionNotMatch		=	0x1E00,	/*!< 版本不匹配*/
+	HisFX3Error_UpdateHW					=	0x1F00,	/*!< 升级固件失败*/
+	HisFX3Error_NoGrabber					=	0x2000,	/*!< 没有找到工装*/
 	HisFX3Error_GrabberClosing			=	0x2100,  //grabber is closing
 	HisFX3Error_StreamInReset			=	0x2200,  //stream in error, and reseting
 	HisFX3Error_StreamExit				=	0x2300	,	//stream thread exit timeout
-	HisFX3Error_VoltageDiffBig			=	0x2400	,	//设置的电压和读取的电压过大
-	HisFX3Error_Preivewing					=	0x2500, 
-	HisFX3Error_OSNotCalibration		=	0x2600,
-	 
+	HisFX3Error_AVDDVDiffBig			=	0x2400,	/*! AVDD设置的电压和测量的电压过大 */
+	HisFX3Error_DVDDVDiffBig = 0x2401,	/*! DVDD设置的电压和测量的电压过大 */
+	HisFX3Error_DOVDDVDiffBig = 0x2402,	/*! DOVDD设置的电压和测量的电压过大 */
+	HisFX3Error_IODDVDiffBig = 0x2403,	/*! IODD设置的电压和测量的电压过大 */
+	HisFX3Error_AFVDiffBig = 0x2404,	/*! AF设置的电压和测量的电压过大 */
+	HisFX3Error_POWVDiffBig = 0x2405,	/*! POW设置的电压和测量的电压过大 */
+	HisFX3Error_OTPVDiffBig = 0x2406,	/*! OTP设置的电压和测量的电压过大 */
+	HisFX3Error_Preivewing					=	0x2500,		/*!< 出图中*/
+	HisFX3Error_OSNotCalibration							=	0x2600, /*!< OS还没有校准*/
+
+	HisFX3Error_VoltageNotCalibration					=	0x2700, /*!< 电压还未校准*/
+	HisFX3Error_CurrentNotCalibration			=	0x2800, /*!< 电流还未校准*/
+	HisFX3Error_IsNotStart								 =	 0x2900,
+	HisFX3Error_OSPinName = 0x2A00,
+	HisFX3Error_CPUNotMeet	=	0x2A01,
+	HisFX3Error_InvalidLineSize	=	0x2A2,
+	HisFX3Error_InvalidImageSize	=	0x2A03,
+	HisFX3Error_OutofMemrory	=	0x2A04,
+	HisFX3Error_InvalidFormat	=	0x2A05,
+	HisFX3Error_OpenDev = 0x2A06, /*!< 打开工装失败*/
+	HisFX3Error_NoImageData = 0x2A07, /*!< 没有图像数据*/
+	HisFX3Error_OpenFile = 0x2A08, /*!< 打开文件失败*/
+	HisFX3Error_OSNotSupported = 0x2A09, /*!< OS功能不支持*/
+	HisFX3Error_USBDataIn = 0x2A0A, 	/*!< 上传数据失败 */
+	HisFX3Error_LoadDLL = 0x2A0B, /*! 动态加载DLL文件失败*/
+	HisFX3Error_LoadAPI = 0x2A0C, /*! 动态加载DLL 中的API失败*/
+	HisFX3Error_CRC = 0x2A0D,  /*! 校验码错误*/
+	HisFX3Error_AF = 0x2A0E, /*! 对焦失败*/
+	HisFX3Error_FlashMemNotEnough	=	0x2A0F, /*! Flash空间不足*/
+	HisFX3Error_PtIsNULL	=	0x2A10,  /*! 指针为NULL*/
+	HisFX3Error_WaitEventAbort	=	0x2A11,  /*! 等待事件异常退出*/
+	HisFX3Error_DecodeWidthHeight = 0x2A12,  /*! 图像宽高解码不匹配*/
+	HisFX3Error_UpFrame = 0x2A13, 	/*! 上传错误帧*/
+	HisFX3Error_DecodeDataFormat = 0x2A14,  /*! 解码数据格式不正确*/
+	HisFX3Error_DecodeLaneNum = 0x2A15, 	/*! 解码LANE数不正确*/
+	HisFX3Error_MeasureCPHYRate = 0x2A16, /*! 检测CPHY速率失败*/
+	HisFX3Error_OperateRegister = 0x2A17, /*! 操作注册表失败*/
+	HisFX3Error_AdapterCPUBand = 0x2A18, /*! 网卡CPU绑定错误*/
+	HisFX3Error_ProcessCPUBand = 0x2A19, /*! 进程绑定CPU失败*/
 	HisCCMError_NotPreivew		=	0x100100,
 	HisCCMError_NoFrame			=	0x100200,
 	HisCCMError_Result				=	0x100300,
@@ -836,7 +1009,237 @@ enum _HisFX3Platform_ErrorCode{
 	HisTcpIpError_Busy =0x40801,
 	HisTcpIpError_ReceiveOverTime =0x40802,
 	HisTcpIpError_dualcameracoaxialitytest	=	0x40803
-}; 
+};
+
+enum _HisFX3_YUVCVTRGB_FLAG{
+	_HisFX3_YUVCVTRGB_BT601				=	0x1,
+	_HisFX3_YUVCVTRGB_BT709				=	0x2
+};
+
+struct _HisFX3_AF_Block
+{
+	int left; /*! 单位：像素*/
+	int top; /*! 单位：像素*/
+	int right; /*! 单位：像素*/
+	int bottom; /*! 单位：像素*/
+	int weight; /*! 对焦曲线权重, 0~100*/
+
+	_HisFX3_AF_Block() {}
+	_HisFX3_AF_Block(_HisFX3_AF_Block& src)
+	{
+		this->left = src.left;
+		this->top = src.top;
+		this->right = src.right;
+		this->bottom = src.bottom;
+		this->weight = src.weight;
+	}
+
+	_HisFX3_AF_Block& operator = (const _HisFX3_AF_Block& src)
+	{
+		this->left = src.left;
+		this->top = src.top;
+		this->right = src.right;
+		this->bottom = src.bottom;
+		this->weight = src.weight;
+		return *this;
+	}
+};
+
+struct _HisFX3_VCMDriver_Cfg
+{
+	char type[32]; /*! 马达型号, 内置9714a,gt9762s,9718s*/
+	unsigned char slave; /*! 设备地址*/
+
+	unsigned char iicCount; /*! IIC数量*/
+	unsigned char iicInterval; /*! IIC间隔时间, 单位：ms*/
+	unsigned char regBytes; /*! 寄存器位长度，单位：Byte*/
+	unsigned char dataBytes; /*! 数据位长度， 单位:Byte*/
+	unsigned char regRightShift[2];
+	unsigned char regLeftShift[2];
+	unsigned short regAnd[2];
+	unsigned short regOr[2];
+	unsigned char dataRightShift[2];
+	unsigned char dataLeftShift[2];
+	unsigned short dataAnd[2];
+	unsigned short dataOr[2];
+
+	_HisFX3_VCMDriver_Cfg()
+	{
+		type[0] = '\0';
+		iicCount = 0;
+		iicInterval = 0;
+	}
+};
+
+struct _HisFX3_FPGAAF_Cfg
+{
+	const unsigned int ver; /*! 结构体版本号， 内部使用，无需修改*/
+	bool doCurveFit; /*! 是否要做曲线拟合*/
+	unsigned char afAlg; /*!对焦算法*/
+	unsigned char mtfAlg; /*! 解析力算法*/
+	unsigned char waitMotorStableMethod; /*! 等待马达稳定的延时方法，0:等待固定的帧数  1:等待固定的时间*/
+	unsigned char frames[2]; /*! 等待马达稳定的帧数；数组0：大步近延帧；数组1：:小步进延帧*/
+	unsigned short waitms[2]; /*! 等待马达稳定的时间， 单位:ms；数组0：大步近延时；数组1：:小步进延时*/
+	unsigned int timeout; /*! 对焦过程timeout时间， 单位:ms*/
+	unsigned short steptimeout; /*! 单独等待正确帧的timeout时间，单位:ms*/
+	unsigned char blockCount; /*! 算解析力ROI个数，范围(1: 9)*/
+	_HisFX3_AF_Block roi[9];
+	_HisFX3_VCMDriver_Cfg motor;
+	unsigned int bigStep; /*! 马达对焦策略大步步数*/
+	unsigned int smallStep; /*! 马达对焦策略小步步数*/
+	double bsChangeMTF; /*! 马达大小步数切换的解析力阀值*/
+	int motorStart; /*! 马达对焦的范围起始位置*/
+	int motorEnd; /*! 马达对焦的范围结束位置*/
+	double peakValidMTF; /*! PEAK点的最小MTF值*/
+	double curveDropMTF; /*! 判断曲线下降的MTF落差值*/
+	int luxDiffMin;	/*! 亮度差值范围最小值*/
+	int luxDiffMax;	/*! 亮度差值范围最大值*/
+	double pixelNumsMin; /*! 最低有效像素比例*/
+
+	_HisFX3_FPGAAF_Cfg()
+		: ver(1), doCurveFit(false)
+	{
+		blockCount =afAlg = mtfAlg =0;
+		waitMotorStableMethod = 1;
+		frames[0] = frames[1] = 2;
+		waitms[0] = waitms[1] = 100;
+		timeout = 10000;
+		steptimeout = 500;
+		bigStep = 20; smallStep = 5;
+		motorStart = 0; motorEnd = 1023;
+		luxDiffMin = 6; luxDiffMax = 200;
+		pixelNumsMin = 0.0001;
+	}
+};
+
+struct _HisFX3_AF_Curve
+{
+	int motorDec; /*! 马达值*/
+	double mtf; /*! MTF值*/
+
+	_HisFX3_AF_Curve() {}
+	_HisFX3_AF_Curve(const _HisFX3_AF_Curve& src)
+	{
+		this->motorDec = src.motorDec;
+		this->mtf = src.mtf;
+	}
+
+	_HisFX3_AF_Curve& operator = (const _HisFX3_AF_Curve& src)
+	{
+		this->motorDec = src.motorDec;
+		this->mtf = src.mtf;
+		return *this;
+	}
+};
+
+struct _HisFX3_FPGAAF_Rel
+{
+	int peakMotor; /*! PEAK点的马达值*/
+	double peakMTF; /*! PEAK点的MTF值*/
+	_HisFX3_AF_Curve curve[4096];
+	unsigned int curvePtCount; /*! 曲线的点数*/
+};
+#endif/**********  新SDK用 *****************/
+
+
+class QHisFX3MallocAlignedManage
+{
+public:
+	QHisFX3MallocAlignedManage(void* pvBuf2)
+	{
+		pvBuf	=	pvBuf2;
+	}
+
+	~QHisFX3MallocAlignedManage()
+	{
+		HisReleaseMalloc(pvBuf)
+	}
+
+	void Release()
+	{
+		HisReleaseMalloc(pvBuf)
+	}
+
+private:
+	void* pvBuf;
+};
+
+template <class T> class QHisFX3NewObjectManage
+{
+public: 	
+	QHisFX3NewObjectManage(T* aVar)
+	{
+		mVar = aVar;
+	}
+
+	~QHisFX3NewObjectManage()
+	{
+		if(mVar != 0){
+			delete mVar;
+			mVar = 0;
+		}
+	}
+
+	void Release()
+	{
+		if(mVar != 0){
+			delete mVar;
+			mVar = 0;
+		}
+	}
+
+private:
+	T *mVar;
+};
+
+template <class T> class QHisFX3NewBufManage
+{
+public: 	
+	QHisFX3NewBufManage(T * aVar)
+	{
+		mVar = aVar;
+	}
+
+	~QHisFX3NewBufManage()
+	{
+		if(mVar != 0){
+			delete[] mVar;
+			mVar = 0;
+		}
+	}
+
+	void Release()
+	{
+		if(mVar != 0){
+			delete[] mVar;
+			mVar = 0;
+		}
+	}
+
+private:
+	T *mVar;
+};
+
+
+#define RJ_AFAM_CCW_INDEX		1.0
+#define RJ_AFAM_CW_INDEX		-1.0
+
+#define _HisAlg_SWITCH_A				0
+#define _HisAlg_SWITCH_B				1
+#define _HisAlg_SWITCH_C				2
+#define _HisAlg_SWITCH_D				3
+#define _HisAlg_SWITCH_E				4
+#define _HisAlg_SWITCH_F				5
+#define _HisAlg_SWITCH_G				6
+#define _HisAlg_SWITCH_H				7
+
+#define _HisCCMDraw_NotRemove_Mask	0x8000
+#define _HisCCMDraw_TestRemove_Mask	0x7fff
+
+#define _HisAlg_InvalidValueDefine_Double_0				0.0
+#define _HisAlg_InvalidValueDefine_Double_999999	999999.0
+
+
 enum _HisCoaxiality_ErrorCode{
 	HisCoaxiality_Errorparamater			=	0x01,	//输入参数错误
 	HisCoaxiality_ErrorRgbFalg				=	0x02, //彩色图像参数错误
@@ -875,10 +1278,6 @@ enum _HisAlg_LineType{
 	_HisAlg_LineType_Vertical			=	0x01
 };
 
-enum _HisFX3_YUVCVTRGB_FLAG{
-	_HisFX3_YUVCVTRGB_BT601				=	0x1,
-	_HisFX3_YUVCVTRGB_BT709				=	0x2
-};
 
 enum _HisCCM_AlgID_Enum{
 	_HisCCM_AlgID_MTF_hao_a			=	0x00000001,	//自带MTF算法
@@ -2989,6 +3388,45 @@ struct _SFRBlackItem{
 	POINT stTop;
 	POINT stBottom;
 	float flAngle;
+};
+
+struct _HisPlatformAudio_Buffer
+{
+	int samplerate;
+	int channels;
+	int sampleSize;
+	unsigned char* pucBuf;
+	unsigned int uiBufSize;
+	unsigned int uiPrivateMollacSize;
+
+	_HisPlatformAudio_Buffer(void)
+	{
+		pucBuf = 0;
+		uiPrivateMollacSize	=uiBufSize	=	0;
+	}
+
+	~_HisPlatformAudio_Buffer(void)
+	{
+		HisReleaseMalloc(pucBuf);
+		uiPrivateMollacSize	=uiBufSize	=	0;
+	}
+
+	void clear(void)
+	{
+		HisReleaseMalloc(pucBuf);
+		uiPrivateMollacSize	=uiBufSize	=	0;
+	}
+
+	void h_malloc(unsigned int uiSize)
+	{
+		if(uiSize > uiPrivateMollacSize)
+		{
+			HisReleaseMalloc(pucBuf);
+			pucBuf		= (unsigned char*)HisAlignedMalloc(uiSize);
+			uiPrivateMollacSize	=	uiSize;
+		}
+		uiBufSize	=	uiSize;
+	}
 };
 
 #endif

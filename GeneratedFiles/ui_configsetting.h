@@ -1490,12 +1490,19 @@ public:
     QLabel *label_35;
     QGroupBox *ocAlgAgroupBox;
     QHBoxLayout *horizontalLayout_28;
-    QVBoxLayout *verticalLayout_25;
-    QLabel *label_43;
-    QLabel *label_42;
     QVBoxLayout *verticalLayout_173;
+    QHBoxLayout *horizontalLayout_681;
+    QLabel *label_43;
     QLineEdit *ocPixelRatiolineEdit;
-    QLineEdit *ocDeviationlineEdit;
+    QHBoxLayout *horizontalLayout_682;
+    QLabel *label_184;
+    QSpinBox *ocDeviationSpinBox;
+    QHBoxLayout *horizontalLayout_683;
+    QLabel *label_186;
+    QSpinBox *ocXSpinBox;
+    QHBoxLayout *horizontalLayout_684;
+    QLabel *label_188;
+    QSpinBox *ocYSpinBox;
     QWidget *page_19;
     QVBoxLayout *verticalLayout_178;
     QLabel *ochblabel_119;
@@ -1505,6 +1512,12 @@ public:
     QHBoxLayout *horizontalLayout_646;
     QLabel *ochblabel_121;
     QSpinBox *ochbDevspinBox;
+    QHBoxLayout *horizontalLayout_679;
+    QLabel *ochblabel_122;
+    QSpinBox *ochbXspinBox;
+    QHBoxLayout *horizontalLayout_680;
+    QLabel *ochblabel_128;
+    QSpinBox *ochbYspinBox;
     QWidget *tab_4;
     QVBoxLayout *verticalLayout_23;
     QHBoxLayout *horizontalLayout_23;
@@ -3149,7 +3162,7 @@ public:
         if (configsetting->objectName().isEmpty())
             configsetting->setObjectName(QString::fromUtf8("configsetting"));
         configsetting->setWindowModality(Qt::NonModal);
-        configsetting->resize(973, 793);
+        configsetting->resize(988, 793);
         configsetting->setMinimumSize(QSize(618, 453));
         QFont font;
         font.setFamily(QString::fromUtf8("Microsoft Tai Le"));
@@ -14721,36 +14734,79 @@ public:
         horizontalLayout_28->setSpacing(6);
         horizontalLayout_28->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_28->setObjectName(QString::fromUtf8("horizontalLayout_28"));
-        verticalLayout_25 = new QVBoxLayout();
-        verticalLayout_25->setSpacing(6);
-        verticalLayout_25->setObjectName(QString::fromUtf8("verticalLayout_25"));
+        verticalLayout_173 = new QVBoxLayout();
+        verticalLayout_173->setSpacing(6);
+        verticalLayout_173->setObjectName(QString::fromUtf8("verticalLayout_173"));
+        horizontalLayout_681 = new QHBoxLayout();
+        horizontalLayout_681->setSpacing(6);
+        horizontalLayout_681->setObjectName(QString::fromUtf8("horizontalLayout_681"));
         label_43 = new QLabel(ocAlgAgroupBox);
         label_43->setObjectName(QString::fromUtf8("label_43"));
         label_43->setFont(font1);
 
-        verticalLayout_25->addWidget(label_43);
+        horizontalLayout_681->addWidget(label_43);
 
-        label_42 = new QLabel(ocAlgAgroupBox);
-        label_42->setObjectName(QString::fromUtf8("label_42"));
-        label_42->setFont(font1);
-
-        verticalLayout_25->addWidget(label_42);
-
-
-        horizontalLayout_28->addLayout(verticalLayout_25);
-
-        verticalLayout_173 = new QVBoxLayout();
-        verticalLayout_173->setSpacing(6);
-        verticalLayout_173->setObjectName(QString::fromUtf8("verticalLayout_173"));
         ocPixelRatiolineEdit = new QLineEdit(ocAlgAgroupBox);
         ocPixelRatiolineEdit->setObjectName(QString::fromUtf8("ocPixelRatiolineEdit"));
 
-        verticalLayout_173->addWidget(ocPixelRatiolineEdit);
+        horizontalLayout_681->addWidget(ocPixelRatiolineEdit);
 
-        ocDeviationlineEdit = new QLineEdit(ocAlgAgroupBox);
-        ocDeviationlineEdit->setObjectName(QString::fromUtf8("ocDeviationlineEdit"));
 
-        verticalLayout_173->addWidget(ocDeviationlineEdit);
+        verticalLayout_173->addLayout(horizontalLayout_681);
+
+        horizontalLayout_682 = new QHBoxLayout();
+        horizontalLayout_682->setSpacing(6);
+        horizontalLayout_682->setObjectName(QString::fromUtf8("horizontalLayout_682"));
+        label_184 = new QLabel(ocAlgAgroupBox);
+        label_184->setObjectName(QString::fromUtf8("label_184"));
+        label_184->setFont(font1);
+
+        horizontalLayout_682->addWidget(label_184);
+
+        ocDeviationSpinBox = new QSpinBox(ocAlgAgroupBox);
+        ocDeviationSpinBox->setObjectName(QString::fromUtf8("ocDeviationSpinBox"));
+        ocDeviationSpinBox->setMaximum(5000);
+
+        horizontalLayout_682->addWidget(ocDeviationSpinBox);
+
+
+        verticalLayout_173->addLayout(horizontalLayout_682);
+
+        horizontalLayout_683 = new QHBoxLayout();
+        horizontalLayout_683->setSpacing(6);
+        horizontalLayout_683->setObjectName(QString::fromUtf8("horizontalLayout_683"));
+        label_186 = new QLabel(ocAlgAgroupBox);
+        label_186->setObjectName(QString::fromUtf8("label_186"));
+        label_186->setFont(font1);
+
+        horizontalLayout_683->addWidget(label_186);
+
+        ocXSpinBox = new QSpinBox(ocAlgAgroupBox);
+        ocXSpinBox->setObjectName(QString::fromUtf8("ocXSpinBox"));
+        ocXSpinBox->setMaximum(5000);
+
+        horizontalLayout_683->addWidget(ocXSpinBox);
+
+
+        verticalLayout_173->addLayout(horizontalLayout_683);
+
+        horizontalLayout_684 = new QHBoxLayout();
+        horizontalLayout_684->setSpacing(6);
+        horizontalLayout_684->setObjectName(QString::fromUtf8("horizontalLayout_684"));
+        label_188 = new QLabel(ocAlgAgroupBox);
+        label_188->setObjectName(QString::fromUtf8("label_188"));
+        label_188->setFont(font1);
+
+        horizontalLayout_684->addWidget(label_188);
+
+        ocYSpinBox = new QSpinBox(ocAlgAgroupBox);
+        ocYSpinBox->setObjectName(QString::fromUtf8("ocYSpinBox"));
+        ocYSpinBox->setMaximum(5000);
+
+        horizontalLayout_684->addWidget(ocYSpinBox);
+
+
+        verticalLayout_173->addLayout(horizontalLayout_684);
 
 
         horizontalLayout_28->addLayout(verticalLayout_173);
@@ -14814,6 +14870,48 @@ public:
 
 
         verticalLayout_178->addLayout(horizontalLayout_646);
+
+        horizontalLayout_679 = new QHBoxLayout();
+        horizontalLayout_679->setSpacing(6);
+        horizontalLayout_679->setObjectName(QString::fromUtf8("horizontalLayout_679"));
+        ochblabel_122 = new QLabel(page_19);
+        ochblabel_122->setObjectName(QString::fromUtf8("ochblabel_122"));
+        ochblabel_122->setFont(font1);
+
+        horizontalLayout_679->addWidget(ochblabel_122);
+
+        ochbXspinBox = new QSpinBox(page_19);
+        ochbXspinBox->setObjectName(QString::fromUtf8("ochbXspinBox"));
+        ochbXspinBox->setSuffix(QString::fromUtf8(""));
+        ochbXspinBox->setPrefix(QString::fromUtf8(""));
+        ochbXspinBox->setMaximum(5000);
+        ochbXspinBox->setValue(30);
+
+        horizontalLayout_679->addWidget(ochbXspinBox);
+
+
+        verticalLayout_178->addLayout(horizontalLayout_679);
+
+        horizontalLayout_680 = new QHBoxLayout();
+        horizontalLayout_680->setSpacing(6);
+        horizontalLayout_680->setObjectName(QString::fromUtf8("horizontalLayout_680"));
+        ochblabel_128 = new QLabel(page_19);
+        ochblabel_128->setObjectName(QString::fromUtf8("ochblabel_128"));
+        ochblabel_128->setFont(font1);
+
+        horizontalLayout_680->addWidget(ochblabel_128);
+
+        ochbYspinBox = new QSpinBox(page_19);
+        ochbYspinBox->setObjectName(QString::fromUtf8("ochbYspinBox"));
+        ochbYspinBox->setSuffix(QString::fromUtf8(""));
+        ochbYspinBox->setPrefix(QString::fromUtf8(""));
+        ochbYspinBox->setMaximum(5000);
+        ochbYspinBox->setValue(30);
+
+        horizontalLayout_680->addWidget(ochbYspinBox);
+
+
+        verticalLayout_178->addLayout(horizontalLayout_680);
 
         opticalcenterstackedWidget->addWidget(page_19);
 
@@ -25425,7 +25523,7 @@ public:
         autoExposurescrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents_2 = new QWidget();
         scrollAreaWidgetContents_2->setObjectName(QString::fromUtf8("scrollAreaWidgetContents_2"));
-        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 444, 1455));
+        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 458, 1272));
         verticalLayout_53 = new QVBoxLayout(scrollAreaWidgetContents_2);
         verticalLayout_53->setSpacing(6);
         verticalLayout_53->setContentsMargins(11, 11, 11, 11);
@@ -26409,7 +26507,7 @@ public:
         autoExposurescrollArea_3->setWidgetResizable(true);
         scrollAreaWidgetContents_7 = new QWidget();
         scrollAreaWidgetContents_7->setObjectName(QString::fromUtf8("scrollAreaWidgetContents_7"));
-        scrollAreaWidgetContents_7->setGeometry(QRect(0, 0, 465, 612));
+        scrollAreaWidgetContents_7->setGeometry(QRect(0, 0, 475, 636));
         verticalLayout_56 = new QVBoxLayout(scrollAreaWidgetContents_7);
         verticalLayout_56->setSpacing(6);
         verticalLayout_56->setContentsMargins(11, 11, 11, 11);
@@ -26552,9 +26650,9 @@ public:
         label_12->setBuddy(lenslineEdit);
         label_99->setBuddy(projectlineEdit);
         label_43->setBuddy(ocPixelRatiolineEdit);
-        label_42->setBuddy(ocDeviationlineEdit);
-        ochblabel_126->setBuddy(ocDeviationlineEdit);
-        ochblabel_121->setBuddy(ocDeviationlineEdit);
+        label_184->setBuddy(ocPixelRatiolineEdit);
+        label_186->setBuddy(ocPixelRatiolineEdit);
+        label_188->setBuddy(ocPixelRatiolineEdit);
         label_30->setBuddy(shadingcomboBox);
         label_41->setBuddy(blemishRangelineEdit);
         label_54->setBuddy(colorRangelineEdit);
@@ -27335,9 +27433,7 @@ public:
         QWidget::setTabOrder(afclpaNTLinearBackcheckBox, afclpaNTSavepushButton);
         QWidget::setTabOrder(afclpaNTSavepushButton, occomboBox);
         QWidget::setTabOrder(occomboBox, saveOCpushButton);
-        QWidget::setTabOrder(saveOCpushButton, ocPixelRatiolineEdit);
-        QWidget::setTabOrder(ocPixelRatiolineEdit, ocDeviationlineEdit);
-        QWidget::setTabOrder(ocDeviationlineEdit, ochbSizeRatiodoubleSpinBox);
+        QWidget::setTabOrder(saveOCpushButton, ochbSizeRatiodoubleSpinBox);
         QWidget::setTabOrder(ochbSizeRatiodoubleSpinBox, ochbDevspinBox);
         QWidget::setTabOrder(ochbDevspinBox, shadingcomboBox);
         QWidget::setTabOrder(shadingcomboBox, saveShadingpushButton);
@@ -27678,7 +27774,7 @@ public:
 
         retranslateUi(configsetting);
 
-        tabWidgetmain->setCurrentIndex(6);
+        tabWidgetmain->setCurrentIndex(3);
         mipiSignalcomboBox->setCurrentIndex(1);
         commuProtocalcomboBox->setCurrentIndex(0);
         focusAdjusttabWidget->setCurrentIndex(3);
@@ -27709,9 +27805,9 @@ public:
         afclpaMTValueChoosecomboBox->setCurrentIndex(0);
         afclpaNTTacticscomboBox->setCurrentIndex(3);
         afclpaNTValueChoosecomboBox->setCurrentIndex(0);
-        tabWidgetWhite->setCurrentIndex(1);
+        tabWidgetWhite->setCurrentIndex(0);
         occomboBox->setCurrentIndex(0);
-        opticalcenterstackedWidget->setCurrentIndex(1);
+        opticalcenterstackedWidget->setCurrentIndex(0);
         shadingcomboBox->setCurrentIndex(0);
         shadingstackedWidget->setCurrentIndex(0);
         shadingHAChannelcomboBox->setCurrentIndex(3);
@@ -29086,12 +29182,15 @@ public:
         label_35->setText(QApplication::translate("configsetting", "Optical Center(Algorithm-A)\357\274\232", 0, QApplication::UnicodeUTF8));
         ocAlgAgroupBox->setTitle(QString());
         label_43->setText(QApplication::translate("configsetting", "Pixel Ratio", 0, QApplication::UnicodeUTF8));
-        label_42->setText(QApplication::translate("configsetting", "Optical Center Deviation", 0, QApplication::UnicodeUTF8));
         ocPixelRatiolineEdit->setText(QApplication::translate("configsetting", "0.001", 0, QApplication::UnicodeUTF8));
-        ocDeviationlineEdit->setText(QApplication::translate("configsetting", "100", 0, QApplication::UnicodeUTF8));
+        label_184->setText(QApplication::translate("configsetting", "Optical Center Deviation", 0, QApplication::UnicodeUTF8));
+        label_186->setText(QApplication::translate("configsetting", "Optical Center X", 0, QApplication::UnicodeUTF8));
+        label_188->setText(QApplication::translate("configsetting", "Optical Center Y", 0, QApplication::UnicodeUTF8));
         ochblabel_119->setText(QApplication::translate("configsetting", "Optical Center(Algorithm-B)\357\274\232", 0, QApplication::UnicodeUTF8));
         ochblabel_126->setText(QApplication::translate("configsetting", "Size Ratio:", 0, QApplication::UnicodeUTF8));
         ochblabel_121->setText(QApplication::translate("configsetting", "Optical Center Deviation:", 0, QApplication::UnicodeUTF8));
+        ochblabel_122->setText(QApplication::translate("configsetting", "Optical Center X:", 0, QApplication::UnicodeUTF8));
+        ochblabel_128->setText(QApplication::translate("configsetting", "Optical Center Y:", 0, QApplication::UnicodeUTF8));
         tabWidgetWhite->setTabText(tabWidgetWhite->indexOf(tab), QApplication::translate("configsetting", "OC", 0, QApplication::UnicodeUTF8));
         label_30->setText(QApplication::translate("configsetting", "Algorithm:", 0, QApplication::UnicodeUTF8));
         shadingcomboBox->clear();

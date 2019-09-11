@@ -1915,7 +1915,7 @@ namespace ROPLOW
 			for(unsigned int x=0;	x<stPara.vectorPositive.size(); ++x){
 				if(stPara.vectorPositive.at(x).bTest) {
 					++(stLogItem.itemtype);
-					stLogItem.itemkey	=	((stPara.vectorPositive.at(x).bAGND)?("OS_Positive_"):("OS_Positive_")) % QString::fromAscii(stPara.vectorPositive.at(x).strName);
+					stLogItem.itemkey	=	(/*(stPara.vectorPositive.at(x).bAGND)*/1?("OS_Positive_"):("OS_Positive_")) % QString::fromAscii(stPara.vectorPositive.at(x).strName);
 					stLogItem.itemvalue	=	stPara.vectorPositive.at(x).flVoltValue;
 					classLog.push_back(stLogItem);
 				}
@@ -1952,7 +1952,7 @@ namespace ROPLOW
 					++(stLogItem.itemtype);
 					stLogItem.itemkey	=	"OS_Short_" % QString::fromAscii(stPara.vectorShort.at(x).strName);
 					strText	=	QString::number(stPara.vectorShort.at(x).flVoltValue);
-					if(stPara.vectorShort.at(x).ucShortIndex)	strText = strText % "(" % QString::fromAscii(stPara.vectorShort.at(x).strShortName) % ")";
+					if(stPara.vectorShort.at(x).shortIndex)	strText = strText % "(" % QString::fromAscii(stPara.vectorShort.at(x).strShortName) % ")";
 					stLogItem.itemvalue	=	strText;
 					classLog.push_back(stLogItem);
 				}
@@ -1989,7 +1989,7 @@ namespace ROPLOW
 					++(stLogItem.itemtype);
 					stLogItem.itemkey	=	"OS_Open_" % QString::fromAscii(stPara.vectorOpen.at(x).strName);
 					strText	=	QString::number(stPara.vectorOpen.at(x).flVoltValue);
-					if(stPara.vectorOpen.at(x).ucOpenIndex)	strText = strText % "(" % QString::fromAscii(stPara.vectorOpen.at(x).strOpenName) % ")";
+					if(stPara.vectorOpen.at(x).openIndex)	strText = strText % "(" % QString::fromAscii(stPara.vectorOpen.at(x).strOpenName) % ")";
 					stLogItem.itemvalue	=	strText;
 					classLog.push_back(stLogItem);
 				}

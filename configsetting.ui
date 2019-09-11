@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>973</width>
+    <width>988</width>
     <height>793</height>
    </rect>
   </property>
@@ -67,7 +67,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>3</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideLeft</enum>
@@ -22798,7 +22798,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -22867,7 +22867,7 @@
                <enum>QFrame::Plain</enum>
               </property>
               <property name="currentIndex">
-               <number>1</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="page">
                <layout class="QVBoxLayout" name="verticalLayout_26">
@@ -22902,56 +22902,114 @@
                   </property>
                   <layout class="QHBoxLayout" name="horizontalLayout_28">
                    <item>
-                    <layout class="QVBoxLayout" name="verticalLayout_25">
-                     <item>
-                      <widget class="QLabel" name="label_43">
-                       <property name="font">
-                        <font>
-                         <weight>75</weight>
-                         <bold>true</bold>
-                        </font>
-                       </property>
-                       <property name="text">
-                        <string>Pixel Ratio</string>
-                       </property>
-                       <property name="buddy">
-                        <cstring>ocPixelRatiolineEdit</cstring>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QLabel" name="label_42">
-                       <property name="font">
-                        <font>
-                         <weight>75</weight>
-                         <bold>true</bold>
-                        </font>
-                       </property>
-                       <property name="text">
-                        <string>Optical Center Deviation</string>
-                       </property>
-                       <property name="buddy">
-                        <cstring>ocDeviationlineEdit</cstring>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                   <item>
                     <layout class="QVBoxLayout" name="verticalLayout_173">
                      <item>
-                      <widget class="QLineEdit" name="ocPixelRatiolineEdit">
-                       <property name="text">
-                        <string>0.001</string>
-                       </property>
-                      </widget>
+                      <layout class="QHBoxLayout" name="horizontalLayout_681">
+                       <item>
+                        <widget class="QLabel" name="label_43">
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Pixel Ratio</string>
+                         </property>
+                         <property name="buddy">
+                          <cstring>ocPixelRatiolineEdit</cstring>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLineEdit" name="ocPixelRatiolineEdit">
+                         <property name="text">
+                          <string>0.001</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
                      </item>
                      <item>
-                      <widget class="QLineEdit" name="ocDeviationlineEdit">
-                       <property name="text">
-                        <string>100</string>
-                       </property>
-                      </widget>
+                      <layout class="QHBoxLayout" name="horizontalLayout_682">
+                       <item>
+                        <widget class="QLabel" name="label_184">
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Optical Center Deviation</string>
+                         </property>
+                         <property name="buddy">
+                          <cstring>ocPixelRatiolineEdit</cstring>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QSpinBox" name="ocDeviationSpinBox">
+                         <property name="maximum">
+                          <number>5000</number>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <layout class="QHBoxLayout" name="horizontalLayout_683">
+                       <item>
+                        <widget class="QLabel" name="label_186">
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Optical Center X</string>
+                         </property>
+                         <property name="buddy">
+                          <cstring>ocPixelRatiolineEdit</cstring>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QSpinBox" name="ocXSpinBox">
+                         <property name="maximum">
+                          <number>5000</number>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <layout class="QHBoxLayout" name="horizontalLayout_684">
+                       <item>
+                        <widget class="QLabel" name="label_188">
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Optical Center Y</string>
+                         </property>
+                         <property name="buddy">
+                          <cstring>ocPixelRatiolineEdit</cstring>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QSpinBox" name="ocYSpinBox">
+                         <property name="maximum">
+                          <number>5000</number>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
                      </item>
                     </layout>
                    </item>
@@ -22999,9 +23057,6 @@
                     <property name="text">
                      <string>Size Ratio:</string>
                     </property>
-                    <property name="buddy">
-                     <cstring>ocDeviationlineEdit</cstring>
-                    </property>
                    </widget>
                   </item>
                   <item>
@@ -23032,13 +23087,76 @@
                     <property name="text">
                      <string>Optical Center Deviation:</string>
                     </property>
-                    <property name="buddy">
-                     <cstring>ocDeviationlineEdit</cstring>
-                    </property>
                    </widget>
                   </item>
                   <item>
                    <widget class="QSpinBox" name="ochbDevspinBox">
+                    <property name="suffix">
+                     <string notr="true"/>
+                    </property>
+                    <property name="prefix">
+                     <string notr="true"/>
+                    </property>
+                    <property name="maximum">
+                     <number>5000</number>
+                    </property>
+                    <property name="value">
+                     <number>30</number>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_679">
+                  <item>
+                   <widget class="QLabel" name="ochblabel_122">
+                    <property name="font">
+                     <font>
+                      <weight>75</weight>
+                      <bold>true</bold>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Optical Center X:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="ochbXspinBox">
+                    <property name="suffix">
+                     <string notr="true"/>
+                    </property>
+                    <property name="prefix">
+                     <string notr="true"/>
+                    </property>
+                    <property name="maximum">
+                     <number>5000</number>
+                    </property>
+                    <property name="value">
+                     <number>30</number>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_680">
+                  <item>
+                   <widget class="QLabel" name="ochblabel_128">
+                    <property name="font">
+                     <font>
+                      <weight>75</weight>
+                      <bold>true</bold>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Optical Center Y:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="ochbYspinBox">
                     <property name="suffix">
                      <string notr="true"/>
                     </property>
@@ -40239,8 +40357,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>444</width>
-               <height>1455</height>
+               <width>458</width>
+               <height>1272</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_53">
@@ -41921,8 +42039,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>465</width>
-               <height>612</height>
+               <width>475</width>
+               <height>636</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_56">
@@ -42896,8 +43014,6 @@
   <tabstop>afclpaNTSavepushButton</tabstop>
   <tabstop>occomboBox</tabstop>
   <tabstop>saveOCpushButton</tabstop>
-  <tabstop>ocPixelRatiolineEdit</tabstop>
-  <tabstop>ocDeviationlineEdit</tabstop>
   <tabstop>ochbSizeRatiodoubleSpinBox</tabstop>
   <tabstop>ochbDevspinBox</tabstop>
   <tabstop>shadingcomboBox</tabstop>

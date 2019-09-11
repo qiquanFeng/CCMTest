@@ -320,7 +320,12 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_coorconverttool.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_fx3deviceconfig.cpp" />
-    <ClCompile Include="GeneratedFiles\Debug\moc_hardwareop.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_hardwareop.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_hisfx3ccmtest.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -336,7 +341,12 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_jsl_burnstate.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_jsl_controlpanel.cpp" />
-    <ClCompile Include="GeneratedFiles\Debug\moc_jsl_logindialog.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_jsl_logindialog.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_leisaimotion.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_qconfigmanage.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_qcustomplot.cpp" />
@@ -353,7 +363,12 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_QHImageDebug.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_QHImageFrame.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_QHInfoPanel.cpp" />
-    <ClCompile Include="GeneratedFiles\Debug\moc_QHMainWindow.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_QHMainWindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_QHManualModeA.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_QHofflinePath.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_QHOpModeSwitch.cpp" />
@@ -373,7 +388,12 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_qmanualtool.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_savedebuginfo.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_saveimage.cpp" />
-    <ClCompile Include="GeneratedFiles\Debug\moc_updatefirewaredialog.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_updatefirewaredialog.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\qrc_hisfx3ccmtest.cpp" />
     <ClCompile Include="GeneratedFiles\Release\moc_coorconverttool.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

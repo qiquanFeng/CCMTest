@@ -1376,11 +1376,11 @@ void HisFX3CCMTest::offlineSetPath()
 		wchar_t wstrPath[256];
 		itemshareData.offlinepath.toWCharArray(wstrPath);
 		wstrPath[itemshareData.offlinepath.size()]	=	L'\0';
-		int iresult	=	classPlatform.HisFX3SetOffLineMode(true, wstrPath);
+		int iresult	=	classPlatform.HisFX3SetOffLineMode(true, itemshareData.offlinepath.toLatin1().data());
 		if(iresult){
 			bIs	=	false;
-			QMessageBox::warning(this, "ERROR", QString::fromWCharArray(classPlatform.GetLastError()));
-			emit information(QString::fromWCharArray(classPlatform.GetLastError()));
+			QMessageBox::warning(this, "ERROR", QString(classPlatform.GetLastError()));
+			emit information(QString(classPlatform.GetLastError()));
 		}
 	}
 
@@ -1420,18 +1420,17 @@ void HisFX3CCMTest::slotofflineb(bool bChecked)
 				classImage.save(strNewFileName, 0, 100);
 				itemshareData.offlinepath = strNewFileName;
 		}
-		wchar_t wstrPath[256];
-		itemshareData.offlinepath.toWCharArray(wstrPath);
-		wstrPath[itemshareData.offlinepath.size()]	=	L'\0';
+		char *strPath=itemshareData.offlinepath.toLatin1().data();
+		//wstrPath[itemshareData.offlinepath.size()]	=	L'\0';
 		int iresult;
 		if(bBoxChannel1)
-			iresult	=	classPlatform.HisFX3SetOffLineMode(true, wstrPath);
+			iresult	=	classPlatform.HisFX3SetOffLineMode(true, strPath);
 		else
-			iresult	=	classPlatform.HisFX3SetOffLineMode_S2(true, wstrPath);
+			iresult	=	classPlatform.HisFX3SetOffLineMode_S2(true, strPath);
 		if(iresult){
 			bIs	=	false;
-			QMessageBox::warning(this, "ERROR", QString::fromWCharArray(classPlatform.GetLastError()));
-			emit information(QString::fromWCharArray(classPlatform.GetLastError()));
+			QMessageBox::warning(this, "ERROR", QString(classPlatform.GetLastError()));
+			emit information(QString(classPlatform.GetLastError()));
 		}
 		else
 		{
@@ -1493,17 +1492,17 @@ void HisFX3CCMTest::slotoffline(bool bChecked)
 				itemshareData.offlinepath = strNewFileName;
 		}
 		wchar_t wstrPath[256];
-		itemshareData.offlinepath.toWCharArray(wstrPath);
-		wstrPath[itemshareData.offlinepath.size()]	=	L'\0';
+		//itemshareData.offlinepath.toWCharArray(wstrPath);
+		//wstrPath[itemshareData.offlinepath.size()]	=	L'\0';
 		int iresult;
 		if(bBoxChannel1)
-			iresult	=	classPlatform.HisFX3SetOffLineMode(true, wstrPath);
+			iresult	=	classPlatform.HisFX3SetOffLineMode(true, itemshareData.offlinepath.toLatin1().data());
 		else
-			iresult	=	classPlatform.HisFX3SetOffLineMode_S2(true, wstrPath);
+			iresult	=	classPlatform.HisFX3SetOffLineMode_S2(true, itemshareData.offlinepath.toLatin1().data());
 		if(iresult){
 			bIs	=	false;
-			QMessageBox::warning(this, "ERROR", QString::fromWCharArray(classPlatform.GetLastError()));
-			emit information(QString::fromWCharArray(classPlatform.GetLastError()));
+			QMessageBox::warning(this, "ERROR", QString(classPlatform.GetLastError()));
+			emit information(QString(classPlatform.GetLastError()));
 		}
 		else
 		{

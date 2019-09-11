@@ -903,9 +903,13 @@ struct _HisAlg_WPOC_HA_Config
 {
 	float oc_flpixelratio;
 	float oc_fldeviation;
+	float oc_flX;
+	float oc_flY;
 	_HisAlg_WPOC_HA_Config()
 	{
-
+		oc_fldeviation=0.0f;
+		oc_flX=0.0f;
+		oc_flY=0.0f;
 	}
 };
 
@@ -913,10 +917,14 @@ struct _HisAlg_WPOC_HB_Config
 {
 	float oc_flpixelratio;
 	float oc_fldeviation;
+	float oc_flX;
+	float oc_flY;
 	_HisAlg_WPOC_HB_Config()
 	{
 		oc_flpixelratio = 0.5f;
-		oc_fldeviation = 30.0f;
+		oc_fldeviation = 00.0f;
+		oc_flX=0.0f;
+		oc_flY=0.0f;
 	}
 };
 
@@ -1600,7 +1608,8 @@ struct _global_itemexec{
 	_ManualModeAConfig stManualModeA;
  	  
 	QShortcutList shortcutgather;
-	_HisFX3_PreviewStruct* previewParameter; 
+	_HisFX3_PreviewStructCpp* previewParameter;
+	//_HisFX3_PreviewStruct* previewParameter; 
 	_mtffaParameter* mtffaParameter;
 	_ccmHardware* ccmhardwareParameter;
 	_blemishParameter* blemishParameter;

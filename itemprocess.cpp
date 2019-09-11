@@ -498,7 +498,7 @@ int itemprocess::getpreviewParameter(bool bupdate, bool bcheck)
 	if(bBoxChannel1 && classPlatform.HisFX3GetOfflineModeInfo(NULL, NULL, NULL, NULL))
 	{
 		itemshareData.itemparameterLock.lockForWrite();
-		if(!itemshareData.previewParameter)	itemshareData.previewParameter	=	new _HisFX3_PreviewStruct;
+		if(!itemshareData.previewParameter)	itemshareData.previewParameter	=	new _HisFX3_PreviewStructCpp;
 		classPlatform.HisFX3GetOfflineModeInfo(&(itemshareData.previewParameter->iWidth), &(itemshareData.previewParameter->iHeight), \
 			&(itemshareData.previewParameter->ucDataFormat), &(itemshareData.previewParameter->uiFrameByteCount));
 		itemshareData.itemparameterLock.unlock();
@@ -508,7 +508,7 @@ int itemprocess::getpreviewParameter(bool bupdate, bool bcheck)
 	else if(!bBoxChannel1 && classPlatform.HisFX3GetOfflineModeInfo_S2(NULL, NULL, NULL, NULL))
 	{
 		itemshareData.itemparameterLock.lockForWrite();
-		if(!itemshareData.previewParameter)	itemshareData.previewParameter	=	new _HisFX3_PreviewStruct;
+		if(!itemshareData.previewParameter)	itemshareData.previewParameter	=	new _HisFX3_PreviewStructCpp;
 		classPlatform.HisFX3GetOfflineModeInfo_S2(&(itemshareData.previewParameter->iWidth), &(itemshareData.previewParameter->iHeight), \
 			&(itemshareData.previewParameter->ucDataFormat), &(itemshareData.previewParameter->uiFrameByteCount));
 		itemshareData.itemparameterLock.unlock();
@@ -534,7 +534,7 @@ int itemprocess::getpreviewParameter(bool bupdate, bool bcheck)
 	}
 
 	if(!itemshareData.previewParameter)
-		itemshareData.previewParameter	=	new _HisFX3_PreviewStruct;
+		itemshareData.previewParameter	=	new _HisFX3_PreviewStructCpp;
 	if(!itemshareData.previewParameter){
 		itemshareData.itemparameterLock.unlock();
 		return HisFX3Error_MallocBuffer;
@@ -1266,7 +1266,7 @@ int itemprocess::startPreview()
 	else
 		iresult	=	classPlatform.HisFX3StartPreview_S2(itemshareData.previewParameter);
 	if(iresult){
-		emit information(QString::fromWCharArray(classPlatform.GetLastError()));
+		emit information(QString(classPlatform.GetLastError()));
 		itemshareData.itemparameterLock.unlock();
 		return iresult;
 	}
@@ -1398,10 +1398,10 @@ int itemprocess::startPreview()
 		if(classPlatform.getCurrentPlatformType() == _HisFX3_Platform_Type_UVC)
 		{
 			Sleep(150);
-			if(iresult = classPlatform.UVCSetProperty(CAPTURE_EXPOSURE, threadshareData.flExposure, 0)){
+			/*if(iresult = classPlatform.UVCSetProperty(CAPTURE_EXPOSURE, threadshareData.flExposure, 0)){
 				stopPreview();
 				return iresult;
-			}
+			}*/
 		}
 		else
 		{
@@ -1423,10 +1423,10 @@ int itemprocess::startPreview()
 		if(classPlatform.getCurrentPlatformType() == _HisFX3_Platform_Type_UVC)
 		{
 			if (!threadshareData.bIsexposure) Sleep(150);
-			if(iresult = classPlatform.UVCSetProperty(CAPTURE_GAIN, threadshareData.flGlobalGainValue, 0)){
+			/*if(iresult = classPlatform.UVCSetProperty(CAPTURE_GAIN, threadshareData.flGlobalGainValue, 0)){
 				stopPreview();
 				return iresult;
-			}
+			}*/
 		}
 		else
 		{
@@ -8232,6 +8232,8 @@ int itemprocess::getwhitePanelOCParameter(bool bupdate, bool bcheck)
 				for(int x=0;	x<strname.size();	++x){
 					if(strname.at(x) == "deviation")			itemshareData.wpOCParameter->stAlgHA.oc_fldeviation	=	strvalue.at(x).toFloat();
 					else if(strname.at(x) == "pixelratio")	itemshareData.wpOCParameter->stAlgHA.oc_flpixelratio	=	strvalue.at(x).toFloat();
+					else if(strname.at(x) == "specX")	itemshareData.wpOCParameter->stAlgHA.oc_flX	=	strvalue.at(x).toFloat();
+					else if(strname.at(x) == "specY")	itemshareData.wpOCParameter->stAlgHA.oc_flY	=	strvalue.at(x).toFloat();
 				}
 			}
 		}
@@ -8251,6 +8253,8 @@ int itemprocess::getwhitePanelOCParameter(bool bupdate, bool bcheck)
 				for(int x=0;	x<strname.size();	++x){
 					if(strname.at(x) == "deviation")			itemshareData.wpOCParameter->stAlgHB.oc_fldeviation	=	strvalue.at(x).toFloat();
 					else if(strname.at(x) == "pixelratio")	itemshareData.wpOCParameter->stAlgHB.oc_flpixelratio	=	strvalue.at(x).toFloat();
+					else if(strname.at(x) == "specX_b")	itemshareData.wpOCParameter->stAlgHB.oc_flX	=	strvalue.at(x).toFloat();
+					else if(strname.at(x) == "specY_b")	itemshareData.wpOCParameter->stAlgHB.oc_flY	=	strvalue.at(x).toFloat();
 				}
 			}
 		}
@@ -8353,10 +8357,17 @@ int itemprocess::whitePanelOC()
 
 		float fldistance	=	sqrtf((ioc_x-itemshareData.previewParameter->iWidth/2)*(ioc_x-itemshareData.previewParameter->iWidth/2) + \
 			(ioc_y-itemshareData.previewParameter->iHeight/2)*(ioc_y-itemshareData.previewParameter->iHeight/2));
+		int ioc_xoffset= int(ioc_x-itemshareData.previewParameter->iWidth/2);
+		int ioc_yoffset= int(ioc_y-itemshareData.previewParameter->iHeight/2);
+
 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("光心测试数据："));
-		emit information(QTextCodec::codecForName( "GBK")->toUnicode("          测试光心坐标(x,y)：") % \
-			QString::number(ioc_x, 10) % ",  " % QString::number(ioc_y, 10) );
-		emit information(QTextCodec::codecForName( "GBK")->toUnicode("         与物理中心距离：") % \
+		emit information(QTextCodec::codecForName("GBK")->toUnicode("理论光心坐标(x,y): ") % QString::number(int(itemshareData.previewParameter->iWidth/2+0.5f)) % "," %\
+			QString::number(int(itemshareData.previewParameter->iHeight/2+0.5f)));
+		emit information(QTextCodec::codecForName( "GBK")->toUnicode("实际光心坐标(x,y)：") % \
+			QString::number(ioc_x) % ",  " % QString::number(ioc_y) );
+		emit information(QTextCodec::codecForName( "GBK")->toUnicode("与物理中心距离 (x,y,dev)：") % \
+			QString::number(ioc_xoffset) % ","%\
+			QString::number(ioc_yoffset) % ","%\
 			QString::number(static_cast<double>(fldistance), 'f', 3) % "pixel");
 
 		itemshareData.drawLock.lockForWrite();
@@ -8380,7 +8391,8 @@ int itemprocess::whitePanelOC()
 		theIterator->strinfo.stblock.bottom	=	ioc_y + 100;
 		itemshareData.drawLock.unlock();
 
-		if(fldistance > itemshareData.wpOCParameter->stAlgHA.oc_fldeviation){
+		if(fldistance > itemshareData.wpOCParameter->stAlgHA.oc_fldeviation||abs(ioc_xoffset) >itemshareData.wpOCParameter->stAlgHA.oc_flX||\
+			abs(ioc_yoffset) > itemshareData.wpOCParameter->stAlgHA.oc_flY){
 			iresult							=	HisCCMError_Result;
 			stLogItem.itemvalue	=	"NG";
 			itemshareData.drawLock.lockForWrite();
@@ -8429,10 +8441,17 @@ int itemprocess::whitePanelOC()
 
 		float fldistance	=	sqrtf((ocx-itemshareData.previewParameter->iWidth/2)*(ocx-itemshareData.previewParameter->iWidth/2) + \
 			(ocy-itemshareData.previewParameter->iHeight/2)*(ocy-itemshareData.previewParameter->iHeight/2));
+		int ioc_xoffset= int(ocx-itemshareData.previewParameter->iWidth/2);
+		int ioc_yoffset= int(ocy-itemshareData.previewParameter->iHeight/2);
+
 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("光心测试数据："));
-		emit information(QTextCodec::codecForName( "GBK")->toUnicode("          测试光心坐标(x,y)：") % \
+		emit information(QTextCodec::codecForName("GBK")->toUnicode("理论光心坐标(x,y): ") % QString::number(int(itemshareData.previewParameter->iWidth/2+0.5f)) % "," %\
+			QString::number(int(itemshareData.previewParameter->iHeight/2+0.5f)));
+		emit information(QTextCodec::codecForName( "GBK")->toUnicode("实际光心坐标(x,y)：") % \
 			QString::number(ocx) % ",  " % QString::number(ocy) );
-		emit information(QTextCodec::codecForName( "GBK")->toUnicode("         与物理中心距离：") % \
+		emit information(QTextCodec::codecForName( "GBK")->toUnicode("与物理中心距离 (x,y,dev)：") % \
+			QString::number(ioc_xoffset) % ","%\
+			QString::number(ioc_yoffset) % ","%\
 			QString::number(static_cast<double>(fldistance), 'f', 3) % "pixel");
 
 		itemshareData.drawLock.lockForWrite();
@@ -8456,7 +8475,8 @@ int itemprocess::whitePanelOC()
 		theIterator->strinfo.stblock.bottom	=	ocy + 100;
 		itemshareData.drawLock.unlock();
 
-		if(fldistance > itemshareData.wpOCParameter->stAlgHB.oc_fldeviation){
+		if(fldistance > itemshareData.wpOCParameter->stAlgHB.oc_fldeviation||ioc_xoffset > itemshareData.wpOCParameter->stAlgHB.oc_flX||\
+			ioc_yoffset > itemshareData.wpOCParameter->stAlgHB.oc_flY){
 			iresult							=	HisCCMError_Result;
 			stLogItem.itemvalue	=	"NG";
 			itemshareData.drawLock.lockForWrite();
@@ -8521,10 +8541,17 @@ int itemprocess::whitePanelOC()
 
 		float fldistance	=	sqrtf((ioc_x-itemshareData.previewParameter->iWidth/2)*(ioc_x-itemshareData.previewParameter->iWidth/2) + \
 			(ioc_y-itemshareData.previewParameter->iHeight/2)*(ioc_y-itemshareData.previewParameter->iHeight/2));
+		int ioc_xoffset= int(ioc_x-itemshareData.previewParameter->iWidth/2);
+		int ioc_yoffset= int(ioc_y-itemshareData.previewParameter->iHeight/2);
+
 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("光心测试数据："));
-		emit information(QTextCodec::codecForName( "GBK")->toUnicode("          测试光心坐标(x,y)：") % \
-			QString::number(ioc_x, 10) % ",  " % QString::number(ioc_y, 10) );
-		emit information(QTextCodec::codecForName( "GBK")->toUnicode("         与物理中心距离：") % \
+		emit information(QTextCodec::codecForName("GBK")->toUnicode("理论光心坐标(x,y): ") % QString::number(int(itemshareData.previewParameter->iWidth/2+0.5f)) % "," %\
+			QString::number(int(itemshareData.previewParameter->iHeight/2+0.5f)));
+		emit information(QTextCodec::codecForName( "GBK")->toUnicode("实际光心坐标(x,y)：") % \
+			QString::number(ioc_x) % ",  " % QString::number(ioc_y) );
+		emit information(QTextCodec::codecForName( "GBK")->toUnicode("与物理中心距离 (x,y,dev)：") % \
+			QString::number(ioc_xoffset) % ","%\
+			QString::number(ioc_yoffset) % ","%\
 			QString::number(static_cast<double>(fldistance), 'f', 3) % "pixel");
 
 		itemshareData.drawLock.lockForWrite();
@@ -8548,7 +8575,8 @@ int itemprocess::whitePanelOC()
 		theIterator->strinfo.stblock.bottom	=	ioc_y + 100;
 		itemshareData.drawLock.unlock();
 
-		if(fldistance > itemshareData.wpOCParameter->stAlgHA.oc_fldeviation){
+		if(fldistance > itemshareData.wpOCParameter->stAlgHA.oc_fldeviation||abs(ioc_xoffset) >itemshareData.wpOCParameter->stAlgHA.oc_flX||\
+			abs(ioc_yoffset) > itemshareData.wpOCParameter->stAlgHA.oc_flY){
 			iresult							=	HisCCMError_Result;
 			stLogItem.itemvalue	=	"NG";
 			itemshareData.drawLock.lockForWrite();
@@ -8679,13 +8707,18 @@ int itemprocess::whitePanelOC()
 
 		float fldistance	=	sqrtf((ioc_x-itemshareData.previewParameter->iWidth/2)*(ioc_x-itemshareData.previewParameter->iWidth/2) + \
 			(ioc_y-itemshareData.previewParameter->iHeight/2)*(ioc_y-itemshareData.previewParameter->iHeight/2));
+		int ioc_xoffset= int(ioc_x-itemshareData.previewParameter->iWidth/2);
+		int ioc_yoffset= int(ioc_y-itemshareData.previewParameter->iHeight/2);
 
 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("光心测试数据："));
-		emit information(QTextCodec::codecForName( "GBK")->toUnicode("测试光心坐标(x,y)：") % \
-			QString::number(ioc_x, 10) % ",  " % QString::number(ioc_y, 10) );
-		emit information(QTextCodec::codecForName( "GBK")->toUnicode("与物理中心距离：") % \
+		emit information(QTextCodec::codecForName("GBK")->toUnicode("理论光心坐标(x,y): ") % QString::number(int(itemshareData.previewParameter->iWidth/2+0.5f)) % "," %\
+			QString::number(int(itemshareData.previewParameter->iHeight/2+0.5f)));
+		emit information(QTextCodec::codecForName( "GBK")->toUnicode("实际光心坐标(x,y)：") % \
+			QString::number(ioc_x) % ",  " % QString::number(ioc_y) );
+		emit information(QTextCodec::codecForName( "GBK")->toUnicode("与物理中心距离 (x,y,dev)：") % \
+			QString::number(ioc_xoffset) % ","%\
+			QString::number(ioc_yoffset) % ","%\
 			QString::number(static_cast<double>(fldistance), 'f', 3) % "pixel");
-
 		itemshareData.drawLock.lockForWrite();
 		int ilastcount	=	itemshareData.itemdrawList.size();
 		itemshareData.itemdrawList.resize(ilastcount + 2);
@@ -8707,7 +8740,8 @@ int itemprocess::whitePanelOC()
 		theIterator->strinfo.stblock.bottom	=	ioc_y + 100;
 		itemshareData.drawLock.unlock();
 
-		if(fldistance > itemshareData.wpOCParameter->stAlgHA.oc_fldeviation){
+		if(fldistance > itemshareData.wpOCParameter->stAlgHA.oc_fldeviation||abs(ioc_xoffset) >itemshareData.wpOCParameter->stAlgHA.oc_flX||\
+			abs(ioc_yoffset) > itemshareData.wpOCParameter->stAlgHA.oc_flY){
 			iresult							=	HisCCMError_Result;
 			stLogItem.itemvalue	=	"NG";
 			itemshareData.drawLock.lockForWrite();
@@ -13314,10 +13348,10 @@ int itemprocess::otpburn()
 	double dflCoefB=0;
 	QDateTime dateTime;
 
-	/*if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
+	if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
 		emit information("错误：获取光源点检数据失败！");
 		return -1;
-	}*/
+	}
 
 	itemshareData.itemparameterLock.lockForRead();
 
@@ -13659,12 +13693,12 @@ int itemprocess::LightSourceCal()
 
 	//************ 返回Golden ChipID 列表 *******************
 	QStringList listChipID;
-	if(getGoldenChipID("6442",listChipID)){
+	if(getGoldenChipID(itemshareData.ccmhardwareParameter->projectname,listChipID)){
 		emit information(QString::fromLocal8Bit("错误：获取Golden ChipID 列表失败！"));
 		return -1;
 	}
 
-	if(listChipID.lastIndexOf(QString::fromStdString(stParameter.strSerialNumber))<0){
+	if(listChipID.lastIndexOf(QString::fromStdString(stParameter.strSerialNumber).toLower())<0){
 		emit information(QString::fromLocal8Bit("错误：当前模组不是Golden ！"));
 		return -1;
 	}
@@ -13941,7 +13975,7 @@ int itemprocess::getGoldenChipID(QString strProjectModel,QStringList &list){
 
 	while (query.next())
 	{
-		list.push_back(query.value(0).toString());
+		list.push_back(query.value(0).toString().toLower());
 	}
 	 
 	if(list.size()<=0){
@@ -13981,10 +14015,10 @@ int itemprocess::otpcheck()
 	double dflCoefR=0;
 	double dflCoefB=0;
 	QDateTime dateTime;
-	/*if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
+	if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
 		emit information("错误：获取光源点检数据失败！");
 		return -1;
-	}*/
+	}
 
 	itemshareData.itemparameterLock.lockForRead();
 
@@ -15603,9 +15637,6 @@ int itemprocess::testworkcurrent()
 			if(bBoxChannel1){
 				if(iresult = classPlatform.HisFX3SetCurrentCalData(&stCalData)) return iresult;
 			}
-			else{
-				if(iresult = classPlatform.HisFX3SetCurrentCalData_S2(&stCalData)) return iresult;
-			}
 		}
 
 	}
@@ -15881,9 +15912,6 @@ int itemprocess::teststandbycurrent()
 			if(bBoxChannel1){
 				if(iresult = classPlatform.HisFX3SetCurrentCalData(&stCalData)) return iresult;
 			}
-			else{
-				if(iresult = classPlatform.HisFX3SetCurrentCalData_S2(&stCalData)) return iresult;
-			}	
 		}
 
 	}
@@ -16103,7 +16131,7 @@ int itemprocess::getOSParameter(bool bupdate, bool bcheck)
 						if(strname.at(x) == "test")	stItem.bTest		=	(strvalue.at(x) == "true");
 						else if(strname.at(x) == "in")	{
 							if(bFullPin) sprintf(stItem.strGNDName, "%s", strvalue.at(x).toUpper().toAscii().data());
-							else	stItem.bAGND	=	strvalue.at(x).toUpper().contains("AGND");
+							//else	stItem.bAGND	=	strvalue.at(x).toUpper().contains("AGND");
 						}
 						else if(strname.at(x) == "specmin") stItem.flSpecMin	=	strvalue.at(x).toFloat();
 						else if(strname.at(x) == "specmax") stItem.flSpecMax	=	strvalue.at(x).toFloat();
@@ -16333,7 +16361,7 @@ int itemprocess::openshortTest()
 	{
 		if(iresult = classPlatform.HisFX3OSPositiveTest(itemshareData.openshortParameter->ucOSSwitch, \
 			itemshareData.openshortParameter->vectorPositive, itemshareData.openshortParameter->usPositiveDelay)) {
-				emit information(QString::fromWCharArray(classPlatform.GetLastError()));
+				emit information(QString(classPlatform.GetLastError()));
 				return iresult;
 		}
 		for(unsigned int x=0;	x<itemshareData.openshortParameter->vectorPositive.size(); ++x){
@@ -16406,13 +16434,13 @@ int itemprocess::openshortTest()
 		if(iresult = classPlatform.HisFX3OSShortTest(itemshareData.openshortParameter->ucOSSwitch, \
 			itemshareData.openshortParameter->vectorShort, itemshareData.openshortParameter->usShortDelay)) return iresult;
 		for(unsigned int x=0;	x<itemshareData.openshortParameter->vectorShort.size(); ++x){
-			if(itemshareData.openshortParameter->vectorShort.at(x).bTest && itemshareData.openshortParameter->vectorShort.at(x).ucShortIndex){
+			if(itemshareData.openshortParameter->vectorShort.at(x).bTest && itemshareData.openshortParameter->vectorShort.at(x).shortIndex){
 				bShortRel	=	false;
 				strText	=	QString::fromAscii(itemshareData.openshortParameter->vectorShort.at(x).strName) % ": " % \
 					QString::number(itemshareData.openshortParameter->vectorShort.at(x).flVoltValue) % "mV(spec:" % \
 					QString::number(itemshareData.openshortParameter->vectorShort.at(x).flShortSpec) % ")";
 				strText = strText % "---short with" % QString::fromAscii(itemshareData.openshortParameter->vectorShort.at(x).strShortName) % \
-					"(" % QString::number(itemshareData.openshortParameter->vectorShort.at(x).ucShortIndex) % ")";
+					"(" % QString::number(itemshareData.openshortParameter->vectorShort.at(x).shortIndex) % ")";
 				emit information(strText);
 			}
 		}
@@ -16424,9 +16452,9 @@ int itemprocess::openshortTest()
 				strText	=	QString::fromAscii(itemshareData.openshortParameter->vectorShort.at(x).strName) % ": " % \
 					QString::number(itemshareData.openshortParameter->vectorShort.at(x).flVoltValue) % "mV(spec:" % \
 					QString::number(itemshareData.openshortParameter->vectorShort.at(x).flShortSpec) % ")";
-				if(itemshareData.openshortParameter->vectorShort.at(x).ucShortIndex)
+				if(itemshareData.openshortParameter->vectorShort.at(x).shortIndex)
 					strText = strText % "---short with" % QString::fromAscii(itemshareData.openshortParameter->vectorShort.at(x).strShortName) % \
-					"(" % QString::number(itemshareData.openshortParameter->vectorShort.at(x).ucShortIndex) % ")";
+					"(" % QString::number(itemshareData.openshortParameter->vectorShort.at(x).shortIndex) % ")";
 				emit information(strText);
 			}
 		}	
@@ -16440,13 +16468,13 @@ int itemprocess::openshortTest()
 			itemshareData.openshortParameter->vectorOpen, itemshareData.openshortParameter->usOpenDelay)) return iresult;
 		for(unsigned int x=0;	x<itemshareData.openshortParameter->vectorOpen.size(); ++x)
 		{
-			if(itemshareData.openshortParameter->vectorOpen.at(x).bTest && itemshareData.openshortParameter->vectorOpen.at(x).ucOpenIndex){
+			if(itemshareData.openshortParameter->vectorOpen.at(x).bTest && itemshareData.openshortParameter->vectorOpen.at(x).openIndex){
 				bOpenRel	=	false;
 				strText	=	QString::fromAscii(itemshareData.openshortParameter->vectorOpen.at(x).strName) % ": " % \
 					QString::number(itemshareData.openshortParameter->vectorOpen.at(x).flVoltValue) % "mV(spec:" % \
 					QString::number(itemshareData.openshortParameter->vectorOpen.at(x).flOpenSpec) % ")";
 				strText = strText % "---open with" % QString::fromAscii(itemshareData.openshortParameter->vectorOpen.at(x).strOpenName) % \
-					"(" % QString::number(itemshareData.openshortParameter->vectorOpen.at(x).ucOpenIndex) % ")";
+					"(" % QString::number(itemshareData.openshortParameter->vectorOpen.at(x).openIndex) % ")";
 				emit information(strText);
 			}
 		}
@@ -16459,9 +16487,9 @@ int itemprocess::openshortTest()
 				strText	=	QString::fromAscii(itemshareData.openshortParameter->vectorOpen.at(x).strName) % ": " % \
 					QString::number(itemshareData.openshortParameter->vectorOpen.at(x).flVoltValue) % "mV(spec:" % \
 					QString::number(itemshareData.openshortParameter->vectorOpen.at(x).flOpenSpec) % ")";
-				if(itemshareData.openshortParameter->vectorOpen.at(x).ucOpenIndex)
+				if(itemshareData.openshortParameter->vectorOpen.at(x).openIndex)
 					strText = strText % "---open with" % QString::fromAscii(itemshareData.openshortParameter->vectorOpen.at(x).strOpenName) % \
-					"(" % QString::number(itemshareData.openshortParameter->vectorOpen.at(x).ucOpenIndex) % ")";
+					"(" % QString::number(itemshareData.openshortParameter->vectorOpen.at(x).openIndex) % ")";
 				emit information(strText);
 			}
 		}	
@@ -16731,67 +16759,6 @@ int itemprocess::manualModeBLoop1()
 int itemprocess::playAudio(unsigned int cuiSource, unsigned int cuiPlayTime, float flSampleRateMultiple)
 {
 	int iresult = 0;
-
-	if(cuiSource == 0)
-	{
-		if(iresult = classPlatform.HisFX3StartAudio()) return iresult;
-
-		QElapsedTimer classTime;
-		classTime.start();
-
-		_HisPlatformAudio_Buffer stAudioBuffer;
-		bool bFirst	=	true;
-		QAudioOutput* classAudioOutput = 0;
-		QIODevice* classStreamOut			=	0;
-		int iPeriodSize;
-
-		while(classTime.elapsed() < cuiPlayTime)
-		{
-			if(iresult = classPlatform.HisFX3GrabAudioBuffer(&stAudioBuffer)) continue;
-
-			if(bFirst)
-			{
-				bFirst	=	false;
-				QAudioFormat audioFormat;  
-				audioFormat.setSampleRate(stAudioBuffer.samplerate *flSampleRateMultiple);  
-				audioFormat.setChannelCount(stAudioBuffer.channels);  
-				audioFormat.setSampleSize(stAudioBuffer.sampleSize);  
-				audioFormat.setCodec("audio/pcm");  
-				audioFormat.setByteOrder(QAudioFormat::LittleEndian);  
-				audioFormat.setSampleType(QAudioFormat::SignedInt);  
-				QAudioDeviceInfo info = QAudioDeviceInfo::defaultOutputDevice();  
-				if (!info.isFormatSupported(audioFormat)) {  
-					emit information("default format not supported try to use nearest");
-					audioFormat = info.nearestFormat(audioFormat);  
-				}  
-
-				// 				emit information("stAudioBuffer.channels" % QString::number(stAudioBuffer.channels));
-				// 				emit information("stAudioBuffer.samplerate" % QString::number(stAudioBuffer.samplerate));
-				// 				emit information("stAudioBuffer.sampleSize" % QString::number(stAudioBuffer.sampleSize));
-
-				classAudioOutput = new QAudioOutput(audioFormat, this);  
-				classStreamOut	  = classAudioOutput->start();  
-				iPeriodSize			 =	classAudioOutput->periodSize();			
-			}
-
-			// 			if(classAudioOutput->state() != QAudio::IdleState) Sleep(2);
-
-			for(unsigned int uiBufWrited = 0; uiBufWrited < stAudioBuffer.uiBufSize; )
-			{
-				int iByteFree	=	classAudioOutput->bytesFree();
-				if(iByteFree < iPeriodSize) Sleep(3);
-				iByteFree	=	min(iByteFree, stAudioBuffer.uiBufSize - uiBufWrited);
-				classStreamOut->write((const char *)(stAudioBuffer.pucBuf + uiBufWrited), (qint64)iByteFree);
-				uiBufWrited	+=	iByteFree;
-			}
-
-		}
-
-		if(classAudioOutput) delete classAudioOutput;
-		classPlatform.HisFX3StopAudio();
-
-		return 0;
-	}
 
 	return iresult;
 }
@@ -18012,8 +17979,8 @@ int itemprocess::PDAFCalibrationWhitePanel()
 	if(!classPlatform.HisFX3isstart()) return HisFX3Error_IsNotPreview;
 
 	unsigned char ucApplication	=	0x0;
-	int iresult = classPlatform.HisFX3GetLInfo(NULL, &ucApplication, NULL, NULL, NULL, NULL);
-	if(iresult) return iresult;
+	int iresult = 0;/*classPlatform.HisFX3GetLInfo(NULL, &ucApplication, NULL, NULL, NULL, NULL);
+	if(iresult) return iresult;*/
 #if (defined PDAF_LICENSE_ONLY_AUTHORIZE)
 	if(ucApplication != 0x2){
 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("此主板没有操作PDAF的授权"));
@@ -21648,19 +21615,8 @@ int itemprocess::PDAFCalibrationSTEP2()
 	if(!classPlatform.HisFX3isstart())	return HisFX3Error_IsNotPreview;
 
 	unsigned char ucApplication	=	0x0;
-	int iresult = classPlatform.HisFX3GetLInfo(NULL, &ucApplication, NULL, NULL, NULL, NULL);
-	if(iresult) return iresult;
-#if (defined PDAF_LICENSE_ONLY_AUTHORIZE)
-	if(ucApplication != 0x2){
-		emit information(QTextCodec::codecForName( "GBK")->toUnicode("此主板没有操作PDAF的授权"));
-		return HisFX3Error_License;
-	}
-#else
-	// 	if(ucApplication != 0x2 && ucApplication != 0xff){
-	// 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("此主板没有操作PDAF的授权"));
-	// 		return HisFX3Error_License;
-	// 	}
-#endif
+	int iresult=0;
+
 	_CODE_CLEAR_IMAGEDRAW
 		if(iresult	=	getccmhardwareParameter(false))	return iresult;
 	if(iresult		=	getpdafParameter(false))	return iresult;
@@ -21706,19 +21662,7 @@ int itemprocess::PDAFCalibration50CM()
 	if(!classPlatform.HisFX3isstart())	return HisFX3Error_IsNotPreview;
 
 	unsigned char ucApplication	=	0x0;
-	int iresult = classPlatform.HisFX3GetLInfo(NULL, &ucApplication, NULL, NULL, NULL, NULL);
-	if(iresult) return iresult;
-#if (defined PDAF_LICENSE_ONLY_AUTHORIZE)
-	if(ucApplication != 0x2){
-		emit information(QTextCodec::codecForName( "GBK")->toUnicode("此主板没有操作PDAF的授权"));
-		return HisFX3Error_License;
-	}
-#else
-	// 	if(ucApplication != 0x2 && ucApplication != 0xff){
-	// 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("此主板没有操作PDAF的授权"));
-	// 		return HisFX3Error_License;
-	// 	}
-#endif
+	int iresult = 0;
 
 	if(iresult	=	getccmhardwareParameter(false))	return iresult;
 	if(iresult		=	getpdafParameter(false))	return iresult;
@@ -23400,14 +23344,6 @@ int itemprocess::SONYIMX258PDAF_SPCCal()
 	if(!classPlatform.HisFX3isstart()) return HisFX3Error_IsNotPreview;
 	unsigned char ucApplication	=	0x0;
 	int iresult =0;
-	iresult= classPlatform.HisFX3GetLInfo(NULL, &ucApplication, NULL, NULL, NULL, NULL);
-	if(iresult) return iresult;
-#if (defined PDAF_LICENSE_ONLY_AUTHORIZE)
-	if(ucApplication != 0x2){
-		emit information(QTextCodec::codecForName( "GBK")->toUnicode("此主板没有操作PDAF的授权"));
-		return HisFX3Error_License;
-	}
-#endif
 
 	if(iresult	=	getccmhardwareParameter(false))	return iresult;
 	if(iresult		=	getpdafParameter(false))	return iresult;

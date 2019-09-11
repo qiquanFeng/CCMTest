@@ -1567,8 +1567,9 @@ void QHMainWindow::currentSelfCal()
 			_HisFX3_Current_Calibration stCalData;
 
 			int iresult	=	classPlatform.HisFX3CurrentCalibration(uiKey, &stCalData);
+			
 			if(iresult){
-				QMessageBox::information(this, QTextCodec::codecForName( "GBK")->toUnicode("校正过程出错"), QString::fromWCharArray(classPlatform.GetLastError()));
+				QMessageBox::information(this, QTextCodec::codecForName( "GBK")->toUnicode("校正过程出错"), QString(classPlatform.GetLastError()));
 				return;
 			}
 
@@ -1656,99 +1657,6 @@ void QHMainWindow::currentSelfCal()
 			}
 #endif
 
-			if(classPlatform.getCameraCountSupported() >= 2)
-			{
-				iresult	=	classPlatform.HisFX3CurrentCalibration_S2(uiKey, &stCalData);
-				if(iresult){
-					QMessageBox::information(this, QTextCodec::codecForName( "GBK")->toUnicode("校正过程出错"), QString::fromWCharArray(classPlatform.GetLastError()));
-					return;
-				}
-
-#ifdef CURRENTCALIBRATIONDATA_Save2LocalFile
-
-				//work current
-				{
-					QFile classFileDOVDD("current_work_dovdd_s2.txt");
-					classFileDOVDD.open(QIODevice::WriteOnly | QIODevice::Text);
-					QTextStream outDOVDD(&classFileDOVDD);
-					for(unsigned int x=0;	x< _HisFX3V2_CURRENTCAL_COUNT; ++x)
-						outDOVDD << stCalData.flWorkDOVDD[x] << "f,";
-
-					QFile classFileDVDD("current_work_dvdd_s2.txt");
-					classFileDVDD.open(QIODevice::WriteOnly | QIODevice::Text);
-					QTextStream outDVDD(&classFileDVDD);
-					for(unsigned int x=0;	x< _HisFX3V2_CURRENTCAL_COUNT; ++x)
-						outDVDD << stCalData.flWorkDVDD[x] << "f,";
-
-					QFile classFileAVDD("current_work_avdd_s2.txt");
-					classFileAVDD.open(QIODevice::WriteOnly | QIODevice::Text);
-					QTextStream outAVDD(&classFileAVDD);
-					for(unsigned int x=0;	x< _HisFX3V2_CURRENTCAL_COUNT; ++x)
-						outAVDD << stCalData.flWorkAVDD[x] << "f,";
-
-					QFile classFileAF("current_work_af_s2.txt");
-					classFileAF.open(QIODevice::WriteOnly | QIODevice::Text);
-					QTextStream outAF(&classFileAF);
-					for(unsigned int x=0;	x< _HisFX3V2_CURRENTCAL_COUNT; ++x)
-						outAF << stCalData.flWorkAF[x] << "f,";
-
-					QFile classFilePOW("current_work_pow_s2.txt");
-					classFilePOW.open(QIODevice::WriteOnly | QIODevice::Text);
-					QTextStream outPOW(&classFilePOW);
-					for(unsigned int x=0;	x< _HisFX3V2_CURRENTCAL_COUNT; ++x)
-						outPOW << stCalData.flWorkPOW[x] << "f,";
-
-					QFile classFileOTP("current_work_otp_s2.txt");
-					classFileOTP.open(QIODevice::WriteOnly | QIODevice::Text);
-					QTextStream outOTP(&classFileOTP);
-					for(unsigned int x=0;	x< 100; ++x)
-						outOTP << stCalData.flWorkOTP[x] << "f,";
-				}
-
-
-				//standby current
-				{
-					QFile classFileDOVDD("current_standby_dovdd_s2.txt");
-					classFileDOVDD.open(QIODevice::WriteOnly | QIODevice::Text);
-					QTextStream outDOVDD(&classFileDOVDD);
-					for(unsigned int x=0;	x< _HisFX3V2_CURRENTCAL_COUNT; ++x)
-						outDOVDD << stCalData.flStandbyDOVDD[x] << "f,";
-
-					QFile classFileDVDD("current_standby_dvdd_s2.txt");
-					classFileDVDD.open(QIODevice::WriteOnly | QIODevice::Text);
-					QTextStream outDVDD(&classFileDVDD);
-					for(unsigned int x=0;	x< _HisFX3V2_CURRENTCAL_COUNT; ++x)
-						outDVDD << stCalData.flStandbyDVDD[x] << "f,";
-
-					QFile classFileAVDD("current_standby_avdd_s2.txt");
-					classFileAVDD.open(QIODevice::WriteOnly | QIODevice::Text);
-					QTextStream outAVDD(&classFileAVDD);
-					for(unsigned int x=0;	x< _HisFX3V2_CURRENTCAL_COUNT; ++x)
-						outAVDD << stCalData.flStandbyAVDD[x] << "f,";
-
-					QFile classFileAF("current_standby_af_s2.txt");
-					classFileAF.open(QIODevice::WriteOnly | QIODevice::Text);
-					QTextStream outAF(&classFileAF);
-					for(unsigned int x=0;	x< _HisFX3V2_CURRENTCAL_COUNT; ++x)
-						outAF << stCalData.flStandbyAF[x] << "f,";
-
-					QFile classFilePOW("current_standby_pow_s2.txt");
-					classFilePOW.open(QIODevice::WriteOnly | QIODevice::Text);
-					QTextStream outPOW(&classFilePOW);
-					for(unsigned int x=0;	x< _HisFX3V2_CURRENTCAL_COUNT; ++x)
-						outPOW << stCalData.flStandbyPOW[x] << "f,";
-				}
-
-#else
-
-				if(iresult = ROPLOW::currentCal2DB(uiKey, &stCalData, 2)){
-					QMessageBox::information(this, QTextCodec::codecForName( "GBK")->toUnicode("保存数据出错"), QTextCodec::codecForName( "GBK")->toUnicode("保存校正数据出错"));
-					return;
-				}
-
-#endif
-			}
-
 			QMessageBox::information(this, QTextCodec::codecForName( "GBK")->toUnicode("校正完成"), \
 				QTextCodec::codecForName( "GBK")->toUnicode("校正成功!!!"));
 	}
@@ -1766,7 +1674,7 @@ void QHMainWindow::voltageSelfCal()
 
 			int iresult	=	classPlatform.HisFX3VlotageCalibration(uiKey, &stCalData);
 			if(iresult){
-				QMessageBox::information(this, tr("ERROR"), QString::fromWCharArray(classPlatform.GetLastError()));
+				QMessageBox::information(this, tr("ERROR"), QString(classPlatform.GetLastError()));
 				return;
 			}
 
@@ -1805,7 +1713,7 @@ void QHMainWindow::OSSelfCal()
 	{
 			int iresult;
 			if(iresult	=	classPlatform.HisFX3R2OSSwitch(true)){
-				QMessageBox::information(this, QTextCodec::codecForName( "GBK")->toUnicode("校正过程出错"), QString::fromWCharArray(classPlatform.GetLastError()));
+				QMessageBox::information(this, QTextCodec::codecForName( "GBK")->toUnicode("校正过程出错"), QString(classPlatform.GetLastError()));
 				return;
 			}
 
@@ -1843,7 +1751,7 @@ void QHMainWindow::OSSelfCal()
 					memcpy(stCal5, stCal, sizeof(_HisFX3R2_OSCal_Item) *uiItemCount);
 
 					if(iresult = classPlatform.HisFX3R2OSCalibration(uiKey, stCal, uiItemCount *5)){
-						QMessageBox::information(this, QTextCodec::codecForName( "GBK")->toUnicode("校正过程出错"), QString::fromWCharArray(classPlatform.GetLastError()));
+						QMessageBox::information(this, QTextCodec::codecForName( "GBK")->toUnicode("校正过程出错"), QString(classPlatform.GetLastError()));
 						return;
 					}
 
@@ -1973,7 +1881,7 @@ void QHMainWindow::slotCompterCompatibilityTest()
 			classPlatform.setUSBSpeed(iDelay);
 			sprintf_s(strText, 128, "delay: %d, type:%d", iDelay, w);
 			OutputDebugStringA(strText);
-			classPlatform.testComputerCompatibility(&(flErrorRate[w][x]), &(flErrorRead[w][x]));
+			//classPlatform.testComputerCompatibility(&(flErrorRate[w][x]), &(flErrorRead[w][x]));
 			if((flErrorRate[w][x] < cflErrorLimit) && (flErrorRead[w][x] < cflReadErrorLimit)) bOK[w][x] = true; 
 
 			_CODE_TESTCOMPABILITY_PROCESS_UPDATE

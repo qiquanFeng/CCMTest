@@ -37,7 +37,7 @@ void updatefirewaredialog::updateFW()
 	strBinPath.toWCharArray(strPath);
 	strPath[strBinPath.size()]	=	L'\0';
 
-	int iresult	=	classPlatform.HisFX3UpdateFPGA(strPath);
+	int iresult	=	classPlatform.HisFX3UpdateFPGA(strBinPath.toLatin1().data());
 	if(iresult){
 		QMessageBox::critical(this, tr("Error"), tr("update FPGA FW Fail. please check if the bin file is correct. \n Error Code: 0x") % QString::number(iresult, 16));
 		return;

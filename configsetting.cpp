@@ -122,7 +122,6 @@ configsetting::configsetting(QWidget *parent, bool bChannel1, _threadshareData& 
 #else
 	strLibPath	=	QDir::currentPath() % "/HisCCMOTP32";
 #endif
-
 	RolongoOTPAPIVersion getRolongoOTPAPIVersion = (RolongoOTPAPIVersion)(QLibrary::resolve(strLibPath, "getRolongoOTPAPIVersion"));
 	RolongogetAFList getAFList = (RolongogetAFList)(QLibrary::resolve(strLibPath, "getAFList"));
 	RolongogetOTPList getOTPList = (RolongogetOTPList)(QLibrary::resolve(strLibPath, "getOTPList"));
@@ -133,9 +132,11 @@ configsetting::configsetting(QWidget *parent, bool bChannel1, _threadshareData& 
 	
 	if(!(getRolongoOTPAPIVersion && getAFList && getOTPList && getQualcommPDAFList&&getSONYPDAFList&&getDualCameraBurnList)){
 		ui.statuslabel->setText(tr("Resolve HisCCMOTP DLL Function Fail"));
+		OutputDebugString(L"RLG load dll fail!");
 	}
 	else
 	{
+		OutputDebugString(L"RLG load dll success!");
 		listStr.clear();
 		getAFList(vecList);
 		for(int x=0;	x<vecList.size();	++x){
@@ -225,7 +226,7 @@ configsetting::configsetting(QWidget *parent, bool bChannel1, _threadshareData& 
 		ui.dovddVolt_doubleSpinBox->setVisible(false);
 	}
 
-	if(classPlatform.getVoltageSupported(flVoltMin, flVoltMax, _HisFX3_Platform_VlotOn_IIC, bChannel1)){
+	if(0/*classPlatform.getVoltageSupported(flVoltMin, flVoltMax, _HisFX3_Platform_VlotOn_IIC, bChannel1)*/){
 		ui.ioddVoltcheckBox->setText("IODD(0~" % QString::number(flVoltMax, 'f', 1) % "V)");
 		ui.ioddVolt_doubleSpinBox->setMinimum(flVoltMin);
 		ui.ioddVolt_doubleSpinBox->setMaximum(flVoltMax);
@@ -600,7 +601,7 @@ void configsetting::previewData2UI()
 	ui.avddVoltcheckBox->setChecked(itemshareData.previewParameter->uiVoltSetFlag & _HisFX3_Platform_VlotOn_AVDD);
 	ui.dvddVoltcheckBox->setChecked(itemshareData.previewParameter->uiVoltSetFlag & _HisFX3_Platform_VlotOn_DVDD);
 	ui.dovddVoltcheckBox->setChecked(itemshareData.previewParameter->uiVoltSetFlag & _HisFX3_Platform_VlotOn_DOVDD);
-	ui.ioddVoltcheckBox->setChecked(itemshareData.previewParameter->uiVoltSetFlag & _HisFX3_Platform_VlotOn_IIC);
+	//ui.ioddVoltcheckBox->setChecked(itemshareData.previewParameter->uiVoltSetFlag & _HisFX3_Platform_VlotOn_IIC);
 	ui.afVoltcheckBox->setChecked(itemshareData.previewParameter->uiVoltSetFlag & _HisFX3_Platform_VlotOn_AF);
 	ui.otpVoltcheckBox->setChecked(itemshareData.previewParameter->uiVoltSetFlag & _HisFX3_Platform_VlotOn_OTP);
 	ui.powVoltcheckBox->setChecked(itemshareData.previewParameter->uiVoltSetFlag & _HisFX3_Platform_VlotOn_POW);
@@ -739,7 +740,7 @@ int configsetting::savePreviewData()
 			if(ui.avddVoltcheckBox->isChecked()) uiVoltFlag |= _HisFX3_Platform_VlotOn_AVDD;
 			if(ui.dvddVoltcheckBox->isChecked()) uiVoltFlag |= _HisFX3_Platform_VlotOn_DVDD;
 			if(ui.dovddVoltcheckBox->isChecked()) uiVoltFlag |= _HisFX3_Platform_VlotOn_DOVDD;
-			if(ui.ioddVoltcheckBox->isChecked()) uiVoltFlag |= _HisFX3_Platform_VlotOn_IIC;
+			//if(ui.ioddVoltcheckBox->isChecked()) uiVoltFlag |= _HisFX3_Platform_VlotOn_IIC;
 			if(ui.afVoltcheckBox->isChecked()) uiVoltFlag |= _HisFX3_Platform_VlotOn_AF;
 			if(ui.otpVoltcheckBox->isChecked()) uiVoltFlag |= _HisFX3_Platform_VlotOn_OTP;
 			if(ui.powVoltcheckBox->isChecked()) uiVoltFlag |= _HisFX3_Platform_VlotOn_POW;
@@ -1080,10 +1081,15 @@ void configsetting::whitepanel2UI()
 	if(itemshareData.wpOCParameter)
 	{
 		ui.ocPixelRatiolineEdit->setText(QString::number(itemshareData.wpOCParameter->stAlgHA.oc_flpixelratio));
-		ui.ocDeviationlineEdit->setText(QString::number(itemshareData.wpOCParameter->stAlgHA.oc_fldeviation, 'f', 0));
+		ui.ocDeviationSpinBox->setValue((int)itemshareData.wpOCParameter->stAlgHA.oc_fldeviation);
+		ui.ocXSpinBox->setValue((int)itemshareData.wpOCParameter->stAlgHA.oc_flX);
+		ui.ocYSpinBox->setValue((int)itemshareData.wpOCParameter->stAlgHA.oc_flY);
 
 		ui.ochbSizeRatiodoubleSpinBox->setValue(itemshareData.wpOCParameter->stAlgHB.oc_flpixelratio);
 		ui.ochbDevspinBox->setValue(itemshareData.wpOCParameter->stAlgHB.oc_fldeviation);
+		ui.ochbXspinBox->setValue(itemshareData.wpOCParameter->stAlgHB.oc_flX);
+		ui.ochbYspinBox->setValue(itemshareData.wpOCParameter->stAlgHB.oc_flY);
+
 
 		ui.occomboBox->setCurrentIndex(itemshareData.wpOCParameter->opticalcenterAlg);
 	}
@@ -1534,7 +1540,9 @@ int configsetting::saveWhitePanel()
 			//(deviation:10.0)
 			//(pixelratio:0.09)
 			strname.clear();	strvalue.clear();
-			strname.append("deviation");	strvalue.append(ui.ocDeviationlineEdit->text());
+			strname.append("deviation");	strvalue.append(QString::number(ui.ocDeviationSpinBox->value()));
+			strname.append("specX");	strvalue.append(QString::number(ui.ocXSpinBox->value()));
+			strname.append("specY");	strvalue.append(QString::number(ui.ocYSpinBox->value()));
 			ROPLOW::jointconfigstring(itemsuffix2, strname, strvalue);
 
 			strname.clear();	strvalue.clear();
@@ -1549,6 +1557,8 @@ int configsetting::saveWhitePanel()
 			//(pixelratio:0.09)
 			strname.clear();	strvalue.clear();
 			strname.append("deviation");	strvalue.append(ui.ochbDevspinBox->text());
+			strname.append("specX_b");	strvalue.append(ui.ochbXspinBox->text());
+			strname.append("specY_b");	strvalue.append(ui.ochbYspinBox->text());
 			ROPLOW::jointconfigstring(itemsuffix2, strname, strvalue);
 
 			strname.clear();	strvalue.clear();
@@ -2884,7 +2894,7 @@ void configsetting::openshort2UI()
 			if(bFullPin)
 				strGND	=	QString::fromAscii(itemshareData.openshortParameter->vectorPositive.at(x).strGNDName);
 			else
-				strGND	=	(itemshareData.openshortParameter->vectorPositive.at(x).bAGND)?("AGND"):("DGND");
+				strGND	=	/*(itemshareData.openshortParameter->vectorPositive.at(x).bAGND)?("AGND"):*/("DGND");
 			pstIn->setCurrentIndex(pstIn->findText(strGND));
 			pstSpecMin->setValue(itemshareData.openshortParameter->vectorPositive.at(x).flSpecMin);
 			pstSpecMax->setValue(itemshareData.openshortParameter->vectorPositive.at(x).flSpecMax);
