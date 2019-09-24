@@ -13314,10 +13314,10 @@ int itemprocess::otpburn()
 	double dflCoefB=0;
 	QDateTime dateTime;
 
-	/*if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
-		emit information("错误：获取光源点检数据失败！");
+	if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
+		emit information(QString::fromLocal8Bit("错误：获取光源点检数据失败！"));
 		return -1;
-	}*/
+	}
 
 	itemshareData.itemparameterLock.lockForRead();
 
@@ -13659,12 +13659,12 @@ int itemprocess::LightSourceCal()
 
 	//************ 返回Golden ChipID 列表 *******************
 	QStringList listChipID;
-	if(getGoldenChipID("6442",listChipID)){
+	if(getGoldenChipID(itemshareData.ccmhardwareParameter->projectname,listChipID)){
 		emit information(QString::fromLocal8Bit("错误：获取Golden ChipID 列表失败！"));
 		return -1;
 	}
 
-	if(listChipID.lastIndexOf(QString::fromStdString(stParameter.strSerialNumber))<0){
+	if(listChipID.lastIndexOf(QString::fromStdString(stParameter.strSerialNumber).toLower())<0){
 		emit information(QString::fromLocal8Bit("错误：当前模组不是Golden ！"));
 		return -1;
 	}
@@ -13716,8 +13716,8 @@ int itemprocess::LightSourceCal()
 	emit enableinfotimer(0);
 
 	itemshareData.itemparameterLock.unlock();
-	if(abs(stParameter.dflLightCoeR-1.0f)>0.05f){
-		emit information(QString::fromLocal8Bit("错误：光源硬件差异 > 5% ，点检失败！"));
+	if(abs(stParameter.dflLightCoeR-1.0f)>0.03f||abs(stParameter.dflLightCoeB-1.0f)>0.03f){
+		emit information(QString::fromLocal8Bit("错误：光源硬件差异 > 3% ，点检失败！"));
 		return -1;
 	}
 
@@ -13792,7 +13792,7 @@ int itemprocess::LightSourceVerify(){
 	double dflCoefB=0;
 	QDateTime dateTime;
 	if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
-		emit information("错误：获取光源点检数据失败！");
+		emit information(QString::fromLocal8Bit("错误：获取光源点检数据失败！"));
 		return -1;
 	}
 
@@ -13941,7 +13941,7 @@ int itemprocess::getGoldenChipID(QString strProjectModel,QStringList &list){
 
 	while (query.next())
 	{
-		list.push_back(query.value(0).toString());
+		list.push_back(query.value(0).toString().toLower());
 	}
 	 
 	if(list.size()<=0){
@@ -13981,10 +13981,10 @@ int itemprocess::otpcheck()
 	double dflCoefR=0;
 	double dflCoefB=0;
 	QDateTime dateTime;
-	/*if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
-		emit information("错误：获取光源点检数据失败！");
+	if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
+		emit information(QString::fromLocal8Bit("错误：获取光源点检数据失败！"));
 		return -1;
-	}*/
+	}
 
 	itemshareData.itemparameterLock.lockForRead();
 
