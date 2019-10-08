@@ -2665,6 +2665,7 @@ struct _HisCCMOTP_Config{
 	int iheight;
 	bool bDebug;
 	bool bburn;
+	bool bLightCorrect;
 	bool bOnlyBurnOnce;
 	bool bBlockResult;
 	bool bOnlyCheckBurnData;

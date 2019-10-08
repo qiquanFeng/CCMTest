@@ -2002,6 +2002,7 @@ void configsetting::otpBurn2UI()
 	if(!itemshareData.otpburnParameter) return;
 
 	ui.otpBurncheckBox->setChecked(itemshareData.otpburnParameter->bburn);
+	ui.otpLightCorrectcheckBox->setChecked(itemshareData.otpburnParameter->bLightCorrect);
 	ui.burnopticalcentercheckBox->setChecked(itemshareData.otpburnParameter->bBurnOpticalCenter);
 	ui.otpCheckOnlyDatacheckBox->setChecked(itemshareData.otpburnParameter->bOnlyCheckData);
 	ui.otpBurnFrameSleepspinBox->setValue(itemshareData.otpburnParameter->uiFrameSleep);
@@ -2068,6 +2069,7 @@ int configsetting::saveOtpBurnData()
 			//paint text
 			strname.clear();	strvalue.clear();
 			strname.append("burn");	strvalue.append((ui.otpBurncheckBox->isChecked())?("true"):("false"));
+			strname.append("light_correct");	strvalue.append((ui.otpLightCorrectcheckBox->isChecked())?("true"):("false"));
 			strname.append("burnOpticalCenter");	strvalue.append((ui.burnopticalcentercheckBox->isChecked())?("true"):("false"));
 			strname.append("onlycheckdata");	strvalue.append((ui.otpCheckOnlyDatacheckBox->isChecked())?("true"):("false"));
 			strname.append("curfun");	strvalue.append(ui.otpBurnGetFunListcomboBox->currentText().toLower());
@@ -6264,6 +6266,7 @@ void configsetting::getdefaultotpBurn()
 	ui.otpBurnplainTextEdit->setPlainText(strText);
 
 	ui.otpBurncheckBox->setChecked(stotpConfig.bburn);
+	ui.otpLightCorrectcheckBox->setChecked(stotpConfig.bLightCorrect);
 	ui.otpCheckOnlyDatacheckBox->setChecked(stotpConfig.bOnlyCheckBurnData);
 	ui.otpBurnLuxMinspinBox->setValue(stotpConfig.uiLuxMin);
 	ui.otpBurnLuxMaxspinBox->setValue(stotpConfig.uiLuxMax);

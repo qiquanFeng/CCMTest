@@ -2569,6 +2569,7 @@ public:
     QVBoxLayout *verticalLayout_50;
     QHBoxLayout *horizontalLayout_133;
     QCheckBox *otpBurncheckBox;
+    QCheckBox *otpLightCorrectcheckBox;
     QCheckBox *otpCheckOnlyDatacheckBox;
     QCheckBox *burnopticalcentercheckBox;
     QHBoxLayout *horizontalLayout_131;
@@ -22742,6 +22743,11 @@ public:
 
         horizontalLayout_133->addWidget(otpBurncheckBox);
 
+        otpLightCorrectcheckBox = new QCheckBox(tab_20);
+        otpLightCorrectcheckBox->setObjectName(QString::fromUtf8("otpLightCorrectcheckBox"));
+
+        horizontalLayout_133->addWidget(otpLightCorrectcheckBox);
+
         otpCheckOnlyDatacheckBox = new QCheckBox(tab_20);
         otpCheckOnlyDatacheckBox->setObjectName(QString::fromUtf8("otpCheckOnlyDatacheckBox"));
         otpCheckOnlyDatacheckBox->setFont(font);
@@ -27728,7 +27734,7 @@ public:
         tabWidgetCurrentOS->setCurrentIndex(1);
         osa_ChannelcomboBox->setCurrentIndex(0);
         OStabWidget->setCurrentIndex(4);
-        tabWidgetBurn->setCurrentIndex(1);
+        tabWidgetBurn->setCurrentIndex(0);
         qualcommpdafLibVersioncomboBox->setCurrentIndex(0);
         lightSourcetabWidget->setCurrentIndex(0);
         lightSourceCheckstackedWidget->setCurrentIndex(0);
@@ -29510,6 +29516,7 @@ public:
         tabWidgetCurrentOS->setTabText(tabWidgetCurrentOS->indexOf(tab_42), QApplication::translate("configsetting", "OS", 0, QApplication::UnicodeUTF8));
         tabWidgetmain->setTabText(tabWidgetmain->indexOf(currentOStab), QApplication::translate("configsetting", "Current/OS", 0, QApplication::UnicodeUTF8));
         otpBurncheckBox->setText(QApplication::translate("configsetting", "Burn", 0, QApplication::UnicodeUTF8));
+        otpLightCorrectcheckBox->setText(QApplication::translate("configsetting", "Light Correct", 0, QApplication::UnicodeUTF8));
         otpCheckOnlyDatacheckBox->setText(QApplication::translate("configsetting", "Only Test Data Burn", 0, QApplication::UnicodeUTF8));
         burnopticalcentercheckBox->setText(QApplication::translate("configsetting", "Burn Optical Center", 0, QApplication::UnicodeUTF8));
         label_243->setText(QApplication::translate("configsetting", "Delay(ms):", 0, QApplication::UnicodeUTF8));

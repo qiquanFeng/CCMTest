@@ -35919,7 +35919,7 @@
            <enum>QTabWidget::West</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tab_20">
            <attribute name="title">
@@ -35941,6 +35941,13 @@
                   </property>
                   <property name="text">
                    <string>Burn</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="otpLightCorrectcheckBox">
+                  <property name="text">
+                   <string>Light Correct</string>
                   </property>
                  </widget>
                 </item>

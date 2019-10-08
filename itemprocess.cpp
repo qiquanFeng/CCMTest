@@ -13208,6 +13208,7 @@ int itemprocess::getotpburnParameter(bool bupdate, bool bcheck)
 				ROPLOW::patchconfigstring(strData, strname, strvalue);
 				for(int x=0;	x<strname.size();	++x){
 					if(strname.at(x) == "burn")	itemshareData.otpburnParameter->bburn	=	(strvalue.at(x) == "true");
+					else if(strname.at(x) == "light_correct")	itemshareData.otpburnParameter->bLightCorrect	=	(strvalue.at(x) == "true");
 					else if(strname.at(x) == "burnOpticalCenter")	itemshareData.otpburnParameter->bBurnOpticalCenter	=	(strvalue.at(x) == "true");
 					else if(strname.at(x) == "onlycheckdata")	itemshareData.otpburnParameter->bOnlyCheckData	=	(strvalue.at(x) == "true");
 					else if(strname.at(x) == "curfun")
@@ -13314,12 +13315,16 @@ int itemprocess::otpburn()
 	double dflCoefB=0;
 	QDateTime dateTime;
 
-	if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
-		emit information(QString::fromLocal8Bit("错误：获取光源点检数据失败！"));
-		return -1;
-	}
-
 	itemshareData.itemparameterLock.lockForRead();
+
+	if(itemshareData.otpburnParameter->bLightCorrect==true){
+		emit information(QString::fromLocal8Bit("正在获取光源点检数据"));
+		if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
+			emit information(QString::fromLocal8Bit("错误：获取光源点检数据失败！"));
+			return -1;
+		}
+	}
+	else emit information(QString::fromLocal8Bit("注意：跳过获取光源点检数据！"));
 
 	_HisCCMOTP_Config stParameter;
 	stParameter.puiIndex	=	&(itemshareData.otpburnParameter->uiIndex);
@@ -13981,12 +13986,17 @@ int itemprocess::otpcheck()
 	double dflCoefR=0;
 	double dflCoefB=0;
 	QDateTime dateTime;
-	if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
-		emit information(QString::fromLocal8Bit("错误：获取光源点检数据失败！"));
-		return -1;
-	}
 
 	itemshareData.itemparameterLock.lockForRead();
+
+	if(itemshareData.otpburnParameter->bLightCorrect==true){
+		emit information(QString::fromLocal8Bit("正在获取光源点检数据"));
+		if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
+			emit information(QString::fromLocal8Bit("错误：获取光源点检数据失败！"));
+			return -1;
+		}
+	}
+	else emit information(QString::fromLocal8Bit("注意：跳过获取光源点检数据！"));
 
 	_HisCCMOTP_Config stParameter;
 	stParameter.puiIndex	=	&(itemshareData.otpburnParameter->uiIndex);
@@ -29742,6 +29752,7 @@ int itemprocess::getdualcameraParameter(bool bupdate, bool bcheck)
 				ROPLOW::patchconfigstring(strData, strname, strvalue);
 				for(int x=0;	x<strname.size();	++x){
 					if(strname.at(x) == "burn") itemshareData.dualCameraParameter->bburn = (strvalue.at(x) == "true");
+					else if(strname.at(x) == "litghr_correct")	itemshareData.dualCameraParameter->bLightCorrect	=	(strvalue.at(x)	==	"true");
 					else if(strname.at(x)== "onlycheckdata")   itemshareData.dualCameraParameter->bOnlyCheckData =(strvalue.at(x)=="true");
 					else if(strname.at(x) == "burnrule")	itemshareData.dualCameraParameter->strDualCameraBurnChoose		=	strvalue.at(x).toUpper();
 					else if(strname.at(x) == "chart2lensposition")	itemshareData.dualCameraParameter->dChart2lensDistance_Rotation	=	strvalue.at(x).toDouble();

@@ -1313,6 +1313,7 @@ struct _lightsourcecheckParameter
 struct _otpburnParameter
 {
 	bool bburn;
+	bool bLightCorrect;
 	bool bOnlyCheckData;
 	bool bBurnOpticalCenter;
 	unsigned int uiIndex;
@@ -1346,6 +1347,7 @@ struct _otpburnParameter
 	_otpburnParameter()
 	{
 		bOnlyCheckData	=	false;
+		bLightCorrect	=	false;
 		bburn					=	false;
 		bBurnOpticalCenter=false;
 	}
@@ -1448,6 +1450,7 @@ struct _pdafParameter{
 
 struct _dualCameraParameter{
 	bool bburn;
+	bool bLightCorrect;
 	bool bOnlyCheckData;
 	double dChart2lensDistance_Rotation; 
 	double dFocusLength_Rotation;
@@ -1480,7 +1483,7 @@ struct _dualCameraParameter{
 
 	_dualCameraParameter()
 	{
-		bburn=bOnlyCheckData=bCoaxialityburn=bCoaxialityOnlyCheckData=false;
+		bburn=bLightCorrect=bOnlyCheckData=bCoaxialityburn=bCoaxialityOnlyCheckData=false;
 		dChart2lensDistance_Rotation=500;
 		dFocusLength_Rotation=dCycleDistanceHorizontal_Rotation=dCycleDistanceVertical_Rotation=0;
 		dMaxAngleX=dMaxAngleY=dMaxAngleZ=0.0f;
