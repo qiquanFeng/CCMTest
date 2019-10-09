@@ -67,7 +67,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>7</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideLeft</enum>
@@ -22798,7 +22798,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <property name="elideMode">
            <enum>Qt::ElideNone</enum>
@@ -35929,7 +35929,7 @@
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_50">
               <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_133">
+               <layout class="QVBoxLayout" name="verticalLayout_179">
                 <item>
                  <widget class="QCheckBox" name="otpBurncheckBox">
                   <property name="font">
@@ -35947,7 +35947,7 @@
                 <item>
                  <widget class="QCheckBox" name="otpLightCorrectcheckBox">
                   <property name="text">
-                   <string>Light Correct</string>
+                   <string>获取光源点检数据</string>
                   </property>
                  </widget>
                 </item>
@@ -35965,14 +35965,14 @@
                   </property>
                  </widget>
                 </item>
+                <item>
+                 <widget class="QCheckBox" name="burnopticalcentercheckBox">
+                  <property name="text">
+                   <string>Burn Optical Center</string>
+                  </property>
+                 </widget>
+                </item>
                </layout>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="burnopticalcentercheckBox">
-                <property name="text">
-                 <string>Burn Optical Center</string>
-                </property>
-               </widget>
               </item>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_131">
@@ -39336,7 +39336,7 @@
            <enum>QTabWidget::West</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="lightSourceChecktab">
            <attribute name="title">
@@ -39871,6 +39871,88 @@
             </item>
            </layout>
           </widget>
+          <widget class="QWidget" name="tab_18">
+           <attribute name="title">
+            <string>光源点检规格</string>
+           </attribute>
+           <widget class="QWidget" name="layoutWidget">
+            <property name="geometry">
+             <rect>
+              <x>50</x>
+              <y>70</y>
+              <width>436</width>
+              <height>77</height>
+             </rect>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_678">
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_182">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_133">
+                 <item>
+                  <widget class="QLabel" name="label_196">
+                   <property name="text">
+                    <string>硬件差异最大规格(百分比)</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QDoubleSpinBox" name="LightHardwaredoubleSpinBox"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_188">
+                   <property name="minimumSize">
+                    <size>
+                     <width>65</width>
+                     <height>31</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>%</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_677">
+                 <item>
+                  <widget class="QLabel" name="label_195">
+                   <property name="text">
+                    <string>校正标准最大规格(百分比)</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QDoubleSpinBox" name="LightCorrectdoubleSpinBox_2"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_189">
+                   <property name="minimumSize">
+                    <size>
+                     <width>65</width>
+                     <height>31</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>%</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QPushButton" name="LightSpecificationpushButton">
+               <property name="text">
+                <string>保存</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </widget>
          </widget>
         </item>
        </layout>
@@ -40246,7 +40328,7 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>444</width>
+               <width>261</width>
                <height>1455</height>
               </rect>
              </property>
@@ -41928,8 +42010,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>465</width>
-               <height>612</height>
+               <width>258</width>
+               <height>143</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_56">
@@ -42309,7 +42391,6 @@
   <tabstop>checkBox_standbycurrent_avdd</tabstop>
   <tabstop>checkBox_standbycurrent_af</tabstop>
   <tabstop>tabWidgetBurn</tabstop>
-  <tabstop>otpBurncheckBox</tabstop>
   <tabstop>otpBurnFrameSleepspinBox</tabstop>
   <tabstop>otpBurnLuxMinspinBox</tabstop>
   <tabstop>otpBurnLuxMaxspinBox</tabstop>
@@ -43143,8 +43224,6 @@
   <tabstop>oocnotselectcheckBox</tabstop>
   <tabstop>osOpenDelayspinBox</tabstop>
   <tabstop>osOpentableWidget</tabstop>
-  <tabstop>otpCheckOnlyDatacheckBox</tabstop>
-  <tabstop>burnopticalcentercheckBox</tabstop>
   <tabstop>OCXDeviationMaxlineEdit</tabstop>
   <tabstop>OCYDeviationMaxlineEdit</tabstop>
   <tabstop>afburnMiddlecheckBox</tabstop>
@@ -43218,7 +43297,6 @@
   <tabstop>ducalcameracoaxialityBurncheckBox</tabstop>
   <tabstop>ducalcameracoaxialityCheckOnlyDatacheckBox</tabstop>
   <tabstop>dualcmsavepushButton</tabstop>
-  <tabstop>lightSourcetabWidget</tabstop>
   <tabstop>lightSourceCheckcomboBox</tabstop>
   <tabstop>lightSourceCheckpushButton</tabstop>
   <tabstop>lightschaROIWdoubleSpinBox</tabstop>

@@ -2742,12 +2742,12 @@ struct _HisCCMOTP_Config{
 	float flYLSC_RB;
 	float flYLSC_Diff;
 #endif
-
 	float flR2Gr[121];
 	float flB2Gr[121];
 	float flGr[121];
 	double dflLightCoeB;
 	double dflLightCoeR;
+	double dflLigheCoeTolerance;
 	unsigned int uiMachineID;
 	unsigned int uiHardwareVersion;
 	_haob64 Reserve1; 

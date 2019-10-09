@@ -13721,8 +13721,16 @@ int itemprocess::LightSourceCal()
 	emit enableinfotimer(0);
 
 	itemshareData.itemparameterLock.unlock();
+
 	if(abs(stParameter.dflLightCoeR-1.0f)>0.03f||abs(stParameter.dflLightCoeB-1.0f)>0.03f){
 		emit information(QString::fromLocal8Bit("错误：光源硬件差异 > 3% ，点检失败！"));
+		emit information("LightHardwareR="+QString::number(abs(stParameter.dflLightCoeR-1.0f),'f',6));
+		emit information("LightHardwareB="+QString::number(abs(stParameter.dflLightCoeB-1.0f),'f',6));
+		return -1;
+	}
+	if(stParameter.dflLigheCoeTolerance>0.0025f){
+		emit information(QString::fromLocal8Bit("错误：光源点检校正标准 > 0.0025 ，点检失败！"));
+		emit information("LigheCoeTolerance="+QString::number(stParameter.dflLigheCoeTolerance,'f',6));
 		return -1;
 	}
 

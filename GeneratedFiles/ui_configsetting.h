@@ -2567,7 +2567,7 @@ public:
     QWidget *tab_20;
     QHBoxLayout *horizontalLayout_26;
     QVBoxLayout *verticalLayout_50;
-    QHBoxLayout *horizontalLayout_133;
+    QVBoxLayout *verticalLayout_179;
     QCheckBox *otpBurncheckBox;
     QCheckBox *otpLightCorrectcheckBox;
     QCheckBox *otpCheckOnlyDatacheckBox;
@@ -2945,6 +2945,19 @@ public:
     QDoubleSpinBox *lightschbPPMindoubleSpinBox;
     QLabel *lightschblabel_176;
     QDoubleSpinBox *lightschbPPMaxdoubleSpinBox;
+    QWidget *tab_18;
+    QWidget *layoutWidget;
+    QHBoxLayout *horizontalLayout_678;
+    QVBoxLayout *verticalLayout_182;
+    QHBoxLayout *horizontalLayout_133;
+    QLabel *label_196;
+    QDoubleSpinBox *LightHardwaredoubleSpinBox;
+    QLabel *label_188;
+    QHBoxLayout *horizontalLayout_677;
+    QLabel *label_195;
+    QDoubleSpinBox *LightCorrectdoubleSpinBox_2;
+    QLabel *label_189;
+    QPushButton *LightSpecificationpushButton;
     QWidget *iictab;
     QVBoxLayout *verticalLayout_76;
     QTabWidget *tabWidgetArchive;
@@ -22734,33 +22747,33 @@ public:
         verticalLayout_50 = new QVBoxLayout();
         verticalLayout_50->setSpacing(6);
         verticalLayout_50->setObjectName(QString::fromUtf8("verticalLayout_50"));
-        horizontalLayout_133 = new QHBoxLayout();
-        horizontalLayout_133->setSpacing(6);
-        horizontalLayout_133->setObjectName(QString::fromUtf8("horizontalLayout_133"));
+        verticalLayout_179 = new QVBoxLayout();
+        verticalLayout_179->setSpacing(6);
+        verticalLayout_179->setObjectName(QString::fromUtf8("verticalLayout_179"));
         otpBurncheckBox = new QCheckBox(tab_20);
         otpBurncheckBox->setObjectName(QString::fromUtf8("otpBurncheckBox"));
         otpBurncheckBox->setFont(font);
 
-        horizontalLayout_133->addWidget(otpBurncheckBox);
+        verticalLayout_179->addWidget(otpBurncheckBox);
 
         otpLightCorrectcheckBox = new QCheckBox(tab_20);
         otpLightCorrectcheckBox->setObjectName(QString::fromUtf8("otpLightCorrectcheckBox"));
 
-        horizontalLayout_133->addWidget(otpLightCorrectcheckBox);
+        verticalLayout_179->addWidget(otpLightCorrectcheckBox);
 
         otpCheckOnlyDatacheckBox = new QCheckBox(tab_20);
         otpCheckOnlyDatacheckBox->setObjectName(QString::fromUtf8("otpCheckOnlyDatacheckBox"));
         otpCheckOnlyDatacheckBox->setFont(font);
 
-        horizontalLayout_133->addWidget(otpCheckOnlyDatacheckBox);
-
-
-        verticalLayout_50->addLayout(horizontalLayout_133);
+        verticalLayout_179->addWidget(otpCheckOnlyDatacheckBox);
 
         burnopticalcentercheckBox = new QCheckBox(tab_20);
         burnopticalcentercheckBox->setObjectName(QString::fromUtf8("burnopticalcentercheckBox"));
 
-        verticalLayout_50->addWidget(burnopticalcentercheckBox);
+        verticalLayout_179->addWidget(burnopticalcentercheckBox);
+
+
+        verticalLayout_50->addLayout(verticalLayout_179);
 
         horizontalLayout_131 = new QHBoxLayout();
         horizontalLayout_131->setSpacing(6);
@@ -25185,6 +25198,72 @@ public:
         verticalLayout_145->addWidget(lightSourceCheckstackedWidget);
 
         lightSourcetabWidget->addTab(lightSourceChecktab, QString());
+        tab_18 = new QWidget();
+        tab_18->setObjectName(QString::fromUtf8("tab_18"));
+        layoutWidget = new QWidget(tab_18);
+        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
+        layoutWidget->setGeometry(QRect(50, 70, 436, 77));
+        horizontalLayout_678 = new QHBoxLayout(layoutWidget);
+        horizontalLayout_678->setSpacing(6);
+        horizontalLayout_678->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_678->setObjectName(QString::fromUtf8("horizontalLayout_678"));
+        horizontalLayout_678->setContentsMargins(0, 0, 0, 0);
+        verticalLayout_182 = new QVBoxLayout();
+        verticalLayout_182->setSpacing(6);
+        verticalLayout_182->setObjectName(QString::fromUtf8("verticalLayout_182"));
+        horizontalLayout_133 = new QHBoxLayout();
+        horizontalLayout_133->setSpacing(6);
+        horizontalLayout_133->setObjectName(QString::fromUtf8("horizontalLayout_133"));
+        label_196 = new QLabel(layoutWidget);
+        label_196->setObjectName(QString::fromUtf8("label_196"));
+
+        horizontalLayout_133->addWidget(label_196);
+
+        LightHardwaredoubleSpinBox = new QDoubleSpinBox(layoutWidget);
+        LightHardwaredoubleSpinBox->setObjectName(QString::fromUtf8("LightHardwaredoubleSpinBox"));
+
+        horizontalLayout_133->addWidget(LightHardwaredoubleSpinBox);
+
+        label_188 = new QLabel(layoutWidget);
+        label_188->setObjectName(QString::fromUtf8("label_188"));
+        label_188->setMinimumSize(QSize(65, 31));
+
+        horizontalLayout_133->addWidget(label_188);
+
+
+        verticalLayout_182->addLayout(horizontalLayout_133);
+
+        horizontalLayout_677 = new QHBoxLayout();
+        horizontalLayout_677->setSpacing(6);
+        horizontalLayout_677->setObjectName(QString::fromUtf8("horizontalLayout_677"));
+        label_195 = new QLabel(layoutWidget);
+        label_195->setObjectName(QString::fromUtf8("label_195"));
+
+        horizontalLayout_677->addWidget(label_195);
+
+        LightCorrectdoubleSpinBox_2 = new QDoubleSpinBox(layoutWidget);
+        LightCorrectdoubleSpinBox_2->setObjectName(QString::fromUtf8("LightCorrectdoubleSpinBox_2"));
+
+        horizontalLayout_677->addWidget(LightCorrectdoubleSpinBox_2);
+
+        label_189 = new QLabel(layoutWidget);
+        label_189->setObjectName(QString::fromUtf8("label_189"));
+        label_189->setMinimumSize(QSize(65, 31));
+
+        horizontalLayout_677->addWidget(label_189);
+
+
+        verticalLayout_182->addLayout(horizontalLayout_677);
+
+
+        horizontalLayout_678->addLayout(verticalLayout_182);
+
+        LightSpecificationpushButton = new QPushButton(layoutWidget);
+        LightSpecificationpushButton->setObjectName(QString::fromUtf8("LightSpecificationpushButton"));
+
+        horizontalLayout_678->addWidget(LightSpecificationpushButton);
+
+        lightSourcetabWidget->addTab(tab_18, QString());
 
         horizontalLayout_314->addWidget(lightSourcetabWidget);
 
@@ -25431,7 +25510,7 @@ public:
         autoExposurescrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents_2 = new QWidget();
         scrollAreaWidgetContents_2->setObjectName(QString::fromUtf8("scrollAreaWidgetContents_2"));
-        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 444, 1455));
+        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 261, 1455));
         verticalLayout_53 = new QVBoxLayout(scrollAreaWidgetContents_2);
         verticalLayout_53->setSpacing(6);
         verticalLayout_53->setContentsMargins(11, 11, 11, 11);
@@ -26415,7 +26494,7 @@ public:
         autoExposurescrollArea_3->setWidgetResizable(true);
         scrollAreaWidgetContents_7 = new QWidget();
         scrollAreaWidgetContents_7->setObjectName(QString::fromUtf8("scrollAreaWidgetContents_7"));
-        scrollAreaWidgetContents_7->setGeometry(QRect(0, 0, 465, 612));
+        scrollAreaWidgetContents_7->setGeometry(QRect(0, 0, 258, 143));
         verticalLayout_56 = new QVBoxLayout(scrollAreaWidgetContents_7);
         verticalLayout_56->setSpacing(6);
         verticalLayout_56->setContentsMargins(11, 11, 11, 11);
@@ -26747,8 +26826,7 @@ public:
         QWidget::setTabOrder(checkBox_standbycurrent_dvdd, checkBox_standbycurrent_avdd);
         QWidget::setTabOrder(checkBox_standbycurrent_avdd, checkBox_standbycurrent_af);
         QWidget::setTabOrder(checkBox_standbycurrent_af, tabWidgetBurn);
-        QWidget::setTabOrder(tabWidgetBurn, otpBurncheckBox);
-        QWidget::setTabOrder(otpBurncheckBox, otpBurnFrameSleepspinBox);
+        QWidget::setTabOrder(tabWidgetBurn, otpBurnFrameSleepspinBox);
         QWidget::setTabOrder(otpBurnFrameSleepspinBox, otpBurnLuxMinspinBox);
         QWidget::setTabOrder(otpBurnLuxMinspinBox, otpBurnLuxMaxspinBox);
         QWidget::setTabOrder(otpBurnLuxMaxspinBox, otpBurnOBspinBox);
@@ -27581,9 +27659,7 @@ public:
         QWidget::setTabOrder(oocselectallcheckBox, oocnotselectcheckBox);
         QWidget::setTabOrder(oocnotselectcheckBox, osOpenDelayspinBox);
         QWidget::setTabOrder(osOpenDelayspinBox, osOpentableWidget);
-        QWidget::setTabOrder(osOpentableWidget, otpCheckOnlyDatacheckBox);
-        QWidget::setTabOrder(otpCheckOnlyDatacheckBox, burnopticalcentercheckBox);
-        QWidget::setTabOrder(burnopticalcentercheckBox, OCXDeviationMaxlineEdit);
+        QWidget::setTabOrder(osOpentableWidget, OCXDeviationMaxlineEdit);
         QWidget::setTabOrder(OCXDeviationMaxlineEdit, OCYDeviationMaxlineEdit);
         QWidget::setTabOrder(OCYDeviationMaxlineEdit, afburnMiddlecheckBox);
         QWidget::setTabOrder(afburnMiddlecheckBox, afburnMiddleOffsetspinBox);
@@ -27656,8 +27732,7 @@ public:
         QWidget::setTabOrder(dualcameraCoaxialityBurnGetFunListcomboBox, ducalcameracoaxialityBurncheckBox);
         QWidget::setTabOrder(ducalcameracoaxialityBurncheckBox, ducalcameracoaxialityCheckOnlyDatacheckBox);
         QWidget::setTabOrder(ducalcameracoaxialityCheckOnlyDatacheckBox, dualcmsavepushButton);
-        QWidget::setTabOrder(dualcmsavepushButton, lightSourcetabWidget);
-        QWidget::setTabOrder(lightSourcetabWidget, lightSourceCheckcomboBox);
+        QWidget::setTabOrder(dualcmsavepushButton, lightSourceCheckcomboBox);
         QWidget::setTabOrder(lightSourceCheckcomboBox, lightSourceCheckpushButton);
         QWidget::setTabOrder(lightSourceCheckpushButton, lightschaROIWdoubleSpinBox);
         QWidget::setTabOrder(lightschaROIWdoubleSpinBox, lightschaROIHdoubleSpinBox);
@@ -27684,7 +27759,7 @@ public:
 
         retranslateUi(configsetting);
 
-        tabWidgetmain->setCurrentIndex(6);
+        tabWidgetmain->setCurrentIndex(7);
         mipiSignalcomboBox->setCurrentIndex(1);
         commuProtocalcomboBox->setCurrentIndex(0);
         focusAdjusttabWidget->setCurrentIndex(3);
@@ -27715,7 +27790,7 @@ public:
         afclpaMTValueChoosecomboBox->setCurrentIndex(0);
         afclpaNTTacticscomboBox->setCurrentIndex(3);
         afclpaNTValueChoosecomboBox->setCurrentIndex(0);
-        tabWidgetWhite->setCurrentIndex(1);
+        tabWidgetWhite->setCurrentIndex(0);
         occomboBox->setCurrentIndex(0);
         opticalcenterstackedWidget->setCurrentIndex(1);
         shadingcomboBox->setCurrentIndex(0);
@@ -27736,7 +27811,7 @@ public:
         OStabWidget->setCurrentIndex(4);
         tabWidgetBurn->setCurrentIndex(0);
         qualcommpdafLibVersioncomboBox->setCurrentIndex(0);
-        lightSourcetabWidget->setCurrentIndex(0);
+        lightSourcetabWidget->setCurrentIndex(1);
         lightSourceCheckstackedWidget->setCurrentIndex(0);
         tabWidgetArchive->setCurrentIndex(0);
 
@@ -29516,7 +29591,7 @@ public:
         tabWidgetCurrentOS->setTabText(tabWidgetCurrentOS->indexOf(tab_42), QApplication::translate("configsetting", "OS", 0, QApplication::UnicodeUTF8));
         tabWidgetmain->setTabText(tabWidgetmain->indexOf(currentOStab), QApplication::translate("configsetting", "Current/OS", 0, QApplication::UnicodeUTF8));
         otpBurncheckBox->setText(QApplication::translate("configsetting", "Burn", 0, QApplication::UnicodeUTF8));
-        otpLightCorrectcheckBox->setText(QApplication::translate("configsetting", "Light Correct", 0, QApplication::UnicodeUTF8));
+        otpLightCorrectcheckBox->setText(QApplication::translate("configsetting", "\350\216\267\345\217\226\345\205\211\346\272\220\347\202\271\346\243\200\346\225\260\346\215\256", 0, QApplication::UnicodeUTF8));
         otpCheckOnlyDatacheckBox->setText(QApplication::translate("configsetting", "Only Test Data Burn", 0, QApplication::UnicodeUTF8));
         burnopticalcentercheckBox->setText(QApplication::translate("configsetting", "Burn Optical Center", 0, QApplication::UnicodeUTF8));
         label_243->setText(QApplication::translate("configsetting", "Delay(ms):", 0, QApplication::UnicodeUTF8));
@@ -29682,6 +29757,12 @@ public:
         lightschblabel_169->setText(QApplication::translate("configsetting", "Light Source Check(Algorithm-B)\357\274\232", 0, QApplication::UnicodeUTF8));
         lightschbRawInfolineEdit->setText(QApplication::translate("configsetting", "RawInfo_G532F_M_0705.bin", 0, QApplication::UnicodeUTF8));
         lightSourcetabWidget->setTabText(lightSourcetabWidget->indexOf(lightSourceChecktab), QApplication::translate("configsetting", "Light Source Check", 0, QApplication::UnicodeUTF8));
+        label_196->setText(QApplication::translate("configsetting", "\347\241\254\344\273\266\345\267\256\345\274\202\346\234\200\345\244\247\350\247\204\346\240\274(\347\231\276\345\210\206\346\257\224)", 0, QApplication::UnicodeUTF8));
+        label_188->setText(QApplication::translate("configsetting", "%", 0, QApplication::UnicodeUTF8));
+        label_195->setText(QApplication::translate("configsetting", "\346\240\241\346\255\243\346\240\207\345\207\206\346\234\200\345\244\247\350\247\204\346\240\274(\347\231\276\345\210\206\346\257\224)", 0, QApplication::UnicodeUTF8));
+        label_189->setText(QApplication::translate("configsetting", "%", 0, QApplication::UnicodeUTF8));
+        LightSpecificationpushButton->setText(QApplication::translate("configsetting", "\344\277\235\345\255\230", 0, QApplication::UnicodeUTF8));
+        lightSourcetabWidget->setTabText(lightSourcetabWidget->indexOf(tab_18), QApplication::translate("configsetting", "\345\205\211\346\272\220\347\202\271\346\243\200\350\247\204\346\240\274", 0, QApplication::UnicodeUTF8));
         tabWidgetmain->setTabText(tabWidgetmain->indexOf(lightSourcetab), QApplication::translate("configsetting", "Light Source", 0, QApplication::UnicodeUTF8));
         groupBox_36->setTitle(QApplication::translate("configsetting", "Serial Number", 0, QApplication::UnicodeUTF8));
         snFromTextradioButton->setText(QApplication::translate("configsetting", "Text Acquisition", 0, QApplication::UnicodeUTF8));
