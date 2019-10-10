@@ -13610,11 +13610,20 @@ int itemprocess::LightSourceCal()
 
 	//取得配置参数和规格
 	int iresult	=	getotpburnParameter(false);
-	if(iresult)
+	if(iresult){
+		emit information(QString::fromLocal8Bit("错误：获取getotpburnParameter失败！"));
 		return iresult;
+	}
 	iresult	=	getccmhardwareParameter(false);
-	if(iresult)
+	if(iresult){
+		emit information(QString::fromLocal8Bit("错误：获取getccmhardwareParameter失败！"));
 		return iresult;
+	}
+	iresult = getlsSpecificationParameter(false);
+	if(iresult){
+		emit information(QString::fromLocal8Bit("错误：获取getlsSpecificationParameter失败！"));
+		return iresult;
+	}
 
 	itemshareData.itemparameterLock.lockForRead();
 
@@ -13710,7 +13719,6 @@ int itemprocess::LightSourceCal()
 	}
 
 	//********************************
-
 	emit enableinfotimer(1);
 	
 	iresult	=	writeotp(*globalFunPointer.vectorHisCCMOTPInfoW, &stParameter, globalFunPointer.ReadHisFX3IIC, globalFunPointer.WriteHisFX3IIC, globalFunPointer.SetHisFX3IICSpeed, \
@@ -13720,18 +13728,21 @@ int itemprocess::LightSourceCal()
 		globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
 	emit enableinfotimer(0);
 
+	float LightHardwareSpecification=itemshareData.LightSpecificationParameter->HardwareSpecification/100.0f;
+	float LightCorrectSpecification=itemshareData.LightSpecificationParameter->CorrectSpecification/100.0f;
+
 	itemshareData.itemparameterLock.unlock();
 
-	if(abs(stParameter.dflLightCoeR-1.0f)>0.03f||abs(stParameter.dflLightCoeB-1.0f)>0.03f){
-		emit information(QString::fromLocal8Bit("错误：光源硬件差异 > 3% ，点检失败！"));
+	if(abs(stParameter.dflLightCoeR-1.0f)>LightHardwareSpecification||abs(stParameter.dflLightCoeB-1.0f)>LightHardwareSpecification){
+		emit information(QString::fromLocal8Bit("错误：光源硬件差异 > %1% ，点检失败！").arg(QString::number(LightHardwareSpecification*100,'f',2)));
 		emit information("LightHardwareR="+QString::number(abs(stParameter.dflLightCoeR-1.0f),'f',6));
 		emit information("LightHardwareB="+QString::number(abs(stParameter.dflLightCoeB-1.0f),'f',6));
-		return -1;
+		iresult=-1;
 	}
-	if(stParameter.dflLigheCoeTolerance>0.0025f){
-		emit information(QString::fromLocal8Bit("错误：光源点检校正标准 > 0.0025 ，点检失败！"));
+	if(stParameter.dflLigheCoeTolerance>LightCorrectSpecification){
+		emit information(QString::fromLocal8Bit("错误：光源点检校正标准 > %1% ，点检失败！").arg(QString::number(LightCorrectSpecification*100,'f',2)));
 		emit information("LigheCoeTolerance="+QString::number(stParameter.dflLigheCoeTolerance,'f',6));
-		return -1;
+		iresult=-1;
 	}
 
 	if(iresult)
@@ -14313,6 +14324,65 @@ int itemprocess::getlsCheckParameter(bool bupdate, bool bcheck)
 	if(!bItemExist)
 	{
 		HisReleaseNewO(itemshareData.lightsourcecheckParameter);
+		return HisFX3Error_Parameter;
+	}
+
+	return 0;
+}
+
+int itemprocess::getlsSpecificationParameter(bool bupdate,bool bcheck)
+{
+	QMutexLocker locker(&hisglobalparameter.mutexDatabase);
+
+	itemshareData.itemparameterLock.lockForRead();
+	if(!bupdate && itemshareData.LightSpecificationParameter)	{	itemshareData.itemparameterLock.unlock();	return 0;	}
+	itemshareData.itemparameterLock.unlock();
+
+	QHReadWriteLockManage classitemparameterLock(&(itemshareData.itemparameterLock), true);
+
+	if(!itemshareData.LightSpecificationParameter)	itemshareData.LightSpecificationParameter		=	new _LightSpecificationParameter;
+	if(!itemshareData.LightSpecificationParameter)	{	return HisFX3Error_MallocBuffer;	}
+
+	bool bItemExist = false;
+	{
+		QSqlDatabase customdb = QSqlDatabase::addDatabase("QSQLITE", "querycustom");
+		customdb.setDatabaseName(QDir::currentPath() % "/HisFX3Custom");
+		if (!customdb.open()){
+			itemshareData.itemparameterLock.unlock();
+			return HisCCMError_Database;
+		}
+
+		QStringList strname, strvalue;
+		QString strData, strData2;
+		QSqlQuery query(customdb);
+		query.prepare("SELECT itemsuffix2,key,value,reserve FROM " % itemshareData.currentTableName % \
+			" WHERE classfy='algorithm' AND item='lightspacification' AND itemsuffix1='spacification' ORDER BY id ASC" );
+		query.exec();
+
+		//(hardware:3%)(correct:0.25%)
+		while (query.next())
+		{
+			bItemExist = true;
+			for(int y=0;y<1;++y)
+			{
+				strData	=	query.value(y).toString();
+				ROPLOW::patchconfigstring(strData, strname, strvalue);
+				for(int x=0;x<strname.size();++x)
+				{
+					if(strname.at(x) == "hardware")				itemshareData.LightSpecificationParameter->HardwareSpecification =	strvalue.at(x).toFloat();
+					else if(strname.at(x) == "correct")		itemshareData.LightSpecificationParameter->CorrectSpecification =	strvalue.at(x).toFloat();
+				}
+			}
+		}
+
+		customdb.close();
+	}
+
+	QSqlDatabase::removeDatabase("querycustom");
+
+	if(!bItemExist)
+	{
+		HisReleaseNewO(itemshareData.LightSpecificationParameter);
 		return HisFX3Error_Parameter;
 	}
 
@@ -14986,6 +15056,12 @@ int itemprocess::afBurn(int farcode,int midcode,int nearcode)
 			return HisCCMError_Result;
 		}
 	}
+	if(stParameter.iNearMotor-stParameter.iInfinitMotor<140){
+			emit information(QTextCodec::codecForName( "GBK")->toUnicode("远焦近焦DAC差值小于140"));
+			itemshareData.itemparameterLock.unlock();
+			return HisCCMError_Result;
+	}
+
 #endif
 	QString strSerialNumber;
 	classLog->getserialnumber(strSerialNumber);
@@ -15139,6 +15215,11 @@ int itemprocess::afBurnCheck() //0:near 1:middle 2:infinite
 			iresult	=	HisCCMError_Result;
 		}
 	}
+	if(stParameter.iNearMotor-stParameter.iInfinitMotor<140){
+			emit information(QTextCodec::codecForName( "GBK")->toUnicode("远焦近焦DAC差值小于140"));
+			itemshareData.itemparameterLock.unlock();
+			return HisCCMError_Result;
+	}
 
 	int  iNear=(iNearPeakMotorDec==0x00FFFFFF)?(0x00FFFFFF):(iNearPeakMotorDec + itemshareData.afburnParameter->iNearMotorOffset);
 	int  iFar=(iFarPeakMotorDec==0x00FFFFFF)?(0x00FFFFFF):(iFarPeakMotorDec + itemshareData.afburnParameter->iFarMotorOffset);
@@ -15185,6 +15266,7 @@ int itemprocess::afBurnCheck() //0:near 1:middle 2:infinite
 
 	return iresult;
 }
+
 int itemprocess::senttcpmessage(_QH_TcpIpCommu_Itemnew clientiteminfo)
 {
 	return 0;

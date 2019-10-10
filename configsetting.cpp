@@ -62,7 +62,8 @@ enum _HisDB_DataIndex{
 	_HisDB_Index_CustomI2cG2		=	30000,
 	_HisDB_Index_CustomI2cG3		=	40000,
 	_HisDB_Index_CustomI2cG4		=	50000,
-	_HisDB_Index_CurrentIndex		=	60000
+	_HisDB_Index_CurrentIndex		=	60000,
+	_HisDB_Index_LightSpecification	=	1536
 };
 
 configsetting::configsetting(QWidget *parent, bool bChannel1, _threadshareData& threadshareDataC, _global_itemexec& itemshareDataC, itemprocess* classItemProcess2)
@@ -460,6 +461,7 @@ if(!classPlatform.getDDRSupported())
 	connect(ui.otpBurnGetDefaultParapushButton, SIGNAL(released()), this, SLOT(getdefaultotpBurn()));
 	connect(ui.otpBurnSavepushButton, SIGNAL(released()), this, SLOT(saveotpBurn()));
 	connect(ui.lightSourceCheckpushButton, SIGNAL(released()), this, SLOT(saveLightSourceCheck()));
+	connect(ui.LightSpecificationpushButton,SIGNAL(released()), this, SLOT(saveLightSpecification()));
 
 	connect(ui.afburnSavepushButton, SIGNAL(released()), this, SLOT(saveAFBurn()));
 	connect(ui.savelogSavepushButton, SIGNAL(released()), this, SLOT(saveSaveLog()));
@@ -536,6 +538,7 @@ if(!classPlatform.getDDRSupported())
 	whitepanel2UI();
 	blackpanel2UI();
 	lightSourceCheck2UI();
+	LightSpecification2UI();
 	otpBurn2UI();
 	afBurn2UI();
 	pdafBurn2UI();
@@ -2042,9 +2045,6 @@ void configsetting::otpBurn2UI()
 	ui.otpBurnplainTextEdit->setPlainText(reserve);
 }
 
-
-
-
 int configsetting::saveOtpBurnData()
 {
 	int iresult	=	0;
@@ -3480,8 +3480,6 @@ void configsetting::createMTFAFCTable(QTableWidget* pstTable)
 #endif
 	}
 }
-
-
 
 void configsetting::afcMTFBasic2UI(unsigned char uctype)
 {
@@ -5178,8 +5176,6 @@ void configsetting::createlpAFCTable(QTableWidget* pstTable)
 	}
 }
 
-
-
 void configsetting::afcLpBasic2UI(unsigned char uctype)
 {
 	QDoubleSpinBox *afclpMarkFMindoubleSpinBox, *afclpMarkFMaxdoubleSpinBox;
@@ -5999,7 +5995,6 @@ int configsetting::saveAutoFAData()
 	return iresult;
 }
 
-
 void configsetting::RelaceSlave()
 {
 	QString strNewSlave	=	ui.slaveReplacelineEdit->text();
@@ -6419,6 +6414,62 @@ void configsetting::saveLightSourceCheck()
 	if(iresult)	QMessageBox::critical(this, tr("ERROR"), tr("Save Parameter Fail"));
 	else ui.statuslabel->setText(tr("Save Parameter Success"));
 	lightSourceCheck2UI();
+}
+
+int configsetting::saveLightSpecificationData()
+{
+	int iresult	=	0;
+	QMutexLocker locker(&hisglobalparameter.mutexDatabase);
+	bool bDB;
+	{
+		QSqlDatabase stSqlDB;
+		bDB	=	HISDBCUSTOM::addDB(stSqlDB);
+		if(bDB){
+			QStringList strname, strvalue;
+			QString classfy, item, itemsuffix1, itemsuffix2, key, value1, reserve, note;
+			QSqlQuery query(stSqlDB);
+			HISDBCUSTOM::deleteItem(stSqlDB, itemshareData.currentTableName, _HISINLINEDB_FLAG_classfy | _HISINLINEDB_FLAG_item,"algorithm", "lightspacification");
+		unsigned int uiIndex	=	_HisDB_Index_LightSpecification;
+
+		//(hardware:3%)(correct:0.25%)
+		strname.clear();strvalue.clear();
+		strname.append("hardware");strvalue.append(ui.LightHardwaredoubleSpinBox->cleanText());
+		strname.append("correct");strvalue.append(ui.LightCorrectdoubleSpinBox_2->cleanText());
+		ROPLOW::jointconfigstring(itemsuffix2, strname, strvalue);
+
+		HISDBCUSTOM::insertItem(stSqlDB, itemshareData.currentTableName, uiIndex, "algorithm", "lightspacification", "spacification", itemsuffix2);
+
+		stSqlDB.close();
+		}
+	}
+	if(bDB)
+	{
+		HISDBCUSTOM::removeDB();
+	}
+	else{
+		iresult	=	HisCCMError_Database;
+	}
+
+	return iresult;		
+}
+
+void configsetting::LightSpecification2UI()
+{
+	classItemProcess->getlsSpecificationParameter(true);
+
+	if(itemshareData.LightSpecificationParameter)
+	{
+		ui.LightHardwaredoubleSpinBox->setValue(itemshareData.LightSpecificationParameter->HardwareSpecification);
+		ui.LightCorrectdoubleSpinBox_2->setValue(itemshareData.LightSpecificationParameter->CorrectSpecification);
+	}
+}
+
+void configsetting::saveLightSpecification()
+{
+	int iresult = saveLightSpecificationData();
+	if(iresult)	QMessageBox::critical(this, tr("ERROR"), tr("Save Parameter Fail"));
+	else ui.statuslabel->setText(tr("Save Parameter Success"));
+	LightSpecification2UI();
 }
 
 void configsetting::freshDB_AE()
@@ -7035,7 +7086,6 @@ void configsetting::setCursorPos(int row,int col)
 	ui.previewi2cplainTextEdit->setExtraSelections(extraSelections);
 }
 
-
 void configsetting::slotospSelectall(int state)
 {
 	if(state == Qt::Checked)
@@ -7082,7 +7132,6 @@ void configsetting::slotospallchange(int index)
 
 }
 
-
 void configsetting::slotosnSelectall(int state)
 {
 	if(state == Qt::Checked)
@@ -7125,7 +7174,6 @@ void configsetting::slotosnnotSelectall(int state)
 	// 	}
 
 }
-
 
 void configsetting::slotoscSelectall(int state)
 {
@@ -7254,7 +7302,6 @@ void configsetting::slotoocnotSelectall(int state)
 	// 	}
 
 }
-
 
 void configsetting::ducalcameraBurn2UI()
 {
