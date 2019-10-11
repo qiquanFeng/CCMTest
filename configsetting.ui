@@ -67,7 +67,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>7</number>
+       <number>6</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideLeft</enum>
@@ -35919,7 +35919,7 @@
            <enum>QTabWidget::West</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tab_20">
            <attribute name="title">
@@ -37026,6 +37026,24 @@
                      </property>
                      <property name="maximum">
                       <number>1024</number>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_679">
+                   <item>
+                    <widget class="QLabel" name="label_184">
+                     <property name="text">
+                      <string>远近焦差值最小规格</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QSpinBox" name="NearInfSub_spinBox">
+                     <property name="maximum">
+                      <number>999</number>
                      </property>
                     </widget>
                    </item>
@@ -39336,7 +39354,7 @@
            <enum>QTabWidget::West</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="lightSourceChecktab">
            <attribute name="title">

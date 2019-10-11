@@ -1386,6 +1386,7 @@ struct _afburnParameter{
 	//******************* 20190817 **********************************
 	bool bRecalCheck;
 	int iRecalSpec;
+	int MotorSub;
 
 	_afburnParameter()
 	{
@@ -1397,6 +1398,7 @@ struct _afburnParameter{
 		iNearMotorMax	=	iMiddleMotorMax		=	iFarMotorMax		=	1023;
 		bRecalCheck=false;
 		iRecalSpec=50;
+		MotorSub=140;
 	}
 };
 

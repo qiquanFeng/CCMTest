@@ -2158,6 +2158,7 @@ void configsetting::afBurn2UI()
 
 	ui.checkBox_ReCal->setChecked(itemshareData.afburnParameter->bRecalCheck);
 	ui.spinBox_AfRecalSpec->setValue(itemshareData.afburnParameter->iRecalSpec);
+	ui.NearInfSub_spinBox->setValue(itemshareData.afburnParameter->MotorSub);
 }
 
 int configsetting::saveAfBurnData()
@@ -2209,6 +2210,7 @@ int configsetting::saveAfBurnData()
 			
 			strname.append("recalaf");		strvalue.append((ui.checkBox_ReCal->isChecked())?("on"):("off"));
 			strname.append("recalspec");		strvalue.append(ui.spinBox_AfRecalSpec->cleanText());
+			strname.append("subnearinf");	strvalue.append (ui.NearInfSub_spinBox->cleanText());
 
 			ROPLOW::jointconfigstring(reserve, strname, strvalue);
 			HISDBCUSTOM::insertItem(stSqlDB, itemshareData.currentTableName, uiIndex, "algorithm", "afburn",  QVariant(), itemsuffix2, key, value1, reserve);

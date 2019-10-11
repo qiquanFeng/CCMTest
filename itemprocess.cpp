@@ -14951,6 +14951,7 @@ int itemprocess::getafburnParameter(bool bupdate, bool bcheck )
 					else if(strname.at(x) == "farmax") itemshareData.afburnParameter->iFarMotorMax =	strvalue.at(x).toInt();
 					else if(strname.at(x) == "recalspec") itemshareData.afburnParameter->iRecalSpec =strvalue.at(x).toInt();
 					else if(strname.at(x) == "recalaf") itemshareData.afburnParameter->bRecalCheck = (strvalue.at(x) == "on");
+					else if(strname.at(x) == "subnearinf") itemshareData.afburnParameter->MotorSub = (strvalue.at(x).toInt());
 				}
 			}
 		}
@@ -15020,6 +15021,7 @@ int itemprocess::afBurn(int farcode,int midcode,int nearcode)
 	if(farcode) stParameter.iInfinitMotor=farcode;
 	if(midcode) stParameter.iMiddleMotor=midcode;
 	if(nearcode) stParameter.iNearMotor=nearcode;
+	int MotorSub=itemshareData.afburnParameter->MotorSub;
 
 	//**********************************
 #if 1
@@ -15056,8 +15058,8 @@ int itemprocess::afBurn(int farcode,int midcode,int nearcode)
 			return HisCCMError_Result;
 		}
 	}
-	if(stParameter.iNearMotor-stParameter.iInfinitMotor<140){
-			emit information(QTextCodec::codecForName( "GBK")->toUnicode("远焦近焦DAC差值小于140"));
+	if(stParameter.iNearMotor-stParameter.iInfinitMotor<MotorSub){
+			emit information(QTextCodec::codecForName( "GBK")->toUnicode("远焦近焦DAC差值小于%1").arg(QString::number(MotorSub)));
 			itemshareData.itemparameterLock.unlock();
 			return HisCCMError_Result;
 	}
@@ -15165,6 +15167,7 @@ int itemprocess::afBurnCheck() //0:near 1:middle 2:infinite
 	stParameter.bNear		=	itemshareData.afburnParameter->bNear;
 	stParameter.bMiddle	=	itemshareData.afburnParameter->bMiddle;
 	stParameter.bInfinite	=	itemshareData.afburnParameter->bInfinite;
+	int MotorSub=itemshareData.afburnParameter->MotorSub;
 
 #if (defined _WIN64) && (defined _DEBUG)
 	QString strLibPath	=	QDir::currentPath() % "/HisCCMOTP64D";
@@ -15215,10 +15218,9 @@ int itemprocess::afBurnCheck() //0:near 1:middle 2:infinite
 			iresult	=	HisCCMError_Result;
 		}
 	}
-	if(stParameter.iNearMotor-stParameter.iInfinitMotor<140){
-			emit information(QTextCodec::codecForName( "GBK")->toUnicode("远焦近焦DAC差值小于140"));
-			itemshareData.itemparameterLock.unlock();
-			return HisCCMError_Result;
+	if(stParameter.iNearMotor-stParameter.iInfinitMotor<MotorSub){
+		emit information(QTextCodec::codecForName( "GBK")->toUnicode("远焦近焦DAC差值小于%1").arg(QString::number(MotorSub)));
+		iresult = HisCCMError_Result;
 	}
 
 	int  iNear=(iNearPeakMotorDec==0x00FFFFFF)?(0x00FFFFFF):(iNearPeakMotorDec + itemshareData.afburnParameter->iNearMotorOffset);

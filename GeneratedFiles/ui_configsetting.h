@@ -2652,6 +2652,9 @@ public:
     QHBoxLayout *horizontalLayout_672;
     QLabel *label_739;
     QSpinBox *spinBox_AfRecalSpec;
+    QHBoxLayout *horizontalLayout_679;
+    QLabel *label_184;
+    QSpinBox *NearInfSub_spinBox;
     QGroupBox *groupBox_78;
     QVBoxLayout *verticalLayout_97;
     QCheckBox *afburnMiddlecheckBox;
@@ -23318,6 +23321,23 @@ public:
 
         verticalLayout_94->addLayout(horizontalLayout_672);
 
+        horizontalLayout_679 = new QHBoxLayout();
+        horizontalLayout_679->setSpacing(6);
+        horizontalLayout_679->setObjectName(QString::fromUtf8("horizontalLayout_679"));
+        label_184 = new QLabel(groupBox_34);
+        label_184->setObjectName(QString::fromUtf8("label_184"));
+
+        horizontalLayout_679->addWidget(label_184);
+
+        NearInfSub_spinBox = new QSpinBox(groupBox_34);
+        NearInfSub_spinBox->setObjectName(QString::fromUtf8("NearInfSub_spinBox"));
+        NearInfSub_spinBox->setMaximum(999);
+
+        horizontalLayout_679->addWidget(NearInfSub_spinBox);
+
+
+        verticalLayout_94->addLayout(horizontalLayout_679);
+
 
         verticalLayout_51->addWidget(groupBox_34);
 
@@ -27759,7 +27779,7 @@ public:
 
         retranslateUi(configsetting);
 
-        tabWidgetmain->setCurrentIndex(7);
+        tabWidgetmain->setCurrentIndex(6);
         mipiSignalcomboBox->setCurrentIndex(1);
         commuProtocalcomboBox->setCurrentIndex(0);
         focusAdjusttabWidget->setCurrentIndex(3);
@@ -27809,9 +27829,9 @@ public:
         tabWidgetCurrentOS->setCurrentIndex(1);
         osa_ChannelcomboBox->setCurrentIndex(0);
         OStabWidget->setCurrentIndex(4);
-        tabWidgetBurn->setCurrentIndex(0);
+        tabWidgetBurn->setCurrentIndex(1);
         qualcommpdafLibVersioncomboBox->setCurrentIndex(0);
-        lightSourcetabWidget->setCurrentIndex(1);
+        lightSourcetabWidget->setCurrentIndex(0);
         lightSourceCheckstackedWidget->setCurrentIndex(0);
         tabWidgetArchive->setCurrentIndex(0);
 
@@ -29631,6 +29651,7 @@ public:
         label_275->setText(QApplication::translate("configsetting", "Device ID\357\274\232", 0, QApplication::UnicodeUTF8));
         checkBox_ReCal->setText(QApplication::translate("configsetting", "DAC Code \351\207\215\350\256\241\347\256\227", 0, QApplication::UnicodeUTF8));
         label_739->setText(QApplication::translate("configsetting", "\351\207\215\350\256\241\347\256\227\350\247\204\346\240\274\357\274\232", 0, QApplication::UnicodeUTF8));
+        label_184->setText(QApplication::translate("configsetting", "\350\277\234\350\277\221\347\204\246\345\267\256\345\200\274\346\234\200\345\260\217\350\247\204\346\240\274", 0, QApplication::UnicodeUTF8));
         groupBox_78->setTitle(QApplication::translate("configsetting", "Middle Focus", 0, QApplication::UnicodeUTF8));
         afburnMiddlecheckBox->setText(QApplication::translate("configsetting", "Test Middle Focus Burn", 0, QApplication::UnicodeUTF8));
         label_680->setText(QApplication::translate("configsetting", "OFFSET\357\274\232", 0, QApplication::UnicodeUTF8));
