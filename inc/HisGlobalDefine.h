@@ -2767,6 +2767,8 @@ struct _HisCCMOTP_Config{
 		bBurnOpticalCenter=false;
 		iOpitcalcenterX=0;
 		iOpitcalcenterY=0;
+		dflLightCoeR=1.0f;
+		dflLightCoeB=1.0f;
 		flLSC_LuxShadingResult_GrLT	=	-100.0f;
 		flLSC_LuxShadingResult_GrRT	=	-100.0f;
 		flLSC_LuxShadingResult_GrLB	=	-100.0f;

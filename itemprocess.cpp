@@ -13728,8 +13728,8 @@ int itemprocess::LightSourceCal()
 		globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
 	emit enableinfotimer(0);
 
-	float LightHardwareSpecification=itemshareData.LightSpecificationParameter->HardwareSpecification/100.0f;
-	float LightCorrectSpecification=itemshareData.LightSpecificationParameter->CorrectSpecification/100.0f;
+	float LightHardwareSpecification=itemshareData.lightSpecificationParameter->HardwareSpecification/100.0f;
+	float LightCorrectSpecification=itemshareData.lightSpecificationParameter->CorrectSpecification/100.0f;
 
 	itemshareData.itemparameterLock.unlock();
 
@@ -14335,13 +14335,13 @@ int itemprocess::getlsSpecificationParameter(bool bupdate,bool bcheck)
 	QMutexLocker locker(&hisglobalparameter.mutexDatabase);
 
 	itemshareData.itemparameterLock.lockForRead();
-	if(!bupdate && itemshareData.LightSpecificationParameter)	{	itemshareData.itemparameterLock.unlock();	return 0;	}
+	if(!bupdate && itemshareData.lightSpecificationParameter)	{	itemshareData.itemparameterLock.unlock();	return 0;	}
 	itemshareData.itemparameterLock.unlock();
 
 	QHReadWriteLockManage classitemparameterLock(&(itemshareData.itemparameterLock), true);
 
-	if(!itemshareData.LightSpecificationParameter)	itemshareData.LightSpecificationParameter		=	new _LightSpecificationParameter;
-	if(!itemshareData.LightSpecificationParameter)	{	return HisFX3Error_MallocBuffer;	}
+	if(!itemshareData.lightSpecificationParameter)	itemshareData.lightSpecificationParameter		=	new _lightSpecificationParameter;
+	if(!itemshareData.lightSpecificationParameter)	{	return HisFX3Error_MallocBuffer;	}
 
 	bool bItemExist = false;
 	{
@@ -14369,8 +14369,8 @@ int itemprocess::getlsSpecificationParameter(bool bupdate,bool bcheck)
 				ROPLOW::patchconfigstring(strData, strname, strvalue);
 				for(int x=0;x<strname.size();++x)
 				{
-					if(strname.at(x) == "hardware")				itemshareData.LightSpecificationParameter->HardwareSpecification =	strvalue.at(x).toFloat();
-					else if(strname.at(x) == "correct")		itemshareData.LightSpecificationParameter->CorrectSpecification =	strvalue.at(x).toFloat();
+					if(strname.at(x) == "hardware")				itemshareData.lightSpecificationParameter->HardwareSpecification =	strvalue.at(x).toFloat();
+					else if(strname.at(x) == "correct")		itemshareData.lightSpecificationParameter->CorrectSpecification =	strvalue.at(x).toFloat();
 				}
 			}
 		}
@@ -14382,7 +14382,7 @@ int itemprocess::getlsSpecificationParameter(bool bupdate,bool bcheck)
 
 	if(!bItemExist)
 	{
-		HisReleaseNewO(itemshareData.LightSpecificationParameter);
+		HisReleaseNewO(itemshareData.lightSpecificationParameter);
 		return HisFX3Error_Parameter;
 	}
 

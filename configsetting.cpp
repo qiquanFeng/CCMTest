@@ -6458,11 +6458,9 @@ int configsetting::saveLightSpecificationData()
 void configsetting::LightSpecification2UI()
 {
 	classItemProcess->getlsSpecificationParameter(true);
-
-	if(itemshareData.LightSpecificationParameter)
-	{
-		ui.LightHardwaredoubleSpinBox->setValue(itemshareData.LightSpecificationParameter->HardwareSpecification);
-		ui.LightCorrectdoubleSpinBox_2->setValue(itemshareData.LightSpecificationParameter->CorrectSpecification);
+	if(itemshareData.lightSpecificationParameter){
+		ui.LightHardwaredoubleSpinBox->setValue(itemshareData.lightSpecificationParameter->HardwareSpecification);
+		ui.LightCorrectdoubleSpinBox_2->setValue(itemshareData.lightSpecificationParameter->CorrectSpecification);
 	}
 }
 

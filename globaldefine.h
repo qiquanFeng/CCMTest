@@ -1310,11 +1310,11 @@ struct _lightsourcecheckParameter
 	}
 };
 
-struct _LightSpecificationParameter
+struct _lightSpecificationParameter
 {
 	float HardwareSpecification;
 	float CorrectSpecification;
-	_LightSpecificationParameter()
+	_lightSpecificationParameter()
 	{
 		//(hardware:3%)(correct:0.25%)
 		HardwareSpecification	=	3.0f;
@@ -1635,7 +1635,7 @@ struct _global_itemexec{
 	_standbycurrentParameter *standbycurrentParameter;
 	_otpburnParameter* otpburnParameter;
 	_lightsourcecheckParameter* lightsourcecheckParameter;
-	_LightSpecificationParameter* LightSpecificationParameter;
+	_lightSpecificationParameter* lightSpecificationParameter;
 	_savelogParameter* savelogParameter;
 	_afburnParameter* afburnParameter;
 	_blackfiledParameter* blackfieldParameter;
