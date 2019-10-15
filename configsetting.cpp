@@ -3567,8 +3567,8 @@ void configsetting::afcMTFBasic2UI(unsigned char uctype)
 		afcmtfaBROIWSpinBox->setValue(itemshareData.mtffaParameter->stMTFBasic.iblockwith);
 		afcmtfaBROIHSpinBox->setValue(itemshareData.mtffaParameter->stMTFBasic.iblockheight);
 		afcmtfaBCenterSpecdoubleSpinBox->setValue(itemshareData.mtffaParameter->stMTFBasic.flcenterspec);
-		afcmtfaBCenterSpecdoubleSpinBox_H->setValue(itemshareData.mtffaParameter->stMTFBasic.flHcenterspec);
-		afcmtfaBCenterSpecdoubleSpinBox_V->setValue(itemshareData.mtffaParameter->stMTFBasic.flVcenterspec);
+		afcmtfaBCenterSpecdoubleSpinBox_H->setValue(itemshareData.mtffaParameter->stMTFBasic_Ex.flHcenterspec);
+		afcmtfaBCenterSpecdoubleSpinBox_V->setValue(itemshareData.mtffaParameter->stMTFBasic_Ex.flVcenterspec);
 		afcmtfaBCenterWeightdoubleSpinBox->setValue(itemshareData.mtffaParameter->stMTFBasic.flcenterweight);
 		afcmtfaBAutoSearchcheckBox->setChecked(itemshareData.mtffaParameter->stMTFBasic.bAutoSeartchROI);
 		ui.mfamtfaFBGradeMultipledoubleSpinBox->setValue(itemshareData.mtffaParameter->stMTFBasic.flGradeMultiple);
@@ -3594,8 +3594,8 @@ void configsetting::afcMTFBasic2UI(unsigned char uctype)
 			((QDoubleSpinBox*)ui.mfamtfaFBtableWidget->cellWidget(row, 7))->setValue(itemshareData.mtffaParameter->vectorMTFItem.at(row).flGradeB);
 			((QDoubleSpinBox*)ui.mfamtfaFBtableWidget->cellWidget(row, 10))->setValue(itemshareData.mtffaParameter->vectorMTFItem.at(row).flGradeE);
 #endif
-			((QDoubleSpinBox*)ui.mfamtfaFBtableWidget->cellWidget(row, 11))->setValue(itemshareData.mtffaParameter->vectorMTFItem.at(row).flHSpec);
-			((QDoubleSpinBox*)ui.mfamtfaFBtableWidget->cellWidget(row, 12))->setValue(itemshareData.mtffaParameter->vectorMTFItem.at(row).flVSpec);
+			((QDoubleSpinBox*)ui.mfamtfaFBtableWidget->cellWidget(row, 11))->setValue(itemshareData.mtffaParameter->vectorMTFItem_Ex.at(row).flHSpec);
+			((QDoubleSpinBox*)ui.mfamtfaFBtableWidget->cellWidget(row, 12))->setValue(itemshareData.mtffaParameter->vectorMTFItem_Ex.at(row).flVSpec);
 			((QCheckBox*)afcTableWidget->cellWidget(row, 0))->setChecked(true);
 		}
 	}
@@ -3605,8 +3605,8 @@ void configsetting::afcMTFBasic2UI(unsigned char uctype)
 		afcmtfaBROIWSpinBox->setValue(mtfafcParameter->stMTFBasic.iblockwith);
 		afcmtfaBROIHSpinBox->setValue(mtfafcParameter->stMTFBasic.iblockheight);
 		afcmtfaBCenterSpecdoubleSpinBox->setValue(mtfafcParameter->stMTFBasic.flcenterspec);
-		afcmtfaBCenterSpecdoubleSpinBox_H->setValue(mtfafcParameter->stMTFBasic.flHcenterspec);
-		afcmtfaBCenterSpecdoubleSpinBox_V->setValue(mtfafcParameter->stMTFBasic.flVcenterspec);
+		afcmtfaBCenterSpecdoubleSpinBox_H->setValue(mtfafcParameter->stMTFBasic_Ex.flHcenterspec);
+		afcmtfaBCenterSpecdoubleSpinBox_V->setValue(mtfafcParameter->stMTFBasic_Ex.flVcenterspec);
 		afcmtfaBCenterSpecdoubleSpinBox_2->setValue(mtfafcParameter->stMTFBasic.flCenterGradeB);
 		afcmtfaBCenterWeightdoubleSpinBox->setValue(mtfafcParameter->stMTFBasic.flcenterweight);
 		afcmtfaBAutoSearchcheckBox->setChecked(mtfafcParameter->stMTFBasic.bAutoSeartchROI);
@@ -3620,8 +3620,8 @@ void configsetting::afcMTFBasic2UI(unsigned char uctype)
 			((QDoubleSpinBox*)afcTableWidget->cellWidget(row, 5))->setValue(mtfafcParameter->vectorMTFItem.at(row).flSpec);
 			((QDoubleSpinBox*)afcTableWidget->cellWidget(row, 6))->setValue(mtfafcParameter->vectorMTFItem.at(row).flSpecUniform);
 			((QDoubleSpinBox*)afcTableWidget->cellWidget(row, 7))->setValue(mtfafcParameter->vectorMTFItem.at(row).flGradeB);
-			((QDoubleSpinBox*)afcTableWidget->cellWidget(row, 8))->setValue(mtfafcParameter->vectorMTFItem.at(row).flHSpec);
-			((QDoubleSpinBox*)afcTableWidget->cellWidget(row, 9))->setValue(mtfafcParameter->vectorMTFItem.at(row).flVSpec);
+			((QDoubleSpinBox*)afcTableWidget->cellWidget(row, 8))->setValue(mtfafcParameter->vectorMTFItem_Ex.at(row).flHSpec);
+			((QDoubleSpinBox*)afcTableWidget->cellWidget(row, 9))->setValue(mtfafcParameter->vectorMTFItem_Ex.at(row).flVSpec);
 			((QCheckBox*)afcTableWidget->cellWidget(row, 0))->setChecked(true);
 		}
 	}
@@ -7464,7 +7464,7 @@ void configsetting::slotPDAFplatformChange(int index) // 0 MTK 1: qualcomm 2 son
 void configsetting::saveDPCLoadRule()
 {
 	int iresult=0;
-	QMutexLocker locker(&hisglobalparameter.mutexDatabase);
+	//QMutexLocker locker(&hisglobalparameter.mutexDatabase);
 	bool bDB;
 	{
 		QSqlDatabase stSqlDB;

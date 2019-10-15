@@ -1358,7 +1358,7 @@ struct _HisCCMAlg_AFC_Tactics_Basic{
 	float flMTFBMarkRangeYMax;
 	float flMTFBMarkTargetDis;
 	bool bCurveFitting;
-	
+
 	_HisCCMAlg_AFC_Tactics_Basic()
 	{
 		bCurveFitting =bTestStartMotor = bLinearBack	=	false;
@@ -1951,9 +1951,6 @@ struct _HisCCMAlg_MTFBasic_Info{
 	float flCenterGradeB;
 	float flCenterGradeE;
 
-	float flHcenterspec;
-	float flVcenterspec;
-
 	_HisCCMAlg_MTFBasic_Info()
 	{
 		bAutoSeartchROI = false;
@@ -2007,11 +2004,33 @@ struct _HisCCMAlg_MTFItem_Info{
 	float flGradeC;
 	float flGradeB;
 	float flGradeE;
+	
+	_HisCCMAlg_MTFItem_Info()
+	{
+		ucBlockCount	=	4;
+		flFOV					=	0.7f;
+		flAngle				=	45.0f;
+		flGradeD =flGradeC =flGradeB =flGradeE =flSpec =	0.5f;
+		flSpecUniform	=	0.5f;
+	}
+};
+
+struct _HisCCMAlg_MTFItem_Info_Ex{
+	unsigned char ucBlockCount;
+	float flFOV; 
+	float flAngle;
+	float flWeight;  //权重比
+	float flSpec;
+	float flSpecUniform;
+	float flGradeD;
+	float flGradeC;
+	float flGradeB;
+	float flGradeE;
 
 	float flHSpec;//*********** 2018.04.11 fengqiquan Add *************
 	float flVSpec;//*********** 2018.04.11 fengqiquan Add *************
 	
-	_HisCCMAlg_MTFItem_Info()
+	_HisCCMAlg_MTFItem_Info_Ex()
 	{
 		ucBlockCount	=	4;
 		flFOV					=	0.7f;
@@ -2047,7 +2066,7 @@ struct _HisCCMAlg_AFC_MTF_DB{
 	_HisCCMAlg_MTFBasic_Info* pstMTFBasic;
 	std::vector<_HisCCMAlg_MTFItem_Info> vectorMTFItem;
 	std::vector<_HisCCMAlg_AFC_MTF_DB_Item> vectorItem;
-		
+
 	void initial()
 	{
 		ui64IDMax				=	0;
@@ -2057,14 +2076,14 @@ struct _HisCCMAlg_AFC_MTF_DB{
 		vectorMTFItem.clear();
 		vectorItem.clear();
 	}
-	
+
 	_HisCCMAlg_AFC_MTF_DB()
 	{
 		pstTacticsBasic	=	NULL;
 		pstMTFBasic			=	NULL;
 		initial();
 	}
-	
+
 	~_HisCCMAlg_AFC_MTF_DB()
 	{
 		initial();
@@ -2125,7 +2144,7 @@ struct _HisCCMAlg_AFC_MTF_DataItem_FOV{
 struct _HisCCMAlg_AFC_MTF_DataItem{
 	unsigned char ucStatus; 
 	unsigned char ucFlag; //_HisCCMAlg_Rolongo_AFC_Tactics_Linear 0-上升 1-下降
-												//_HisCCMAlg_Rolongo_AFC_Tactics_PEAK  1-PEAk点
+	//_HisCCMAlg_Rolongo_AFC_Tactics_PEAK  1-PEAk点
 	unsigned char ucGrade;
 	float flWeightValue;
 	double dflMarkDistance; //MARK点之间的对角线距离 0--MARK点未找到
@@ -2140,7 +2159,7 @@ struct _HisCCMAlg_AFC_MTF_DataItem{
 	float flCenterValue;
 	RECT stCenterBlock;
 	std::vector<_HisCCMAlg_AFC_MTF_DataItem_FOV> vectorFOV;
-		
+
 	_HisCCMAlg_AFC_MTF_DataItem()
 	{
 		ucFlag					=	0;
@@ -2824,6 +2843,9 @@ struct _HisCCMAFBurn_Config{
 	int iNearMotor;
 	int iMiddleMotor;
 	int iInfinitMotor;
+	bool bCheckDValue;
+	int iNearMotorCheckSpec;
+	int iInfinitMotorCheckSpec;
 	int iwidth;
 	int iheight;
 	unsigned int uiFrameSleep;
@@ -2842,10 +2864,12 @@ struct _HisCCMAFBurn_Config{
 	std::string strFunctionChoose;
 	std::string strSerialNumber;
 	std::vector<_HisCCMOTP_ConfigPair> vectorPair;
-		
+
 	_HisCCMAFBurn_Config()
 	{
+		bCheckDValue = false;	//是否检查当前测试远近焦值与烧录值差异
 		uiMachineID	=	uiHardwareVersion	=	0;
+		iNearMotorCheckSpec = iInfinitMotorCheckSpec = 1023;
 		Reserve1.u64value =Reserve2.u64value =Reserve3.u64value= Reserve4.u64value =0;
 		memset(pvReserve, 0, sizeof(void*) *6);
 	}

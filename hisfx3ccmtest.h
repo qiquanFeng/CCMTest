@@ -39,6 +39,7 @@
 
 #include "jsl_burnstate.h"
 #include "jsl_controlpanel.h"
+#include "WininetHttp.h"
 
 
 class renderframe : public QObject

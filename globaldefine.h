@@ -669,12 +669,18 @@ struct _bigvisionV1Parameter{
 struct _mtffaParameter{
 	_HisCCMAlg_MTFBasic_Info stMTFBasic;
 	std::vector<_HisCCMAlg_MTFItem_Info> vectorMTFItem;
+
+	_HisCCMAlg_MTFBasic_Info_EX stMTFBasic_Ex;
+	std::vector<_HisCCMAlg_MTFItem_Info_Ex> vectorMTFItem_Ex;
 };
  
 struct _mtfAFCParameter{
 	_HisCCMAlg_AFC_Tactics_Basic stTacticsBasic;
 	_HisCCMAlg_MTFBasic_Info stMTFBasic;
 	std::vector<_HisCCMAlg_MTFItem_Info> vectorMTFItem;
+
+	_HisCCMAlg_MTFBasic_Info_EX stMTFBasic_Ex;
+	std::vector<_HisCCMAlg_MTFItem_Info_Ex> vectorMTFItem_Ex;
 };
 
 struct _lpMFAParameter{

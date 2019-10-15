@@ -1,0 +1,8 @@
+*.obj
+<<<<<<< HEAD
+*.tlog
+=======
+*.tlog
+*.idb
+*.pdb
+>>>>>>> 5ee6624dac2e82fa571f88569421bd6e5be0da83

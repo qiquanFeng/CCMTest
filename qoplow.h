@@ -4526,7 +4526,7 @@ namespace ROPLOW
 		stDrawItem.idata[0]	=	static_cast<int>((stItemData.stMTFCenterBlock.right+ stItemData.stMTFCenterBlock.left)/2);
 		stDrawItem.idata[1]	=	static_cast<int>(stItemData.stMTFCenterBlock.top+(stItemData.stMTFCenterBlock.bottom-stItemData.stMTFCenterBlock.top)*0.33);
 		sprintf_s(stDrawItem.strinfo.strtext, 16, "H:%.3f", stItemData.flMTFCenterValue_H);
-		if(stItemData.flMTFCenterValue_H<pstParam.stMTFBasic.flHcenterspec) stDrawItem.stcolor = stRed;
+		if(stItemData.flMTFCenterValue_H<pstParam.stMTFBasic_Ex.flHcenterspec) stDrawItem.stcolor = stRed;
 		else stDrawItem.stcolor = stGreen;
 		itemdrawList.push_back(stDrawItem);
 
@@ -4534,7 +4534,7 @@ namespace ROPLOW
 		stDrawItem.idata[0]	=	static_cast<int>((stItemData.stMTFCenterBlock.right+ stItemData.stMTFCenterBlock.left)/2);
 		stDrawItem.idata[1]	=	static_cast<int>(stItemData.stMTFCenterBlock.top+(stItemData.stMTFCenterBlock.bottom-stItemData.stMTFCenterBlock.top)*0.66);
 		sprintf_s(stDrawItem.strinfo.strtext, 16, "V:%.3f", stItemData.flMTFCenterValue_V);
-		if(stItemData.flMTFCenterValue_V<pstParam.stMTFBasic.flVcenterspec) stDrawItem.stcolor = stRed;
+		if(stItemData.flMTFCenterValue_V<pstParam.stMTFBasic_Ex.flVcenterspec) stDrawItem.stcolor = stRed;
 		else stDrawItem.stcolor = stGreen;
 		itemdrawList.push_back(stDrawItem);
 
@@ -4561,7 +4561,7 @@ namespace ROPLOW
 					stDrawItem.idata[0]	=	static_cast<int>((stItemData.vectorMTFFOV.at(y).stBlock[x].left + stItemData.vectorMTFFOV.at(y).stBlock[x].right)/2);
 					stDrawItem.idata[1]	=	static_cast<int>(stItemData.vectorMTFFOV.at(y).stBlock[x].top+(stItemData.vectorMTFFOV.at(y).stBlock[x].bottom-stItemData.vectorMTFFOV.at(y).stBlock[x].top)*0.33);
 					sprintf_s(stDrawItem.strinfo.strtext, 16, "H:%.3f", stItemData.vectorMTFFOV.at(y).flHValue[x]);
-					if(stItemData.vectorMTFFOV.at(y).flHValue[x]<pstParam.vectorMTFItem.at(y).flHSpec) stDrawItem.stcolor = stRed;
+					if(stItemData.vectorMTFFOV.at(y).flHValue[x]<pstParam.vectorMTFItem_Ex.at(y).flHSpec) stDrawItem.stcolor = stRed;
 					else stDrawItem.stcolor = stGreen;
 					itemdrawList.push_back(stDrawItem);
 
@@ -4569,7 +4569,7 @@ namespace ROPLOW
 					stDrawItem.idata[0]	=	static_cast<int>((stItemData.vectorMTFFOV.at(y).stBlock[x].left + stItemData.vectorMTFFOV.at(y).stBlock[x].right)/2);
 					stDrawItem.idata[1]	=	static_cast<int>(stItemData.vectorMTFFOV.at(y).stBlock[x].top+(stItemData.vectorMTFFOV.at(y).stBlock[x].bottom-stItemData.vectorMTFFOV.at(y).stBlock[x].top)*0.66);
 					sprintf_s(stDrawItem.strinfo.strtext, 16, "V:%.3f", stItemData.vectorMTFFOV.at(y).flVValue[x]);
-					if(stItemData.vectorMTFFOV.at(y).flVValue[x]<pstParam.vectorMTFItem.at(y).flVSpec) 
+					if(stItemData.vectorMTFFOV.at(y).flVValue[x]<pstParam.vectorMTFItem_Ex.at(y).flVSpec) 
 						stDrawItem.stcolor = stRed;
 					else stDrawItem.stcolor = stGreen;
 					itemdrawList.push_back(stDrawItem);
@@ -4588,7 +4588,7 @@ namespace ROPLOW
 					stDrawItem.idata[0]	=	static_cast<int>((stItemData.vectorMTFFOV.at(y).stBlock[x].right+stItemData.vectorMTFFOV.at(y).stBlock[x].left)/2);
 					stDrawItem.idata[1]	=	static_cast<int>(stItemData.vectorMTFFOV.at(y).stBlock[x].top+(stItemData.vectorMTFFOV.at(y).stBlock[x].bottom-stItemData.vectorMTFFOV.at(y).stBlock[x].top)*0.33);
 					sprintf_s(stDrawItem.strinfo.strtext, 16, "H:%.3f", stItemData.vectorMTFFOV.at(y).flHValue[x]);
-					if(stItemData.vectorMTFFOV.at(y).flHValue[x]<pstParam.vectorMTFItem.at(y).flHSpec) stDrawItem.stcolor = stRed;
+					if(stItemData.vectorMTFFOV.at(y).flHValue[x]<pstParam.vectorMTFItem_Ex.at(y).flHSpec) stDrawItem.stcolor = stRed;
 					else stDrawItem.stcolor = stGreen;
 					itemdrawList.push_back(stDrawItem);
 
@@ -4596,7 +4596,7 @@ namespace ROPLOW
 					stDrawItem.idata[0]	=	static_cast<int>((stItemData.vectorMTFFOV.at(y).stBlock[x].right+stItemData.vectorMTFFOV.at(y).stBlock[x].left)/2);
 					stDrawItem.idata[1]	=	static_cast<int>(stItemData.vectorMTFFOV.at(y).stBlock[x].top+(stItemData.vectorMTFFOV.at(y).stBlock[x].bottom-stItemData.vectorMTFFOV.at(y).stBlock[x].top)*0.66);
 					sprintf_s(stDrawItem.strinfo.strtext, 16, "V:%.3f", stItemData.vectorMTFFOV.at(y).flVValue[x]);
-					if(stItemData.vectorMTFFOV.at(y).flVValue[x]<pstParam.vectorMTFItem.at(y).flVSpec) 
+					if(stItemData.vectorMTFFOV.at(y).flVValue[x]<pstParam.vectorMTFItem_Ex.at(y).flVSpec) 
 						stDrawItem.stcolor = stRed;
 					else stDrawItem.stcolor = stGreen;
 					itemdrawList.push_back(stDrawItem);
@@ -4634,7 +4634,7 @@ namespace ROPLOW
 		stDrawItem.idata[0]	=	static_cast<int>((stItemData.stCenterBlock.right+ stItemData.stCenterBlock.left)/2);
 		stDrawItem.idata[1]	=	static_cast<int>(stItemData.stCenterBlock.top+(stItemData.stCenterBlock.bottom-stItemData.stCenterBlock.top)*0.33);
 		sprintf_s(stDrawItem.strinfo.strtext, 16, "H:%.3f", stItemData.flHCenterValue);
-		if(stItemData.flHCenterValue<pstParam.stMTFBasic.flHcenterspec) stDrawItem.stcolor = stRed;
+		if(stItemData.flHCenterValue<pstParam.stMTFBasic_Ex.flHcenterspec) stDrawItem.stcolor = stRed;
 		else stDrawItem.stcolor = stGreen;
 		itemdrawList.push_back(stDrawItem);
 
@@ -4642,7 +4642,7 @@ namespace ROPLOW
 		stDrawItem.idata[0]	=	static_cast<int>((stItemData.stCenterBlock.right+ stItemData.stCenterBlock.left)/2);
 		stDrawItem.idata[1]	=	static_cast<int>(stItemData.stCenterBlock.top+(stItemData.stCenterBlock.bottom-stItemData.stCenterBlock.top)*0.66);
 		sprintf_s(stDrawItem.strinfo.strtext, 16, "V:%.3f", stItemData.flVCenterValue);
-		if(stItemData.flVCenterValue<pstParam.stMTFBasic.flVcenterspec) stDrawItem.stcolor = stRed;
+		if(stItemData.flVCenterValue<pstParam.stMTFBasic_Ex.flVcenterspec) stDrawItem.stcolor = stRed;
 		else stDrawItem.stcolor = stGreen;
 		itemdrawList.push_back(stDrawItem);
 
@@ -4672,7 +4672,7 @@ namespace ROPLOW
 					stDrawItem.idata[0]	=	static_cast<int>((stItemData.vectorFOV.at(y).stBlock[x].left + stItemData.vectorFOV.at(y).stBlock[x].right)/2);
 					stDrawItem.idata[1]	=	static_cast<int>(stItemData.vectorFOV.at(y).stBlock[x].top+(stItemData.vectorFOV.at(y).stBlock[x].bottom-stItemData.vectorFOV.at(y).stBlock[x].top)*0.33);
 					sprintf_s(stDrawItem.strinfo.strtext, 16, "H:%.3f", stItemData.vectorFOV.at(y).flHValue[x]);
-					if(stItemData.vectorFOV.at(y).flHValue[x]<pstParam.vectorMTFItem.at(y).flHSpec) stDrawItem.stcolor = stRed;
+					if(stItemData.vectorFOV.at(y).flHValue[x]<pstParam.vectorMTFItem_Ex.at(y).flHSpec) stDrawItem.stcolor = stRed;
 					else stDrawItem.stcolor = stGreen;
 					itemdrawList.push_back(stDrawItem);
 
@@ -4680,7 +4680,7 @@ namespace ROPLOW
 					stDrawItem.idata[0]	=	static_cast<int>((stItemData.vectorFOV.at(y).stBlock[x].left + stItemData.vectorFOV.at(y).stBlock[x].right)/2);
 					stDrawItem.idata[1]	=	static_cast<int>(stItemData.vectorFOV.at(y).stBlock[x].top+(stItemData.vectorFOV.at(y).stBlock[x].bottom-stItemData.vectorFOV.at(y).stBlock[x].top)*0.66);
 					sprintf_s(stDrawItem.strinfo.strtext, 16, "V:%.3f", stItemData.vectorFOV.at(y).flVValue[x]);
-					if(stItemData.vectorFOV.at(y).flVValue[x]<pstParam.vectorMTFItem.at(y).flVSpec) 
+					if(stItemData.vectorFOV.at(y).flVValue[x]<pstParam.vectorMTFItem_Ex.at(y).flVSpec) 
 						stDrawItem.stcolor = stRed;
 					else stDrawItem.stcolor = stGreen;
 					itemdrawList.push_back(stDrawItem);
@@ -4699,7 +4699,7 @@ namespace ROPLOW
 					stDrawItem.idata[0]	=	static_cast<int>((stItemData.vectorFOV.at(y).stBlock[x].right+stItemData.vectorFOV.at(y).stBlock[x].left)/2);
 					stDrawItem.idata[1]	=	static_cast<int>(stItemData.vectorFOV.at(y).stBlock[x].top+(stItemData.vectorFOV.at(y).stBlock[x].bottom-stItemData.vectorFOV.at(y).stBlock[x].top)*0.33);
 					sprintf_s(stDrawItem.strinfo.strtext, 16, "H:%.3f", stItemData.vectorFOV.at(y).flHValue[x]);
-					if(stItemData.vectorFOV.at(y).flHValue[x]<pstParam.vectorMTFItem.at(y).flHSpec) stDrawItem.stcolor = stRed;
+					if(stItemData.vectorFOV.at(y).flHValue[x]<pstParam.vectorMTFItem_Ex.at(y).flHSpec) stDrawItem.stcolor = stRed;
 					else stDrawItem.stcolor = stGreen;
 					itemdrawList.push_back(stDrawItem);
 
@@ -4707,7 +4707,7 @@ namespace ROPLOW
 					stDrawItem.idata[0]	=	static_cast<int>((stItemData.vectorFOV.at(y).stBlock[x].right+stItemData.vectorFOV.at(y).stBlock[x].left)/2);
 					stDrawItem.idata[1]	=	static_cast<int>(stItemData.vectorFOV.at(y).stBlock[x].top+(stItemData.vectorFOV.at(y).stBlock[x].bottom-stItemData.vectorFOV.at(y).stBlock[x].top)*0.66);
 					sprintf_s(stDrawItem.strinfo.strtext, 16, "V:%.3f", stItemData.vectorFOV.at(y).flVValue[x]);
-					if(stItemData.vectorFOV.at(y).flVValue[x]<pstParam.vectorMTFItem.at(y).flVSpec) 
+					if(stItemData.vectorFOV.at(y).flVValue[x]<pstParam.vectorMTFItem_Ex.at(y).flVSpec) 
 						stDrawItem.stcolor = stRed;
 					else stDrawItem.stcolor = stGreen;
 					itemdrawList.push_back(stDrawItem);
@@ -4745,7 +4745,7 @@ namespace ROPLOW
 		stDrawItem.idata[0]	=	static_cast<int>((stItemData.stCenterBlock.right+ stItemData.stCenterBlock.left)/2);
 		stDrawItem.idata[1]	=	static_cast<int>(stItemData.stCenterBlock.top+(stItemData.stCenterBlock.bottom-stItemData.stCenterBlock.top)*0.33);
 		sprintf_s(stDrawItem.strinfo.strtext, 16, "H:%.3f", stItemData.flHCenterValue);
-		if(stItemData.flHCenterValue<pstParam.stMTFBasic.flHcenterspec) stDrawItem.stcolor = stRed;
+		if(stItemData.flHCenterValue<pstParam.stMTFBasic_Ex.flHcenterspec) stDrawItem.stcolor = stRed;
 		else stDrawItem.stcolor = stGreen;
 		itemdrawList.push_back(stDrawItem);
 
@@ -4753,7 +4753,7 @@ namespace ROPLOW
 		stDrawItem.idata[0]	=	static_cast<int>((stItemData.stCenterBlock.right+ stItemData.stCenterBlock.left)/2);
 		stDrawItem.idata[1]	=	static_cast<int>(stItemData.stCenterBlock.top+(stItemData.stCenterBlock.bottom-stItemData.stCenterBlock.top)*0.66);
 		sprintf_s(stDrawItem.strinfo.strtext, 16, "V:%.3f", stItemData.flVCenterValue);
-		if(stItemData.flVCenterValue<pstParam.stMTFBasic.flVcenterspec) stDrawItem.stcolor = stRed;
+		if(stItemData.flVCenterValue<pstParam.stMTFBasic_Ex.flVcenterspec) stDrawItem.stcolor = stRed;
 		else stDrawItem.stcolor = stGreen;
 		itemdrawList.push_back(stDrawItem);
 
@@ -4783,7 +4783,7 @@ namespace ROPLOW
 					stDrawItem.idata[0]	=	static_cast<int>((stItemData.vectorFOV.at(y).stBlock[x].left + stItemData.vectorFOV.at(y).stBlock[x].right)/2);
 					stDrawItem.idata[1]	=	static_cast<int>(stItemData.vectorFOV.at(y).stBlock[x].top+(stItemData.vectorFOV.at(y).stBlock[x].bottom-stItemData.vectorFOV.at(y).stBlock[x].top)*0.33);
 					sprintf_s(stDrawItem.strinfo.strtext, 16, "H:%.3f", stItemData.vectorFOV.at(y).flHValue[x]);
-					if(stItemData.vectorFOV.at(y).flHValue[x]<pstParam.vectorMTFItem.at(y).flHSpec) stDrawItem.stcolor = stRed;
+					if(stItemData.vectorFOV.at(y).flHValue[x]<pstParam.vectorMTFItem_Ex.at(y).flHSpec) stDrawItem.stcolor = stRed;
 					else stDrawItem.stcolor = stGreen;
 					itemdrawList.push_back(stDrawItem);
 
@@ -4791,7 +4791,7 @@ namespace ROPLOW
 					stDrawItem.idata[0]	=	static_cast<int>((stItemData.vectorFOV.at(y).stBlock[x].left + stItemData.vectorFOV.at(y).stBlock[x].right)/2);
 					stDrawItem.idata[1]	=	static_cast<int>(stItemData.vectorFOV.at(y).stBlock[x].top+(stItemData.vectorFOV.at(y).stBlock[x].bottom-stItemData.vectorFOV.at(y).stBlock[x].top)*0.66);
 					sprintf_s(stDrawItem.strinfo.strtext, 16, "V:%.3f", stItemData.vectorFOV.at(y).flVValue[x]);
-					if(stItemData.vectorFOV.at(y).flVValue[x]<pstParam.vectorMTFItem.at(y).flVSpec) 
+					if(stItemData.vectorFOV.at(y).flVValue[x]<pstParam.vectorMTFItem_Ex.at(y).flVSpec) 
 						stDrawItem.stcolor = stRed;
 					else stDrawItem.stcolor = stGreen;
 					itemdrawList.push_back(stDrawItem);
@@ -4810,7 +4810,7 @@ namespace ROPLOW
 					stDrawItem.idata[0]	=	static_cast<int>((stItemData.vectorFOV.at(y).stBlock[x].right+stItemData.vectorFOV.at(y).stBlock[x].left)/2);
 					stDrawItem.idata[1]	=	static_cast<int>(stItemData.vectorFOV.at(y).stBlock[x].top+(stItemData.vectorFOV.at(y).stBlock[x].bottom-stItemData.vectorFOV.at(y).stBlock[x].top)*0.33);
 					sprintf_s(stDrawItem.strinfo.strtext, 16, "H:%.3f", stItemData.vectorFOV.at(y).flHValue[x]);
-					if(stItemData.vectorFOV.at(y).flHValue[x]<pstParam.vectorMTFItem.at(y).flHSpec) stDrawItem.stcolor = stRed;
+					if(stItemData.vectorFOV.at(y).flHValue[x]<pstParam.vectorMTFItem_Ex.at(y).flHSpec) stDrawItem.stcolor = stRed;
 					else stDrawItem.stcolor = stGreen;
 					itemdrawList.push_back(stDrawItem);
 
@@ -4818,7 +4818,7 @@ namespace ROPLOW
 					stDrawItem.idata[0]	=	static_cast<int>((stItemData.vectorFOV.at(y).stBlock[x].right+stItemData.vectorFOV.at(y).stBlock[x].left)/2);
 					stDrawItem.idata[1]	=	static_cast<int>(stItemData.vectorFOV.at(y).stBlock[x].top+(stItemData.vectorFOV.at(y).stBlock[x].bottom-stItemData.vectorFOV.at(y).stBlock[x].top)*0.66);
 					sprintf_s(stDrawItem.strinfo.strtext, 16, "V:%.3f", stItemData.vectorFOV.at(y).flVValue[x]);
-					if(stItemData.vectorFOV.at(y).flVValue[x]<pstParam.vectorMTFItem.at(y).flVSpec) 
+					if(stItemData.vectorFOV.at(y).flVValue[x]<pstParam.vectorMTFItem_Ex.at(y).flVSpec) 
 						stDrawItem.stcolor = stRed;
 					else stDrawItem.stcolor = stGreen;
 					itemdrawList.push_back(stDrawItem);
@@ -4827,7 +4827,7 @@ namespace ROPLOW
 					stDrawItem.idata[0]	=	static_cast<int>((stItemData.vectorFOV.at(y).stBlock[x].left + stItemData.vectorFOV.at(y).stBlock[x].right)/2);
 					stDrawItem.idata[1]	=	static_cast<int>(stItemData.vectorFOV.at(y).stBlock[x].bottom);
 					sprintf_s(stDrawItem.strinfo.strtext, 16, "AVR:%.3f", stItemData.vectorFOV.at(y).flValue[x]);
-					if(stItemData.vectorFOV.at(y).flValue[x]<pstParam.vectorMTFItem.at(y).flSpec) 
+					if(stItemData.vectorFOV.at(y).flValue[x]<pstParam.vectorMTFItem_Ex.at(y).flSpec) 
 						stDrawItem.stcolor = stRed;
 					else stDrawItem.stcolor = stGreen;
 					itemdrawList.push_back(stDrawItem);

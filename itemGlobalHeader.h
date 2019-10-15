@@ -692,15 +692,9 @@ __inline void globalgetListAllTestItem(QList<_TestItem_Basic_Info>& itemList) //
 		QTextCodec::codecForName( "GBK")->toUnicode(" "), \
 		"HisFX3CCMTest");
 
-	_CODE_GLOBALITEM_PUSHBACK(sensordpcfunctionitem , "sensordpcfunctionitem ", QTextCodec::codecForName( "GBK")->toUnicode("坏点补偿"), "algorithm", "", \
+	_CODE_GLOBALITEM_PUSHBACK(sensordpcfunctionitem , "sensordpcfunctionitem", QTextCodec::codecForName( "GBK")->toUnicode("坏点补偿"), "other", "", \
 		QTextCodec::codecForName( "GBK")->toUnicode("Sensor内部ISP功能，需要搭配OTP库使用 "), \
 		"HisFX3CCMTest");
-
-
-
-
-
-
 
 }
 

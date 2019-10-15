@@ -411,6 +411,9 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_jsl_burnstate.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="WininetHttp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globaldefine.h">
@@ -568,6 +571,9 @@
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_updatefirewaredialog.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WininetHttp.h">
+      <Filter>Resource Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

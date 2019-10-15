@@ -3197,14 +3197,6 @@ void HisFX3CCMTest::showBindWid(QString strNumber){
 }
 void HisFX3CCMTest::updateSN(QString strNumber,QString strPro){
 	global_ioc_x=0;
-	if(!m_sock){
-		if(jsl_bindSerialNumber::init(m_sock,"192.168.10.15",8000)){
-			global_ioc_x=-1;
-			QMessageBox::warning(this,"Error",QString::fromLocal8Bit("错误：连接MES服务器失败!"));
-			m_sock=NULL;
-			return ;
-		}
-	}
 
 	QString str;
 	if(strPro.lastIndexOf("focus")<0){
@@ -3242,7 +3234,7 @@ void HisFX3CCMTest::updateSN(QString strNumber,QString strPro){
 	
 
 	char recvBuf[8912] = { 0 };
-	jsl_bindSerialNumber::commit(m_sock,str.toLatin1().data(),recvBuf);
+	//jsl_bindSerialNumber::commit(m_sock,str.toLatin1().data(),recvBuf);
 
 	str=QString::fromUtf8(recvBuf);
 	if(str.lastIndexOf("success")<0){

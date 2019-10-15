@@ -62,9 +62,6 @@ public:
 	void setSerialNumber(QString);
 	QString strSN;
 
-	static int init(SOCKET &sock,char *pcIP, int nPort);
-	static int commit(IN SOCKET &sock,IN char *pucSendBuff,OUT char *pucRecvBuff);
-	static int clean(SOCKET* pSocket);
 	static char ucStrSN[1024];
 protected:
 	void closeEvent(QCloseEvent *evt);

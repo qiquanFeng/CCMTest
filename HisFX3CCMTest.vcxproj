@@ -336,7 +336,12 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_jsl_burnstate.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_jsl_controlpanel.cpp" />
-    <ClCompile Include="GeneratedFiles\Debug\moc_jsl_logindialog.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_jsl_logindialog.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_leisaimotion.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_qconfigmanage.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_qcustomplot.cpp" />
@@ -643,8 +648,10 @@
     </ClCompile>
     <ClCompile Include="Serial.cpp" />
     <ClCompile Include="updatefirewaredialog.cpp" />
+    <ClCompile Include="WininetHttp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="WininetHttp.h" />
     <CustomBuild Include="updatefirewaredialog.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing updatefirewaredialog.h...</Message>

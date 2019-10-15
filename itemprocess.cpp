@@ -2818,8 +2818,6 @@ int itemprocess::getmtffaParameter(bool bupdate, bool bcheck )
 					else if(strname.at(x) == "roiw")	pstTheParamter->stMTFBasic.iblockwith	=	strvalue.at(x).toInt();
 					else if(strname.at(x) == "roih")	pstTheParamter->stMTFBasic.iblockheight	=	strvalue.at(x).toInt();
 					else if(strname.at(x) == "centerspec")	pstTheParamter->stMTFBasic.flcenterspec	=	strvalue.at(x).toFloat();
-					else if(strname.at(x) == "centerspec_h")	pstTheParamter->stMTFBasic.flHcenterspec	=	strvalue.at(x).toFloat();
-					else if(strname.at(x) == "centerspec_v")	pstTheParamter->stMTFBasic.flVcenterspec	=	strvalue.at(x).toFloat();
 					else if(strname.at(x) == "centerweight")	pstTheParamter->stMTFBasic.flcenterweight	=	strvalue.at(x).toFloat();
 					else if(strname.at(x) == "autoseartch")	pstTheParamter->stMTFBasic.bAutoSeartchROI	=	(strvalue.at(x) == "true");
 					else if(strname.at(x) == "gradecount")	pstTheParamter->stMTFBasic.ucGrade	=	strvalue.at(x).toUInt();
@@ -2828,11 +2826,26 @@ int itemprocess::getmtffaParameter(bool bupdate, bool bcheck )
 					else if(strname.at(x) == "grade_b")	pstTheParamter->stMTFBasic.flCenterGradeB		=	strvalue.at(x).toFloat();
 					else if(strname.at(x) == "grade_e")	pstTheParamter->stMTFBasic.flCenterGradeE		=	strvalue.at(x).toFloat();
 					else if(strname.at(x) == "grademultiple")	pstTheParamter->stMTFBasic.flGradeMultiple		=	strvalue.at(x).toFloat();
+
+					else if(strname.at(x) == "centerspec_h")	pstTheParamter->stMTFBasic_Ex.flHcenterspec	=	strvalue.at(x).toFloat();
+					else if(strname.at(x) == "centerspec_v")	pstTheParamter->stMTFBasic_Ex.flVcenterspec	=	strvalue.at(x).toFloat();
+					pstTheParamter->stMTFBasic_Ex.algswitch=pstTheParamter->stMTFBasic.algswitch;
+					pstTheParamter->stMTFBasic_Ex.iblockwith=pstTheParamter->stMTFBasic.iblockwith;
+					pstTheParamter->stMTFBasic_Ex.iblockheight=pstTheParamter->stMTFBasic.iblockheight;
+					pstTheParamter->stMTFBasic_Ex.flcenterspec=pstTheParamter->stMTFBasic.flcenterspec;
+					pstTheParamter->stMTFBasic_Ex.flcenterweight=pstTheParamter->stMTFBasic.flcenterweight;
+					pstTheParamter->stMTFBasic_Ex.bAutoSeartchROI=pstTheParamter->stMTFBasic.bAutoSeartchROI;
+					pstTheParamter->stMTFBasic_Ex.ucGrade=pstTheParamter->stMTFBasic.ucGrade;
+					pstTheParamter->stMTFBasic_Ex.flCenterGradeD=pstTheParamter->stMTFBasic.flCenterGradeD;
+					pstTheParamter->stMTFBasic_Ex.flCenterGradeC=pstTheParamter->stMTFBasic.flCenterGradeC;
+					pstTheParamter->stMTFBasic_Ex.flCenterGradeB=pstTheParamter->stMTFBasic.flCenterGradeB;
+					pstTheParamter->stMTFBasic_Ex.flCenterGradeE=pstTheParamter->stMTFBasic.flCenterGradeE;
+					pstTheParamter->stMTFBasic_Ex.flGradeMultiple=pstTheParamter->stMTFBasic.flGradeMultiple;
 				}
 			}
 		}
 
-		_HisCCMAlg_MTFItem_Info stcircleitem;
+		_HisCCMAlg_MTFItem_Info stcircleitem;_HisCCMAlg_MTFItem_Info_Ex stcircleitem_Ex;
 		query.prepare("SELECT itemsuffix2,key,value,reserve FROM " % itemshareData.currentTableName % \
 			" WHERE classfy='algorithm' AND item='" % strItemName % "' AND itemsuffix1='fovitem' ORDER BY id ASC" );
 		query.exec();
@@ -2856,12 +2869,26 @@ int itemprocess::getmtffaParameter(bool bupdate, bool bcheck )
 					else if(strname.at(x) == "grade_c")	 stcircleitem.flGradeC			=	strvalue.at(x).toFloat();
 					else if(strname.at(x) == "grade_b")	 stcircleitem.flGradeB			=	strvalue.at(x).toFloat();
 					else if(strname.at(x) == "grade_e")	 stcircleitem.flGradeE			=	strvalue.at(x).toFloat();
-					else if(strname.at(x) == "spec_h")	 stcircleitem.flHSpec			=	strvalue.at(x).toFloat();
-					else if(strname.at(x) == "spec_v")	 stcircleitem.flVSpec			=	strvalue.at(x).toFloat();
+
+					else if(strname.at(x) == "spec_h")	 stcircleitem_Ex.flHSpec			=	strvalue.at(x).toFloat();
+					else if(strname.at(x) == "spec_v")	 stcircleitem_Ex.flVSpec			=	strvalue.at(x).toFloat();
+					stcircleitem_Ex.ucBlockCount	=	stcircleitem.ucBlockCount;
+					stcircleitem_Ex.flFOV	=	stcircleitem.flFOV;
+					stcircleitem_Ex.flWeight	=	stcircleitem.flWeight;
+					stcircleitem_Ex.flAngle	=	stcircleitem.flAngle;
+					stcircleitem_Ex.flSpec	=	stcircleitem.flSpec;
+					stcircleitem_Ex.flSpecUniform	=	stcircleitem.flSpecUniform;
+					stcircleitem_Ex.flGradeD	=	stcircleitem.flGradeD;
+					stcircleitem_Ex.flGradeC	=	stcircleitem.flGradeC;
+					stcircleitem_Ex.flGradeB	=	stcircleitem.flGradeB;
+					stcircleitem_Ex.flGradeE	=	stcircleitem.flGradeE;
+
+					
 				}
 			}
 
 			pstTheParamter->vectorMTFItem.push_back(stcircleitem);	
+			pstTheParamter->vectorMTFItem_Ex.push_back(stcircleitem_Ex);	
 		}
 
 		customdb.close();
@@ -3097,7 +3124,7 @@ int itemprocess::mtfFA(unsigned int uiOpMode)
 			ROPLOW::AddDrawMTFHE(stItemData_EX, iImgWidth, iImgHeight, vectorDraw,*pstParameter, pstParameter->stMTFBasic.flGradeMultiple);
 
 			//************ 2018.04.11 判断 ************** 
-			if(stItemData_EX.flHCenterValue<pstParameter->stMTFBasic.flHcenterspec||stItemData_EX.flVCenterValue<pstParameter->stMTFBasic.flVcenterspec\
+			if(stItemData_EX.flHCenterValue<pstParameter->stMTFBasic_Ex.flHcenterspec||stItemData_EX.flVCenterValue<pstParameter->stMTFBasic_Ex.flVcenterspec\
 				||stItemData_EX.flCenterValue<pstParameter->stMTFBasic.flcenterspec){
 				iresult=-1;
 			}
@@ -3106,7 +3133,7 @@ int itemprocess::mtfFA(unsigned int uiOpMode)
 			{
 				for (int y=0;y<pstParameter->vectorMTFItem.at(i).ucBlockCount;y++)
 				{
-					if(stItemData_EX.vectorFOV.at(i).flHValue[y] < pstParameter->vectorMTFItem.at(i).flHSpec||stItemData_EX.vectorFOV.at(i).flVValue[y] < pstParameter->vectorMTFItem.at(i).flVSpec\
+					if(stItemData_EX.vectorFOV.at(i).flHValue[y] < pstParameter->vectorMTFItem_Ex.at(i).flHSpec||stItemData_EX.vectorFOV.at(i).flVValue[y] < pstParameter->vectorMTFItem_Ex.at(i).flVSpec\
 						||stItemData_EX.vectorFOV.at(i).flValue[y] < pstParameter->vectorMTFItem.at(i).flSpec){
 						iresult=-1;
 					}
@@ -3208,6 +3235,7 @@ int itemprocess::getmtfAFCCAParameter(unsigned char uctype, bool bupdate, bool b
 	}
 
 	pstTheParamter->vectorMTFItem.clear();
+	pstTheParamter->vectorMTFItem_Ex.clear();
 	QMutexLocker locker(&hisglobalparameter.mutexDatabase);
 
 	bool bparsesuccess	=	true, bItemExist = false;
@@ -3240,16 +3268,24 @@ int itemprocess::getmtfAFCCAParameter(unsigned char uctype, bool bupdate, bool b
 					else if(strname.at(x) == "roiw")	pstTheParamter->stMTFBasic.iblockwith	=	strvalue.at(x).toInt();
 					else if(strname.at(x) == "roih")	pstTheParamter->stMTFBasic.iblockheight	=	strvalue.at(x).toInt();
 					else if(strname.at(x) == "centerspec")	pstTheParamter->stMTFBasic.flcenterspec	=	strvalue.at(x).toFloat();
-					else if(strname.at(x) == "centerspec_h")	pstTheParamter->stMTFBasic.flHcenterspec	=	strvalue.at(x).toFloat();
-					else if(strname.at(x) == "centerspec_v")	pstTheParamter->stMTFBasic.flVcenterspec	=	strvalue.at(x).toFloat();
 					else if(strname.at(x) == "grade_b")	pstTheParamter->stMTFBasic.flCenterGradeB	=	strvalue.at(x).toFloat();
 					else if(strname.at(x) == "centerweight")	pstTheParamter->stMTFBasic.flcenterweight	=	strvalue.at(x).toFloat();
 					else if(strname.at(x) == "autoseartch") pstTheParamter->stMTFBasic.bAutoSeartchROI = (strvalue.at(x) == "true");
+
+					else if(strname.at(x) == "centerspec_h")	pstTheParamter->stMTFBasic_Ex.flHcenterspec	=	strvalue.at(x).toFloat();
+					else if(strname.at(x) == "centerspec_v")	pstTheParamter->stMTFBasic_Ex.flVcenterspec	=	strvalue.at(x).toFloat();
+					pstTheParamter->stMTFBasic_Ex.algswitch=pstTheParamter->stMTFBasic.algswitch;
+					pstTheParamter->stMTFBasic_Ex.iblockwith=pstTheParamter->stMTFBasic.iblockwith;
+					pstTheParamter->stMTFBasic_Ex.iblockheight=pstTheParamter->stMTFBasic.iblockheight;
+					pstTheParamter->stMTFBasic_Ex.flcenterspec=pstTheParamter->stMTFBasic.flcenterspec;
+					pstTheParamter->stMTFBasic_Ex.flCenterGradeB=pstTheParamter->stMTFBasic.flCenterGradeB;
+					pstTheParamter->stMTFBasic_Ex.flcenterweight=pstTheParamter->stMTFBasic.flcenterweight;
+					pstTheParamter->stMTFBasic_Ex.bAutoSeartchROI=pstTheParamter->stMTFBasic.bAutoSeartchROI;
 				}
 			}
 		}
 
-		_HisCCMAlg_MTFItem_Info stcircleitem;
+		_HisCCMAlg_MTFItem_Info stcircleitem;_HisCCMAlg_MTFItem_Info_Ex stcircleitem_Ex;
 		query.prepare("SELECT itemsuffix2,key,value,reserve FROM " % itemshareData.currentTableName % \
 			" WHERE classfy='algorithm' AND item='" % strItemName % "' AND itemsuffix1='fovitem' ORDER BY id ASC" );
 		query.exec();
@@ -3267,14 +3303,22 @@ int itemprocess::getmtfAFCCAParameter(unsigned char uctype, bool bupdate, bool b
 					else if(strname.at(x) == "weight")	 stcircleitem.flWeight	=	strvalue.at(x).toFloat();
 					else if(strname.at(x) == "angle")	 stcircleitem.flAngle		=	strvalue.at(x).toFloat();
 					else if(strname.at(x) == "spec")	 stcircleitem.flSpec		=	strvalue.at(x).toFloat();
-					else if(strname.at(x) == "spec_h")	 stcircleitem.flHSpec		=	strvalue.at(x).toFloat();
-					else if(strname.at(x) == "spec_v")	 stcircleitem.flVSpec		=	strvalue.at(x).toFloat();
 					else if(strname.at(x) == "grade_b")	 stcircleitem.flGradeB			=	strvalue.at(x).toFloat();
-					else if(strname.at(x) == "specuniform")	 stcircleitem.flSpecUniform		=	strvalue.at(x).toFloat();
+					else if(strname.at(x) == "specuniform")	 stcircleitem.flSpecUniform		=	1;//strvalue.at(x).toFloat(); unifform 不卡控
+
+					else if(strname.at(x) == "spec_h")	 stcircleitem_Ex.flHSpec		=	strvalue.at(x).toFloat();
+					else if(strname.at(x) == "spec_v")	 stcircleitem_Ex.flVSpec		=	strvalue.at(x).toFloat();
+					stcircleitem_Ex.ucBlockCount=stcircleitem.ucBlockCount;
+					stcircleitem_Ex.flFOV=stcircleitem.flFOV;
+					stcircleitem_Ex.flWeight=stcircleitem.flWeight;
+					stcircleitem_Ex.flAngle=stcircleitem.flAngle;
+					stcircleitem_Ex.flSpec=stcircleitem.flSpec;
+					stcircleitem_Ex.flGradeB=stcircleitem.flGradeB;
+					stcircleitem_Ex.flSpecUniform=stcircleitem.flSpecUniform;
 				}
 			}
 
-			pstTheParamter->vectorMTFItem.push_back(stcircleitem);	
+			pstTheParamter->vectorMTFItem.push_back(stcircleitem);	pstTheParamter->vectorMTFItem_Ex.push_back(stcircleitem_Ex);
 		}
 
 		query.prepare("SELECT itemsuffix2,key,value,reserve FROM " % itemshareData.currentTableName % \
@@ -3359,8 +3403,6 @@ int itemprocess::getmtfAFCCAParameter(unsigned char uctype, bool bupdate, bool b
 int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStatics)
 {
 	_CODE_CLEAR_IMAGEDRAW
-		QqrealList list=QqrealList()<<1<<2<<3;
-		emit sig_test(list);
 		if(!threadshareData.GetHisPreviewflag())	return HisCCMError_NotPreivew;
 
 //***************** 2018.04.28 feng Add ************* 
@@ -3529,7 +3571,8 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 		if(pstParameter->stMTFBasic.algswitch != 7){
 			iteratorItemData->flCenterValue		=	flvalue;
 		}else{
-			iteratorItemData->flCenterValue		=	(flHvalue+flVvalue)/2;
+			flvalue=(flHvalue+flVvalue)/2;
+			iteratorItemData->flCenterValue		=	flvalue;
 			iteratorItemData_ex->flCenterValue=(flHvalue+flVvalue)/2;
 			iteratorItemData_ex->flHCenterValue=flHvalue;
 			iteratorItemData_ex->flVCenterValue=flVvalue;
@@ -3562,7 +3605,8 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 				if(pstParameter->stMTFBasic.algswitch != 7){
 					iteratorItemData->vectorFOV.at(y).flValue[x]		=	flvalue;
 				}else{
-					iteratorItemData->vectorFOV.at(y).flValue[x]		=	(flHvalue+flVvalue)/2;
+					flvalue=(flHvalue+flVvalue)/2;
+					iteratorItemData->vectorFOV.at(y).flValue[x]		=	flvalue;
 					iteratorItemData_ex->vectorFOV.at(y).flValue[x]=(flHvalue+flVvalue)/2;
 					iteratorItemData_ex->vectorFOV.at(y).flHValue[x]=flHvalue;
 					iteratorItemData_ex->vectorFOV.at(y).flVValue[x]=flVvalue;
@@ -3592,7 +3636,7 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 			//Center
 			stItemData_EX=*iteratorItemData_ex;
 
-			if(stItemData_EX.flHCenterValue<pstParameter->stMTFBasic.flHcenterspec||stItemData_EX.flVCenterValue<pstParameter->stMTFBasic.flVcenterspec\
+			if(stItemData_EX.flHCenterValue<pstParameter->stMTFBasic_Ex.flHcenterspec||stItemData_EX.flVCenterValue<pstParameter->stMTFBasic_Ex.flVcenterspec\
 				||stItemData_EX.flCenterValue<pstParameter->stMTFBasic.flcenterspec){
 				iresult=-1;
 			}
@@ -3601,7 +3645,7 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 			{
 				for (int y=0;y<pstParameter->vectorMTFItem.at(i).ucBlockCount;y++)
 				{
-					if(stItemData_EX.vectorFOV.at(i).flHValue[y] < pstParameter->vectorMTFItem.at(i).flHSpec||stItemData_EX.vectorFOV.at(i).flVValue[y] < pstParameter->vectorMTFItem.at(i).flVSpec\
+					if(stItemData_EX.vectorFOV.at(i).flHValue[y] < pstParameter->vectorMTFItem_Ex.at(i).flHSpec||stItemData_EX.vectorFOV.at(i).flVValue[y] < pstParameter->vectorMTFItem_Ex.at(i).flVSpec\
 						||stItemData_EX.vectorFOV.at(i).flValue[y] < pstParameter->vectorMTFItem.at(i).flSpec){
 						iresult=-1;
 					}
@@ -3713,6 +3757,12 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 	unsigned int uiSaveIndex	=	0xFFFFFFFF;
 	float flMaxWeightValue	=	-10.0f;
 	bool bTempResult	=	false;
+
+	QFile fileline("MTF AFC line.csv");
+	fileline.open(QIODevice::ReadWrite);
+	QTextStream streamDac(&fileline);
+	streamDac<<"DAC,Flag,Status,Weight,MaxWeight\n";
+
 	for(unsigned int x=0;	x<vectorItemData.size(); ++x){
 		if(vectorItemData.at(x).ucFlag == 0x1){
 			uiSaveIndex	=	x;
@@ -3731,13 +3781,16 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 				bTempResult			=	(vectorItemData.at(x).ucStatus == 0x1);
 			}
 		}
+
+		streamDac<<vectorItemData.at(x).sMotorStep<<","<<vectorItemData.at(x).ucFlag<<","<<vectorItemData.at(x).ucStatus<<","<<vectorItemData.at(x).flWeightValue<<","<<flMaxWeightValue<<"\n";
 	}
+	streamDac.flush();
+	fileline.close();
+
 	if(vectorItemData.at(uiSaveIndex).ucStatus == 0x0)
 	{
-		iresult	=	HisCCMError_NoFocusStep;//
+		iresult	=	HisCCMError_NoFocusStep;
 	}
-
-
 
  	if(uiSaveIndex != 0xFFFFFFFF && uiSaveIndex != vectorItemData.size() - 1){
 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("马达运动到最优点:") % QString::number(vectorItemData.at(uiSaveIndex).sMotorStep));
@@ -3755,112 +3808,6 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 		}else{
 			ROPLOW::AddDrawMTFHE(vectorItemData_EX.at(uiSaveIndex), iImgWidth, iImgHeight, vectorDraw,*pstParameter,pstParameter->stMTFBasic.flGradeMultiple);
 		}
-		
-		/*{  
-			
-			//Peak 点重新测试
-			Sleep(400);
-			if(iresult	=	GetFreshframe(pucBufRaw, uiRawImgSize, ucFrameType, false)) return iresult;
-#if 1
-			ROPLOW::AFCMTFItemDataInitial(vectorItemData, pstParameter, iMotorPosNow);
-			iteratorItemData	=	vectorItemData.end()-1;
-
-			
-
-		vectorDraw.clear();
-		bNext	=	true;
-
-		pstTemp	=	pstBlock;
-		stMTFAutoROI	=	*pstTemp;
-		if(pstParameter->stMTFBasic.bAutoSeartchROI)
-			classRolongoTest.CRolongoBlockAutomaticSearching(stMTFAutoROI, pucBufRaw, iImgWidth, iImgHeight, pstParameter->stMTFBasic.iblockwith *4, stMTFAutoROI);
-		stMTFAutoROI.left+=global_ioc_x;stMTFAutoROI.right+=global_ioc_x;// 加OC偏移
-		stMTFAutoROI.top+=global_ioc_y;stMTFAutoROI.bottom+=global_ioc_y;// 加OC偏移
-
-		if(pstParameter->stMTFBasic.algswitch <= 4)
-		{
-			if(iresult	=	classAlgorithm.HisCCMMTF(pucBufRaw, iImgWidth, iImgHeight, stMTFAutoROI, pstParameter->stMTFBasic.algswitch, flvalue)) _CODE_AFC_MTF_EXIT1;
-		}else if(pstParameter->stMTFBasic.algswitch == 7){
-			if(iresult	=	classRolongoTest.HisCCMMTF(pucBufRaw, iImgWidth, iImgHeight, stMTFAutoROI, pstParameter->stMTFBasic.algswitch, flHvalue,flVvalue)) _CODE_AFC_MTF_EXIT1;
-		}
-		else
-		{
-			if(iresult	=	classRolongoTest.HisCCMMTF(pucBufRaw, iImgWidth, iImgHeight, stMTFAutoROI, pstParameter->stMTFBasic.algswitch, flvalue)) _CODE_AFC_MTF_EXIT1;
-		}
-
-		_HisCCMAlg_AFC_MTF_DataItem_EX stItemData_EX; //************** 2018.04.11 Add
-		stItemData_EX.vectorFOV.resize(pstParameter->vectorMTFItem.size());
-
-		iteratorItemData->stCenterBlock	=	stMTFAutoROI;
-		stItemData_EX.stCenterBlock=stMTFAutoROI;
-
-		if(pstParameter->stMTFBasic.algswitch != 7){
-			iteratorItemData->flCenterValue		=	flvalue;
-		}else{
-			iteratorItemData->flCenterValue		=	(flHvalue+flVvalue)/2;
-			stItemData_EX.flCenterValue=(flHvalue+flVvalue)/2;
-			stItemData_EX.flHCenterValue=flHvalue;
-			stItemData_EX.flVCenterValue=flVvalue;
-		}
-
-
-		pstTemp++;
-
-		for(unsigned int y=0;	y<pstParameter->vectorMTFItem.size(); ++y){
-			flmax	=	-99999.0f; flmin	=	99999.0f;
-			for(unsigned int x=0;	x<pstParameter->vectorMTFItem.at(y).ucBlockCount; ++x){
-				stMTFAutoROI	=	*pstTemp;
-				if(pstParameter->stMTFBasic.bAutoSeartchROI)
-					classRolongoTest.CRolongoBlockAutomaticSearching(stMTFAutoROI, pucBufRaw, iImgWidth, iImgHeight, pstParameter->stMTFBasic.iblockwith *4, stMTFAutoROI);
-					stMTFAutoROI.left+=global_ioc_x;stMTFAutoROI.right+=global_ioc_x;// 加OC偏移
-					stMTFAutoROI.top+=global_ioc_y;stMTFAutoROI.bottom+=global_ioc_y;// 加OC偏移
-					
-				if(pstParameter->stMTFBasic.algswitch <= 4)
-				{
-					if(iresult	=	classAlgorithm.HisCCMMTF(pucBufRaw, iImgWidth, iImgHeight, stMTFAutoROI, pstParameter->stMTFBasic.algswitch, flvalue)) _CODE_AFC_MTF_EXIT1;
-				}else if(pstParameter->stMTFBasic.algswitch == 7){
-
-					if(iresult	=	classRolongoTest.HisCCMMTF(pucBufRaw, iImgWidth, iImgHeight, stMTFAutoROI, pstParameter->stMTFBasic.algswitch, flHvalue,flVvalue)) _CODE_AFC_MTF_EXIT1;
-				}
-				else
-				{
-					if(iresult	=	classRolongoTest.HisCCMMTF(pucBufRaw, iImgWidth, iImgHeight, stMTFAutoROI, pstParameter->stMTFBasic.algswitch, flvalue)) _CODE_AFC_MTF_EXIT1;
-				}
-
-				if(pstParameter->stMTFBasic.algswitch != 7){
-					iteratorItemData->vectorFOV.at(y).flValue[x]		=	flvalue;
-				}else{
-					iteratorItemData->vectorFOV.at(y).flValue[x]		=	(flHvalue+flVvalue)/2;
-					stItemData_EX.vectorFOV.at(y).flValue[x]=(flHvalue+flVvalue)/2;
-					stItemData_EX.vectorFOV.at(y).flHValue[x]=flHvalue;
-					stItemData_EX.vectorFOV.at(y).flVValue[x]=flVvalue;
-				}
-
-				iteratorItemData->vectorFOV.at(y).stBlock[x]	=	stMTFAutoROI;
-				stItemData_EX.vectorFOV.at(y).stBlock[x]=stMTFAutoROI;
-				pstTemp++;
-				flmax	=	max(flmax, flvalue);
-				flmin		=	min(flmin, flvalue);
-			}
-			if(iresult) break;
-			iteratorItemData->vectorFOV.at(y).flUniformValue	=	flmax - flmin;
-		}
-#endif
-			iresult = classAlgorithm.HisAFCTactics_MTFHA_DB_HA(pstParameter->stTacticsBasic, vectorItemData, *pstAFCMTFDB, iMotorPosNow);
-			
-			if(pstParameter->stMTFBasic.algswitch != 7){
-				ROPLOW::AddDrawMTFHA(*iteratorItemData, iImgWidth, iImgHeight, vectorDraw, pstParameter->stMTFBasic.flGradeMultiple);
-			}else{
-				ROPLOW::AddDrawMTFHE(stItemData_EX, iImgWidth, iImgHeight, vectorDraw,*pstParameter,pstParameter->stMTFBasic.flGradeMultiple);
-			}
-
-			if(iteratorItemData->ucStatus == 0x0)
-			{
-				emit information(QString::fromLocal8Bit("错误：Peak点规格不达标！"));
-				iresult	=	HisCCMError_NoFocusStep;//
-			}
-			HisReleaseMalloc(pucBufRaw);
-		}*/
 
 		_CODE_RJAFA_LP_ASIGNDRAW
 	}
@@ -13314,10 +13261,10 @@ int itemprocess::otpburn()
 	double dflCoefB=0;
 	QDateTime dateTime;
 
-	if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
+	/*if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
 		emit information(QString::fromLocal8Bit("错误：获取光源点检数据失败！"));
 		return -1;
-	}
+	}*/
 
 	itemshareData.itemparameterLock.lockForRead();
 
@@ -13981,10 +13928,10 @@ int itemprocess::otpcheck()
 	double dflCoefR=0;
 	double dflCoefB=0;
 	QDateTime dateTime;
-	if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
+	/*if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
 		emit information(QString::fromLocal8Bit("错误：获取光源点检数据失败！"));
 		return -1;
-	}
+	}*/
 
 	itemshareData.itemparameterLock.lockForRead();
 
