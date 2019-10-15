@@ -2684,6 +2684,7 @@ struct _HisCCMOTP_Config{
 	int iheight;
 	bool bDebug;
 	bool bburn;
+	bool bLightCorrect;
 	bool bOnlyBurnOnce;
 	bool bBlockResult;
 	bool bOnlyCheckBurnData;
@@ -2760,12 +2761,12 @@ struct _HisCCMOTP_Config{
 	float flYLSC_RB;
 	float flYLSC_Diff;
 #endif
-
 	float flR2Gr[121];
 	float flB2Gr[121];
 	float flGr[121];
 	double dflLightCoeB;
 	double dflLightCoeR;
+	double dflLigheCoeTolerance;
 	unsigned int uiMachineID;
 	unsigned int uiHardwareVersion;
 	_haob64 Reserve1; 
@@ -2785,6 +2786,8 @@ struct _HisCCMOTP_Config{
 		bBurnOpticalCenter=false;
 		iOpitcalcenterX=0;
 		iOpitcalcenterY=0;
+		dflLightCoeR=1.0f;
+		dflLightCoeB=1.0f;
 		flLSC_LuxShadingResult_GrLT	=	-100.0f;
 		flLSC_LuxShadingResult_GrRT	=	-100.0f;
 		flLSC_LuxShadingResult_GrLB	=	-100.0f;

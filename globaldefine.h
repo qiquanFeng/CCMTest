@@ -1316,9 +1316,22 @@ struct _lightsourcecheckParameter
 	}
 };
 
+struct _lightSpecificationParameter
+{
+	float HardwareSpecification;
+	float CorrectSpecification;
+	_lightSpecificationParameter()
+	{
+		//(hardware:3%)(correct:0.25%)
+		HardwareSpecification	=	3.0f;
+		CorrectSpecification	=	0.25f;
+	}
+};
+
 struct _otpburnParameter
 {
 	bool bburn;
+	bool bLightCorrect;
 	bool bOnlyCheckData;
 	bool bBurnOpticalCenter;
 	unsigned int uiIndex;
@@ -1352,6 +1365,7 @@ struct _otpburnParameter
 	_otpburnParameter()
 	{
 		bOnlyCheckData	=	false;
+		bLightCorrect	=	false;
 		bburn					=	false;
 		bBurnOpticalCenter=false;
 	}
@@ -1378,6 +1392,7 @@ struct _afburnParameter{
 	//******************* 20190817 **********************************
 	bool bRecalCheck;
 	int iRecalSpec;
+	int MotorSub;
 
 	_afburnParameter()
 	{
@@ -1389,6 +1404,7 @@ struct _afburnParameter{
 		iNearMotorMax	=	iMiddleMotorMax		=	iFarMotorMax		=	1023;
 		bRecalCheck=false;
 		iRecalSpec=50;
+		MotorSub=140;
 	}
 };
 
@@ -1454,6 +1470,7 @@ struct _pdafParameter{
 
 struct _dualCameraParameter{
 	bool bburn;
+	bool bLightCorrect;
 	bool bOnlyCheckData;
 	double dChart2lensDistance_Rotation; 
 	double dFocusLength_Rotation;
@@ -1486,7 +1503,7 @@ struct _dualCameraParameter{
 
 	_dualCameraParameter()
 	{
-		bburn=bOnlyCheckData=bCoaxialityburn=bCoaxialityOnlyCheckData=false;
+		bburn=bLightCorrect=bOnlyCheckData=bCoaxialityburn=bCoaxialityOnlyCheckData=false;
 		dChart2lensDistance_Rotation=500;
 		dFocusLength_Rotation=dCycleDistanceHorizontal_Rotation=dCycleDistanceVertical_Rotation=0;
 		dMaxAngleX=dMaxAngleY=dMaxAngleZ=0.0f;
@@ -1624,6 +1641,7 @@ struct _global_itemexec{
 	_standbycurrentParameter *standbycurrentParameter;
 	_otpburnParameter* otpburnParameter;
 	_lightsourcecheckParameter* lightsourcecheckParameter;
+	_lightSpecificationParameter* lightSpecificationParameter;
 	_savelogParameter* savelogParameter;
 	_afburnParameter* afburnParameter;
 	_blackfiledParameter* blackfieldParameter;

@@ -13155,6 +13155,7 @@ int itemprocess::getotpburnParameter(bool bupdate, bool bcheck)
 				ROPLOW::patchconfigstring(strData, strname, strvalue);
 				for(int x=0;	x<strname.size();	++x){
 					if(strname.at(x) == "burn")	itemshareData.otpburnParameter->bburn	=	(strvalue.at(x) == "true");
+					else if(strname.at(x) == "light_correct")	itemshareData.otpburnParameter->bLightCorrect	=	(strvalue.at(x) == "true");
 					else if(strname.at(x) == "burnOpticalCenter")	itemshareData.otpburnParameter->bBurnOpticalCenter	=	(strvalue.at(x) == "true");
 					else if(strname.at(x) == "onlycheckdata")	itemshareData.otpburnParameter->bOnlyCheckData	=	(strvalue.at(x) == "true");
 					else if(strname.at(x) == "curfun")
@@ -13261,12 +13262,16 @@ int itemprocess::otpburn()
 	double dflCoefB=0;
 	QDateTime dateTime;
 
-	/*if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
-		emit information(QString::fromLocal8Bit("错误：获取光源点检数据失败！"));
-		return -1;
-	}*/
-
 	itemshareData.itemparameterLock.lockForRead();
+
+	if(itemshareData.otpburnParameter->bLightCorrect==true){
+		emit information(QString::fromLocal8Bit("正在获取光源点检数据"));
+		if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
+			emit information(QString::fromLocal8Bit("错误：获取光源点检数据失败！"));
+			return -1;
+		}
+	}
+	else emit information(QString::fromLocal8Bit("注意：跳过获取光源点检数据！"));
 
 	_HisCCMOTP_Config stParameter;
 	stParameter.puiIndex	=	&(itemshareData.otpburnParameter->uiIndex);
@@ -13552,11 +13557,20 @@ int itemprocess::LightSourceCal()
 
 	//取得配置参数和规格
 	int iresult	=	getotpburnParameter(false);
-	if(iresult)
+	if(iresult){
+		emit information(QString::fromLocal8Bit("错误：获取getotpburnParameter失败！"));
 		return iresult;
+	}
 	iresult	=	getccmhardwareParameter(false);
-	if(iresult)
+	if(iresult){
+		emit information(QString::fromLocal8Bit("错误：获取getccmhardwareParameter失败！"));
 		return iresult;
+	}
+	iresult = getlsSpecificationParameter(false);
+	if(iresult){
+		emit information(QString::fromLocal8Bit("错误：获取getlsSpecificationParameter失败！"));
+		return iresult;
+	}
 
 	itemshareData.itemparameterLock.lockForRead();
 
@@ -13652,7 +13666,6 @@ int itemprocess::LightSourceCal()
 	}
 
 	//********************************
-
 	emit enableinfotimer(1);
 	
 	iresult	=	writeotp(*globalFunPointer.vectorHisCCMOTPInfoW, &stParameter, globalFunPointer.ReadHisFX3IIC, globalFunPointer.WriteHisFX3IIC, globalFunPointer.SetHisFX3IICSpeed, \
@@ -13662,10 +13675,21 @@ int itemprocess::LightSourceCal()
 		globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
 	emit enableinfotimer(0);
 
+	float LightHardwareSpecification=itemshareData.lightSpecificationParameter->HardwareSpecification/100.0f;
+	float LightCorrectSpecification=itemshareData.lightSpecificationParameter->CorrectSpecification/100.0f;
+
 	itemshareData.itemparameterLock.unlock();
-	if(abs(stParameter.dflLightCoeR-1.0f)>0.03f||abs(stParameter.dflLightCoeB-1.0f)>0.03f){
-		emit information(QString::fromLocal8Bit("错误：光源硬件差异 > 3% ，点检失败！"));
-		return -1;
+
+	if(abs(stParameter.dflLightCoeR-1.0f)>LightHardwareSpecification||abs(stParameter.dflLightCoeB-1.0f)>LightHardwareSpecification){
+		emit information(QString::fromLocal8Bit("错误：光源硬件差异 > %1% ，点检失败！").arg(QString::number(LightHardwareSpecification*100,'f',2)));
+		emit information("LightHardwareR="+QString::number(abs(stParameter.dflLightCoeR-1.0f),'f',6));
+		emit information("LightHardwareB="+QString::number(abs(stParameter.dflLightCoeB-1.0f),'f',6));
+		iresult=-1;
+	}
+	if(stParameter.dflLigheCoeTolerance>LightCorrectSpecification){
+		emit information(QString::fromLocal8Bit("错误：光源点检校正标准 > %1% ，点检失败！").arg(QString::number(LightCorrectSpecification*100,'f',2)));
+		emit information("LigheCoeTolerance="+QString::number(stParameter.dflLigheCoeTolerance,'f',6));
+		iresult=-1;
 	}
 
 	if(iresult)
@@ -13928,12 +13952,17 @@ int itemprocess::otpcheck()
 	double dflCoefR=0;
 	double dflCoefB=0;
 	QDateTime dateTime;
-	/*if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
-		emit information(QString::fromLocal8Bit("错误：获取光源点检数据失败！"));
-		return -1;
-	}*/
 
 	itemshareData.itemparameterLock.lockForRead();
+
+	if(itemshareData.otpburnParameter->bLightCorrect==true){
+		emit information(QString::fromLocal8Bit("正在获取光源点检数据"));
+		if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
+			emit information(QString::fromLocal8Bit("错误：获取光源点检数据失败！"));
+			return -1;
+		}
+	}
+	else emit information(QString::fromLocal8Bit("注意：跳过获取光源点检数据！"));
 
 	_HisCCMOTP_Config stParameter;
 	stParameter.puiIndex	=	&(itemshareData.otpburnParameter->uiIndex);
@@ -14242,6 +14271,65 @@ int itemprocess::getlsCheckParameter(bool bupdate, bool bcheck)
 	if(!bItemExist)
 	{
 		HisReleaseNewO(itemshareData.lightsourcecheckParameter);
+		return HisFX3Error_Parameter;
+	}
+
+	return 0;
+}
+
+int itemprocess::getlsSpecificationParameter(bool bupdate,bool bcheck)
+{
+	QMutexLocker locker(&hisglobalparameter.mutexDatabase);
+
+	itemshareData.itemparameterLock.lockForRead();
+	if(!bupdate && itemshareData.lightSpecificationParameter)	{	itemshareData.itemparameterLock.unlock();	return 0;	}
+	itemshareData.itemparameterLock.unlock();
+
+	QHReadWriteLockManage classitemparameterLock(&(itemshareData.itemparameterLock), true);
+
+	if(!itemshareData.lightSpecificationParameter)	itemshareData.lightSpecificationParameter		=	new _lightSpecificationParameter;
+	if(!itemshareData.lightSpecificationParameter)	{	return HisFX3Error_MallocBuffer;	}
+
+	bool bItemExist = false;
+	{
+		QSqlDatabase customdb = QSqlDatabase::addDatabase("QSQLITE", "querycustom");
+		customdb.setDatabaseName(QDir::currentPath() % "/HisFX3Custom");
+		if (!customdb.open()){
+			itemshareData.itemparameterLock.unlock();
+			return HisCCMError_Database;
+		}
+
+		QStringList strname, strvalue;
+		QString strData, strData2;
+		QSqlQuery query(customdb);
+		query.prepare("SELECT itemsuffix2,key,value,reserve FROM " % itemshareData.currentTableName % \
+			" WHERE classfy='algorithm' AND item='lightspacification' AND itemsuffix1='spacification' ORDER BY id ASC" );
+		query.exec();
+
+		//(hardware:3%)(correct:0.25%)
+		while (query.next())
+		{
+			bItemExist = true;
+			for(int y=0;y<1;++y)
+			{
+				strData	=	query.value(y).toString();
+				ROPLOW::patchconfigstring(strData, strname, strvalue);
+				for(int x=0;x<strname.size();++x)
+				{
+					if(strname.at(x) == "hardware")				itemshareData.lightSpecificationParameter->HardwareSpecification =	strvalue.at(x).toFloat();
+					else if(strname.at(x) == "correct")		itemshareData.lightSpecificationParameter->CorrectSpecification =	strvalue.at(x).toFloat();
+				}
+			}
+		}
+
+		customdb.close();
+	}
+
+	QSqlDatabase::removeDatabase("querycustom");
+
+	if(!bItemExist)
+	{
+		HisReleaseNewO(itemshareData.lightSpecificationParameter);
 		return HisFX3Error_Parameter;
 	}
 
@@ -14810,6 +14898,7 @@ int itemprocess::getafburnParameter(bool bupdate, bool bcheck )
 					else if(strname.at(x) == "farmax") itemshareData.afburnParameter->iFarMotorMax =	strvalue.at(x).toInt();
 					else if(strname.at(x) == "recalspec") itemshareData.afburnParameter->iRecalSpec =strvalue.at(x).toInt();
 					else if(strname.at(x) == "recalaf") itemshareData.afburnParameter->bRecalCheck = (strvalue.at(x) == "on");
+					else if(strname.at(x) == "subnearinf") itemshareData.afburnParameter->MotorSub = (strvalue.at(x).toInt());
 				}
 			}
 		}
@@ -14879,6 +14968,7 @@ int itemprocess::afBurn(int farcode,int midcode,int nearcode)
 	if(farcode) stParameter.iInfinitMotor=farcode;
 	if(midcode) stParameter.iMiddleMotor=midcode;
 	if(nearcode) stParameter.iNearMotor=nearcode;
+	int MotorSub=itemshareData.afburnParameter->MotorSub;
 
 	//**********************************
 #if 1
@@ -14915,6 +15005,12 @@ int itemprocess::afBurn(int farcode,int midcode,int nearcode)
 			return HisCCMError_Result;
 		}
 	}
+	if(stParameter.iNearMotor-stParameter.iInfinitMotor<MotorSub){
+			emit information(QTextCodec::codecForName( "GBK")->toUnicode("远焦近焦DAC差值小于%1").arg(QString::number(MotorSub)));
+			itemshareData.itemparameterLock.unlock();
+			return HisCCMError_Result;
+	}
+
 #endif
 	QString strSerialNumber;
 	classLog->getserialnumber(strSerialNumber);
@@ -15018,6 +15114,7 @@ int itemprocess::afBurnCheck() //0:near 1:middle 2:infinite
 	stParameter.bNear		=	itemshareData.afburnParameter->bNear;
 	stParameter.bMiddle	=	itemshareData.afburnParameter->bMiddle;
 	stParameter.bInfinite	=	itemshareData.afburnParameter->bInfinite;
+	int MotorSub=itemshareData.afburnParameter->MotorSub;
 
 #if (defined _WIN64) && (defined _DEBUG)
 	QString strLibPath	=	QDir::currentPath() % "/HisCCMOTP64D";
@@ -15068,6 +15165,10 @@ int itemprocess::afBurnCheck() //0:near 1:middle 2:infinite
 			iresult	=	HisCCMError_Result;
 		}
 	}
+	if(stParameter.iNearMotor-stParameter.iInfinitMotor<MotorSub){
+		emit information(QTextCodec::codecForName( "GBK")->toUnicode("远焦近焦DAC差值小于%1").arg(QString::number(MotorSub)));
+		iresult = HisCCMError_Result;
+	}
 
 	int  iNear=(iNearPeakMotorDec==0x00FFFFFF)?(0x00FFFFFF):(iNearPeakMotorDec + itemshareData.afburnParameter->iNearMotorOffset);
 	int  iFar=(iFarPeakMotorDec==0x00FFFFFF)?(0x00FFFFFF):(iFarPeakMotorDec + itemshareData.afburnParameter->iFarMotorOffset);
@@ -15114,6 +15215,7 @@ int itemprocess::afBurnCheck() //0:near 1:middle 2:infinite
 
 	return iresult;
 }
+
 int itemprocess::senttcpmessage(_QH_TcpIpCommu_Itemnew clientiteminfo)
 {
 	return 0;
@@ -29689,6 +29791,7 @@ int itemprocess::getdualcameraParameter(bool bupdate, bool bcheck)
 				ROPLOW::patchconfigstring(strData, strname, strvalue);
 				for(int x=0;	x<strname.size();	++x){
 					if(strname.at(x) == "burn") itemshareData.dualCameraParameter->bburn = (strvalue.at(x) == "true");
+					else if(strname.at(x) == "litghr_correct")	itemshareData.dualCameraParameter->bLightCorrect	=	(strvalue.at(x)	==	"true");
 					else if(strname.at(x)== "onlycheckdata")   itemshareData.dualCameraParameter->bOnlyCheckData =(strvalue.at(x)=="true");
 					else if(strname.at(x) == "burnrule")	itemshareData.dualCameraParameter->strDualCameraBurnChoose		=	strvalue.at(x).toUpper();
 					else if(strname.at(x) == "chart2lensposition")	itemshareData.dualCameraParameter->dChart2lensDistance_Rotation	=	strvalue.at(x).toDouble();

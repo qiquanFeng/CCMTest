@@ -22,7 +22,7 @@ static const uint qt_meta_data_configsetting[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-     100,   14, // methods
+     101,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -85,51 +85,52 @@ static const uint qt_meta_data_configsetting[] = {
     1400,   14,   14,   14, 0x08,
     1414,   14,   14,   14, 0x08,
     1437,   14,   14,   14, 0x08,
-    1455,   14,   14,   14, 0x08,
-    1468,   14,   14,   14, 0x08,
-    1482,   14,   14,   14, 0x08,
-    1499,   14,   14,   14, 0x08,
-    1517,   14,   14,   14, 0x08,
-    1548, 1539,   14,   14, 0x08,
-    1574, 1539,   14,   14, 0x08,
-    1599, 1539,   14,   14, 0x08,
-    1626, 1539,   14,   14, 0x08,
-    1652, 1539,   14,   14, 0x08,
-    1680,   14,   14,   14, 0x08,
-    1701,   14,   14,   14, 0x08,
-    1724,   14,   14,   14, 0x08,
-    1744,   14,   14,   14, 0x08,
-    1756,   14,   14,   14, 0x08,
-    1779,   14,   14,   14, 0x08,
+    1462,   14,   14,   14, 0x08,
+    1480,   14,   14,   14, 0x08,
+    1493,   14,   14,   14, 0x08,
+    1507,   14,   14,   14, 0x08,
+    1524,   14,   14,   14, 0x08,
+    1542,   14,   14,   14, 0x08,
+    1573, 1564,   14,   14, 0x08,
+    1599, 1564,   14,   14, 0x08,
+    1624, 1564,   14,   14, 0x08,
+    1651, 1564,   14,   14, 0x08,
+    1677, 1564,   14,   14, 0x08,
+    1705,   14,   14,   14, 0x08,
+    1726,   14,   14,   14, 0x08,
+    1749,   14,   14,   14, 0x08,
+    1769,   14,   14,   14, 0x08,
+    1781,   14,   14,   14, 0x08,
     1804,   14,   14,   14, 0x08,
-    1826,   14,   14,   14, 0x08,
-    1840,  112,   14,   14, 0x08,
-    1862,  112,   14,   14, 0x08,
-    1888,  112,   14,   14, 0x08,
-    1910,  112,   14,   14, 0x08,
-    1932,  112,   14,   14, 0x08,
-    1957, 1949,   14,   14, 0x08,
-    1979,   14,   14,   14, 0x08,
-    1992,  112,   14,   14, 0x08,
-    2022,  112,   14,   14, 0x08,
-    2050,   59,   14,   14, 0x08,
-    2072,  774,   14,   14, 0x08,
-    2100,  112,   14,   14, 0x08,
-    2134,   59,   14,   14, 0x08,
-    2168,  112,   14,   14, 0x08,
-    2204,   59,   14,   14, 0x08,
-    2240,  112,   14,   14, 0x08,
-    2273,   59,   14,   14, 0x08,
-    2306,  112,   14,   14, 0x08,
-    2336,   59,   14,   14, 0x08,
-    2366,   14,   14,   14, 0x08,
-    2385,  774,   14,   14, 0x08,
-    2415,  774,   14,   14, 0x08,
-    2449,  774,   14,   14, 0x08,
-    2500, 2483,   14,   14, 0x08,
-    2568, 2559, 2547,   14, 0x08,
-    2617,   14,   14,   14, 0x08,
-    2632,   14,   14,   14, 0x08,
+    1829,   14,   14,   14, 0x08,
+    1851,   14,   14,   14, 0x08,
+    1865,  112,   14,   14, 0x08,
+    1887,  112,   14,   14, 0x08,
+    1913,  112,   14,   14, 0x08,
+    1935,  112,   14,   14, 0x08,
+    1957,  112,   14,   14, 0x08,
+    1982, 1974,   14,   14, 0x08,
+    2004,   14,   14,   14, 0x08,
+    2017,  112,   14,   14, 0x08,
+    2047,  112,   14,   14, 0x08,
+    2075,   59,   14,   14, 0x08,
+    2097,  774,   14,   14, 0x08,
+    2125,  112,   14,   14, 0x08,
+    2159,   59,   14,   14, 0x08,
+    2193,  112,   14,   14, 0x08,
+    2229,   59,   14,   14, 0x08,
+    2265,  112,   14,   14, 0x08,
+    2298,   59,   14,   14, 0x08,
+    2331,  112,   14,   14, 0x08,
+    2361,   59,   14,   14, 0x08,
+    2391,   14,   14,   14, 0x08,
+    2410,  774,   14,   14, 0x08,
+    2440,  774,   14,   14, 0x08,
+    2474,  774,   14,   14, 0x08,
+    2525, 2508,   14,   14, 0x08,
+    2593, 2584, 2572,   14, 0x08,
+    2642,   14,   14,   14, 0x08,
+    2657,   14,   14,   14, 0x08,
 
        0        // eod
 };
@@ -173,8 +174,8 @@ static const char qt_meta_stringdata_configsetting[] = {
     "slotDataProtocalChange(QString)\0"
     "clearDB_FC()\0clearDB_AE()\0getdefaultotpBurn()\0"
     "saveotpBurn()\0saveLightSourceCheck()\0"
-    "saveDPCLoadRule()\0saveAFBurn()\0"
-    "saveSaveLog()\0saveBlackField()\0"
+    "saveLightSpecification()\0saveDPCLoadRule()\0"
+    "saveAFBurn()\0saveSaveLog()\0saveBlackField()\0"
     "saveMTKPDAFBurn()\0saveducalcameraBurn()\0"
     "bChecked\0slotOSPositiveOnOff(bool)\0"
     "slotOSNegtiveOnOff(bool)\0"
@@ -269,53 +270,54 @@ void configsetting::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         case 51: _t->getdefaultotpBurn(); break;
         case 52: _t->saveotpBurn(); break;
         case 53: _t->saveLightSourceCheck(); break;
-        case 54: _t->saveDPCLoadRule(); break;
-        case 55: _t->saveAFBurn(); break;
-        case 56: _t->saveSaveLog(); break;
-        case 57: _t->saveBlackField(); break;
-        case 58: _t->saveMTKPDAFBurn(); break;
-        case 59: _t->saveducalcameraBurn(); break;
-        case 60: _t->slotOSPositiveOnOff((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 61: _t->slotOSNegtiveOnOff((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 62: _t->slotOSShortTestOnOff((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 63: _t->slotOSOpenTestOnOff((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 64: _t->slotOSResistanceOnOff((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 65: _t->saveAFCLpNearBasic(); break;
-        case 66: _t->saveAFCLpMiddleBasic(); break;
-        case 67: _t->saveAFCLpFarBasic(); break;
-        case 68: _t->saveLpMFA(); break;
-        case 69: _t->saveAFCLpNearTactics(); break;
-        case 70: _t->saveAFCLpMiddleTactics(); break;
-        case 71: _t->saveAFCLpFarTactics(); break;
-        case 72: _t->RelaceSlave(); break;
-        case 73: _t->BlemishAlgSwitch((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 74: _t->DefectPixelAlgSwitch((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 75: _t->ShadingAlgSwitch((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 76: _t->WPColorAlgSwitch((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 77: _t->OCAlgSwitch((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 78: _t->CHIPIDSwitch((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 79: _t->saveAutoFA(); break;
-        case 80: _t->BlackLightPixelAlgSwitch((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 81: _t->LightSourceCheckSwitch((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 82: _t->slotAFAMarkOnoff((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 83: _t->slotAFAChartChange((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 84: _t->changeAFCNearSFRABasicMethod((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 85: _t->AFCNearSFRABasicFreq2Checked((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 86: _t->changeAFCMiddleSFRABasicMethod((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 87: _t->AFCMiddleSFRABasicFreq2Checked((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 88: _t->changeAFCFarSFRABasicMethod((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 89: _t->AFCFarSFRABasicFreq2Checked((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 90: _t->changeMFASFRABasicMethod((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 91: _t->MFASFRABasicFreq2Checked((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 92: _t->saveALLCustomIIC(); break;
-        case 93: _t->changeMTKPDAFVersion((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 94: _t->slotMTFFABinGradeChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 95: _t->slotSFRFABinGradeChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 96: _t->removeOSPin((*reinterpret_cast< std::vector<std::string>(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
-        case 97: { QStringList _r = _t->osPinList2QStringList((*reinterpret_cast< std::vector<std::string>(*)>(_a[1])));
+        case 54: _t->saveLightSpecification(); break;
+        case 55: _t->saveDPCLoadRule(); break;
+        case 56: _t->saveAFBurn(); break;
+        case 57: _t->saveSaveLog(); break;
+        case 58: _t->saveBlackField(); break;
+        case 59: _t->saveMTKPDAFBurn(); break;
+        case 60: _t->saveducalcameraBurn(); break;
+        case 61: _t->slotOSPositiveOnOff((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 62: _t->slotOSNegtiveOnOff((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 63: _t->slotOSShortTestOnOff((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 64: _t->slotOSOpenTestOnOff((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 65: _t->slotOSResistanceOnOff((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 66: _t->saveAFCLpNearBasic(); break;
+        case 67: _t->saveAFCLpMiddleBasic(); break;
+        case 68: _t->saveAFCLpFarBasic(); break;
+        case 69: _t->saveLpMFA(); break;
+        case 70: _t->saveAFCLpNearTactics(); break;
+        case 71: _t->saveAFCLpMiddleTactics(); break;
+        case 72: _t->saveAFCLpFarTactics(); break;
+        case 73: _t->RelaceSlave(); break;
+        case 74: _t->BlemishAlgSwitch((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 75: _t->DefectPixelAlgSwitch((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 76: _t->ShadingAlgSwitch((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 77: _t->WPColorAlgSwitch((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 78: _t->OCAlgSwitch((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 79: _t->CHIPIDSwitch((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 80: _t->saveAutoFA(); break;
+        case 81: _t->BlackLightPixelAlgSwitch((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 82: _t->LightSourceCheckSwitch((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 83: _t->slotAFAMarkOnoff((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 84: _t->slotAFAChartChange((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 85: _t->changeAFCNearSFRABasicMethod((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 86: _t->AFCNearSFRABasicFreq2Checked((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 87: _t->changeAFCMiddleSFRABasicMethod((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 88: _t->AFCMiddleSFRABasicFreq2Checked((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 89: _t->changeAFCFarSFRABasicMethod((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 90: _t->AFCFarSFRABasicFreq2Checked((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 91: _t->changeMFASFRABasicMethod((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 92: _t->MFASFRABasicFreq2Checked((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 93: _t->saveALLCustomIIC(); break;
+        case 94: _t->changeMTKPDAFVersion((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 95: _t->slotMTFFABinGradeChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 96: _t->slotSFRFABinGradeChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 97: _t->removeOSPin((*reinterpret_cast< std::vector<std::string>(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
+        case 98: { QStringList _r = _t->osPinList2QStringList((*reinterpret_cast< std::vector<std::string>(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< QStringList*>(_a[0]) = _r; }  break;
-        case 98: _t->textSelected(); break;
-        case 99: _t->nextSelected(); break;
+        case 99: _t->textSelected(); break;
+        case 100: _t->nextSelected(); break;
         default: ;
         }
     }
@@ -353,9 +355,9 @@ int configsetting::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 100)
+        if (_id < 101)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 100;
+        _id -= 101;
     }
     return _id;
 }

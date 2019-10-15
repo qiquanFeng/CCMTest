@@ -252,6 +252,7 @@ public:
 	int otpcheck();
 	int ReadGolden();
 	int getlsCheckParameter(bool bupdate=false, bool bcheck = true);
+	int getlsSpecificationParameter(bool bupdate=false,bool bcheck=true);
 	int LightSourceCheck();
 	int LightSourceVerify();
 	int LightSourceCal();

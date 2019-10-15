@@ -86,7 +86,10 @@ public:
 
 	void lightSourceCheck2UI();
 	int saveLightSourceCheckExec();
-	 
+
+	void LightSpecification2UI();
+	int saveLightSpecificationData();
+
 signals:
 
   
@@ -280,6 +283,7 @@ private slots:
 	void getdefaultotpBurn();
 	void saveotpBurn();
 	void saveLightSourceCheck();
+	void saveLightSpecification();
 	void saveDPCLoadRule();
 
 	void saveAFBurn();
