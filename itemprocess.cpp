@@ -13258,8 +13258,8 @@ int itemprocess::otpburn()
 	classDir.mkpath(strData);
 
 	QString strMAC,strChipID;
-	double dflCoefR=0;
-	double dflCoefB=0;
+	double dflCoefR=1.0;
+	double dflCoefB=1.0;
 	QDateTime dateTime;
 
 	itemshareData.itemparameterLock.lockForRead();
@@ -13759,8 +13759,8 @@ int itemprocess::LightSourceCal()
 int itemprocess::LightSourceVerify(){
 	int iresult=0;
 	QString strMAC,strChipID;
-	double dflCoefR=0;
-	double dflCoefB=0;
+	double dflCoefR=1.0;
+	double dflCoefB=1.0;
 	QDateTime dateTime;
 	if(getLightSourceParam(strMAC,strChipID,dflCoefR,dflCoefB,dateTime)){
 		emit information(QString::fromLocal8Bit("错误：获取光源点检数据失败！"));
@@ -13949,8 +13949,8 @@ int itemprocess::otpcheck()
 	classDir.mkpath(strData);
 
 	QString strMAC,strChipID;
-	double dflCoefR=0;
-	double dflCoefB=0;
+	double dflCoefR=1.0;
+	double dflCoefB=1.0;
 	QDateTime dateTime;
 
 	itemshareData.itemparameterLock.lockForRead();
