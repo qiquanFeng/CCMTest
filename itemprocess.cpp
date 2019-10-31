@@ -24884,6 +24884,84 @@ int itemprocess::getGereralAFAParameter(bool bupdate, bool bcheck)
 	return 0;
 }
 
+int itemprocess::getGereralAFAParameter_B(bool bupdate, bool bcheck)
+{
+	itemshareData.itemparameterLock.lockForRead();
+	if(!bupdate && itemshareData.bfaBasicStacticsParameter){ itemshareData.itemparameterLock.unlock(); return 0; }
+
+	QMutexLocker locker(&hisglobalparameter.mutexDatabase);
+
+	itemshareData.itemparameterLock.unlock();
+	itemshareData.itemparameterLock.lockForWrite();
+	if(!itemshareData.bfaBasicStacticsParameter)	itemshareData.bfaBasicStacticsParameter		=	new _HisAutoFA_B_BASIC_STACTICS;
+	if(!itemshareData.bfaBasicStacticsParameter){
+		itemshareData.itemparameterLock.unlock();
+		return HisFX3Error_MallocBuffer;
+	}
+
+	bool bparsesuccess	=	true, bItemExist = false;
+
+	//读取，解析config
+	for(int  w=0;	w<1;	++w){ //此处是有意义的,不要删除
+		QSqlDatabase customdb = QSqlDatabase::addDatabase("QSQLITE", "querycustom");
+		customdb.setDatabaseName(QDir::currentPath() % "/HisFX3Custom");
+		if (!customdb.open()){
+			bparsesuccess	=	false;
+			break;
+		}
+
+		QString strData, strdata2;
+		QStringList strname, strvalue;
+		QSqlQuery query(customdb);
+		query.prepare("SELECT itemsuffix2,key,value,reserve,note FROM " % itemshareData.currentTableName % \
+			" WHERE classfy='equipment' AND item='bfarolongo' ORDER BY id ASC" );
+		query.exec();
+
+		//(tactics:0)(direction:0)(chart:10)(valuechoose:0)(valuetype:0)(undermethod:0)(underangle:30)(underlaser:0.5)(bestoffset:0.0)(sfrmarkblock:5)
+		//(database:true)(dboffset:0.0)(evyup:true)(evyupdis:3.0)(retrytime:3)(retryangle:3.0)(lastup:true)(lastupdis:3.0)(lastunderangle:0)(underdevmin:0.3)(underdevmax:0.6)
+		//(laser:true)(vision:true)(mark:true)(lensangle:60)(ringangle:50)(lenspitch:0.25)(lensnum:3)(ringnum:3)
+		//(maxstep:20)(stepdelay:650)(curvevalid:0.3)(curvefall:0.05)(maxccw:120)(maxcw:120)(minlaser:0.0)(maxlaser:0.0)(minmark:0.0)(maxmark:0.0)
+		//(nodenum:4)(n1value:0.1)(n1angle:0.1)(n2value:0.1)(n2angle:0.1)(n3value:0.1)(n3angle:0.1)(n4value:0.1)(n4angle:0.1)(n5value:0.1)(n5angle:0.1)(n6value:0.1)(n6angle:0.1)(n7value:0.1)(n7angle:0.1)(n8value:0.1)(n8angle:0.1)(n9value:0.1)(n9angle:0.1)
+
+		while (query.next()){
+			bItemExist = true;
+			for(int y=0;	y<5;	++y){
+				strData	=	query.value(y).toString();
+				ROPLOW::patchconfigstring(strData, strname, strvalue);
+				for(int x=0;	x<strname.size();	++x){
+					if(strname.at(x) == "charttype")	itemshareData.bfaBasicStacticsParameter->iStrategy =	strvalue.at(x).toInt();
+					else if(strname.at(x) == "strategy")	itemshareData.bfaBasicStacticsParameter->iStrategy	=	strvalue.at(x).toInt();
+					else if(strname.at(x) == "minarea")	itemshareData.bfaBasicStacticsParameter->dflMinArea	=	strvalue.at(x).toDouble();
+					else if(strname.at(x) == "maxarea")	itemshareData.bfaBasicStacticsParameter->dflMaxArea	=	strvalue.at(x).toDouble();
+					else if(strname.at(x) == "minlength")	itemshareData.bfaBasicStacticsParameter->dflMinLength	=	strvalue.at(x).toDouble();
+					else if(strname.at(x) == "maxlength")	itemshareData.bfaBasicStacticsParameter->dflMaxLength	=	strvalue.at(x).toDouble();
+					else if(strname.at(x) == "targetdistance")	itemshareData.bfaBasicStacticsParameter->dflTargetDistance	=	strvalue.at(x).toDouble();
+					else if(strname.at(x) == "ringoffset")	itemshareData.bfaBasicStacticsParameter->dflFocusRingOffset	=	strvalue.at(x).toDouble();
+					else if(strname.at(x) == "lensratioring")	itemshareData.bfaBasicStacticsParameter->dflLensRatioRing	=	strvalue.at(x).toDouble();
+					else if(strname.at(x) == "movedistance_z")	itemshareData.bfaBasicStacticsParameter->dflLensMoveDistanceZ	=	strvalue.at(x).toDouble();
+					else if(strname.at(x) == "underspinangle")	itemshareData.bfaBasicStacticsParameter->dflUnderspinAngle	=	strvalue.at(x).toDouble();
+					else if(strname.at(x) == "stepnode")	itemshareData.bfaBasicStacticsParameter->dflStepNode	=	strvalue.at(x).toDouble();
+					
+				}
+			}
+		}
+
+		customdb.close();
+	}
+
+	QSqlDatabase::removeDatabase("querycustom");
+	if(!bparsesuccess || !bItemExist)
+	{
+		HisReleaseNewO(itemshareData.bfaBasicStacticsParameter);
+		itemshareData.itemparameterLock.unlock();
+		return HisFX3Error_Parameter;
+	}
+
+	if(!bcheck) {itemshareData.itemparameterLock.unlock(); return 0; }
+	itemshareData.itemparameterLock.unlock();
+	return 0;
+}
+
 #if (defined USE_EQUIPMENT_AFM_JSL_V1)
 void itemprocess::DrawAFAMTFBarChart(_HisAutoFA_Rolongo_DataItem& stItemData)
 {
@@ -26719,6 +26797,372 @@ int itemprocess::gereralAutoFA()
 	_CODE_AFA_ALL_EXIT1
 }
 
+int itemprocess::gereralAutoFA_B()
+{
+
+	_CODE_CLEAR_IMAGEDRAW
+		if(!threadshareData.GetHisPreviewflag())
+		{ return HisFX3Error_IsNotPreview;
+	}
+
+	//***************** 2018.04.28 feng Add ************* 
+#ifdef _DEBUG
+		getMarkDistance_RGB24 fnGetMarkDistance=(getMarkDistance_RGB24)QLibrary::resolve("fqqImageToold.dll","getMarkDistance_RGB24");
+		polyfit fnPolyfit=(polyfit)QLibrary::resolve("fqqImageToold.dll","polyfit");
+		polyval fnPolyval=(polyval)QLibrary::resolve("fqqImageToold.dll","polyval");
+#else
+	getMarkDistance_RGB24 fnGetMarkDistance=(getMarkDistance_RGB24)QLibrary::resolve("fqqImageTool.dll","getMarkDistance_RGB24");
+	polyfit fnPolyfit=(polyfit)QLibrary::resolve("fqqImageTool.dll","polyfit");
+	polyval fnPolyval=(polyval)QLibrary::resolve("fqqImageTool.dll","polyval");
+#endif
+	if(!fnGetMarkDistance){
+		emit information(QString::fromLocal8Bit("!载入fqqImageTool.dll失败，请检查是否存在"));
+		return -1;
+	}
+//********************************************************
+	/*定义参数*/
+	//itemshareData.itemparameterLock.lockForRead();
+
+	// 获取Mark点距离，移动到具体位置
+	int iresult=0;
+	if(iresult = getGereralAFAParameter_B(false)) return iresult;
+	if(iresult = getmtffaParameter(false)) return iresult;
+
+#if 1 //USE_AFC_Fitting
+
+	/*定义参数*/
+	float flvalue,flvalue2,flmax, flmin;
+	unsigned char ucRetry1CCW = 0, ucRetry1CW = 0, ucRetry2CCW = 0, ucRetry2CW = 0, ucDirect = 0xFF, ucType = 0x0;
+	double dflAbsAngle	=	0.0;
+	unsigned int uiImgSize		=	itemshareData.previewParameter->iWidth * itemshareData.previewParameter->iHeight *3;
+	unsigned char ucFrameType		=	_FrameType_RGB24;
+	unsigned char *pucBufRaw = (unsigned char*)_aligned_malloc(uiImgSize,_HisCacheLine_Aligned);
+	unsigned char *pucBufRaw2 = (unsigned char*)_aligned_malloc(uiImgSize,_HisCacheLine_Aligned);
+	std::vector<_itemDraw> vectorDraw;vectorDraw.reserve(300);
+	std::vector<_HisAutoFA_Rolongo_DataItem> vectorItemData;
+	std::vector<_HisAutoFA_Rolongo_DataItem>::iterator iteratorItemData;
+	
+	void* pclassControl = NULL;
+
+	//第一步运动
+	//if(iresult = RAUTOMATION::AutoFARingRotate(-(int)itemshareData.bfaBasicStacticsParameter->dflMinArea,false,pclassControl))
+		//return iresult;
+
+	//捉一张RGB24图像
+	if(iresult	=	GetFreshframe(pucBufRaw, uiImgSize, ucFrameType, true)) { HisReleaseMalloc(pucBufRaw);}
+
+	
+
+	
+	double dflDist[5]={0};
+	double dflAngle1=0;
+	double dflAngOffset=itemshareData.bfaBasicStacticsParameter->dflFocusRingOffset;
+	int imgWidth=itemshareData.previewParameter->iWidth;
+	int imgHeight=itemshareData.previewParameter->iHeight;
+
+	RECT* pstBlock	=	NULL, *pstTemp = NULL;
+
+	/*
+	iresult=fnGetMarkDistance(pucBufRaw,NULL,dflDist,imgWidth,imgHeight,15,itemshareData.bfaBasicStacticsParameter->dflMinArea,\
+		itemshareData.bfaBasicStacticsParameter->dflMaxArea,itemshareData.bfaBasicStacticsParameter->dflMinLength,itemshareData.bfaBasicStacticsParameter->dflMaxLength,\
+		hisglobalparameter.bDebugMode);
+
+	if(iresult){
+		emit information(QString::fromLocal8Bit("无法找到Mark点!"));
+		QImage image(pucBufRaw,imgWidth,imgHeight,QImage::Format_RGB888);
+		image.save("mark.bmp");
+
+		WCHAR wstr[1024]={0};
+		QString str1=QString("MinArea:%1,MaxArea:%2,MinLen:%3,MaxLen:%4").arg(itemshareData.bfaBasicStacticsParameter->dflMinArea).arg(itemshareData.bfaBasicStacticsParameter->dflMaxArea)\
+			.arg(itemshareData.bfaBasicStacticsParameter->dflMinLength).arg(itemshareData.bfaBasicStacticsParameter->dflMaxLength);
+		emit information(str1);
+		//_CODE_AFA_ALL_EXIT1
+	}
+
+	bool bCW=true;
+	dflAngle1=(itemshareData.bfaBasicStacticsParameter->dflTargetDistance-dflDist[0])/ 1;
+	if(dflAngle1>0){
+		dflAngle1+=dflAngOffset;
+		bCW=true;
+	}else if((!bCW)&&dflAngle1<0){
+		dflAngle1-=dflAngOffset;
+		bCW=false;
+	}
+
+	
+	
+	//if(iresult = RAUTOMATION::AutoFARingRotate(dflAngle1, false,pclassControl));
+	emit information(QString::fromLocal8Bit("Move Angle:%1").arg(dflAngle1));
+	
+	
+	//   Fitting Move 
+	if(!bCW){
+		//if(iresult = RAUTOMATION::AutoFARingRotate(dflAngOffset*-1, false, pclassControl))  
+		
+	}
+
+	*/
+
+	if(iresult = ROPLOW::GetMTFCABlock(imgWidth, imgHeight, \
+		itemshareData.mtffaParameter->stMTFBasic, itemshareData.mtffaParameter->vectorMTFItem, &pstBlock)){
+			if(iresult == HisFX3Error_Parameter)
+				emit information(QTextCodec::codecForName( "GBK")->toUnicode("选取的MTF ROI超出了图像区域"));
+			return 1;
+	}
+
+	//  调焦循环
+	double dflPolyX[10]={0,30,60,90,120,150,180,210,240,270};
+	std::vector<double *> vecDflPolyY;
+	std::vector<double *> vecDflPeak;
+	std::vector<double *> vecDflNewPolyY;
+
+	vecDflPolyY.resize(1+(unsigned int)itemshareData.mtffaParameter->vectorMTFItem.size());
+	vecDflPeak.resize(1+(unsigned int)itemshareData.mtffaParameter->vectorMTFItem.size());
+	vecDflNewPolyY.resize(1+(unsigned int)itemshareData.mtffaParameter->vectorMTFItem.size());
+
+	for (int i=0;i<vecDflPolyY.size();i++)
+	{
+		vecDflPolyY.at(i)=(double*)malloc(512*sizeof(double));
+		vecDflPeak.at(i)=(double*)malloc(512*sizeof(double));
+		vecDflNewPolyY.at(i)=(double*)malloc(512*sizeof(double));
+	}
+	
+	unsigned char* pucBufY	=	(unsigned char*)_aligned_malloc(imgWidth *imgHeight, _HisCacheLine_Aligned);
+
+
+	RAUTOMATION::AutoFAAxisZMoveR(-1.5f, pclassControl);
+
+	for (int i=0;i<10;i++)
+	{
+		emit information(QString("step %1").arg(i));
+		Sleep(500);
+		vectorDraw.clear();
+		int inx=0;
+
+		if(i!=0){
+			RAUTOMATION::AutoFAAxisZMoveR(1.5f, pclassControl);
+			if(iresult = RAUTOMATION::AutoFARingRotate(30, false, pclassControl))  
+				return iresult;
+			Sleep(50);
+			RAUTOMATION::AutoFAAxisZMoveR(-1.5f, pclassControl);
+			emit information(QString("Move to:angle %1").arg(i*30));
+		}
+		
+		vectorItemData.resize(vectorItemData.size() + 1);
+		unsigned int uiFOVSize	=	(unsigned int)itemshareData.mtffaParameter->vectorMTFItem.size();
+		iteratorItemData	=	vectorItemData.end() - 1;
+		iteratorItemData->vectorMTFFOV.resize(uiFOVSize);
+
+		if(iresult	=	GetFreshframe(pucBufRaw, uiImgSize, ucFrameType, true)) { return 1;}// 捉图
+		if(iresult	=	GetFreshframe(pucBufRaw2, uiImgSize, ucFrameType, true)) { return 1;}// 捉图
+
+		//抽取G通道作为Y通道
+		
+		/*unsigned int uiPixelSize	=	imgWidth *imgHeight;
+		unsigned char* pucSrc = pucBufRaw + 1, *pucDes = pucBufY;
+		for(unsigned int x=0;	x<uiPixelSize;	++x){
+			*pucDes	=	*pucSrc;
+			++pucDes;
+			pucSrc	+=	3;
+		}*/
+
+		RECT stMTFAutoROI;
+		pstTemp	=	pstBlock;
+		stMTFAutoROI	=	*pstTemp;
+		
+		if(itemshareData.mtffaParameter->stMTFBasic.algswitch <= 4){
+			if(iresult	=	classAlgorithm.HisCCMMTF(pucBufRaw, imgWidth, imgHeight, stMTFAutoROI, itemshareData.mtffaParameter->stMTFBasic.algswitch, flvalue)) break;
+			if(iresult	=	classAlgorithm.HisCCMMTF(pucBufRaw2, imgWidth, imgHeight, stMTFAutoROI, itemshareData.mtffaParameter->stMTFBasic.algswitch, flvalue2)) break;
+		}
+		else{
+			if(iresult	=	classRolongoTest.HisCCMMTF(pucBufRaw, imgWidth, imgHeight, stMTFAutoROI, itemshareData.mtffaParameter->stMTFBasic.algswitch, flvalue)) break;
+			if(iresult	=	classRolongoTest.HisCCMMTF(pucBufRaw2, imgWidth, imgHeight, stMTFAutoROI, itemshareData.mtffaParameter->stMTFBasic.algswitch, flvalue2)) break;
+		}
+
+		iteratorItemData->stMTFCenterBlock		=	stMTFAutoROI;
+		iteratorItemData->flMTFCenterValue		=	(flvalue+flvalue2)/2;
+		vecDflPolyY.at(inx++)[i]=iteratorItemData->flMTFCenterValue;
+
+		pstTemp++;
+		for(unsigned int y=0;	y<itemshareData.mtffaParameter->vectorMTFItem.size(); ++y){
+				flmax	=	-99999.0f; flmin	=	99999.0f;
+				for(unsigned int x=0;	x<itemshareData.mtffaParameter->vectorMTFItem.at(y).ucBlockCount; ++x){
+					stMTFAutoROI	=	*pstTemp;
+					if(itemshareData.mtffaParameter->stMTFBasic.bAutoSeartchROI)
+						classRolongoTest.CRolongoBlockAutomaticSearching(stMTFAutoROI, pucBufRaw, imgWidth, imgHeight, itemshareData.mtffaParameter->stMTFBasic.iblockwith *4, stMTFAutoROI);
+
+					if(itemshareData.mtffaParameter->stMTFBasic.algswitch <= 4){
+						if(iresult	=	classAlgorithm.HisCCMMTF(pucBufRaw, imgWidth, imgHeight, stMTFAutoROI, itemshareData.mtffaParameter->stMTFBasic.algswitch, flvalue)) break;
+						if(iresult	=	classAlgorithm.HisCCMMTF(pucBufRaw2, imgWidth, imgHeight, stMTFAutoROI, itemshareData.mtffaParameter->stMTFBasic.algswitch, flvalue2)) break;
+					}
+					else{
+						if(iresult	=	classRolongoTest.HisCCMMTF(pucBufRaw, imgWidth, imgHeight, stMTFAutoROI, itemshareData.mtffaParameter->stMTFBasic.algswitch, flvalue)) break;
+						if(iresult	=	classRolongoTest.HisCCMMTF(pucBufRaw2, imgWidth, imgHeight, stMTFAutoROI, itemshareData.mtffaParameter->stMTFBasic.algswitch, flvalue2)) break;
+					}
+
+					flvalue=(flvalue+flvalue2)/2;
+
+					iteratorItemData->vectorMTFFOV.at(y).flValue[x]	=	flvalue;
+
+					iteratorItemData->vectorMTFFOV.at(y).stBlock[x]	=	stMTFAutoROI;
+					pstTemp++;
+					flmax	=	max(flmax, flvalue);
+					flmin		=	min(flmin, flvalue);
+				}
+				if(iresult) break;
+				iteratorItemData->vectorMTFFOV.at(y).flUniformValue	=	flmax - flmin;
+
+				vecDflPolyY.at(inx++)[i]=flmin;
+			}
+
+			if(iresult) break;
+
+			ROPLOW::AddDrawMTFHA(*iteratorItemData, imgWidth, imgHeight, vectorDraw);
+
+			itemshareData.drawLock.lockForWrite();
+			itemshareData.itemdrawList.assign(vectorDraw.begin(), vectorDraw.end());
+			itemshareData.drawLock.unlock();
+	}
+	
+	//_aligned_free(pucBufRaw);
+	//_aligned_free(pucBufRaw2);
+	//_aligned_free(pucBufY);
+	
+	double dflNewPolyX[271]={0};
+	
+	for (int i=0;i<271;i++)
+	{
+		dflNewPolyX[i]=i;
+	}
+	
+	
+	FILE *pfile;
+	fopen_s(&pfile,"Focus_B.csv","wb+");
+
+	
+	for (int i=0;i<vecDflPolyY.size();i++)
+	{
+		fnPolyfit(dflPolyX,vecDflPolyY.at(i),10,9,vecDflPeak.at(i));
+		fnPolyval(dflNewPolyX,vecDflNewPolyY.at(i),sizeof(dflNewPolyX)/sizeof(dflNewPolyX[0]),vecDflPeak.at(i),9);
+	}
+	
+	double dflMaxVal=0;
+	int iMaxPos=0;
+	for (int i=0;i<sizeof(dflNewPolyX)/sizeof(dflNewPolyX[0]);i++)
+	{
+		fprintf(pfile,"%d,",i);
+		double dflSum=0.0f;
+		for (int j=0;j<vecDflNewPolyY.size();j++)
+		{
+			fprintf(pfile,"%.5f,",vecDflNewPolyY.at(j)[i]);
+			dflSum+=vecDflNewPolyY.at(j)[i];
+		}
+		fprintf(pfile,"%.5f,\n",dflSum);
+		if(dflSum>dflMaxVal){
+			dflMaxVal=dflSum;
+			iMaxPos=i;
+		}
+	}
+
+	fclose(pfile);
+
+
+	//Move To Peak
+	emit information(QString("Peak Pos:%1").arg(iMaxPos));
+	emit information(QString("Move To Peak:%1").arg(iMaxPos-270-dflAngOffset));
+	RAUTOMATION::AutoFAAxisZMoveR(1.5f, pclassControl);
+
+	if(iresult = RAUTOMATION::AutoFARingRotate(iMaxPos-180-dflAngOffset, false, pclassControl))  
+		return iresult;
+	RAUTOMATION::AutoFAAxisZMoveR(-1.5f, pclassControl);
+	
+	for (int i=0;i<1;i++)
+	{
+		vectorDraw.clear();
+		int inx=0;
+		Sleep(200);
+		
+		vectorItemData.resize(vectorItemData.size() + 1);
+		unsigned int uiFOVSize	=	(unsigned int)itemshareData.mtffaParameter->vectorMTFItem.size();
+		iteratorItemData	=	vectorItemData.end() - 1;
+		iteratorItemData->vectorMTFFOV.resize(uiFOVSize);
+
+		if(iresult	=	GetFreshframe(pucBufRaw, uiImgSize, ucFrameType, true)) { return 1;}// 捉图
+		if(iresult	=	GetFreshframe(pucBufRaw2, uiImgSize, ucFrameType, true)) { return 1;}// 捉图
+
+		RECT stMTFAutoROI;
+		pstTemp	=	pstBlock;
+		stMTFAutoROI	=	*pstTemp;
+		if(itemshareData.mtffaParameter->stMTFBasic.bAutoSeartchROI)
+			classRolongoTest.CRolongoBlockAutomaticSearching(stMTFAutoROI, pucBufRaw, imgWidth, imgHeight, itemshareData.mtffaParameter->stMTFBasic.iblockwith *4, stMTFAutoROI);
+
+		if(itemshareData.mtffaParameter->stMTFBasic.algswitch <= 4){
+			if(iresult	=	classAlgorithm.HisCCMMTF(pucBufRaw, imgWidth, imgHeight, stMTFAutoROI, itemshareData.mtffaParameter->stMTFBasic.algswitch, flvalue)) break;
+			if(iresult	=	classAlgorithm.HisCCMMTF(pucBufRaw2, imgWidth, imgHeight, stMTFAutoROI, itemshareData.mtffaParameter->stMTFBasic.algswitch, flvalue2)) break;
+		}
+		else{
+			if(iresult	=	classRolongoTest.HisCCMMTF(pucBufRaw, imgWidth, imgHeight, stMTFAutoROI, itemshareData.mtffaParameter->stMTFBasic.algswitch, flvalue)) break;
+			if(iresult	=	classRolongoTest.HisCCMMTF(pucBufRaw2, imgWidth, imgHeight, stMTFAutoROI, itemshareData.mtffaParameter->stMTFBasic.algswitch, flvalue2)) break;
+		}
+
+		iteratorItemData->stMTFCenterBlock		=	stMTFAutoROI;
+		iteratorItemData->flMTFCenterValue		=	(flvalue+flvalue2)/2;
+
+		pstTemp++;
+		for(unsigned int y=0;	y<itemshareData.mtffaParameter->vectorMTFItem.size(); ++y){
+				flmax	=	-99999.0f; flmin	=	99999.0f;
+				for(unsigned int x=0;	x<itemshareData.mtffaParameter->vectorMTFItem.at(y).ucBlockCount; ++x){
+					stMTFAutoROI	=	*pstTemp;
+					if(itemshareData.mtffaParameter->stMTFBasic.bAutoSeartchROI)
+						classRolongoTest.CRolongoBlockAutomaticSearching(stMTFAutoROI, pucBufRaw, imgWidth, imgHeight, itemshareData.mtffaParameter->stMTFBasic.iblockwith *4, stMTFAutoROI);
+
+					if(itemshareData.mtffaParameter->stMTFBasic.algswitch <= 4){
+						if(iresult	=	classAlgorithm.HisCCMMTF(pucBufRaw, imgWidth, imgHeight, stMTFAutoROI, itemshareData.mtffaParameter->stMTFBasic.algswitch, flvalue)) break;
+						if(iresult	=	classAlgorithm.HisCCMMTF(pucBufRaw2, imgWidth, imgHeight, stMTFAutoROI, itemshareData.mtffaParameter->stMTFBasic.algswitch, flvalue2)) break;
+					}
+					else{
+						if(iresult	=	classRolongoTest.HisCCMMTF(pucBufRaw, imgWidth, imgHeight, stMTFAutoROI, itemshareData.mtffaParameter->stMTFBasic.algswitch, flvalue)) break;
+						if(iresult	=	classRolongoTest.HisCCMMTF(pucBufRaw2, imgWidth, imgHeight, stMTFAutoROI, itemshareData.mtffaParameter->stMTFBasic.algswitch, flvalue2)) break;
+					}
+
+					flvalue=(flvalue+flvalue2)/2;
+
+					iteratorItemData->vectorMTFFOV.at(y).flValue[x]	=	flvalue;
+
+					iteratorItemData->vectorMTFFOV.at(y).stBlock[x]	=	stMTFAutoROI;
+					pstTemp++;
+					flmax	=	max(flmax, flvalue);
+					flmin		=	min(flmin, flvalue);
+				}
+				if(iresult) break;
+				iteratorItemData->vectorMTFFOV.at(y).flUniformValue	=	flmax - flmin;
+			}
+
+			if(iresult) break;
+
+			ROPLOW::AddDrawMTFHA(*iteratorItemData, imgWidth, imgHeight, vectorDraw);
+
+			itemshareData.drawLock.lockForWrite();
+			itemshareData.itemdrawList.assign(vectorDraw.begin(), vectorDraw.end());
+			itemshareData.drawLock.unlock();
+
+	}
+
+	_aligned_free(pucBufRaw);
+	_aligned_free(pucBufRaw2);
+	_aligned_free(pucBufY);
+
+	RAUTOMATION::AutoFAAxisZMoveR(1.5f, pclassControl);
+
+	return 0;
+#else
+#endif
+
+
+
+		
+//********************  Debug Mode ***************************
+}
 #endif
 
 #ifdef USE_EQUIPMENT_JSL_FUNCTION_V1
@@ -27812,7 +28256,7 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 			emit sig_serialnumberbind(strSerialNumber);
 			while (!global_ioc_x)
 			{
-				Sleep(500);
+				QApplication::processEvents();
 			}
 			
 		}
@@ -29124,6 +29568,14 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 		bAutoFocus=true;
 		for(unsigned char i=0;	i<currentitem.ucloopTime;	++i){
 			if(!(iresult	=	gereralAutoFA())) break;
+		}
+		bUpdateItemStatus	=	true;
+		break;
+	case autofageneralitem_B:
+		updateItemstatus(itemstatus);
+		bAutoFocus=true;
+		for(unsigned char i=0;	i<currentitem.ucloopTime;	++i){
+			if(!(iresult	=	gereralAutoFA_B())) break;
 		}
 		bUpdateItemStatus	=	true;
 		break;

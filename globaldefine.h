@@ -98,9 +98,12 @@ extern int global_burn_group;
 extern int global_ioc_x;
 extern int global_ioc_y;
 extern char global_strSN[1024];
+extern char global_strLotNumber[1024];
+extern char global_strJobNumber[1024];
+extern char global_strStaNumber[1024];
+extern char global_strLineNumber[1024];
+
 extern _HisCCMAlg_AFC_MTF_DataItem_EX stItemData_EX;
-
-
 
 #define _Thread_Wait_Times					100
 #define _Firstframe_Timeout					2500
@@ -297,7 +300,6 @@ union _drawdescrip{
 	unsigned int uidata[4];
 };
 
-
 //***************************  2018.04.20 Add **************************
 enum NgClass{
 	NG_FA=0x01,
@@ -324,10 +326,7 @@ enum NgClass{
 	NG_PDAFBurnCheck,
 	NG_Other
 };
-
-
 //************************************************************************
-
 
 struct _HisFX3Global_TestStatistics{
 	bool bEnable;
@@ -461,7 +460,6 @@ struct _ManualModeAConfig{
 	}
 }; 
 
- 
 struct _globalParameter{
 	bool brun;
 	bool bfaing;
@@ -1256,7 +1254,6 @@ struct _HisAlg_BPLightPixel_HC_Config
 	}
 };
 
-
 struct _blackfiledParameter 
 {
 	unsigned __int8 ui8BlackFiledAlg;
@@ -1371,7 +1368,6 @@ struct _otpburnParameter
 	}
 };
 
-
 struct _afburnParameter{
 	bool bNear;
 	bool bMiddle; 
@@ -1407,8 +1403,6 @@ struct _afburnParameter{
 		MotorSub=140;
 	}
 };
-
-
 
 struct _pdafParameter{
 	bool bWhiteMove2NearFocus;
@@ -1659,6 +1653,7 @@ struct _global_itemexec{
 	_lpMFAParameter* lpmfaParameter;
 	_openshortParameter* openshortParameter;
 	_HisAutoFA_BASIC_STACTICS* afaBasicStacticsParameter;
+	_HisAutoFA_B_BASIC_STACTICS* bfaBasicStacticsParameter;
 	_AutoFA_YIOUV1_EQUI_CONFIG* afaYIOUV1Parameter;
 	_HisCCMCustomIICParatemer* customIICG1Parameter;
 	_HisCCMCustomIICParatemer* customIICG2Parameter;

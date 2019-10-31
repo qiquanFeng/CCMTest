@@ -79,7 +79,9 @@ public:
 	int saveAFCLpATacticsData(unsigned char uctype);
 
 	void autoFA2UI();
+	void autoFA2UI_B();
 	int saveAutoFAData();
+	int saveAutoFAData_B();
 
 	void ducalcameraBurn2UI();
 	int saveducalcameraBurnData();
@@ -354,6 +356,7 @@ private slots:
 	void OCAlgSwitch(int index) {ui.opticalcenterstackedWidget->setCurrentIndex(index);}
 	void CHIPIDSwitch(const QString & strItem);
 	void saveAutoFA();
+	void saveAutoFA_B();
 
 	void BlackLightPixelAlgSwitch(int index) {ui.blackFieldstackedWidget->setCurrentIndex(index);}
 	void LightSourceCheckSwitch(int index) {ui.lightSourceCheckstackedWidget->setCurrentIndex(index);}

@@ -25,11 +25,18 @@ public:
 	~jsl_loginDialog();
 
 	QLabel *m_plabLogin;
-	QLineEdit *m_plineLogin;
-	QPushButton *m_pbutSubmit;
+	QLabel *m_plabSta;
+	QLabel *m_plabJob;
+	QLabel *m_plabLine;
+	QLineEdit *m_pleLot;
+	QLineEdit *m_pleSta;
+	QLineEdit *m_pleJob;
+	QLineEdit *m_pleLine;
+
+	QPushButton *m_pbutCommit;
 	QPushButton *m_pbutQuit;
 
-	QHBoxLayout *m_pHLayout;
+	QVBoxLayout *m_pvLayout;
 	QString m_strLotSN;
 	_inline void SetLotSN(QString str){
 		m_strLotSN=str;
@@ -45,8 +52,19 @@ signals:
 	void sig_reLotSN();
 	
 public slots:
-	void slot_onSubmit();
+	void slot_onCommit();
 	void slot_onQuit();
+
+	__inline void slot_changePos1(){
+		m_pleSta->setFocus();
+	};
+	__inline void slot_changePos2(){
+		m_pleJob->setFocus();
+	};
+	__inline void slot_changePos3(){
+		m_pleLine->setFocus();
+	};
+
 };
 
 class jsl_bindSerialNumber : public QDialog
@@ -63,6 +81,10 @@ public:
 	QString strSN;
 
 	static char ucStrSN[1024];
+
+signals:
+	void information(QString info);
+
 protected:
 	void closeEvent(QCloseEvent *evt);
 

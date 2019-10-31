@@ -557,6 +557,61 @@ public:
     QSpinBox *afaNodeNumspinBox;
     QTableWidget *afaNodetableWidget;
     QPushButton *afaSavepushButton;
+    QWidget *tab_19;
+    QWidget *horizontalLayoutWidget_13;
+    QHBoxLayout *horizontalLayout_680;
+    QVBoxLayout *verticalLayout_197;
+    QGroupBox *groupBox_11;
+    QWidget *verticalLayoutWidget;
+    QVBoxLayout *verticalLayout_189;
+    QHBoxLayout *horizontalLayout_689;
+    QLabel *label_753;
+    QDoubleSpinBox *spinBox_FAMarkMinArea;
+    QLabel *label_754;
+    QDoubleSpinBox *spinBox_FAMarkMaxArea;
+    QHBoxLayout *horizontalLayout_688;
+    QLabel *label_751;
+    QDoubleSpinBox *spinBox_FAMarkMinLength;
+    QLabel *label_752;
+    QDoubleSpinBox *spinBox_FAMarkMaxLength;
+    QHBoxLayout *horizontalLayout_686;
+    QLabel *label_748;
+    QDoubleSpinBox *spinBox_FAMarkTargetDistance;
+    QGroupBox *groupBox_13;
+    QWidget *verticalLayoutWidget_2;
+    QVBoxLayout *verticalLayout_192;
+    QHBoxLayout *horizontalLayout_687;
+    QLabel *label_749;
+    QComboBox *comboBox_AFChartType;
+    QHBoxLayout *horizontalLayout_691;
+    QLabel *label_750;
+    QDoubleSpinBox *spinBox_FARingOffset;
+    QGroupBox *groupBox_118;
+    QWidget *verticalLayoutWidget_5;
+    QVBoxLayout *verticalLayout_216;
+    QHBoxLayout *horizontalLayout_683;
+    QLabel *label_741;
+    QDoubleSpinBox *spinBox_FALensRatio;
+    QGroupBox *groupBox_117;
+    QWidget *verticalLayoutWidget_3;
+    QVBoxLayout *verticalLayout_215;
+    QHBoxLayout *horizontalLayout_682;
+    QLabel *label_740;
+    QDoubleSpinBox *spinBox_FARingMoveZ;
+    QVBoxLayout *verticalLayout_201;
+    QGroupBox *groupBox_12;
+    QWidget *verticalLayoutWidget_6;
+    QVBoxLayout *verticalLayout_207;
+    QHBoxLayout *horizontalLayout_690;
+    QLabel *label_755;
+    QComboBox *comboBox_Strategy;
+    QHBoxLayout *horizontalLayout_681;
+    QLabel *label_186;
+    QSpinBox *spinBox_FAUnderspinAngle;
+    QHBoxLayout *horizontalLayout_684;
+    QLabel *label_197;
+    QSpinBox *spinBox_FAStepNode;
+    QPushButton *bfaSavepushButton;
     QWidget *afctab;
     QHBoxLayout *horizontalLayout_330;
     QTabWidget *tabWidgetAFC;
@@ -3166,7 +3221,7 @@ public:
         if (configsetting->objectName().isEmpty())
             configsetting->setObjectName(QString::fromUtf8("configsetting"));
         configsetting->setWindowModality(Qt::NonModal);
-        configsetting->resize(973, 793);
+        configsetting->resize(983, 803);
         configsetting->setMinimumSize(QSize(618, 453));
         QFont font;
         font.setFamily(QString::fromUtf8("Microsoft Tai Le"));
@@ -7268,6 +7323,379 @@ public:
         horizontalLayout_623->addLayout(verticalLayout_160);
 
         focusAdjusttabWidget->addTab(tab_7, QString());
+        tab_19 = new QWidget();
+        tab_19->setObjectName(QString::fromUtf8("tab_19"));
+        horizontalLayoutWidget_13 = new QWidget(tab_19);
+        horizontalLayoutWidget_13->setObjectName(QString::fromUtf8("horizontalLayoutWidget_13"));
+        horizontalLayoutWidget_13->setGeometry(QRect(0, 0, 921, 701));
+        horizontalLayout_680 = new QHBoxLayout(horizontalLayoutWidget_13);
+        horizontalLayout_680->setSpacing(6);
+        horizontalLayout_680->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_680->setObjectName(QString::fromUtf8("horizontalLayout_680"));
+        horizontalLayout_680->setContentsMargins(0, 0, 0, 0);
+        verticalLayout_197 = new QVBoxLayout();
+        verticalLayout_197->setSpacing(6);
+        verticalLayout_197->setObjectName(QString::fromUtf8("verticalLayout_197"));
+        groupBox_11 = new QGroupBox(horizontalLayoutWidget_13);
+        groupBox_11->setObjectName(QString::fromUtf8("groupBox_11"));
+        verticalLayoutWidget = new QWidget(groupBox_11);
+        verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
+        verticalLayoutWidget->setGeometry(QRect(0, 20, 451, 141));
+        verticalLayout_189 = new QVBoxLayout(verticalLayoutWidget);
+        verticalLayout_189->setSpacing(6);
+        verticalLayout_189->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_189->setObjectName(QString::fromUtf8("verticalLayout_189"));
+        verticalLayout_189->setContentsMargins(0, 0, 0, 0);
+        horizontalLayout_689 = new QHBoxLayout();
+        horizontalLayout_689->setSpacing(3);
+        horizontalLayout_689->setObjectName(QString::fromUtf8("horizontalLayout_689"));
+        label_753 = new QLabel(verticalLayoutWidget);
+        label_753->setObjectName(QString::fromUtf8("label_753"));
+        sizePolicy1.setHeightForWidth(label_753->sizePolicy().hasHeightForWidth());
+        label_753->setSizePolicy(sizePolicy1);
+        label_753->setMinimumSize(QSize(0, 0));
+        label_753->setFont(font);
+        label_753->setContextMenuPolicy(Qt::NoContextMenu);
+        label_753->setFrameShape(QFrame::NoFrame);
+
+        horizontalLayout_689->addWidget(label_753);
+
+        spinBox_FAMarkMinArea = new QDoubleSpinBox(verticalLayoutWidget);
+        spinBox_FAMarkMinArea->setObjectName(QString::fromUtf8("spinBox_FAMarkMinArea"));
+        spinBox_FAMarkMinArea->setDecimals(1);
+        spinBox_FAMarkMinArea->setMinimum(1);
+        spinBox_FAMarkMinArea->setMaximum(999999);
+        spinBox_FAMarkMinArea->setValue(100);
+
+        horizontalLayout_689->addWidget(spinBox_FAMarkMinArea);
+
+        label_754 = new QLabel(verticalLayoutWidget);
+        label_754->setObjectName(QString::fromUtf8("label_754"));
+        sizePolicy1.setHeightForWidth(label_754->sizePolicy().hasHeightForWidth());
+        label_754->setSizePolicy(sizePolicy1);
+        label_754->setMinimumSize(QSize(0, 0));
+        label_754->setFont(font10);
+        label_754->setContextMenuPolicy(Qt::NoContextMenu);
+        label_754->setFrameShape(QFrame::NoFrame);
+        label_754->setText(QString::fromUtf8("~"));
+
+        horizontalLayout_689->addWidget(label_754);
+
+        spinBox_FAMarkMaxArea = new QDoubleSpinBox(verticalLayoutWidget);
+        spinBox_FAMarkMaxArea->setObjectName(QString::fromUtf8("spinBox_FAMarkMaxArea"));
+        spinBox_FAMarkMaxArea->setDecimals(1);
+        spinBox_FAMarkMaxArea->setMinimum(1);
+        spinBox_FAMarkMaxArea->setMaximum(999999);
+        spinBox_FAMarkMaxArea->setValue(2000);
+
+        horizontalLayout_689->addWidget(spinBox_FAMarkMaxArea);
+
+
+        verticalLayout_189->addLayout(horizontalLayout_689);
+
+        horizontalLayout_688 = new QHBoxLayout();
+        horizontalLayout_688->setSpacing(3);
+        horizontalLayout_688->setObjectName(QString::fromUtf8("horizontalLayout_688"));
+        label_751 = new QLabel(verticalLayoutWidget);
+        label_751->setObjectName(QString::fromUtf8("label_751"));
+        sizePolicy1.setHeightForWidth(label_751->sizePolicy().hasHeightForWidth());
+        label_751->setSizePolicy(sizePolicy1);
+        label_751->setMinimumSize(QSize(0, 0));
+        label_751->setFont(font);
+        label_751->setContextMenuPolicy(Qt::NoContextMenu);
+        label_751->setFrameShape(QFrame::NoFrame);
+
+        horizontalLayout_688->addWidget(label_751);
+
+        spinBox_FAMarkMinLength = new QDoubleSpinBox(verticalLayoutWidget);
+        spinBox_FAMarkMinLength->setObjectName(QString::fromUtf8("spinBox_FAMarkMinLength"));
+        spinBox_FAMarkMinLength->setDecimals(1);
+        spinBox_FAMarkMinLength->setMinimum(1);
+        spinBox_FAMarkMinLength->setMaximum(999999);
+        spinBox_FAMarkMinLength->setValue(100);
+
+        horizontalLayout_688->addWidget(spinBox_FAMarkMinLength);
+
+        label_752 = new QLabel(verticalLayoutWidget);
+        label_752->setObjectName(QString::fromUtf8("label_752"));
+        sizePolicy1.setHeightForWidth(label_752->sizePolicy().hasHeightForWidth());
+        label_752->setSizePolicy(sizePolicy1);
+        label_752->setMinimumSize(QSize(0, 0));
+        label_752->setFont(font10);
+        label_752->setContextMenuPolicy(Qt::NoContextMenu);
+        label_752->setFrameShape(QFrame::NoFrame);
+        label_752->setText(QString::fromUtf8("~"));
+
+        horizontalLayout_688->addWidget(label_752);
+
+        spinBox_FAMarkMaxLength = new QDoubleSpinBox(verticalLayoutWidget);
+        spinBox_FAMarkMaxLength->setObjectName(QString::fromUtf8("spinBox_FAMarkMaxLength"));
+        spinBox_FAMarkMaxLength->setDecimals(1);
+        spinBox_FAMarkMaxLength->setMinimum(1);
+        spinBox_FAMarkMaxLength->setMaximum(999999);
+        spinBox_FAMarkMaxLength->setValue(2000);
+
+        horizontalLayout_688->addWidget(spinBox_FAMarkMaxLength);
+
+
+        verticalLayout_189->addLayout(horizontalLayout_688);
+
+        horizontalLayout_686 = new QHBoxLayout();
+        horizontalLayout_686->setSpacing(3);
+        horizontalLayout_686->setObjectName(QString::fromUtf8("horizontalLayout_686"));
+        label_748 = new QLabel(verticalLayoutWidget);
+        label_748->setObjectName(QString::fromUtf8("label_748"));
+        sizePolicy1.setHeightForWidth(label_748->sizePolicy().hasHeightForWidth());
+        label_748->setSizePolicy(sizePolicy1);
+        label_748->setMinimumSize(QSize(0, 0));
+        label_748->setFont(font);
+        label_748->setContextMenuPolicy(Qt::NoContextMenu);
+        label_748->setFrameShape(QFrame::NoFrame);
+
+        horizontalLayout_686->addWidget(label_748);
+
+        spinBox_FAMarkTargetDistance = new QDoubleSpinBox(verticalLayoutWidget);
+        spinBox_FAMarkTargetDistance->setObjectName(QString::fromUtf8("spinBox_FAMarkTargetDistance"));
+        spinBox_FAMarkTargetDistance->setDecimals(1);
+        spinBox_FAMarkTargetDistance->setMinimum(1);
+        spinBox_FAMarkTargetDistance->setMaximum(9999);
+        spinBox_FAMarkTargetDistance->setValue(100);
+
+        horizontalLayout_686->addWidget(spinBox_FAMarkTargetDistance);
+
+
+        verticalLayout_189->addLayout(horizontalLayout_686);
+
+
+        verticalLayout_197->addWidget(groupBox_11);
+
+        groupBox_13 = new QGroupBox(horizontalLayoutWidget_13);
+        groupBox_13->setObjectName(QString::fromUtf8("groupBox_13"));
+        verticalLayoutWidget_2 = new QWidget(groupBox_13);
+        verticalLayoutWidget_2->setObjectName(QString::fromUtf8("verticalLayoutWidget_2"));
+        verticalLayoutWidget_2->setGeometry(QRect(0, 20, 451, 91));
+        verticalLayout_192 = new QVBoxLayout(verticalLayoutWidget_2);
+        verticalLayout_192->setSpacing(6);
+        verticalLayout_192->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_192->setObjectName(QString::fromUtf8("verticalLayout_192"));
+        verticalLayout_192->setContentsMargins(0, 0, 0, 0);
+        horizontalLayout_687 = new QHBoxLayout();
+        horizontalLayout_687->setSpacing(3);
+        horizontalLayout_687->setObjectName(QString::fromUtf8("horizontalLayout_687"));
+        label_749 = new QLabel(verticalLayoutWidget_2);
+        label_749->setObjectName(QString::fromUtf8("label_749"));
+        sizePolicy1.setHeightForWidth(label_749->sizePolicy().hasHeightForWidth());
+        label_749->setSizePolicy(sizePolicy1);
+        label_749->setMinimumSize(QSize(0, 0));
+        label_749->setFont(font);
+        label_749->setContextMenuPolicy(Qt::NoContextMenu);
+        label_749->setFrameShape(QFrame::NoFrame);
+
+        horizontalLayout_687->addWidget(label_749);
+
+        comboBox_AFChartType = new QComboBox(verticalLayoutWidget_2);
+        comboBox_AFChartType->setObjectName(QString::fromUtf8("comboBox_AFChartType"));
+
+        horizontalLayout_687->addWidget(comboBox_AFChartType);
+
+
+        verticalLayout_192->addLayout(horizontalLayout_687);
+
+        horizontalLayout_691 = new QHBoxLayout();
+        horizontalLayout_691->setSpacing(3);
+        horizontalLayout_691->setObjectName(QString::fromUtf8("horizontalLayout_691"));
+        label_750 = new QLabel(verticalLayoutWidget_2);
+        label_750->setObjectName(QString::fromUtf8("label_750"));
+        sizePolicy1.setHeightForWidth(label_750->sizePolicy().hasHeightForWidth());
+        label_750->setSizePolicy(sizePolicy1);
+        label_750->setMinimumSize(QSize(0, 0));
+        label_750->setFont(font);
+        label_750->setContextMenuPolicy(Qt::NoContextMenu);
+        label_750->setFrameShape(QFrame::NoFrame);
+
+        horizontalLayout_691->addWidget(label_750);
+
+        spinBox_FARingOffset = new QDoubleSpinBox(verticalLayoutWidget_2);
+        spinBox_FARingOffset->setObjectName(QString::fromUtf8("spinBox_FARingOffset"));
+        spinBox_FARingOffset->setDecimals(1);
+        spinBox_FARingOffset->setMinimum(1);
+        spinBox_FARingOffset->setMaximum(99);
+        spinBox_FARingOffset->setValue(99);
+
+        horizontalLayout_691->addWidget(spinBox_FARingOffset);
+
+
+        verticalLayout_192->addLayout(horizontalLayout_691);
+
+
+        verticalLayout_197->addWidget(groupBox_13);
+
+        groupBox_118 = new QGroupBox(horizontalLayoutWidget_13);
+        groupBox_118->setObjectName(QString::fromUtf8("groupBox_118"));
+        verticalLayoutWidget_5 = new QWidget(groupBox_118);
+        verticalLayoutWidget_5->setObjectName(QString::fromUtf8("verticalLayoutWidget_5"));
+        verticalLayoutWidget_5->setGeometry(QRect(1, 23, 451, 71));
+        verticalLayout_216 = new QVBoxLayout(verticalLayoutWidget_5);
+        verticalLayout_216->setSpacing(6);
+        verticalLayout_216->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_216->setObjectName(QString::fromUtf8("verticalLayout_216"));
+        verticalLayout_216->setContentsMargins(0, 0, 0, 0);
+        horizontalLayout_683 = new QHBoxLayout();
+        horizontalLayout_683->setSpacing(3);
+        horizontalLayout_683->setObjectName(QString::fromUtf8("horizontalLayout_683"));
+        label_741 = new QLabel(verticalLayoutWidget_5);
+        label_741->setObjectName(QString::fromUtf8("label_741"));
+        sizePolicy1.setHeightForWidth(label_741->sizePolicy().hasHeightForWidth());
+        label_741->setSizePolicy(sizePolicy1);
+        label_741->setMinimumSize(QSize(0, 0));
+        label_741->setFont(font);
+        label_741->setContextMenuPolicy(Qt::NoContextMenu);
+        label_741->setFrameShape(QFrame::NoFrame);
+
+        horizontalLayout_683->addWidget(label_741);
+
+        spinBox_FALensRatio = new QDoubleSpinBox(verticalLayoutWidget_5);
+        spinBox_FALensRatio->setObjectName(QString::fromUtf8("spinBox_FALensRatio"));
+        spinBox_FALensRatio->setDecimals(2);
+        spinBox_FALensRatio->setMinimum(0);
+        spinBox_FALensRatio->setMaximum(50);
+        spinBox_FALensRatio->setValue(0.5);
+
+        horizontalLayout_683->addWidget(spinBox_FALensRatio);
+
+
+        verticalLayout_216->addLayout(horizontalLayout_683);
+
+
+        verticalLayout_197->addWidget(groupBox_118);
+
+        groupBox_117 = new QGroupBox(horizontalLayoutWidget_13);
+        groupBox_117->setObjectName(QString::fromUtf8("groupBox_117"));
+        verticalLayoutWidget_3 = new QWidget(groupBox_117);
+        verticalLayoutWidget_3->setObjectName(QString::fromUtf8("verticalLayoutWidget_3"));
+        verticalLayoutWidget_3->setGeometry(QRect(1, 23, 451, 71));
+        verticalLayout_215 = new QVBoxLayout(verticalLayoutWidget_3);
+        verticalLayout_215->setSpacing(6);
+        verticalLayout_215->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_215->setObjectName(QString::fromUtf8("verticalLayout_215"));
+        verticalLayout_215->setContentsMargins(0, 0, 0, 0);
+        horizontalLayout_682 = new QHBoxLayout();
+        horizontalLayout_682->setSpacing(3);
+        horizontalLayout_682->setObjectName(QString::fromUtf8("horizontalLayout_682"));
+        label_740 = new QLabel(verticalLayoutWidget_3);
+        label_740->setObjectName(QString::fromUtf8("label_740"));
+        sizePolicy1.setHeightForWidth(label_740->sizePolicy().hasHeightForWidth());
+        label_740->setSizePolicy(sizePolicy1);
+        label_740->setMinimumSize(QSize(0, 0));
+        label_740->setFont(font);
+        label_740->setContextMenuPolicy(Qt::NoContextMenu);
+        label_740->setFrameShape(QFrame::NoFrame);
+
+        horizontalLayout_682->addWidget(label_740);
+
+        spinBox_FARingMoveZ = new QDoubleSpinBox(verticalLayoutWidget_3);
+        spinBox_FARingMoveZ->setObjectName(QString::fromUtf8("spinBox_FARingMoveZ"));
+        spinBox_FARingMoveZ->setDecimals(2);
+        spinBox_FARingMoveZ->setMinimum(0);
+        spinBox_FARingMoveZ->setMaximum(50);
+        spinBox_FARingMoveZ->setValue(0.5);
+
+        horizontalLayout_682->addWidget(spinBox_FARingMoveZ);
+
+
+        verticalLayout_215->addLayout(horizontalLayout_682);
+
+
+        verticalLayout_197->addWidget(groupBox_117);
+
+
+        horizontalLayout_680->addLayout(verticalLayout_197);
+
+        verticalLayout_201 = new QVBoxLayout();
+        verticalLayout_201->setSpacing(6);
+        verticalLayout_201->setObjectName(QString::fromUtf8("verticalLayout_201"));
+        groupBox_12 = new QGroupBox(horizontalLayoutWidget_13);
+        groupBox_12->setObjectName(QString::fromUtf8("groupBox_12"));
+        verticalLayoutWidget_6 = new QWidget(groupBox_12);
+        verticalLayoutWidget_6->setObjectName(QString::fromUtf8("verticalLayoutWidget_6"));
+        verticalLayoutWidget_6->setGeometry(QRect(0, 20, 451, 251));
+        verticalLayout_207 = new QVBoxLayout(verticalLayoutWidget_6);
+        verticalLayout_207->setSpacing(6);
+        verticalLayout_207->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_207->setObjectName(QString::fromUtf8("verticalLayout_207"));
+        verticalLayout_207->setContentsMargins(0, 0, 0, 0);
+        horizontalLayout_690 = new QHBoxLayout();
+        horizontalLayout_690->setSpacing(3);
+        horizontalLayout_690->setObjectName(QString::fromUtf8("horizontalLayout_690"));
+        label_755 = new QLabel(verticalLayoutWidget_6);
+        label_755->setObjectName(QString::fromUtf8("label_755"));
+        sizePolicy1.setHeightForWidth(label_755->sizePolicy().hasHeightForWidth());
+        label_755->setSizePolicy(sizePolicy1);
+        label_755->setMinimumSize(QSize(0, 0));
+        label_755->setFont(font);
+        label_755->setContextMenuPolicy(Qt::NoContextMenu);
+        label_755->setFrameShape(QFrame::NoFrame);
+
+        horizontalLayout_690->addWidget(label_755);
+
+        comboBox_Strategy = new QComboBox(verticalLayoutWidget_6);
+        comboBox_Strategy->setObjectName(QString::fromUtf8("comboBox_Strategy"));
+
+        horizontalLayout_690->addWidget(comboBox_Strategy);
+
+
+        verticalLayout_207->addLayout(horizontalLayout_690);
+
+        horizontalLayout_681 = new QHBoxLayout();
+        horizontalLayout_681->setSpacing(3);
+        horizontalLayout_681->setObjectName(QString::fromUtf8("horizontalLayout_681"));
+        label_186 = new QLabel(verticalLayoutWidget_6);
+        label_186->setObjectName(QString::fromUtf8("label_186"));
+
+        horizontalLayout_681->addWidget(label_186);
+
+        spinBox_FAUnderspinAngle = new QSpinBox(verticalLayoutWidget_6);
+        spinBox_FAUnderspinAngle->setObjectName(QString::fromUtf8("spinBox_FAUnderspinAngle"));
+        spinBox_FAUnderspinAngle->setMinimum(0);
+        spinBox_FAUnderspinAngle->setMaximum(180);
+        spinBox_FAUnderspinAngle->setValue(0);
+
+        horizontalLayout_681->addWidget(spinBox_FAUnderspinAngle);
+
+
+        verticalLayout_207->addLayout(horizontalLayout_681);
+
+        horizontalLayout_684 = new QHBoxLayout();
+        horizontalLayout_684->setSpacing(3);
+        horizontalLayout_684->setObjectName(QString::fromUtf8("horizontalLayout_684"));
+        label_197 = new QLabel(verticalLayoutWidget_6);
+        label_197->setObjectName(QString::fromUtf8("label_197"));
+
+        horizontalLayout_684->addWidget(label_197);
+
+        spinBox_FAStepNode = new QSpinBox(verticalLayoutWidget_6);
+        spinBox_FAStepNode->setObjectName(QString::fromUtf8("spinBox_FAStepNode"));
+        spinBox_FAStepNode->setMinimum(0);
+        spinBox_FAStepNode->setMaximum(360);
+        spinBox_FAStepNode->setValue(0);
+
+        horizontalLayout_684->addWidget(spinBox_FAStepNode);
+
+
+        verticalLayout_207->addLayout(horizontalLayout_684);
+
+
+        verticalLayout_201->addWidget(groupBox_12);
+
+        bfaSavepushButton = new QPushButton(horizontalLayoutWidget_13);
+        bfaSavepushButton->setObjectName(QString::fromUtf8("bfaSavepushButton"));
+
+        verticalLayout_201->addWidget(bfaSavepushButton);
+
+
+        horizontalLayout_680->addLayout(verticalLayout_201);
+
+        focusAdjusttabWidget->addTab(tab_19, QString());
 
         horizontalLayout_188->addWidget(focusAdjusttabWidget);
 
@@ -25530,7 +25958,7 @@ public:
         autoExposurescrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents_2 = new QWidget();
         scrollAreaWidgetContents_2->setObjectName(QString::fromUtf8("scrollAreaWidgetContents_2"));
-        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 261, 1455));
+        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 449, 1455));
         verticalLayout_53 = new QVBoxLayout(scrollAreaWidgetContents_2);
         verticalLayout_53->setSpacing(6);
         verticalLayout_53->setContentsMargins(11, 11, 11, 11);
@@ -26514,7 +26942,7 @@ public:
         autoExposurescrollArea_3->setWidgetResizable(true);
         scrollAreaWidgetContents_7 = new QWidget();
         scrollAreaWidgetContents_7->setObjectName(QString::fromUtf8("scrollAreaWidgetContents_7"));
-        scrollAreaWidgetContents_7->setGeometry(QRect(0, 0, 258, 143));
+        scrollAreaWidgetContents_7->setGeometry(QRect(0, 0, 470, 622));
         verticalLayout_56 = new QVBoxLayout(scrollAreaWidgetContents_7);
         verticalLayout_56->setSpacing(6);
         verticalLayout_56->setContentsMargins(11, 11, 11, 11);
@@ -26741,8 +27169,7 @@ public:
         QWidget::setTabOrder(savepreviewpushButton, previewi2cplainTextEdit);
         QWidget::setTabOrder(previewi2cplainTextEdit, slaveReplacelineEdit);
         QWidget::setTabOrder(slaveReplacelineEdit, slaveReplacepushButton);
-        QWidget::setTabOrder(slaveReplacepushButton, focusAdjusttabWidget);
-        QWidget::setTabOrder(focusAdjusttabWidget, tabWidgetWhite);
+        QWidget::setTabOrder(slaveReplacepushButton, tabWidgetWhite);
         QWidget::setTabOrder(tabWidgetWhite, blemishRangelineEdit);
         QWidget::setTabOrder(blemishRangelineEdit, blemishHighPassspinBox);
         QWidget::setTabOrder(blemishHighPassspinBox, blemishLowPassspinBox);
@@ -27779,10 +28206,10 @@ public:
 
         retranslateUi(configsetting);
 
-        tabWidgetmain->setCurrentIndex(6);
+        tabWidgetmain->setCurrentIndex(1);
         mipiSignalcomboBox->setCurrentIndex(1);
         commuProtocalcomboBox->setCurrentIndex(0);
-        focusAdjusttabWidget->setCurrentIndex(3);
+        focusAdjusttabWidget->setCurrentIndex(4);
         mfamtfaFBGradecomboBox->setCurrentIndex(3);
         mfasfraGradeNumcomboBox->setCurrentIndex(3);
         afaChartTypecomboBox->setCurrentIndex(0);
@@ -27829,7 +28256,7 @@ public:
         tabWidgetCurrentOS->setCurrentIndex(1);
         osa_ChannelcomboBox->setCurrentIndex(0);
         OStabWidget->setCurrentIndex(4);
-        tabWidgetBurn->setCurrentIndex(1);
+        tabWidgetBurn->setCurrentIndex(4);
         qualcommpdafLibVersioncomboBox->setCurrentIndex(0);
         lightSourcetabWidget->setCurrentIndex(0);
         lightSourceCheckstackedWidget->setCurrentIndex(0);
@@ -28226,6 +28653,33 @@ public:
         ___qtablewidgetitem76->setText(QApplication::translate("configsetting", "Node 9", 0, QApplication::UnicodeUTF8));
         afaSavepushButton->setText(QApplication::translate("configsetting", "SAVE", 0, QApplication::UnicodeUTF8));
         focusAdjusttabWidget->setTabText(focusAdjusttabWidget->indexOf(tab_7), QApplication::translate("configsetting", "Auto FA", 0, QApplication::UnicodeUTF8));
+        groupBox_11->setTitle(QApplication::translate("configsetting", "Mark Info", 0, QApplication::UnicodeUTF8));
+        label_753->setText(QApplication::translate("configsetting", "Area  :", 0, QApplication::UnicodeUTF8));
+        label_751->setText(QApplication::translate("configsetting", "Length:", 0, QApplication::UnicodeUTF8));
+        label_748->setText(QApplication::translate("configsetting", "Target Dist:", 0, QApplication::UnicodeUTF8));
+        groupBox_13->setTitle(QApplication::translate("configsetting", "Scene Hard Info", 0, QApplication::UnicodeUTF8));
+        label_749->setText(QApplication::translate("configsetting", "Chart Type:", 0, QApplication::UnicodeUTF8));
+        comboBox_AFChartType->clear();
+        comboBox_AFChartType->insertItems(0, QStringList()
+         << QApplication::translate("configsetting", "MTF+Mark", 0, QApplication::UnicodeUTF8)
+        );
+        label_750->setText(QApplication::translate("configsetting", "Focus Ring Offset:", 0, QApplication::UnicodeUTF8));
+        groupBox_118->setTitle(QApplication::translate("configsetting", "Lens Info", 0, QApplication::UnicodeUTF8));
+        label_741->setText(QApplication::translate("configsetting", "1\302\260/um:", 0, QApplication::UnicodeUTF8));
+        groupBox_117->setTitle(QApplication::translate("configsetting", "Test After Focusing Ring Break From Lens", 0, QApplication::UnicodeUTF8));
+        label_740->setText(QApplication::translate("configsetting", "Z Move Distance:", 0, QApplication::UnicodeUTF8));
+        groupBox_12->setTitle(QApplication::translate("configsetting", "Focus rule", 0, QApplication::UnicodeUTF8));
+        label_755->setText(QApplication::translate("configsetting", "Strategy:", 0, QApplication::UnicodeUTF8));
+        comboBox_Strategy->clear();
+        comboBox_Strategy->insertItems(0, QStringList()
+         << QApplication::translate("configsetting", "Center", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("configsetting", "Center&Conner", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("configsetting", "Weight", 0, QApplication::UnicodeUTF8)
+        );
+        label_186->setText(QApplication::translate("configsetting", "Underspin Angle:", 0, QApplication::UnicodeUTF8));
+        label_197->setText(QApplication::translate("configsetting", "Step Node:", 0, QApplication::UnicodeUTF8));
+        bfaSavepushButton->setText(QApplication::translate("configsetting", "Save", 0, QApplication::UnicodeUTF8));
+        focusAdjusttabWidget->setTabText(focusAdjusttabWidget->indexOf(tab_19), QApplication::translate("configsetting", "Auto FA(B)", 0, QApplication::UnicodeUTF8));
         tabWidgetmain->setTabText(tabWidgetmain->indexOf(fatab), QApplication::translate("configsetting", "FA", 0, QApplication::UnicodeUTF8));
         groupBox_76->setTitle(QApplication::translate("configsetting", "Basic", 0, QApplication::UnicodeUTF8));
         label_393->setText(QApplication::translate("configsetting", "Algorithm\357\274\232", 0, QApplication::UnicodeUTF8));

@@ -2308,6 +2308,36 @@ struct _HisAutoFA_Rolongo_DataItem_EX{
 	std::vector<_HisCCMAlg_AFC_SFRHA_DataItem_FOV> vectorSFRFOV;
 };
 
+struct _HisAutoFA_B_BASIC_STACTICS{
+	double dflMinArea;
+	double dflMaxArea;
+	double dflMinLength;
+	double dflMaxLength;
+	double dflTargetDistance;
+	int iChartType;
+	double dflFocusRingOffset;
+	double dflLensRatioRing;
+	double dflLensMoveDistanceZ;
+	int iStrategy;
+	double dflUnderspinAngle;
+	double dflStepNode;
+
+	_HisAutoFA_B_BASIC_STACTICS()
+	{
+		dflMinArea=0;
+		dflMaxArea=0;
+		dflMinLength=200;
+		dflMaxLength=200;
+		dflTargetDistance=0;
+		iChartType=0;
+		dflFocusRingOffset=1.0f;
+		dflLensRatioRing=0.5f;
+		dflLensMoveDistanceZ=20.0f;
+		iStrategy=0;
+		dflUnderspinAngle=60.0f;
+		dflStepNode=20.0f;
+	}
+};
 
 struct _HisAutoFA_BASIC_STACTICS{ //CW：负数 CCW：正数
 	bool bConfigValid;

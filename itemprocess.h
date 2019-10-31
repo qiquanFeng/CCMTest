@@ -157,11 +157,13 @@ public:
 
 	 
 	int getGereralAFAParameter(bool bupdate=false, bool bcheck = true);
+	int getGereralAFAParameter_B(bool bupdate=false, bool bcheck = true);
 #if (defined USE_EQUIPMENT_AFM_JSL_V1) 
 	void DrawAFAMTFBarChart(_HisAutoFA_Rolongo_DataItem& stItemData);
 	void DrawAFASFRBarChart(_HisCCMAlg_SFRPlusHABasic_Info* pstBasic, _HisAutoFA_Rolongo_DataItem& stItemData);
 	void DrawAFALpBarChart(_lpMFAParameter* pstParameter, _HisAutoFA_Rolongo_DataItem& stItemData);	
 	int gereralAutoFA();
+	int gereralAutoFA_B();
 	_HisAutoFA_Rolongo_DB stAFARolongoDB;
 #endif
 #if (defined USE_EQUIPMENT_AFM_JSL_V2) 

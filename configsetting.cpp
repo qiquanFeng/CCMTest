@@ -48,6 +48,7 @@ enum _HisDB_DataIndex{
 	_HisDB_Index_AFCMTFFarTactics			=	910,
 	_HisDB_Index_MTFFA								=	915,
 	_HisDB_Index_AutoFA								=	945,
+	_HisDB_Index_AutoFAB								=	946,
 	_HisDB_Index_BigVision							=	975,
 	_HisDB_Index_OS_Total							=	1025,
 	_HisDB_Index_OS_Positive						=	1035,
@@ -504,6 +505,7 @@ if(!classPlatform.getDDRSupported())
 	connect(ui.afcsfraFTSavepushButton, SIGNAL(released()), this, SLOT(saveAFCSFRAFarTactics()));
 
 	connect(ui.afaSavepushButton, SIGNAL(released()), this, SLOT(saveAutoFA()));
+	connect(ui.bfaSavepushButton, SIGNAL(released()), this, SLOT(saveAutoFA_B()));
 	connect(ui.afaChartTypecomboBox, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(slotAFAChartChange(const QString &)));
 	connect(ui.customIICSavepushButton, SIGNAL(released()), this, SLOT(saveALLCustomIIC()));
 	//connect(ui.selectpushButton, SIGNAL(released() ), this, SLOT(textSelected()));
@@ -569,6 +571,7 @@ if(!classPlatform.getDDRSupported())
 	afcLpATactics2UI(1);
 	afcLpATactics2UI(2);
 	autoFA2UI();
+	autoFA2UI_B();
 	ducalcameraBurn2UI();
 	getCurrentIndex();
 	DPCRULE2UI();
@@ -5997,6 +6000,76 @@ int configsetting::saveAutoFAData()
 	return iresult;
 }
 
+void configsetting::autoFA2UI_B()
+{
+	classItemProcess->getGereralAFAParameter_B(true, false);
+	if(!itemshareData.bfaBasicStacticsParameter) return;
+
+	ui.comboBox_AFChartType->setCurrentIndex(itemshareData.bfaBasicStacticsParameter->iChartType);
+	ui.comboBox_Strategy->setCurrentIndex(itemshareData.bfaBasicStacticsParameter->iStrategy);
+	ui.spinBox_FAMarkMinArea->setValue(itemshareData.bfaBasicStacticsParameter->dflMinArea);
+	ui.spinBox_FAMarkMaxArea->setValue(itemshareData.bfaBasicStacticsParameter->dflMaxArea);
+	ui.spinBox_FAMarkMinLength->setValue(itemshareData.bfaBasicStacticsParameter->dflMinLength);
+	ui.spinBox_FAMarkMaxLength->setValue(itemshareData.bfaBasicStacticsParameter->dflMaxLength);
+	ui.spinBox_FAMarkTargetDistance->setValue(itemshareData.bfaBasicStacticsParameter->dflTargetDistance);
+	ui.spinBox_FARingOffset->setValue(itemshareData.bfaBasicStacticsParameter->dflFocusRingOffset);
+	ui.spinBox_FALensRatio->setValue(itemshareData.bfaBasicStacticsParameter->dflLensRatioRing);
+	ui.spinBox_FARingMoveZ->setValue(itemshareData.bfaBasicStacticsParameter->dflLensMoveDistanceZ);
+	ui.spinBox_FAUnderspinAngle->setValue(itemshareData.bfaBasicStacticsParameter->dflUnderspinAngle);
+	ui.spinBox_FAStepNode->setValue(itemshareData.bfaBasicStacticsParameter->dflStepNode);
+}
+
+int configsetting::saveAutoFAData_B()
+{
+	int iresult	=	0;
+	
+	QMutexLocker locker(&hisglobalparameter.mutexDatabase);
+	bool bDB;
+	{
+		QSqlDatabase stSqlDB;
+		bDB	=	HISDBCUSTOM::addDB(stSqlDB);
+		if(bDB){
+			QString classfy, item, itemsuffix1, itemsuffix2, key, value1, reserve, note;
+			QStringList strname, strvalue;
+			QSqlQuery query(stSqlDB);
+			HISDBCUSTOM::deleteItem(stSqlDB, itemshareData.currentTableName, _HISINLINEDB_FLAG_classfy | _HISINLINEDB_FLAG_item, "equipment", "bfarolongo");
+
+			unsigned int uiIndex	=	_HisDB_Index_AutoFAB;
+
+			strname.clear();strvalue.clear();
+			strname.append("charttype");strvalue.append(QString::number(ui.comboBox_AFChartType->currentIndex()));
+			strname.append("strategy");strvalue.append(QString::number(ui.comboBox_Strategy->currentIndex()));
+			ROPLOW::jointconfigstring(itemsuffix2, strname, strvalue);
+
+			strname.clear();strvalue.clear();
+			strname.append("minarea");strvalue.append(ui.spinBox_FAMarkMinArea->cleanText());
+			strname.append("maxarea");strvalue.append(ui.spinBox_FAMarkMaxArea->cleanText());
+			strname.append("minlength");strvalue.append(ui.spinBox_FAMarkMinLength->cleanText());
+			strname.append("maxlength");strvalue.append(ui.spinBox_FAMarkMaxLength->cleanText());
+			strname.append("targetdistance");strvalue.append(ui.spinBox_FAMarkTargetDistance->cleanText());
+			strname.append("ringoffset");strvalue.append(ui.spinBox_FARingOffset->cleanText());
+			strname.append("lensratioring");strvalue.append(ui.spinBox_FALensRatio->cleanText());
+			strname.append("movedistance_z");strvalue.append(ui.spinBox_FARingMoveZ->cleanText());
+			strname.append("underspinangle");strvalue.append(ui.spinBox_FAUnderspinAngle->cleanText());
+			strname.append("stepnode");strvalue.append(ui.spinBox_FAStepNode->cleanText());
+			ROPLOW::jointconfigstring(key, strname, strvalue);
+
+			HISDBCUSTOM::insertItem(stSqlDB, itemshareData.currentTableName, uiIndex, "equipment", "bfarolongo",  QVariant(), itemsuffix2, key, value1, reserve, note);
+
+			stSqlDB.close();
+		}
+	}
+	if(bDB)
+	{
+		HISDBCUSTOM::removeDB();
+	}
+	else{
+		iresult	=	HisCCMError_Database;
+	}
+	
+	return iresult;
+}
+
 void configsetting::RelaceSlave()
 {
 	QString strNewSlave	=	ui.slaveReplacelineEdit->text();
@@ -6005,14 +6078,14 @@ void configsetting::RelaceSlave()
 		return;
 	}
 
-// 	QRegExp slaveRegExp("[0-9][A-F][a-f]");
-// 	QRegExpValidator slaveRegExpValidator(slaveRegExp);
-// 	int iInputPos	=	0;
-// 	if(slaveRegExpValidator.validate(strNewSlave, iInputPos) != QValidator::Acceptable){
-// 		ui.statuslabel->setText(QTextCodec::codecForName("GBK")->toUnicode("请先设置正确的SLAVE地址(eg: 0F)"));
-// 		return;
-// 	}
-	
+	// 	QRegExp slaveRegExp("[0-9][A-F][a-f]");
+	// 	QRegExpValidator slaveRegExpValidator(slaveRegExp);
+	// 	int iInputPos	=	0;
+	// 	if(slaveRegExpValidator.validate(strNewSlave, iInputPos) != QValidator::Acceptable){
+	// 		ui.statuslabel->setText(QTextCodec::codecForName("GBK")->toUnicode("请先设置正确的SLAVE地址(eg: 0F)"));
+	// 		return;
+	// 	}
+
 	strNewSlave	=	strNewSlave.toLower();
 	strNewSlave	=	strNewSlave.prepend("0x");
 
@@ -6069,7 +6142,7 @@ void configsetting::RelaceSlave()
 				ucOldSlave	=	ucSlaveList[x];
 			}
 		}
-		
+
 		QStringList lines = strtext.split("\n", QString::SkipEmptyParts);
 		int isize	=	lines.size();
 		for(int i=0;	i<isize;	++i){
@@ -6213,6 +6286,14 @@ void configsetting::saveAutoFA()
 	if(iresult)	QMessageBox::critical(this, tr("ERROR"), tr("Save Parameter Fail"));
 	else ui.statuslabel->setText(tr("Save Parameter Success"));
 	autoFA2UI();
+}
+
+void configsetting::saveAutoFA_B()
+{
+	int iresult = saveAutoFAData_B();
+	if(iresult)	QMessageBox::critical(this, tr("ERROR"), tr("Save Parameter Fail"));
+	else ui.statuslabel->setText(tr("Save Parameter Success"));
+	autoFA2UI_B();
 }
 
 void configsetting::saveSaveLog()

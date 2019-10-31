@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>973</width>
-    <height>793</height>
+    <width>983</width>
+    <height>803</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -67,7 +67,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideLeft</enum>
@@ -2490,7 +2490,7 @@
            <enum>QTabWidget::West</enum>
           </property>
           <property name="currentIndex">
-           <number>3</number>
+           <number>4</number>
           </property>
           <widget class="QWidget" name="tab_5">
            <attribute name="title">
@@ -7698,6 +7698,719 @@
              </layout>
             </item>
            </layout>
+          </widget>
+          <widget class="QWidget" name="tab_19">
+           <attribute name="title">
+            <string>Auto FA(B)</string>
+           </attribute>
+           <widget class="QWidget" name="horizontalLayoutWidget_13">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>921</width>
+              <height>701</height>
+             </rect>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_680">
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_197">
+               <item>
+                <widget class="QGroupBox" name="groupBox_11">
+                 <property name="title">
+                  <string>Mark Info</string>
+                 </property>
+                 <widget class="QWidget" name="verticalLayoutWidget">
+                  <property name="geometry">
+                   <rect>
+                    <x>0</x>
+                    <y>20</y>
+                    <width>451</width>
+                    <height>141</height>
+                   </rect>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_189">
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_689">
+                     <property name="spacing">
+                      <number>3</number>
+                     </property>
+                     <item>
+                      <widget class="QLabel" name="label_753">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>Microsoft Tai Le</family>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="contextMenuPolicy">
+                        <enum>Qt::NoContextMenu</enum>
+                       </property>
+                       <property name="frameShape">
+                        <enum>QFrame::NoFrame</enum>
+                       </property>
+                       <property name="text">
+                        <string>Area  :</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QDoubleSpinBox" name="spinBox_FAMarkMinArea">
+                       <property name="decimals">
+                        <number>1</number>
+                       </property>
+                       <property name="minimum">
+                        <double>1.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>999999.000000000000000</double>
+                       </property>
+                       <property name="value">
+                        <double>100.000000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="label_754">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>宋体</family>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="contextMenuPolicy">
+                        <enum>Qt::NoContextMenu</enum>
+                       </property>
+                       <property name="frameShape">
+                        <enum>QFrame::NoFrame</enum>
+                       </property>
+                       <property name="text">
+                        <string notr="true">~</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QDoubleSpinBox" name="spinBox_FAMarkMaxArea">
+                       <property name="decimals">
+                        <number>1</number>
+                       </property>
+                       <property name="minimum">
+                        <double>1.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>999999.000000000000000</double>
+                       </property>
+                       <property name="value">
+                        <double>2000.000000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_688">
+                     <property name="spacing">
+                      <number>3</number>
+                     </property>
+                     <item>
+                      <widget class="QLabel" name="label_751">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>Microsoft Tai Le</family>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="contextMenuPolicy">
+                        <enum>Qt::NoContextMenu</enum>
+                       </property>
+                       <property name="frameShape">
+                        <enum>QFrame::NoFrame</enum>
+                       </property>
+                       <property name="text">
+                        <string>Length:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QDoubleSpinBox" name="spinBox_FAMarkMinLength">
+                       <property name="decimals">
+                        <number>1</number>
+                       </property>
+                       <property name="minimum">
+                        <double>1.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>999999.000000000000000</double>
+                       </property>
+                       <property name="value">
+                        <double>100.000000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="label_752">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>宋体</family>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="contextMenuPolicy">
+                        <enum>Qt::NoContextMenu</enum>
+                       </property>
+                       <property name="frameShape">
+                        <enum>QFrame::NoFrame</enum>
+                       </property>
+                       <property name="text">
+                        <string notr="true">~</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QDoubleSpinBox" name="spinBox_FAMarkMaxLength">
+                       <property name="decimals">
+                        <number>1</number>
+                       </property>
+                       <property name="minimum">
+                        <double>1.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>999999.000000000000000</double>
+                       </property>
+                       <property name="value">
+                        <double>2000.000000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_686">
+                     <property name="spacing">
+                      <number>3</number>
+                     </property>
+                     <item>
+                      <widget class="QLabel" name="label_748">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>Microsoft Tai Le</family>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="contextMenuPolicy">
+                        <enum>Qt::NoContextMenu</enum>
+                       </property>
+                       <property name="frameShape">
+                        <enum>QFrame::NoFrame</enum>
+                       </property>
+                       <property name="text">
+                        <string>Target Dist:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QDoubleSpinBox" name="spinBox_FAMarkTargetDistance">
+                       <property name="decimals">
+                        <number>1</number>
+                       </property>
+                       <property name="minimum">
+                        <double>1.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>9999.000000000000000</double>
+                       </property>
+                       <property name="value">
+                        <double>100.000000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </widget>
+               </item>
+               <item>
+                <widget class="QGroupBox" name="groupBox_13">
+                 <property name="title">
+                  <string>Scene Hard Info</string>
+                 </property>
+                 <widget class="QWidget" name="verticalLayoutWidget_2">
+                  <property name="geometry">
+                   <rect>
+                    <x>0</x>
+                    <y>20</y>
+                    <width>451</width>
+                    <height>91</height>
+                   </rect>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_192">
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_687">
+                     <property name="spacing">
+                      <number>3</number>
+                     </property>
+                     <item>
+                      <widget class="QLabel" name="label_749">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>Microsoft Tai Le</family>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="contextMenuPolicy">
+                        <enum>Qt::NoContextMenu</enum>
+                       </property>
+                       <property name="frameShape">
+                        <enum>QFrame::NoFrame</enum>
+                       </property>
+                       <property name="text">
+                        <string>Chart Type:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QComboBox" name="comboBox_AFChartType">
+                       <item>
+                        <property name="text">
+                         <string>MTF+Mark</string>
+                        </property>
+                       </item>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_691">
+                     <property name="spacing">
+                      <number>3</number>
+                     </property>
+                     <item>
+                      <widget class="QLabel" name="label_750">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>Microsoft Tai Le</family>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="contextMenuPolicy">
+                        <enum>Qt::NoContextMenu</enum>
+                       </property>
+                       <property name="frameShape">
+                        <enum>QFrame::NoFrame</enum>
+                       </property>
+                       <property name="text">
+                        <string>Focus Ring Offset:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QDoubleSpinBox" name="spinBox_FARingOffset">
+                       <property name="decimals">
+                        <number>1</number>
+                       </property>
+                       <property name="minimum">
+                        <double>1.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>99.000000000000000</double>
+                       </property>
+                       <property name="value">
+                        <double>99.000000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </widget>
+               </item>
+               <item>
+                <widget class="QGroupBox" name="groupBox_118">
+                 <property name="title">
+                  <string>Lens Info</string>
+                 </property>
+                 <widget class="QWidget" name="verticalLayoutWidget_5">
+                  <property name="geometry">
+                   <rect>
+                    <x>1</x>
+                    <y>23</y>
+                    <width>451</width>
+                    <height>71</height>
+                   </rect>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_216">
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_683">
+                     <property name="spacing">
+                      <number>3</number>
+                     </property>
+                     <item>
+                      <widget class="QLabel" name="label_741">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>Microsoft Tai Le</family>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="contextMenuPolicy">
+                        <enum>Qt::NoContextMenu</enum>
+                       </property>
+                       <property name="frameShape">
+                        <enum>QFrame::NoFrame</enum>
+                       </property>
+                       <property name="text">
+                        <string>1°/um:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QDoubleSpinBox" name="spinBox_FALensRatio">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>0.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>50.000000000000000</double>
+                       </property>
+                       <property name="value">
+                        <double>0.500000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </widget>
+               </item>
+               <item>
+                <widget class="QGroupBox" name="groupBox_117">
+                 <property name="title">
+                  <string>Test After Focusing Ring Break From Lens</string>
+                 </property>
+                 <widget class="QWidget" name="verticalLayoutWidget_3">
+                  <property name="geometry">
+                   <rect>
+                    <x>1</x>
+                    <y>23</y>
+                    <width>451</width>
+                    <height>71</height>
+                   </rect>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_215">
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_682">
+                     <property name="spacing">
+                      <number>3</number>
+                     </property>
+                     <item>
+                      <widget class="QLabel" name="label_740">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>Microsoft Tai Le</family>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="contextMenuPolicy">
+                        <enum>Qt::NoContextMenu</enum>
+                       </property>
+                       <property name="frameShape">
+                        <enum>QFrame::NoFrame</enum>
+                       </property>
+                       <property name="text">
+                        <string>Z Move Distance:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QDoubleSpinBox" name="spinBox_FARingMoveZ">
+                       <property name="decimals">
+                        <number>2</number>
+                       </property>
+                       <property name="minimum">
+                        <double>0.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>50.000000000000000</double>
+                       </property>
+                       <property name="value">
+                        <double>0.500000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_201">
+               <item>
+                <widget class="QGroupBox" name="groupBox_12">
+                 <property name="title">
+                  <string>Focus rule</string>
+                 </property>
+                 <widget class="QWidget" name="verticalLayoutWidget_6">
+                  <property name="geometry">
+                   <rect>
+                    <x>0</x>
+                    <y>20</y>
+                    <width>451</width>
+                    <height>251</height>
+                   </rect>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_207">
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_690">
+                     <property name="spacing">
+                      <number>3</number>
+                     </property>
+                     <item>
+                      <widget class="QLabel" name="label_755">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>Microsoft Tai Le</family>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="contextMenuPolicy">
+                        <enum>Qt::NoContextMenu</enum>
+                       </property>
+                       <property name="frameShape">
+                        <enum>QFrame::NoFrame</enum>
+                       </property>
+                       <property name="text">
+                        <string>Strategy:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QComboBox" name="comboBox_Strategy">
+                       <item>
+                        <property name="text">
+                         <string>Center</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>Center&amp;Conner</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>Weight</string>
+                        </property>
+                       </item>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_681">
+                     <property name="spacing">
+                      <number>3</number>
+                     </property>
+                     <item>
+                      <widget class="QLabel" name="label_186">
+                       <property name="text">
+                        <string>Underspin Angle:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QSpinBox" name="spinBox_FAUnderspinAngle">
+                       <property name="minimum">
+                        <number>0</number>
+                       </property>
+                       <property name="maximum">
+                        <number>180</number>
+                       </property>
+                       <property name="value">
+                        <number>0</number>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_684">
+                     <property name="spacing">
+                      <number>3</number>
+                     </property>
+                     <item>
+                      <widget class="QLabel" name="label_197">
+                       <property name="text">
+                        <string>Step Node:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QSpinBox" name="spinBox_FAStepNode">
+                       <property name="minimum">
+                        <number>0</number>
+                       </property>
+                       <property name="maximum">
+                        <number>360</number>
+                       </property>
+                       <property name="value">
+                        <number>0</number>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="bfaSavepushButton">
+                 <property name="text">
+                  <string>Save</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
           </widget>
          </widget>
         </item>
@@ -35919,7 +36632,7 @@
            <enum>QTabWidget::West</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>4</number>
           </property>
           <widget class="QWidget" name="tab_20">
            <attribute name="title">
@@ -40346,7 +41059,7 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>261</width>
+               <width>449</width>
                <height>1455</height>
               </rect>
              </property>
@@ -42028,8 +42741,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>258</width>
-               <height>143</height>
+               <width>470</width>
+               <height>622</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_56">
@@ -42304,7 +43017,6 @@
   <tabstop>previewi2cplainTextEdit</tabstop>
   <tabstop>slaveReplacelineEdit</tabstop>
   <tabstop>slaveReplacepushButton</tabstop>
-  <tabstop>focusAdjusttabWidget</tabstop>
   <tabstop>tabWidgetWhite</tabstop>
   <tabstop>blemishRangelineEdit</tabstop>
   <tabstop>blemishHighPassspinBox</tabstop>

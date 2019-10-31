@@ -210,6 +210,7 @@ enum _operateItemList{
 	lightcal=0xbd,
 	lightcheck = 0xbe,
 	iobitcheckitem										=	0xbf,
+	autofageneralitem_B = 0xC0,
 	debugitem = 0xff
 };
  
@@ -629,15 +630,15 @@ __inline void globalgetListAllTestItem(QList<_TestItem_Basic_Info>& itemList) //
 	_CODE_GLOBALITEM_PUSHBACK(autofageneralitem, "autofageneralitem", QTextCodec::codecForName( "GBK")->toUnicode("自动调焦"), "equipment", "", \
 		QTextCodec::codecForName( "GBK")->toUnicode(" "), \
 		"USE_EQUIPMENT_AFM_JSL_V1");
+	_CODE_GLOBALITEM_PUSHBACK(autofageneralitem_B, "autofageneralitem_B", QTextCodec::codecForName( "GBK")->toUnicode("自动调焦B"), "equipment", "", \
+		QTextCodec::codecForName( "GBK")->toUnicode(" "), \
+		"USE_EQUIPMENT_AFM_JSL_V1");
 	_CODE_GLOBALITEM_PUSHBACK(jslafcverticalmoveitem, "jslafcverticalmoveitem", QTextCodec::codecForName( "GBK")->toUnicode("垂直运动"), "equipment", "(abs:false)(plus:100)", \
 		QTextCodec::codecForName( "GBK")->toUnicode(" "), \
 		"USE_EQUIPMENT_AFM_JSL_V1");
 	_CODE_GLOBALITEM_PUSHBACK(jslafcringmoveitem, "jslafcringmoveitem", QTextCodec::codecForName( "GBK")->toUnicode("转调焦环"), "equipment", "(angle:1.0)", \
 		QTextCodec::codecForName( "GBK")->toUnicode(" "), \
 		"USE_EQUIPMENT_AFM_JSL_V1");
-
-	
-
 	_CODE_GLOBALITEM_PUSHBACK(jslfuncv1tohome, "jslfuncv1tohome", QTextCodec::codecForName( "GBK")->toUnicode("回原点"), "equipment", "", \
 		QTextCodec::codecForName( "GBK")->toUnicode(" "), \
 		"USE_EQUIPMENT_JSL_FUNCTION_V1");

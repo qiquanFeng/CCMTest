@@ -22,7 +22,7 @@ static const uint qt_meta_data_configsetting[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-     101,   14, // methods
+     102,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -111,26 +111,27 @@ static const uint qt_meta_data_configsetting[] = {
     1957,  112,   14,   14, 0x08,
     1982, 1974,   14,   14, 0x08,
     2004,   14,   14,   14, 0x08,
-    2017,  112,   14,   14, 0x08,
-    2047,  112,   14,   14, 0x08,
-    2075,   59,   14,   14, 0x08,
-    2097,  774,   14,   14, 0x08,
-    2125,  112,   14,   14, 0x08,
-    2159,   59,   14,   14, 0x08,
-    2193,  112,   14,   14, 0x08,
-    2229,   59,   14,   14, 0x08,
-    2265,  112,   14,   14, 0x08,
-    2298,   59,   14,   14, 0x08,
-    2331,  112,   14,   14, 0x08,
-    2361,   59,   14,   14, 0x08,
-    2391,   14,   14,   14, 0x08,
-    2410,  774,   14,   14, 0x08,
-    2440,  774,   14,   14, 0x08,
-    2474,  774,   14,   14, 0x08,
-    2525, 2508,   14,   14, 0x08,
-    2593, 2584, 2572,   14, 0x08,
-    2642,   14,   14,   14, 0x08,
+    2017,   14,   14,   14, 0x08,
+    2032,  112,   14,   14, 0x08,
+    2062,  112,   14,   14, 0x08,
+    2090,   59,   14,   14, 0x08,
+    2112,  774,   14,   14, 0x08,
+    2140,  112,   14,   14, 0x08,
+    2174,   59,   14,   14, 0x08,
+    2208,  112,   14,   14, 0x08,
+    2244,   59,   14,   14, 0x08,
+    2280,  112,   14,   14, 0x08,
+    2313,   59,   14,   14, 0x08,
+    2346,  112,   14,   14, 0x08,
+    2376,   59,   14,   14, 0x08,
+    2406,   14,   14,   14, 0x08,
+    2425,  774,   14,   14, 0x08,
+    2455,  774,   14,   14, 0x08,
+    2489,  774,   14,   14, 0x08,
+    2540, 2523,   14,   14, 0x08,
+    2608, 2599, 2587,   14, 0x08,
     2657,   14,   14,   14, 0x08,
+    2672,   14,   14,   14, 0x08,
 
        0        // eod
 };
@@ -189,7 +190,8 @@ static const char qt_meta_stringdata_configsetting[] = {
     "BlemishAlgSwitch(int)\0DefectPixelAlgSwitch(int)\0"
     "ShadingAlgSwitch(int)\0WPColorAlgSwitch(int)\0"
     "OCAlgSwitch(int)\0strItem\0CHIPIDSwitch(QString)\0"
-    "saveAutoFA()\0BlackLightPixelAlgSwitch(int)\0"
+    "saveAutoFA()\0saveAutoFA_B()\0"
+    "BlackLightPixelAlgSwitch(int)\0"
     "LightSourceCheckSwitch(int)\0"
     "slotAFAMarkOnoff(int)\0slotAFAChartChange(QString)\0"
     "changeAFCNearSFRABasicMethod(int)\0"
@@ -297,27 +299,28 @@ void configsetting::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         case 78: _t->OCAlgSwitch((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 79: _t->CHIPIDSwitch((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 80: _t->saveAutoFA(); break;
-        case 81: _t->BlackLightPixelAlgSwitch((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 82: _t->LightSourceCheckSwitch((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 83: _t->slotAFAMarkOnoff((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 84: _t->slotAFAChartChange((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 85: _t->changeAFCNearSFRABasicMethod((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 86: _t->AFCNearSFRABasicFreq2Checked((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 87: _t->changeAFCMiddleSFRABasicMethod((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 88: _t->AFCMiddleSFRABasicFreq2Checked((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 89: _t->changeAFCFarSFRABasicMethod((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 90: _t->AFCFarSFRABasicFreq2Checked((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 91: _t->changeMFASFRABasicMethod((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 92: _t->MFASFRABasicFreq2Checked((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 93: _t->saveALLCustomIIC(); break;
-        case 94: _t->changeMTKPDAFVersion((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 95: _t->slotMTFFABinGradeChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 96: _t->slotSFRFABinGradeChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 97: _t->removeOSPin((*reinterpret_cast< std::vector<std::string>(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
-        case 98: { QStringList _r = _t->osPinList2QStringList((*reinterpret_cast< std::vector<std::string>(*)>(_a[1])));
+        case 81: _t->saveAutoFA_B(); break;
+        case 82: _t->BlackLightPixelAlgSwitch((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 83: _t->LightSourceCheckSwitch((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 84: _t->slotAFAMarkOnoff((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 85: _t->slotAFAChartChange((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 86: _t->changeAFCNearSFRABasicMethod((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 87: _t->AFCNearSFRABasicFreq2Checked((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 88: _t->changeAFCMiddleSFRABasicMethod((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 89: _t->AFCMiddleSFRABasicFreq2Checked((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 90: _t->changeAFCFarSFRABasicMethod((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 91: _t->AFCFarSFRABasicFreq2Checked((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 92: _t->changeMFASFRABasicMethod((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 93: _t->MFASFRABasicFreq2Checked((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 94: _t->saveALLCustomIIC(); break;
+        case 95: _t->changeMTKPDAFVersion((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 96: _t->slotMTFFABinGradeChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 97: _t->slotSFRFABinGradeChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 98: _t->removeOSPin((*reinterpret_cast< std::vector<std::string>(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
+        case 99: { QStringList _r = _t->osPinList2QStringList((*reinterpret_cast< std::vector<std::string>(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< QStringList*>(_a[0]) = _r; }  break;
-        case 99: _t->textSelected(); break;
-        case 100: _t->nextSelected(); break;
+        case 100: _t->textSelected(); break;
+        case 101: _t->nextSelected(); break;
         default: ;
         }
     }
@@ -355,9 +358,9 @@ int configsetting::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 101)
+        if (_id < 102)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 101;
+        _id -= 102;
     }
     return _id;
 }

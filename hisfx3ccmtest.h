@@ -135,6 +135,9 @@ public:
 	QDockWidget *wid;
 
 	SOCKET m_sock;//20190401
+signals:
+	void information(QString info);
+
 protected:
 	void mouseDoubleClickEvent(QMouseEvent * event);
 	void resizeEvent (QResizeEvent * event);
@@ -145,7 +148,7 @@ signals:
 	void keyshortcutPress(char key, unsigned char uctimer);
 	void finish();
 	void luxMonitorResult(float flY, float flR, float flG, float flB, float flR2G, float flB2G, float flMTF);
-	void information(QString info);
+	
 
 public slots:
 	void itemdebugslot(unsigned short usItem, QString strAddInfo);

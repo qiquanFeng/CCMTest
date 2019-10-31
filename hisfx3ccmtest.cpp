@@ -947,6 +947,8 @@ HisFX3CCMTest::HisFX3CCMTest(QWidget *parent, Qt::WFlags flags,bool bChannel1, _
 	//p_Parent->getOperateModeConfig();
 	connect(itemprocessworker,SIGNAL(sig_serialnumberbind(QString)),this,SLOT(showBindWid(QString)));
 	connect(itemprocessworker,SIGNAL(sig_messtatusupdate(QString,QString)),this,SLOT(updateSN(QString,QString)));
+	
+	connect(wids,SIGNAL(information(QString)),this,SIGNAL(information(QString)));
 
 	if(bLogin&&bChannel1){
 		burnState=new jsl_burnState(hisglobalparameter.stOperatorMode.ucMode,this);

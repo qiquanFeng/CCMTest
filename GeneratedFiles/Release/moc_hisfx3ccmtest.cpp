@@ -349,10 +349,10 @@ static const uint qt_meta_data_HisFX3CCMTest[] = {
        4,       // signalCount
 
  // signals: signature, parameters, type, tag, flags
-      27,   15,   14,   14, 0x05,
-      64,   14,   14,   14, 0x05,
-     107,   73,   14,   14, 0x05,
-     172,  167,   14,   14, 0x05,
+      20,   15,   14,   14, 0x05,
+      53,   41,   14,   14, 0x05,
+      90,   14,   14,   14, 0x05,
+     133,   99,   14,   14, 0x05,
 
  // slots: signature, parameters, type, tag, flags
      211,  193,   14,   14, 0x0a,
@@ -413,11 +413,11 @@ static const uint qt_meta_data_HisFX3CCMTest[] = {
 };
 
 static const char qt_meta_stringdata_HisFX3CCMTest[] = {
-    "HisFX3CCMTest\0\0key,uctimer\0"
-    "keyshortcutPress(char,unsigned char)\0"
+    "HisFX3CCMTest\0\0info\0information(QString)\0"
+    "key,uctimer\0keyshortcutPress(char,unsigned char)\0"
     "finish()\0flY,flR,flG,flB,flR2G,flB2G,flMTF\0"
     "luxMonitorResult(float,float,float,float,float,float,float)\0"
-    "info\0information(QString)\0usItem,strAddInfo\0"
+    "usItem,strAddInfo\0"
     "itemdebugslot(unsigned short,QString)\0"
     "drawproject()\0,\0testsignalslot(char,unsigned char)\0"
     "ClickExecbutton()\0slotImageDebug()\0"
@@ -465,10 +465,10 @@ void HisFX3CCMTest::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         Q_ASSERT(staticMetaObject.cast(_o));
         HisFX3CCMTest *_t = static_cast<HisFX3CCMTest *>(_o);
         switch (_id) {
-        case 0: _t->keyshortcutPress((*reinterpret_cast< char(*)>(_a[1])),(*reinterpret_cast< unsigned char(*)>(_a[2]))); break;
-        case 1: _t->finish(); break;
-        case 2: _t->luxMonitorResult((*reinterpret_cast< float(*)>(_a[1])),(*reinterpret_cast< float(*)>(_a[2])),(*reinterpret_cast< float(*)>(_a[3])),(*reinterpret_cast< float(*)>(_a[4])),(*reinterpret_cast< float(*)>(_a[5])),(*reinterpret_cast< float(*)>(_a[6])),(*reinterpret_cast< float(*)>(_a[7]))); break;
-        case 3: _t->information((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 0: _t->information((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 1: _t->keyshortcutPress((*reinterpret_cast< char(*)>(_a[1])),(*reinterpret_cast< unsigned char(*)>(_a[2]))); break;
+        case 2: _t->finish(); break;
+        case 3: _t->luxMonitorResult((*reinterpret_cast< float(*)>(_a[1])),(*reinterpret_cast< float(*)>(_a[2])),(*reinterpret_cast< float(*)>(_a[3])),(*reinterpret_cast< float(*)>(_a[4])),(*reinterpret_cast< float(*)>(_a[5])),(*reinterpret_cast< float(*)>(_a[6])),(*reinterpret_cast< float(*)>(_a[7]))); break;
         case 4: _t->itemdebugslot((*reinterpret_cast< unsigned short(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
         case 5: _t->drawproject(); break;
         case 6: _t->testsignalslot((*reinterpret_cast< char(*)>(_a[1])),(*reinterpret_cast< unsigned char(*)>(_a[2]))); break;
@@ -567,29 +567,29 @@ int HisFX3CCMTest::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void HisFX3CCMTest::keyshortcutPress(char _t1, unsigned char _t2)
+void HisFX3CCMTest::information(QString _t1)
 {
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
-void HisFX3CCMTest::finish()
+void HisFX3CCMTest::keyshortcutPress(char _t1, unsigned char _t2)
 {
-    QMetaObject::activate(this, &staticMetaObject, 1, 0);
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 
 // SIGNAL 2
-void HisFX3CCMTest::luxMonitorResult(float _t1, float _t2, float _t3, float _t4, float _t5, float _t6, float _t7)
+void HisFX3CCMTest::finish()
 {
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)), const_cast<void*>(reinterpret_cast<const void*>(&_t4)), const_cast<void*>(reinterpret_cast<const void*>(&_t5)), const_cast<void*>(reinterpret_cast<const void*>(&_t6)), const_cast<void*>(reinterpret_cast<const void*>(&_t7)) };
-    QMetaObject::activate(this, &staticMetaObject, 2, _a);
+    QMetaObject::activate(this, &staticMetaObject, 2, 0);
 }
 
 // SIGNAL 3
-void HisFX3CCMTest::information(QString _t1)
+void HisFX3CCMTest::luxMonitorResult(float _t1, float _t2, float _t3, float _t4, float _t5, float _t6, float _t7)
 {
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)), const_cast<void*>(reinterpret_cast<const void*>(&_t4)), const_cast<void*>(reinterpret_cast<const void*>(&_t5)), const_cast<void*>(reinterpret_cast<const void*>(&_t6)), const_cast<void*>(reinterpret_cast<const void*>(&_t7)) };
     QMetaObject::activate(this, &staticMetaObject, 3, _a);
 }
 QT_END_MOC_NAMESPACE
