@@ -27,6 +27,11 @@ int global_unit_bg=0;
 int global_unit_g=0;
 int global_burn_group=0;
 char global_strSN[1024]={0};
+char global_strLotNumber[1024]={0};
+char global_strJobNumber[1024]={0};
+char global_strStaNumber[1024]={0};
+char global_strLineNumber[1024]={0};
+
 _HisCCMAlg_AFC_MTF_DataItem_EX stItemData_EX;
 
 #if (defined USE_EQUIPMENT_AFM_JSL_V2)

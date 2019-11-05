@@ -22,7 +22,7 @@ static const uint qt_meta_data_jsl_loginDialog[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       6,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -35,13 +35,18 @@ static const uint qt_meta_data_jsl_loginDialog[] = {
  // slots: signature, parameters, type, tag, flags
       31,   16,   16,   16, 0x0a,
       47,   16,   16,   16, 0x0a,
+      70,   16,   16,   61, 0x0a,
+      88,   16,   16,   61, 0x0a,
+     106,   16,   16,   61, 0x0a,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_jsl_loginDialog[] = {
     "jsl_loginDialog\0\0sig_reLotSN()\0"
-    "slot_onSubmit()\0slot_onQuit()\0"
+    "slot_onCommit()\0slot_onQuit()\0__inline\0"
+    "slot_changePos1()\0slot_changePos2()\0"
+    "slot_changePos3()\0"
 };
 
 void jsl_loginDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -51,8 +56,11 @@ void jsl_loginDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int 
         jsl_loginDialog *_t = static_cast<jsl_loginDialog *>(_o);
         switch (_id) {
         case 0: _t->sig_reLotSN(); break;
-        case 1: _t->slot_onSubmit(); break;
+        case 1: _t->slot_onCommit(); break;
         case 2: _t->slot_onQuit(); break;
+        case 3: _t->slot_changePos1(); break;
+        case 4: _t->slot_changePos2(); break;
+        case 5: _t->slot_changePos3(); break;
         default: ;
         }
     }
@@ -91,9 +99,9 @@ int jsl_loginDialog::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 6)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 6;
     }
     return _id;
 }

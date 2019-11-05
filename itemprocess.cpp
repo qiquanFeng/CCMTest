@@ -6,6 +6,12 @@
 #include "cvImageTool.h"
 #include "jsl_controlpanel.h"
 #include "IPTypes.h"
+
+#include "../include/rapidjson/rapidjson.h"
+#include "../include/rapidjson/document.h"
+#include "../include/rapidjson/writer.h"
+#include "../include/rapidjson/stringbuffer.h"
+
 #include <iphlpapi.h>
 #pragma comment(lib,"Iphlpapi.lib")
 // #include "inc/HisCCMOTP.h"
@@ -28516,6 +28522,61 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 	case showresultitem:
 		{
 			int iresult = GetTotalResult();
+			//***************** 2018.01.10 add*****************
+			QString strSerialNumber;
+			classLog->getserialnumber(strSerialNumber);
+
+			//*************** Create Json ***************  
+			char testDataBuffer[8192]={0};
+
+			for (int i=0;i<classLog->logItemVector.size();i++)
+			{
+				sprintf(testDataBuffer,"%s%s:%s;",testDataBuffer,classLog->logItemVector.at(i).itemkey.toLatin1().data(),\
+					classLog->logItemVector.at(i).itemvalue.toString().toLatin1().data());
+			}
+			
+			rapidjson::StringBuffer buf;
+			rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
+			
+			writer.StartObject();
+			writer.Key("JsonData");
+
+			writer.StartArray();
+			writer.StartObject();
+			
+			writer.Key("IsCheck");writer.Int(0);
+			writer.Key("IsOK");writer.Int(iresult?0:1);
+			writer.Key("NGMessage");writer.String(iresult?GetHisFX3ErrorInfo(iresult).toLatin1().data():"");
+			writer.Key("Operator");writer.String(global_strJobNumber);
+			writer.Key("Line");writer.String(global_strLineNumber);
+			writer.Key("WorkStation");writer.String(global_strStaNumber);
+			writer.Key("Process");writer.String("调焦");
+			writer.Key("IP");writer.String("192.168.10.237");
+			writer.Key("MAC");writer.String("11:11:11:11:11");
+			writer.Key("DocNO");writer.String(global_strLotNumber);
+			writer.Key("SN");writer.String(global_strSN);
+			writer.Key("SensorID");writer.String(strSerialNumber.toLatin1().data());
+			writer.Key("TestData");writer.String(testDataBuffer);
+
+			writer.EndObject();
+			writer.EndArray();
+
+			writer.Key("OrgId");writer.Int(33);
+			writer.Key("ActionName");writer.String("xiaozhi.Action.MES.External.AddProcessRd");
+			writer.Key("ActionAssembly");writer.String("xiaozhi.Action.MES");
+			writer.EndObject();
+
+			emit information(QTextCodec::codecForName("GBK")->toUnicode(buf.GetString()));
+			std::string str=post(buf.GetString());
+
+			emit information(QTextCodec::codecForName("GBK")->toUnicode(str.c_str()));
+
+			if(QString::fromStdString(str).lastIndexOf("true")<0){
+				emit information("Error:MES Update Data fail!");
+				iresult = -1;
+			}
+			//*********************************
+
 			if(iresult==_His_ItemStatus_PASS){
 				itemshareData.totalresult=_His_ItemStatus_PASS;
 			}else{
@@ -28540,10 +28601,6 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 				emit showresult(itemshareData.totalresult);
 				emit signaldrawframe(itemshareData.totalresult);
 			}
-
-			//***************** 2018.01.10 add*****************
-			QString strSerialNumber;
-			classLog->getserialnumber(strSerialNumber);
 
 #ifdef USE_EQUIPMENT_AFM_JSL_V1
 			if(bAutoFocus){
@@ -28653,6 +28710,7 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 				}
 					
 			}
+
 			classLog->clear(); 
 			emit signalTotalTestTime(totalTime.elapsed()); 
 			emit sigBurnCount();

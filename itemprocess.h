@@ -2,6 +2,7 @@
 #ifndef ITEMPROCESS_H
 #define ITEMPROCESS_H
 
+#include "WininetHttp.h"
 #include "qoplow.h"
 #include <QScrollBar>
 #include <QSqlError>

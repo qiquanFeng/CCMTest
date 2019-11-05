@@ -34,14 +34,14 @@ jsl_loginDialog::jsl_loginDialog(QWidget *parent):QDialog(parent)
 	hlayout3->addWidget(m_pleJob);
 	hlayout4->addWidget(m_plabLine,2);
 	hlayout4->addWidget(m_pleLine);
-	hlayout5->addWidget(m_pbutCommit);
+	//hlayout5->addWidget(m_pbutCommit);
 	hlayout5->addWidget(m_pbutQuit);
 
 	vlayout->addLayout(hlayout1);
 	vlayout->addLayout(hlayout2);
 	vlayout->addLayout(hlayout3);
 	vlayout->addLayout(hlayout4);
-	vlayout->addLayout(hlayout5);
+	//vlayout->addLayout(hlayout5);
 
 	setLayout(vlayout);
 	connect(m_pbutQuit,SIGNAL(clicked()),this,SLOT(slot_onQuit()));
@@ -71,6 +71,12 @@ void jsl_loginDialog::slot_onCommit(){
 	}
 	SetLotSN(m_pleLot->text());
 	QDir::current().mkdir("OtpLog");
+
+	//************************** Create Json *******************************
+	sprintf(global_strLotNumber,"%s",m_pleLot->text().toLatin1().data());
+	sprintf(global_strStaNumber,"%s",m_pleSta->text().toLatin1().data());
+	sprintf(global_strJobNumber,"%s",m_pleJob->text().toLatin1().data());
+	sprintf(global_strLineNumber,"%s",m_pleLine->text().toLatin1().data());
 
 	//*****  Create Database Table ***************
 	QSqlDatabase dbLotSN = QSqlDatabase::addDatabase("QSQLITE", "dbLotSN");
@@ -123,8 +129,6 @@ void jsl_loginDialog::slot_onCommit(){
 			QMessageBox::warning(this,"Error",query.lastError().text());
 		}
 	}
-
-
 
 	query.clear();
 	dbLotSN.close();
@@ -202,11 +206,33 @@ void jsl_bindSerialNumber::slotReturn(){
 				  }");
 
 
+	sprintf(global_strSN,"%s",ledit->text().toLatin1().data());
+	//******************* Create Json ****************
+
+	rapidjson::StringBuffer buf;
+	rapidjson::Writer<StringBuffer> writer(buf);
+
+	writer.StartObject();
+
+	writer.Key("JsonData");
+	writer.StartArray();
+	writer.StartObject();
 	
+	writer.Key("SN");writer.String(ledit->text().toLatin1().data());
+	writer.Key("SensorID");writer.String(this->strSN.toLatin1().data());
+	writer.Key("Process");writer.String("µ÷½¹");
 
+	writer.EndObject();
+	writer.EndArray();
 
+	writer.Key("ActionName");writer.String("xiaozhi.Action.MES.External.ProcessCheck");
+	writer.Key("ActionAssembly");writer.String("xiaozhi.Action.MES");
 
-	std::string str=post(std::string(post1));
+	writer.EndObject();
+	//QMessageBox::information(this,"test",QTextCodec::codecForName("GBK")->toUnicode(buf.GetString()));
+	//************************************************************
+	std::string str=post(std::string(buf.GetString()));
+	emit information(QTextCodec::codecForName("GBK")->toUnicode(buf.GetString()));
 	emit information(QTextCodec::codecForName("GBK")->toUnicode(str.c_str()));
 
 	if(QString::fromStdString(str).lastIndexOf("true")<0){
@@ -216,8 +242,8 @@ void jsl_bindSerialNumber::slotReturn(){
 		return;
 	}
 	
-	str=post(std::string(post2));
-	emit information(QTextCodec::codecForName("GBK")->toUnicode(str.c_str()));
+	//str=post(std::string(post2));
+	//emit information(QTextCodec::codecForName("GBK")->toUnicode(str.c_str()));
 	
 	memset(global_strSN,0,1024);
 	if(ledit->text().isEmpty()||ledit->text().length()==0){

@@ -30,19 +30,22 @@ public:
 	~HisFX3Log();
 
 	void clear();
-	int save(QString& projectname, bool blocal = true, bool bserver = false);
+	int save(QString& projectname, bool blocal, bool bserver,int iStationIndex,QString strSavelogPath);
+	int save(QString& projectname, bool blocal, bool bserver);
 	void push_back(_HisLog_Item& logitem);
 	int getserialnumber(QString& strSerialNumber);
 	unsigned int getmaxtypeindex(unsigned int uistart);
 	void addserialnumber();
 
-private:
 	std::vector<_HisLog_Item> logItemVector;
-	 
-	 int localsave(QString& projectname);
-	 int serversave(QString& projectname);
 
-	 unsigned int uiNumIndex;
+private:
+	int localsave(QString& projectname);
+	int serversave(QString& projectname);
+	int localsaveSemiMachine(QString& projectname, QString savelogpth);
+
+	unsigned int uiNumIndex;
+	int iStationName;
 };
 
 #endif // HISFX3LOG_H
