@@ -28638,6 +28638,44 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 			classLog->getserialnumber(strSerialNumber);
 
 			//*************** Create Json ***************  
+#if 1
+		/*QSettings setting("C:/MES_Config.ini",QSettings::Format::IniFormat);
+		char *strput=setting.value("Process").toByteArray().data();
+		emit information(QTextCodec::codecForName("GBK")->toUnicode(strput));*/
+		std::string strMac;
+		getMacAddresses(strMac);
+			//******************* Step 1 ****************
+		rapidjson::StringBuffer buf1;
+		rapidjson::Writer<rapidjson::StringBuffer> writer1(buf1);
+
+		writer1.StartObject();
+		writer1.Key("JsonData");
+		writer1.StartArray();
+		writer1.StartObject();
+	
+		writer1.Key("SN");writer1.String(global_strSN);
+		writer1.Key("SensorID");writer1.String(strSerialNumber.toUtf8().data());
+		writer1.Key("Process");writer1.String(QTextCodec::codecForName("UTF8")->toUnicode(global_strProcess).toUtf8().data());
+
+		writer1.EndObject();
+		writer1.EndArray();
+
+		writer1.Key("ActionName");writer1.String("xiaozhi.Action.MES.External.ProcessCheck");
+		writer1.Key("ActionAssembly");writer1.String("xiaozhi.Action.MES");
+
+		writer1.EndObject();
+		//QMessageBox::information(this,"test",QTextCodec::codecForName("GBK")->toUnicode(buf.GetString()));
+		//************************************************************
+		std::string str=post(std::string(buf1.GetString()));
+		emit information(QTextCodec::codecForName("UTF8")->toUnicode(buf1.GetString()));
+		emit information(QTextCodec::codecForName("GBK")->toUnicode(str.c_str()));
+
+		if(QString::fromStdString(str).lastIndexOf("true")<0){
+			emit information("Error:mes check fail!");
+			iresult=-1;
+		}
+
+			//**********************   Step 2  **************************************
 			char testDataBuffer[8192]={0};
 
 			for (int i=0;i<classLog->logItemVector.size();i++)
@@ -28657,13 +28695,13 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 			
 			writer.Key("IsCheck");writer.Int(0);
 			writer.Key("IsOK");writer.Int(iresult?0:1);
-			writer.Key("NGMessage");writer.String(iresult?GetHisFX3ErrorInfo(iresult).toLatin1().data():"");
+			writer.Key("NGMessage");writer.String(iresult?GetHisFX3ErrorInfo(iresult).toUtf8().data():"");
 			writer.Key("Operator");writer.String(global_strJobNumber);
 			writer.Key("Line");writer.String(global_strLineNumber);
 			writer.Key("WorkStation");writer.String(global_strStaNumber);
-			writer.Key("Process");writer.String("调焦");
+			writer.Key("Process");writer.String(QTextCodec::codecForName("UTF8")->toUnicode(global_strProcess).toUtf8().data());
 			writer.Key("IP");writer.String("192.168.10.237");
-			writer.Key("MAC");writer.String("11:11:11:11:11");
+			writer.Key("MAC");writer.String(strMac.c_str());
 			writer.Key("DocNO");writer.String(global_strLotNumber);
 			writer.Key("SN");writer.String(global_strSN);
 			writer.Key("SensorID");writer.String(strSerialNumber.toLatin1().data());
@@ -28677,15 +28715,17 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 			writer.Key("ActionAssembly");writer.String("xiaozhi.Action.MES");
 			writer.EndObject();
 
-			emit information(QTextCodec::codecForName("GBK")->toUnicode(buf.GetString()));
-			/*std::string str=post(buf.GetString());
+			emit information(QTextCodec::codecForName("UTF8")->toUnicode(buf.GetString()));
+			str=post(buf.GetString());
 
 			emit information(QTextCodec::codecForName("GBK")->toUnicode(str.c_str()));
 
 			if(QString::fromStdString(str).lastIndexOf("true")<0){
-				emit information("Error:MES Update Data fail!");
+				emit information(QTextCodec::codecForName("GBK")->toUnicode("错误:MES 数据上传失败!"));
 				iresult = -1;
-			}*/
+			}
+
+#endif
 			//*********************************
 
 			if(iresult==_His_ItemStatus_PASS){

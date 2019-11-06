@@ -98,6 +98,7 @@ extern int global_burn_group;
 extern int global_ioc_x;
 extern int global_ioc_y;
 extern char global_strSN[1024];
+extern char global_strProcess[1024];
 extern char global_strLotNumber[1024];
 extern char global_strJobNumber[1024];
 extern char global_strStaNumber[1024];

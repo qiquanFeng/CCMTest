@@ -73,6 +73,25 @@ void jsl_loginDialog::slot_onCommit(){
 	QDir::current().mkdir("OtpLog");
 
 	//************************** Create Json *******************************
+	QFile filejson("C:/MES_Config.json");
+	if(!filejson.open(QIODevice::ReadWrite)){
+		QMessageBox::warning(this,"Error",QTextCodec::codecForName("GBK")->toUnicode("´íÎó£º¶ÁÈ¡ C:/Mes_config.json Fail!£¡"));
+	}
+	QByteArray arr=filejson.readAll();
+	filejson.close();
+
+	rapidjson::Document doc;
+	doc.Parse(arr.data());
+	if(doc.HasParseError()){
+		QMessageBox::warning(this,"Error",QTextCodec::codecForName("GBK")->toUnicode("´íÎó£º½âÎöMes_config.jsonÊ§°Ü£¡"));
+	}
+
+	if(doc.HasMember("Process")){
+		sprintf(global_strProcess,"%s",doc["Process"].GetString());
+	}else{
+		QMessageBox::warning(this,"Error",QTextCodec::codecForName("GBK")->toUnicode("´íÎó£º½âÎöMes_config.json ProcessÊ±Ê§°Ü£¡"));
+	}
+		
 	sprintf(global_strLotNumber,"%s",m_pleLot->text().toLatin1().data());
 	sprintf(global_strStaNumber,"%s",m_pleSta->text().toLatin1().data());
 	sprintf(global_strJobNumber,"%s",m_pleJob->text().toLatin1().data());
@@ -140,6 +159,8 @@ void jsl_loginDialog::slot_onCommit(){
 
 jsl_bindSerialNumber::jsl_bindSerialNumber(QWidget *parent):QDialog(parent),ledit(new QLineEdit)
 {
+	setWindowFlags(Qt::WindowTitleHint | Qt::CustomizeWindowHint);
+
 	m_sock=NULL;
 	QHBoxLayout *layout=new QHBoxLayout();
 	setLayout(layout);
@@ -166,99 +187,16 @@ void jsl_bindSerialNumber::setSerialNumber(QString str){
 	strSN=str;
 }
 void jsl_bindSerialNumber::slotReturn(){
-	char *post1=(char*)malloc(8192);
-	char *post2=(char*)malloc(8192);
-		
-	sprintf(post1,"{\n\
-				  \"JsonData\":[\n\
-				  {\n\
-				  \"SN\": \"%s\",\n\
-				  \"SensorID\": \"%s\",\n\
-				  \"Process\": \"TJ\"\n\
-				  }\n\
-				  ],\n\
-				  \"OrgId\": 33,\n\
-				  \"ActionName\": \"xiaozhi.Action.MES.External.ProcessCheck\",\n\
-				  \"ActionAssembly\": \"xiaozhi.Action.MES\"\n\
-				  }",ledit->text().toLatin1().data(),this->strSN.toLatin1().data()); //  ·À¹ýÕ¾¼ì²é
-
-	sprintf(post2,"{\n\
-				  \"JsonData\":[\n\
-				  {\n\
-				  \"IsCheck\":0,\
-				  \"IsOK\":1,\
-				  \"NGMessage\":\"MES001\",\
-				  \"Operator\":\"22628\",\
-				  \"Line\": \"line001\",\n\
-				  \"WorkStation\": \"TJ1\",\n\
-				  \"Process\": \"TJ\",\n\
-				  \"IP\": \"192.168.10.237\",\n\
-				  \"MAC\": \"11:11:11:11:11\",\n\
-				  \"DocNo\": \"z-97017-190725-001@1\",\n\
-				  \"SN\": \"20190923000000001\",\n\
-				  \"SensorID\": \"ID20190923000000001\",\n\
-				  \"TestData\": \"Center_left,30;Center_right,30;FOV1,0.3452\"\n\
-				  }\n\
-				  ],\n\
-				  \"OrgId\": 33,\n\
-				  \"ActionName\": \"xiaozhi.Action.MES.External.AddProcessRd\",\n\
-				  \"ActionAssembly\": \"xiaozhi.Action.MES\"\n\
-				  }");
-
-
 	memset(global_strSN,0,1024);
 	sprintf(global_strSN,"%s",ledit->text().toLatin1().data());
 	emit information(ledit->text());
-	global_ioc_x=1;
-	ledit->clear();
-	this->close();
-	return;
-	//******************* Create Json ****************
 
-	rapidjson::StringBuffer buf;
-	rapidjson::Writer<StringBuffer> writer(buf);
-
-	writer.StartObject();
-
-	writer.Key("JsonData");
-	writer.StartArray();
-	writer.StartObject();
-	
-	writer.Key("SN");writer.String(ledit->text().toLatin1().data());
-	writer.Key("SensorID");writer.String(this->strSN.toLatin1().data());
-	writer.Key("Process");writer.String("µ÷½¹");
-
-	writer.EndObject();
-	writer.EndArray();
-
-	writer.Key("ActionName");writer.String("xiaozhi.Action.MES.External.ProcessCheck");
-	writer.Key("ActionAssembly");writer.String("xiaozhi.Action.MES");
-
-	writer.EndObject();
-	//QMessageBox::information(this,"test",QTextCodec::codecForName("GBK")->toUnicode(buf.GetString()));
-	//************************************************************
-	std::string str=post(std::string(buf.GetString()));
-	emit information(QTextCodec::codecForName("GBK")->toUnicode(buf.GetString()));
-	emit information(QTextCodec::codecForName("GBK")->toUnicode(str.c_str()));
-
-	if(QString::fromStdString(str).lastIndexOf("true")<0){
-		emit information("Error:mes check fail!");
-		global_ioc_x=-1;
-		this->close();
-		return;
-	}
-	
-	//str=post(std::string(post2));
-	//emit information(QTextCodec::codecForName("GBK")->toUnicode(str.c_str()));
-	
 	memset(global_strSN,0,1024);
 	if(ledit->text().isEmpty()||ledit->text().length()==0){
 		return;
 	}
 	sprintf(global_strSN,"%s",ledit->text().toLatin1().data());
 
-	free(post1);
-	free(post2);
 	
 	global_ioc_x=1;
 	ledit->clear();

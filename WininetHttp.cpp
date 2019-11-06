@@ -9,7 +9,7 @@ string post(string strPostData) {
 
 	CWininetHttp http = CWininetHttp();
 	return http.RequestJsonInfo(
-		"http://192.168.11.15:8000/api/action2", Hr_Post,
+		"http://192.168.10.15:8000/api/action2", Hr_Post,
 		"Accept:*/*\nContent-Type:application/json", 
 		strPostData);
 }
