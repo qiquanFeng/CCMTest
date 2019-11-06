@@ -183,6 +183,7 @@ public:
 	int operateItem(_shoutCutDetail& currentitem);
 	void updateItemstatus(_itemStatus& itemstatus);
 	int GetTotalResult();
+	int GetTotalResult_Code();
 	int getBrightness(RECT stRange, int iMin, int iMax);
 	int getColorRatio(RECT stRange, double dflR2GrMin, double dflR2GrMax, double dflB2GrMin, double dflB2GrMax);
 	int setexposureTimeExe(unsigned int uiexposure);

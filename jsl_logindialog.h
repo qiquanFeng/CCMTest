@@ -72,9 +72,10 @@ class jsl_bindSerialNumber : public QDialog
 	Q_OBJECT
 
 public:
-	jsl_bindSerialNumber(QWidget *parent = 0);
+	jsl_bindSerialNumber(int nType=0,QWidget *parent = 0);
 	~jsl_bindSerialNumber();
 
+	int m_nType;
 	SOCKET m_sock;
 	QLineEdit *ledit;
 	void setSerialNumber(QString);

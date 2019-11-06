@@ -73,7 +73,7 @@ void jsl_loginDialog::slot_onCommit(){
 	QDir::current().mkdir("OtpLog");
 
 	//************************** Create Json *******************************
-	QFile filejson("C:/MES_Config.json");
+	QFile filejson("MES_Config.json");
 	if(!filejson.open(QIODevice::ReadWrite)){
 		QMessageBox::warning(this,"Error",QTextCodec::codecForName("GBK")->toUnicode("´íÎó£º¶ÁÈ¡ C:/Mes_config.json Fail!£¡"));
 	}
@@ -157,9 +157,17 @@ void jsl_loginDialog::slot_onCommit(){
 	close();
 }
 
-jsl_bindSerialNumber::jsl_bindSerialNumber(QWidget *parent):QDialog(parent),ledit(new QLineEdit)
+jsl_bindSerialNumber::jsl_bindSerialNumber(int nType,QWidget *parent):QDialog(parent),ledit(new QLineEdit),m_nType(nType)
 {
 	setWindowFlags(Qt::WindowTitleHint | Qt::CustomizeWindowHint);
+
+	if(nType){
+		setWindowTitle(QTextCodec::codecForName("GBK")->toUnicode("ÇëÉ¨ÃèÁ÷³Ì¿¨ºÅ"));
+	}else{
+		setWindowTitle(QTextCodec::codecForName("GBK")->toUnicode("ÇëÉ¨Ãè²úÆ·¶þÎ¬Âë"));
+	}
+
+		
 
 	m_sock=NULL;
 	QHBoxLayout *layout=new QHBoxLayout();
@@ -187,6 +195,71 @@ void jsl_bindSerialNumber::setSerialNumber(QString str){
 	strSN=str;
 }
 void jsl_bindSerialNumber::slotReturn(){
+	if(m_nType){
+		//*****  Create Database Table ***************
+		QSqlDatabase dbLotSN = QSqlDatabase::addDatabase("QSQLITE", "dbLotSN");
+		//dbLotSN.setDatabaseName(QDir::currentPath() + "/JSL_OtpCount");
+		dbLotSN.setDatabaseName("JSL_OtpCount");
+		if (!dbLotSN.open()){
+			QMessageBox::warning(this,"DataBase Open Fail!","DataBase Open Fail!");
+			return ;
+		}
+
+
+		QSqlQuery query(dbLotSN);
+		//********************* tab1 **************
+		query.prepare("select * from sqlite_master where type = 'table' and name=:name");
+		query.bindValue(":name",ledit->text());
+		if(!query.exec()){
+			QMessageBox::warning(this,"Error",query.lastError().text());
+		}
+
+		if(!query.next()){
+			query.prepare("Create Table ["+ledit->text()+"] (ChipID varchar(1,50) not null primary key,LotSN varchar(1,50) not null,\
+																UnitRG int not null,UnitBG int not null,UnitG int not null,Note int not null)" );
+
+			if(!query.exec()){
+				QMessageBox::warning(this,"Error",query.lastError().text());
+			}
+		}
+	
+		//***************** tab2 **************
+		query.prepare("select * from sqlite_master where type = 'table' and name=:name");
+		query.bindValue(":name","CurrentBurnLotSN");
+		if(!query.exec()){
+			QMessageBox::warning(this,"Error",query.lastError().text());
+		}
+
+		if(!query.next()){
+			query.prepare("Create Table [CurrentBurnLotSN] (LotSN varchar(1,30) not null primary key)" );
+			if(!query.exec()){
+				QMessageBox::warning(this,"Error",query.lastError().text());
+			}
+
+			query.prepare("Insert into CurrentBurnLotSN values('"+ledit->text()+"')" );
+			if(!query.exec()){
+				QMessageBox::warning(this,"Error",query.lastError().text());
+			}
+
+		}else{
+			query.prepare("update CurrentBurnLotSN set LotSN='"+ledit->text()+"' where 1" );
+			if(!query.exec()){
+				QMessageBox::warning(this,"Error",query.lastError().text());
+			}
+		}
+
+		query.clear();
+		dbLotSN.close();
+		QSqlDatabase::removeDatabase("dbLotSN");
+
+		memset(global_strLotNumber,0,1024);
+		sprintf(global_strLotNumber,"%s",ledit->text().toLatin1().data());
+
+		ledit->clear();
+		this->close();
+		return ;
+	}
+
 	memset(global_strSN,0,1024);
 	sprintf(global_strSN,"%s",ledit->text().toLatin1().data());
 	emit information(ledit->text());
@@ -201,5 +274,4 @@ void jsl_bindSerialNumber::slotReturn(){
 	global_ioc_x=1;
 	ledit->clear();
 	this->close();
-
 }

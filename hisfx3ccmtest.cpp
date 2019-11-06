@@ -1025,6 +1025,11 @@ HisFX3CCMTest::HisFX3CCMTest(QWidget *parent, Qt::WFlags flags,bool bChannel1, _
 		threadshareData.bOfflineMode	=	true;
 		offlineModeSwitch(true);
 	}
+
+	if(bChannel1){
+		jsl_bindSerialNumber wid;
+		wid.exec();
+	}
 }
 
 HisFX3CCMTest::~HisFX3CCMTest()

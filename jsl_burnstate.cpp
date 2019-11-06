@@ -16,7 +16,7 @@ jsl_burnState::jsl_burnState(int configtype,QWidget *parent)
 	//setWindowOpacity(1);
 	label=new QLabel();
 	lab_Count=new QLabel();
-	QPushButton *butExport=new QPushButton(QString::fromLocal8Bit("数据显示"));
+	QPushButton *butExport=new QPushButton(QString::fromLocal8Bit("批号切换"));
 	connect(butExport,SIGNAL(pressed()),this,SLOT(slot_BurnDataExport()));
 
 	QWidget *burnWidget=new QWidget();
@@ -315,13 +315,20 @@ void jsl_burnState::slot_test(QqrealList key){
 }
 
 void jsl_burnState::slot_BurnDataExport(){
+	jsl_bindSerialNumber wid(1);
+	wid.exec();
+	slotBurnCount();
+
+
+
+
 	/*QString strPath=QFileDialog::getSaveFileName(this,"","",QString::fromLocal8Bit("逗号分隔文件|*.csv"));
 	if(strPath.isEmpty()){
 		QMessageBox::warning(this,QString::fromLocal8Bit("未填写要保存的文件名"),QString::fromLocal8Bit("请填写要保存的文件名！"));
 		return ;
 	}*/
 		
-	QDir dir;
+	/*QDir dir;
 	dir.mkdir("savelog");
 	QString strPath=QString("%1/savelog/%2.csv").arg(QDir::currentPath()).arg(GetLotSN());
 	
@@ -360,5 +367,5 @@ void jsl_burnState::slot_BurnDataExport(){
 	sqlDatabase.close();
 
 	ShellExecute(0, L"open", strPath.toStdWString().data(), 0, 0, 1); 
-	qApp->exit();
+	qApp->exit();*/
 }
