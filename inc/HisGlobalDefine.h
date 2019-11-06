@@ -2759,6 +2759,9 @@ struct _HisCCMOTP_Config{
 	float flLSC_WB2CenterMaxResult_R2Gr;
 	float flLSC_WB2CenterMaxResult_B2Gr;
 #if 1
+	int nSN_Length;
+	char pucSN[256];
+
 	float flWB_CenterChannelR;
 	float flWB_CenterChannelGr;
 	float flWB_CenterChannelGb;
@@ -2838,6 +2841,9 @@ struct _HisCCMOTP_Config{
 		memset(pvReserve, 0, sizeof(void*) *6);
 
 #if 1
+		nSN_Length=0;
+		memset(pucSN,0,256);
+
 		flWB_CenterChannelR=0.0f;
 		flWB_CenterChannelGr=0.0f;
 		flWB_CenterChannelGb=0.0f;

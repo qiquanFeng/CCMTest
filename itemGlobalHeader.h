@@ -211,6 +211,7 @@ enum _operateItemList{
 	lightcheck = 0xbe,
 	iobitcheckitem										=	0xbf,
 	autofageneralitem_B = 0xC0,
+	otpburnitem_SN = 0xC1,
 	debugitem = 0xff
 };
  
@@ -263,8 +264,8 @@ __inline void globalgetListAllTestItem(QList<_TestItem_Basic_Info>& itemList) //
 	_CODE_GLOBALITEM_PUSHBACK(afc_messtatusupdate, "afc_messtatusupdate", QTextCodec::codecForName( "GBK")->toUnicode("更新AFC 到MES"), "other", "", \
 		QTextCodec::codecForName( "GBK")->toUnicode("功能：更新AFC站位信息到MES服务器"), \
 		"HisFX3CCMTest");
-	_CODE_GLOBALITEM_PUSHBACK(bindserialnumber, "bindserialnumber", QTextCodec::codecForName( "GBK")->toUnicode("芯片ID与二维码绑定"), "other", "", \
-		QTextCodec::codecForName( "GBK")->toUnicode("功能：芯片ID与二维码绑定"), \
+	_CODE_GLOBALITEM_PUSHBACK(bindserialnumber, "bindserialnumber", QTextCodec::codecForName( "GBK")->toUnicode("二维码录入"), "other", "", \
+		QTextCodec::codecForName( "GBK")->toUnicode("功能：二维码录入"), \
 		"HisFX3CCMTest");
 
 	_CODE_GLOBALITEM_PUSHBACK(savemtfdata, "savemtfdata", QTextCodec::codecForName( "GBK")->toUnicode("保存调焦MTF数据"), "other", "", \
@@ -457,6 +458,10 @@ __inline void globalgetListAllTestItem(QList<_TestItem_Basic_Info>& itemList) //
 		"HisFX3CCMTest");
 
 	_CODE_GLOBALITEM_PUSHBACK(otpburnitem, "otpburnitem", QTextCodec::codecForName( "GBK")->toUnicode("OTP烧录"), "sensor", "", \
+		QTextCodec::codecForName( "GBK")->toUnicode(" "), \
+		"HisFX3CCMTest");
+
+	_CODE_GLOBALITEM_PUSHBACK(otpburnitem_SN, "otpburnitem_SN", QTextCodec::codecForName( "GBK")->toUnicode("二维码OTP烧录"), "sensor", "", \
 		QTextCodec::codecForName( "GBK")->toUnicode(" "), \
 		"HisFX3CCMTest");
 

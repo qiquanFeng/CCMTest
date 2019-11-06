@@ -252,6 +252,7 @@ public:
 
 	int getotpburnParameter(bool bupdate=false, bool bcheck = true);
 	int otpburn();
+	int otpburn_SN();
 	int otpcheck();
 	int ReadGolden();
 	int getlsCheckParameter(bool bupdate=false, bool bcheck = true);

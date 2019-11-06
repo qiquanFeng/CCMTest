@@ -206,7 +206,13 @@ void jsl_bindSerialNumber::slotReturn(){
 				  }");
 
 
+	memset(global_strSN,0,1024);
 	sprintf(global_strSN,"%s",ledit->text().toLatin1().data());
+	emit information(ledit->text());
+	global_ioc_x=1;
+	ledit->clear();
+	this->close();
+	return;
 	//******************* Create Json ****************
 
 	rapidjson::StringBuffer buf;

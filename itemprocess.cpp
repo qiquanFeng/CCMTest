@@ -13315,6 +13315,8 @@ int itemprocess::otpburn()
 	stParameter.ucEESlave	=	itemshareData.ccmhardwareParameter->ucEESlave;
 	stParameter.bDebug		=	hisglobalparameter.bDebugMode;
 	stParameter.bBurnOpticalCenter=itemshareData.otpburnParameter->bBurnOpticalCenter;
+	stParameter.nSN_Length=strlen(global_strSN);
+	memcpy(stParameter.pucSN,global_strSN,strlen(global_strSN));
 
 	QString strSerialNumber;
 	classLog->getserialnumber(strSerialNumber);
@@ -13545,6 +13547,115 @@ int itemprocess::otpburn()
 	if(stParameter.flWB_CenterGb2Gr >= 0.0f)
 		_CODE_LOG_PUSHBACK("3000K_OTPBurn_WB_Gb/Gr", stParameter.flWB_CenterGb2Gr_3000K);
 
+	if(iresult){
+		itemshareData.itemparameterLock.unlock();
+		return iresult;
+	}
+
+	itemshareData.itemparameterLock.unlock();
+	return 0;
+}
+
+int itemprocess::otpburn_SN()
+{
+	//判断图像是否点亮中
+	if(!threadshareData.GetHisPreviewflag())
+		return HisCCMError_NotPreivew;
+
+	//取得配置参数和规格
+	int iresult	=	getotpburnParameter(false);
+	if(iresult)
+		return iresult;
+	iresult	=	getccmhardwareParameter(false);
+	if(iresult)
+		return iresult;
+
+	QString strMAC,strChipID;
+	double dflCoefR=1.0;
+	double dflCoefB=1.0;
+	QDateTime dateTime;
+
+	itemshareData.itemparameterLock.lockForRead();
+
+	_HisCCMOTP_Config stParameter;
+	stParameter.puiIndex	=	&(itemshareData.otpburnParameter->uiIndex);
+	stParameter.iheight		=	itemshareData.previewParameter->iHeight;
+	stParameter.iwidth		=	itemshareData.previewParameter->iWidth;
+	stParameter.uiDataFormat	=	itemshareData.previewParameter->ucDataFormat;
+	stParameter.bburn		=	itemshareData.otpburnParameter->bburn;
+	stParameter.bOnlyCheckBurnData		=	itemshareData.otpburnParameter->bOnlyCheckData;
+	stParameter.uiFrameSleep	=	itemshareData.otpburnParameter->uiFrameSleep;
+	stParameter.uiMID	=	itemshareData.otpburnParameter->uiMID;
+	stParameter.uiLENSID	=	itemshareData.otpburnParameter->uiLENSID;
+	stParameter.uiVCMID	=	itemshareData.otpburnParameter->uiVCMID;
+	stParameter.uiDRIVERICID	=	itemshareData.otpburnParameter->uiDRIVERICID;
+	stParameter.flRangeRatio	=	itemshareData.otpburnParameter->flRangeRatio;
+	stParameter.uiLuxMin	=	itemshareData.otpburnParameter->uiLuxMin;
+	stParameter.uiLuxMax	=	itemshareData.otpburnParameter->uiLuxMax;
+	stParameter.uiDark	=	itemshareData.otpburnParameter->uiDark;
+	stParameter.flLSC_LuxShadingMin	=	itemshareData.otpburnParameter->flLSC_LuxShadingMin;
+	stParameter.flLSC_LuxShadingMax	=	itemshareData.otpburnParameter->flLSC_LuxShadingMax;
+	stParameter.flLSC_LuxSymmMax	=	itemshareData.otpburnParameter->flLSC_LuxSymmMax;
+	stParameter.flLSC_CenterR2GrMin	=	itemshareData.otpburnParameter->flLSC_CenterR2GrMin;
+	stParameter.flLSC_CenterR2GrMax	=	itemshareData.otpburnParameter->flLSC_CenterR2GrMax;
+	stParameter.flLSC_CenterB2GrMin	=	itemshareData.otpburnParameter->flLSC_CenterB2GrMin;
+	stParameter.flLSC_CenterB2GrMax	=	itemshareData.otpburnParameter->flLSC_CenterB2GrMax;
+	stParameter.flLSC_WB2CenterMax_R2Gr	=	itemshareData.otpburnParameter->flLSC_WB2CenterMax_R2Gr;
+	stParameter.flLSC_WB2CenterMax_B2Gr	=	itemshareData.otpburnParameter->flLSC_WB2CenterMax_B2Gr;
+	stParameter.flLSC_LuxShadingUniform	=	itemshareData.otpburnParameter->flLSC_LuxShadingUniform;
+	stParameter.uiBlockSize	=	itemshareData.otpburnParameter->uiBlockSize;
+	stParameter.dflLightCoeR	=	itemshareData.otpburnParameter->dflLightCoeR=dflCoefR;
+	stParameter.dflLightCoeB	=	itemshareData.otpburnParameter->dflLightCoeB=dflCoefB;
+	stParameter.strproject	=	(itemshareData.ccmhardwareParameter->projectname.toAscii()).data();
+	stParameter.strsensor	=	(itemshareData.ccmhardwareParameter->sensortype.toAscii()).data();
+	stParameter.strFunctionChoose	=	(itemshareData.otpburnParameter->strFunctionChoose.toAscii()).data();
+	stParameter.ucSlave		=	itemshareData.previewParameter->ucSlave;
+	stParameter.ucEESlave	=	itemshareData.ccmhardwareParameter->ucEESlave;
+	stParameter.bDebug		=	hisglobalparameter.bDebugMode;
+	stParameter.bBurnOpticalCenter=itemshareData.otpburnParameter->bBurnOpticalCenter;
+	stParameter.nSN_Length=strlen(global_strSN);
+	memcpy(stParameter.pucSN,global_strSN,strlen(global_strSN));
+
+	if(stParameter.nSN_Length<=0){
+		itemshareData.itemparameterLock.unlock();
+		emit information(QTextCodec::codecForName("GBK")->toUnicode("错误：尚未录入二维码！"));
+		return -1;
+	}
+
+	QString strSerialNumber;
+	classLog->getserialnumber(strSerialNumber);
+	stParameter.strSerialNumber	=	strSerialNumber.toAscii().data();
+
+#if (defined _WIN64) && (defined _DEBUG)
+	QString strLibPath	=	QDir::currentPath() % "/HisCCMOTP64D";
+#elif (defined _WIN64) && !(defined _DEBUG)
+	QString strLibPath	=	QDir::currentPath() % "/HisCCMOTP64";
+#elif (defined _WIN32) && (defined _DEBUG)
+	QString strLibPath	=	QDir::currentPath() % "/HisCCMOTP32D";
+#else
+	QString strLibPath	=	QDir::currentPath() % "/HisCCMOTP32";
+#endif
+
+	RolongoOTPAPIVersion getRolongoOTPAPIVersion = (RolongoOTPAPIVersion)(QLibrary::resolve(strLibPath, "getRolongoOTPAPIVersion"));
+	Rolongowriteotp writeotp = (Rolongowriteotp)(QLibrary::resolve(strLibPath, "writeotp"));
+
+	emit information("getRolongoOTPAPIVersion: "  % QString::number((unsigned int)getRolongoOTPAPIVersion, 16));
+	emit information("writeotp: "  % QString::number((unsigned int)writeotp, 16));
+
+	if(!(getRolongoOTPAPIVersion && writeotp)){
+		emit information(tr("Resolve HisCCMOTP DLL Function Fail"));
+		itemshareData.itemparameterLock.unlock();
+		return HisCCMError_LoadDLLFuc;
+	}
+
+	emit enableinfotimer(1);	
+	iresult	=	writeotp(*globalFunPointer.vectorHisCCMOTPInfoW, &stParameter, globalFunPointer.ReadHisFX3IIC, globalFunPointer.WriteHisFX3IIC, globalFunPointer.SetHisFX3IICSpeed, \
+		globalFunPointer.SetHisFX3Voltage, globalFunPointer.GetHisFX3Voltage, SetHisFX3VFuseVolt, GetHisFX3VFuseVolt, GetFreshframe, \
+		globalFunPointer.BatchWriteHisFX3IIC, globalFunPointer.BatchReadHisFX3IIC, SetHisFX3GPIO, GetHisFX3GPIO, globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, \
+		globalFunPointer.BatchReadHisFX3IICNoLimit, globalFunPointer.BatchWriteHisFX3IICNoLimit, globalFunPointer.HisFX3LogPush_back, \
+		globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI,globalFunPointer.setbulkSize);
+	emit enableinfotimer(0);
+	//******************************** 
 	if(iresult){
 		itemshareData.itemparameterLock.unlock();
 		return iresult;
@@ -28567,14 +28678,14 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 			writer.EndObject();
 
 			emit information(QTextCodec::codecForName("GBK")->toUnicode(buf.GetString()));
-			std::string str=post(buf.GetString());
+			/*std::string str=post(buf.GetString());
 
 			emit information(QTextCodec::codecForName("GBK")->toUnicode(str.c_str()));
 
 			if(QString::fromStdString(str).lastIndexOf("true")<0){
 				emit information("Error:MES Update Data fail!");
 				iresult = -1;
-			}
+			}*/
 			//*********************************
 
 			if(iresult==_His_ItemStatus_PASS){
@@ -29201,6 +29312,13 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 		updateItemstatus(itemstatus);
 		for(unsigned char i=0;	i<currentitem.ucloopTime;	++i){
 			if(!(iresult	=	otpburn()))	break;
+		}
+		bUpdateItemStatus	=	true;
+		break;
+	case otpburnitem_SN:
+		updateItemstatus(itemstatus);
+		for(unsigned char i=0;	i<currentitem.ucloopTime;	++i){
+			if(!(iresult	=	otpburn_SN()))	break;
 		}
 		bUpdateItemStatus	=	true;
 		break;
