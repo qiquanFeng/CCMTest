@@ -717,7 +717,23 @@ int main(int argc, char *argv[])
 	//w.move(width/2+5,0);
 	//w.move(0,0);
 	w.show();
-	
+
+	//************   MES≈‰÷√    ************** 
+	QFile pfile("MES_Config.json");
+	if(pfile.open(QIODevice::ReadOnly)){
+		rapidjson::Document doc;
+		doc.Parse(pfile.readAll().data());
+
+		if(!doc.HasParseError()){
+			if(doc.HasMember("FirstStation")){
+				if(doc["FirstStation"].GetBool()){
+					jsl_bindSerialNumber wid;
+					wid.exec();
+				}
+			}
+		}
+	}
+	pfile.close();
 
 	return a.exec();
 }

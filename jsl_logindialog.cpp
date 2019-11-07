@@ -65,8 +65,8 @@ void jsl_loginDialog::slot_onQuit(){
 }
 
 void jsl_loginDialog::slot_onCommit(){
-	if(m_pleLot->text().isEmpty()){
-		QMessageBox::about(this,QString::fromLocal8Bit("请输入流转卡号"),QString::fromLocal8Bit("请输入流转卡号"));
+	if(m_pleLot->text().isEmpty()||m_pleSta->text().isEmpty()||m_pleJob->text().isEmpty()||m_pleLine->text().isEmpty()){
+		QMessageBox::about(this,QString::fromLocal8Bit("数据填写不完整"),QString::fromLocal8Bit("数据填写不完整"));
 		return ;
 	}
 	SetLotSN(m_pleLot->text());
@@ -77,11 +77,12 @@ void jsl_loginDialog::slot_onCommit(){
 	if(!filejson.open(QIODevice::ReadWrite)){
 		QMessageBox::warning(this,"Error",QTextCodec::codecForName("GBK")->toUnicode("错误：读取 C:/Mes_config.json Fail!！"));
 	}
-	QByteArray arr=filejson.readAll();
-	filejson.close();
+	
+	//QMessageBox::warning(this,"Error",pucBuffer);
 
 	rapidjson::Document doc;
-	doc.Parse(arr.data());
+	doc.Parse(filejson.readAll().data());
+	filejson.close();
 	if(doc.HasParseError()){
 		QMessageBox::warning(this,"Error",QTextCodec::codecForName("GBK")->toUnicode("错误：解析Mes_config.json失败！"));
 	}
@@ -105,7 +106,6 @@ void jsl_loginDialog::slot_onCommit(){
 		QMessageBox::warning(this,"DataBase Open Fail!","DataBase Open Fail!");
 		return ;
 	}
-
 
 	QSqlQuery query(dbLotSN);
 	//********************* tab1 **************
@@ -166,8 +166,6 @@ jsl_bindSerialNumber::jsl_bindSerialNumber(int nType,QWidget *parent):QDialog(pa
 	}else{
 		setWindowTitle(QTextCodec::codecForName("GBK")->toUnicode("请扫描产品二维码"));
 	}
-
-		
 
 	m_sock=NULL;
 	QHBoxLayout *layout=new QHBoxLayout();

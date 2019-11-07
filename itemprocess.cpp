@@ -28372,6 +28372,7 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 			writer1.Key("SN");writer1.String(global_strSN);
 			writer1.Key("SensorID");writer1.String(strSerialNumber.toLocal8Bit().data());
 			writer1.Key("Process");writer1.String(QTextCodec::codecForName("UTF8")->toUnicode(global_strProcess).toLocal8Bit().data());
+			writer1.Key("CanBack");writer1.Int(0);
 
 			writer1.EndObject();
 			writer1.EndArray();
