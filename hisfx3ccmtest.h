@@ -254,6 +254,7 @@ private slots:
 	void slotShowStatisPanel() {if(!HISGLOBALUI::isUnlocked()) return;if(classStatisPanel->isHidden())classStatisPanel->show(); }
 	void slotTestItem(){if(!HISGLOBALUI::isUnlocked()) return;if(classDrawTestItem->isHidden())classDrawTestItem->show(); }
 	void showBindWid(QString);
+	void showDebugBurnWid();
 	void updateSN(QString,QString);
 	
 public:

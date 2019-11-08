@@ -13331,6 +13331,17 @@ int itemprocess::otpburn()
 	stParameter.ucEESlave	=	itemshareData.ccmhardwareParameter->ucEESlave;
 	stParameter.bDebug		=	hisglobalparameter.bDebugMode;
 	stParameter.bBurnOpticalCenter=itemshareData.otpburnParameter->bBurnOpticalCenter;
+
+#ifdef DEBUG
+
+
+	stParameter.Reserve1.i16value[0]=debugBurnValue1;
+	stParameter.Reserve1.i16value[1]=debugBurnValue2;
+	stParameter.Reserve1.i16value[2]=debugBurnValue3;
+	stParameter.Reserve1.i16value[3]=debugBurnValue4;
+
+	stParameter.Reserve4.i64value=0x01;
+#endif
 	stParameter.nSN_Length=strlen(global_strSN);
 	memcpy(stParameter.pucSN,global_strSN,strlen(global_strSN));
 
@@ -16518,6 +16529,39 @@ int itemprocess::openshortTest()
 				emit information(QString::fromWCharArray(classPlatform.GetLastError()));
 				return iresult;
 		}
+		
+		//********************************  Test  *************************************
+		int nlan0P=0,nlan0N=0,nMCP=0,nMCN=0;
+
+		for(unsigned int x=0;	x<itemshareData.openshortParameter->vectorPositive.size(); ++x){
+			if(!strcmp(itemshareData.openshortParameter->vectorPositive.at(x).strName,"LAN0-N")){
+				emit information("LAN0-N:"%QString::number(x));
+				nlan0N=x;
+			}
+			if(!strcmp(itemshareData.openshortParameter->vectorPositive.at(x).strName,"LAN0-P")){
+				emit information("LAN0-P:"%QString::number(x));
+				nlan0P=x;
+			}
+			if(!strcmp(itemshareData.openshortParameter->vectorPositive.at(x).strName,"MCN")){
+				emit information("MCN:"%QString::number(x));
+				nMCN=x;
+			}
+			if(!strcmp(itemshareData.openshortParameter->vectorPositive.at(x).strName,"MCP")){
+				emit information("MCP:"%QString::number(x));
+				nMCP=x;
+			}
+		}
+
+		int dLanDiff=abs(itemshareData.openshortParameter->vectorPositive.at(nlan0P).flVoltValue-itemshareData.openshortParameter->vectorPositive.at(nlan0N).flVoltValue);
+		int dmDiff=abs(itemshareData.openshortParameter->vectorPositive.at(nMCP).flVoltValue-itemshareData.openshortParameter->vectorPositive.at(nMCN).flVoltValue);
+
+		emit information(QString("Lan0 Diff:%1 Mv").arg(dLanDiff));
+		emit information(QString("dmDiff Diff:%1 Mv").arg(dmDiff));
+
+		if(dLanDiff>20||dmDiff>20){
+			bPositiveRel=false;
+		}
+
 		for(unsigned int x=0;	x<itemshareData.openshortParameter->vectorPositive.size(); ++x){
 			if(itemshareData.openshortParameter->vectorPositive.at(x).bTest){
 				if(itemshareData.openshortParameter->vectorPositive.at(x).flVoltValue < itemshareData.openshortParameter->vectorPositive.at(x).flSpecMin)
@@ -16535,6 +16579,8 @@ int itemprocess::openshortTest()
 			}
 		}
 
+
+
 		if(hisglobalparameter.bDebugMode){
 			emit information(QTextCodec::codecForName( "GBK")->toUnicode("OS(正向)所有测试数据："));
 			for(unsigned int x=0;	x<itemshareData.openshortParameter->vectorPositive.size(); ++x){
@@ -16544,7 +16590,9 @@ int itemprocess::openshortTest()
 					QString::number(itemshareData.openshortParameter->vectorPositive.at(x).flSpecMin) % "--" % \
 					QString::number(itemshareData.openshortParameter->vectorPositive.at(x).flSpecMax) % ")");
 			}
-		}	
+		}
+
+		//**************************************************************************************************************
 	}
 
 	emit information("positive time: " % QString::number(classTime.restart()));
@@ -28514,29 +28562,18 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 
 		bUpdateItemStatus	=	true;
 		break;
-	case burn_messtatusupdate:
+	case burndebugitem:
 		updateItemstatus(itemstatus);
 		{
 			QString strSerialNumber;
 			classLog->getserialnumber(strSerialNumber);
-			emit sig_messtatusupdate(strSerialNumber,QString("Burn"));
+			emit sig_inputBurnValue();
 			while (!global_ioc_x)
 			{
-				Sleep(100);
+				QApplication::processEvents();
 			}
 
 		}
-
-		if(global_ioc_x>=1){
-			iresult	=	0;
-		}
-		else if(iresult	==-1){
-			emit information(QString::fromLocal8Bit("连接MES服务器失败！请重启程序再试。。。"));
-			iresult=-1;
-		}else{
-			iresult=-1;
-		}
-
 
 		bUpdateItemStatus	=	true;
 		global_ioc_x=0;

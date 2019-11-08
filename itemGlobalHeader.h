@@ -204,7 +204,7 @@ enum _operateItemList{
 	savemtfdata=0xb7,
 	bindserialnumber=0xb8,
 	messtatusupdate=0xb9,
-	burn_messtatusupdate=0xbA,
+	burndebugitem=0xbA,
 	burncheck_messtatusupdate=0xbB,
 	messtatuscheck=0xbC,
 	lightcal=0xbd,
@@ -258,8 +258,8 @@ __inline void globalgetListAllTestItem(QList<_TestItem_Basic_Info>& itemList) //
 	_CODE_GLOBALITEM_PUSHBACK(burncheck_messtatusupdate, "burncheck_messtatusupdate", QTextCodec::codecForName( "GBK")->toUnicode("更新OTP Check到MES"), "other", "", \
 		QTextCodec::codecForName( "GBK")->toUnicode("功能：更新烧录检测站位信息到MES服务器"), \
 		"HisFX3CCMTest");
-	_CODE_GLOBALITEM_PUSHBACK(burn_messtatusupdate, "burn_messtatusupdate", QTextCodec::codecForName( "GBK")->toUnicode("更新OTP 到MES"), "other", "", \
-		QTextCodec::codecForName( "GBK")->toUnicode("功能：更新烧录站位信息到MES服务器"), \
+	_CODE_GLOBALITEM_PUSHBACK(burndebugitem, "burndebugitem", QTextCodec::codecForName( "GBK")->toUnicode("烧录指定值"), "other", "", \
+		QTextCodec::codecForName( "GBK")->toUnicode("功能：传入指定值烧录，需配合代码修改"), \
 		"HisFX3CCMTest");
 	_CODE_GLOBALITEM_PUSHBACK(messtatusupdate, "messtatusupdate", QTextCodec::codecForName( "GBK")->toUnicode("上传MES服务器"), "other", "", \
 		QTextCodec::codecForName( "GBK")->toUnicode("功能：更新站位信息到MES服务器"), \

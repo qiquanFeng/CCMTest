@@ -196,4 +196,78 @@ void jsl_bindSerialNumber::information(QString _t1)
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
+static const uint qt_meta_data_jsl_debugBurn[] = {
+
+ // content:
+       6,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       1,   14, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+ // slots: signature, parameters, type, tag, flags
+      15,   14,   14,   14, 0x0a,
+
+       0        // eod
+};
+
+static const char qt_meta_stringdata_jsl_debugBurn[] = {
+    "jsl_debugBurn\0\0slot_onCommit()\0"
+};
+
+void jsl_debugBurn::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+{
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        Q_ASSERT(staticMetaObject.cast(_o));
+        jsl_debugBurn *_t = static_cast<jsl_debugBurn *>(_o);
+        switch (_id) {
+        case 0: _t->slot_onCommit(); break;
+        default: ;
+        }
+    }
+    Q_UNUSED(_a);
+}
+
+const QMetaObjectExtraData jsl_debugBurn::staticMetaObjectExtraData = {
+    0,  qt_static_metacall 
+};
+
+const QMetaObject jsl_debugBurn::staticMetaObject = {
+    { &QDialog::staticMetaObject, qt_meta_stringdata_jsl_debugBurn,
+      qt_meta_data_jsl_debugBurn, &staticMetaObjectExtraData }
+};
+
+#ifdef Q_NO_DATA_RELOCATION
+const QMetaObject &jsl_debugBurn::getStaticMetaObject() { return staticMetaObject; }
+#endif //Q_NO_DATA_RELOCATION
+
+const QMetaObject *jsl_debugBurn::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
+}
+
+void *jsl_debugBurn::qt_metacast(const char *_clname)
+{
+    if (!_clname) return 0;
+    if (!strcmp(_clname, qt_meta_stringdata_jsl_debugBurn))
+        return static_cast<void*>(const_cast< jsl_debugBurn*>(this));
+    return QDialog::qt_metacast(_clname);
+}
+
+int jsl_debugBurn::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = QDialog::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        if (_id < 1)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 1;
+    }
+    return _id;
+}
 QT_END_MOC_NAMESPACE

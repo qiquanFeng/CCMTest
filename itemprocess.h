@@ -106,6 +106,7 @@ public:
 		void sig_test(QqrealList);
 		void sig_serialnumberbind(QString);//************ 2019/03/30
 		void sig_messtatusupdate(QString,QString);//************ 2019/03/30
+		void sig_inputBurnValue();
 
 		 
 public:

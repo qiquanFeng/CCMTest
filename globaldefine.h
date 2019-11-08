@@ -104,6 +104,11 @@ extern char global_strJobNumber[1024];
 extern char global_strStaNumber[1024];
 extern char global_strLineNumber[1024];
 
+extern int debugBurnValue1;
+extern int debugBurnValue2;
+extern int debugBurnValue3;
+extern int debugBurnValue4;
+
 extern _HisCCMAlg_AFC_MTF_DataItem_EX stItemData_EX;
 
 #define _Thread_Wait_Times					100

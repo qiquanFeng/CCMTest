@@ -947,6 +947,7 @@ HisFX3CCMTest::HisFX3CCMTest(QWidget *parent, Qt::WFlags flags,bool bChannel1, _
 	//p_Parent->getOperateModeConfig();
 	connect(itemprocessworker,SIGNAL(sig_serialnumberbind(QString)),this,SLOT(showBindWid(QString)));
 	connect(itemprocessworker,SIGNAL(sig_messtatusupdate(QString,QString)),this,SLOT(updateSN(QString,QString)));
+	connect(itemprocessworker,SIGNAL(sig_inputBurnValue()),this,SLOT(showDebugBurnWid()));
 	
 	connect(wids,SIGNAL(information(QString)),this,SIGNAL(information(QString)));
 
@@ -3197,6 +3198,11 @@ void HisFX3CCMTest::showBindWid(QString strNumber){
 	wids->setSerialNumber(strNumber);
 	wids->exec();
 }
+void HisFX3CCMTest::showDebugBurnWid(){
+	jsl_debugBurn wid;
+	wid.exec();
+}
+
 void HisFX3CCMTest::updateSN(QString strNumber,QString strPro){
 	global_ioc_x=0;
 

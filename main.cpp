@@ -32,6 +32,10 @@ char global_strLotNumber[1024]={0};
 char global_strJobNumber[1024]={0};
 char global_strStaNumber[1024]={0};
 char global_strLineNumber[1024]={0};
+int debugBurnValue1=0;
+int debugBurnValue2=0;
+int debugBurnValue3=0;
+int debugBurnValue4=0;
 
 _HisCCMAlg_AFC_MTF_DataItem_EX stItemData_EX;
 

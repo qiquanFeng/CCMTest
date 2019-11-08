@@ -273,3 +273,47 @@ void jsl_bindSerialNumber::slotReturn(){
 	ledit->clear();
 	this->close();
 }
+
+//*********************************************************
+jsl_debugBurn::jsl_debugBurn(QWidget *parent /* = 0 */):QDialog(parent){
+	box1=new QSpinBox();
+	box2=new QSpinBox();
+	box3=new QSpinBox();
+	box4=new QSpinBox();
+	butCommit=new QPushButton(tr("Commit"));
+
+	box1->setRange(0,0xFFFF);
+	box2->setRange(0,0xFFFF);
+	box3->setRange(0,0xFFFF);
+	box4->setRange(0,0xFFFF);
+
+	QVBoxLayout *vlayout=new QVBoxLayout;
+	vlayout->addWidget(box1);
+	vlayout->addWidget(box2);
+	vlayout->addWidget(box3);
+	vlayout->addWidget(box4);
+	vlayout->addWidget(butCommit);
+
+	this->setLayout(vlayout);
+	connect(butCommit,SIGNAL(pressed()),this,SLOT(slot_onCommit()));
+}
+
+jsl_debugBurn::~jsl_debugBurn(){
+
+}
+
+void jsl_debugBurn::slot_onCommit(){
+	debugBurnValue1=box1->value();
+	debugBurnValue2=box2->value();
+	debugBurnValue3=box3->value();
+	debugBurnValue4=box4->value();
+
+	global_ioc_x=1;
+	close();
+}
+
+void jsl_debugBurn::closeEvent(QCloseEvent *evt){
+
+
+}
+

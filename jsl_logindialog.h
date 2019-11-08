@@ -15,6 +15,7 @@
 #include <QSqlError>
 #include "socket_jsl.h"
 #include <QMessageBox>
+#include <QSpinBox>
 
 class jsl_loginDialog : public QDialog
 {
@@ -91,6 +92,25 @@ protected:
 
 	public slots:
 		void slotReturn();
+};
+
+class jsl_debugBurn: public QDialog{
+	Q_OBJECT
+public:
+	jsl_debugBurn(QWidget *parent = 0);
+	~jsl_debugBurn();
+
+	QSpinBox *box1;
+	QSpinBox *box2;
+	QSpinBox *box3;
+	QSpinBox *box4;
+
+	QPushButton *butCommit;
+protected:
+	void closeEvent(QCloseEvent *evt);
+
+public slots:
+	void slot_onCommit();
 };
 
 #endif // JSL_LOGINDIALOG_H
