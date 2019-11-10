@@ -3516,7 +3516,10 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 	else if(pstParameter->stTacticsBasic.ucTactics != _HisCCMAlg_Rolongo_AFC_Tactics_Single){
 		if(iresult = setMotor(itemshareData.ccmhardwareParameter->motortype.toAscii().data(), itemshareData.previewParameter->ucSlave, \
 			itemshareData.ccmhardwareParameter->projectname.toAscii().data(), iMotorPosNow, globalFunPointer.ReadHisFX3IIC, globalFunPointer.WriteHisFX3IIC, globalFunPointer.SetHisFX3IICSpeed, globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, \
-			globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI)) _CODE_AFC_MTF_EXIT1
+			globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI)) {
+			iresult=HisFX3Error_AFC_NoRespond;
+			_CODE_AFC_MTF_EXIT1
+		}
 			::Sleep(pstParameter->stTacticsBasic.usStepDelay);
 	}
 
@@ -3695,7 +3698,10 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 
 		if(iresult = setMotor(itemshareData.ccmhardwareParameter->motortype.toAscii().data(), itemshareData.previewParameter->ucSlave, \
 			itemshareData.ccmhardwareParameter->projectname.toAscii().data(), iMotorPosNow, globalFunPointer.ReadHisFX3IIC, globalFunPointer.WriteHisFX3IIC, globalFunPointer.SetHisFX3IICSpeed, globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, \
-			globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI)) break;
+			globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI)){
+			iresult=HisFX3Error_AFC_NoRespond;
+			break;
+		} 
 		::Sleep(pstParameter->stTacticsBasic.usStepDelay);
 
 		if(pstParameter->stTacticsBasic.ucTactics == _HisCCMAlg_Rolongo_AFC_Tactics_Single || \
@@ -3819,8 +3825,12 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 		int iresult2 = iresult;
 		if(iresult = setMotor(itemshareData.ccmhardwareParameter->motortype.toAscii().data(), itemshareData.previewParameter->ucSlave, \
 			itemshareData.ccmhardwareParameter->projectname.toAscii().data(), vectorItemData.at(uiSaveIndex).sMotorStep, globalFunPointer.ReadHisFX3IIC, globalFunPointer.WriteHisFX3IIC, globalFunPointer.SetHisFX3IICSpeed, globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, \
-			globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI)) 
+			globalFunPointer.PageWriteHisFX3IIC, globalFunPointer.PageReadHisFX3IIC, globalFunPointer.HisFX3PageWriteSPI, globalFunPointer.HisFX3PageReadSPI))
+		{
+			iresult=HisFX3Error_AFC_NoRespond;
 			_CODE_AFC_MTF_EXIT1
+		}
+			
 			iresult = iresult2;
 
 		vectorDraw.clear();
@@ -3865,10 +3875,14 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 			else emit information(QTextCodec::codecForName( "GBK")->toUnicode("远焦最优点马达坐标：") % QString::number(vectorItemData.at(uiSaveIndex).sMotorStep));
 
 			
-			if(vectorItemData.at(uiSaveIndex).sMotorStep < pstParameter->stTacticsBasic.sMotorSpecMin || \
-				vectorItemData.at(uiSaveIndex).sMotorStep > pstParameter->stTacticsBasic.sMotorSpecMax){
-					iresult	=	HisCCMError_Result;
-					emit information(QTextCodec::codecForName( "GBK")->toUnicode("最优点点马达位置超出规格"));
+			if(vectorItemData.at(uiSaveIndex).sMotorStep < pstParameter->stTacticsBasic.sMotorSpecMin){
+				iresult	=	HisFX3Error_AFC_MinResult;
+				emit information(QTextCodec::codecForName( "GBK")->toUnicode("最优点点马达位置超出规格(下限)"));
+			}
+			
+			if(vectorItemData.at(uiSaveIndex).sMotorStep > pstParameter->stTacticsBasic.sMotorSpecMax){
+				iresult	=	HisFX3Error_AFC_MaxResult;
+				emit information(QTextCodec::codecForName( "GBK")->toUnicode("最优点点马达位置超出规格(上限)"));
 			}
 
 			if(uctype == 0)	iNearPeakMotorDec	=	vectorItemData.at(uiSaveIndex).sMotorStep;
@@ -28940,7 +28954,7 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 			_scotherInfo otherInfo;
 			globalgetShortcutAddInfoUnion(currentitem.usItem, currentitem.strAddInfo, otherInfo);			
 			for(unsigned char i=0;	i<currentitem.ucloopTime;	++i){
-				if(!(iresult	=	mtfAFCCA(0, otherInfo.idata[0], iOldStatics)))	break;
+				if(!(global_AF_Error_Code=iresult	=	mtfAFCCA(0, otherInfo.idata[0], iOldStatics)))	break;
 			}
 			if(iOldStatics != 255 && itemshareData.mtfnearafcParameter)
 				itemshareData.mtfnearafcParameter->stTacticsBasic.ucTactics	=	iOldStatics;
@@ -28958,7 +28972,11 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 			_scotherInfo otherInfo;
 			globalgetShortcutAddInfoUnion(currentitem.usItem, currentitem.strAddInfo, otherInfo);		
 			for(unsigned char i=0;	i<currentitem.ucloopTime;	++i){
-				if(!(iresult	=	mtfAFCCA(1, otherInfo.idata[0], iOldStatics)))	break;
+				if(!(iresult	=	mtfAFCCA(1, otherInfo.idata[0], iOldStatics))){
+					break;
+				}else{
+					global_AF_Error_Code=iresult|0x01;
+				}
 			}
 			if(iOldStatics != 255 && itemshareData.mtfmiddleafcParameter)
 				itemshareData.mtfmiddleafcParameter->stTacticsBasic.ucTactics	=	iOldStatics;
@@ -28976,7 +28994,11 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 			_scotherInfo otherInfo;
 			globalgetShortcutAddInfoUnion(currentitem.usItem, currentitem.strAddInfo, otherInfo);		
 			for(unsigned char i=0;	i<currentitem.ucloopTime;	++i){
-				if(!(iresult	=	mtfAFCCA(2, otherInfo.idata[0], iOldStatics)))	break;
+				if(!(iresult	=	mtfAFCCA(2, otherInfo.idata[0], iOldStatics))){
+					break;
+				}else{
+					global_AF_Error_Code=iresult|0x02;
+				}
 			}		
 			if(iOldStatics != 255 && itemshareData.mtffarafcParameter)
 				itemshareData.mtffarafcParameter->stTacticsBasic.ucTactics	=	iOldStatics;

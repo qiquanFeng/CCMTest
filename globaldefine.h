@@ -108,6 +108,7 @@ extern int debugBurnValue1;
 extern int debugBurnValue2;
 extern int debugBurnValue3;
 extern int debugBurnValue4;
+extern int global_AF_Error_Code;
 
 extern _HisCCMAlg_AFC_MTF_DataItem_EX stItemData_EX;
 

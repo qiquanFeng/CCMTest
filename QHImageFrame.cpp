@@ -176,6 +176,20 @@ void QHImageFrame::paintEvent(QPaintEvent *event)
 			QImage image1(":/Resources/ngimage.png", "PNG");
 			QPainter painter(this);
 			painter.drawImage(this->rect(), image1, image1.rect(), Qt::ColorOnly);
+			if(global_AF_Error_Code){
+				QString str;
+				if((global_AF_Error_Code&0x0F)==0){
+					str=QTextCodec::codecForName("GBK")->toUnicode("½ü½¹");
+				}else if((global_AF_Error_Code&0x0F)==1){
+					str=QTextCodec::codecForName("GBK")->toUnicode("ÖÐ½¹");
+				}else{
+					str=QTextCodec::codecForName("GBK")->toUnicode("Ô¶½¹");
+				}
+
+				QRect rect(0,0,image1.width(),image1.height());
+				painter.setFont(QFont("·ÂËÎ",40,QFont::Bold));
+				painter.drawText(this->rect(),str%GetHisFX3ErrorInfo(global_AF_Error_Code&0xFFFFF0));
+			}
 		}
 		break;
 	default:

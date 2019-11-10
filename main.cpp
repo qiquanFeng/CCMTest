@@ -36,6 +36,7 @@ int debugBurnValue1=0;
 int debugBurnValue2=0;
 int debugBurnValue3=0;
 int debugBurnValue4=0;
+int global_AF_Error_Code=0;
 
 _HisCCMAlg_AFC_MTF_DataItem_EX stItemData_EX;
 
@@ -438,6 +439,18 @@ QString __stdcall GetHisFX3ErrorInfo(int errorcode)
 		break;
 	case HisCCMError_Result:
 		return QTextCodec::codecForName( "GBK")->toUnicode("错误：结果超出规格");
+		break;
+	case HisFX3Error_AFC_NoRespond:
+		return QTextCodec::codecForName( "GBK")->toUnicode("错误：驱动IC 未识别！");
+		break;
+	case HisFX3Error_AFC_MinResult:
+		return QTextCodec::codecForName( "GBK")->toUnicode("错误：AF Code超（下限）！");
+		break;
+	case HisFX3Error_AFC_MaxResult:
+		return QTextCodec::codecForName( "GBK")->toUnicode("错误：AF Code超（上限）！");
+		break;
+	case HisCCMError_NoFocusStep:
+		return QTextCodec::codecForName( "GBK")->toUnicode("错误：无清晰点");
 		break;
 	case HisCCMError_Database:
 		return QTextCodec::codecForName( "GBK")->toUnicode("错误：sqlite数据库连接");

@@ -361,7 +361,12 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_QHDrawTEstItem.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_QHFontSetting.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_QHImageDebug.cpp" />
-    <ClCompile Include="GeneratedFiles\Debug\moc_QHImageFrame.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_QHImageFrame.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Template|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_QHInfoPanel.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_QHMainWindow.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_QHManualModeA.cpp" />

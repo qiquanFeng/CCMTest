@@ -713,7 +713,15 @@ enum _HisFX3Platform_ErrorCode{
 	 
 	HisCCMError_NotPreivew		=	0x100100,
 	HisCCMError_NoFrame			=	0x100200,
+
 	HisCCMError_Result				=	0x100300,
+	HisCCMError_NoFocusStep			=   0x109F00,
+
+	HisFX3Error_AFC_NoRespond		=	0xFFF100,
+	HisFX3Error_AFC_MinResult		=	0xFFF200,
+	HisFX3Error_AFC_MaxResult		=	0xFFF300,
+	HisCCMError_AFC_NoFocusStep			=	0x109000,
+
 	HisCCMError_Database			=	0x100400,
 	HisCCMError_opConflic			=	0x100500,
 	HisCCMError_saveImage		=	0x100600,
@@ -749,7 +757,6 @@ enum _HisFX3Platform_ErrorCode{
 	HisCCMError_UpCheck							=	0x108D00,
 	HisCCMError_NotSupportx86				=	0x108E00,
 	HisCCMError_NotSupportx64				=	0x108F00,
-	HisCCMError_NoFocusStep					=	0x109000,
 	HisCCMError_AF									=	0x109100,
 	HisCCMError_FileFormat					=	0x109200,
 	HisCCMError_String2Hex					=	0x109300,
