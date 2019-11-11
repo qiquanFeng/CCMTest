@@ -42,6 +42,7 @@
 #include <QNetworkReply>
 #include <QInputDialog>
 #include <QCryptographicHash>
+#include <QTime>
  
 #include "inc/versionswitch.h"
 #include "inc/HisGlobalDefine.h"
@@ -109,6 +110,9 @@ extern int debugBurnValue2;
 extern int debugBurnValue3;
 extern int debugBurnValue4;
 extern int global_AF_Error_Code;
+
+extern std::vector<Qt::Key> keys;
+extern QTime global_time;
 
 extern _HisCCMAlg_AFC_MTF_DataItem_EX stItemData_EX;
 

@@ -37,6 +37,8 @@ int debugBurnValue2=0;
 int debugBurnValue3=0;
 int debugBurnValue4=0;
 int global_AF_Error_Code=0;
+std::vector<Qt::Key> keys;
+QTime global_time;
 
 _HisCCMAlg_AFC_MTF_DataItem_EX stItemData_EX;
 

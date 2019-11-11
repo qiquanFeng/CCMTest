@@ -133,7 +133,7 @@ void QHthreadShortcut::slotExecKeyshortcut(char key, unsigned char uctimer)
 
 QHMainWindow::QHMainWindow(QWidget *parent)
 	: QMainWindow(parent),loginDlg(this),windowc1(this,0,true, threadshareDataC1, itemshareDataC1, globalFunPointerC1,true),\
-	windowc2(this,0,false, threadshareDataC2, itemshareDataC2, globalFunPointerC2)
+	windowc2(this,0,false, threadshareDataC2, itemshareDataC2, globalFunPointerC2),m_threadKey(new thread_Key(this))
 {
 	cu8TimeResolution = 0;
 	ui.setupUi(this);
@@ -634,13 +634,21 @@ bool QHMainWindow::winEvent (MSG * message, long * result)
 void QHMainWindow::keyPressEvent(QKeyEvent* event)
 {
 	int key	=	event->key();
+	
+	mutexKey.lock();
+	if(key!=Qt::Key_NumLock)
+		m_vecTemp.append(key);
+	mutexKey.unlock();
 
-	if(key==Qt::Key_Z && event->modifiers()==Qt::CTRL){
-		if(QMessageBox::question(this, tr("Retore UI"), tr("Are you sure, you want to restore the UI Layout?"), QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes){
-			slotResetUILayout();
-		}	
-	}
-	else if((key == Qt::Key_Return || key == Qt::Key_Enter || key == Qt::Key_Space) && hisglobalparameter.getfaflag()){
+	if(m_vecTemp.size()==1)
+		m_threadKey->start();
+
+	QMainWindow::keyPressEvent(event);
+}
+
+void QHMainWindow::keyPressEvent_Ex(Qt::Key key)
+{
+	if((key == Qt::Key_Return || key == Qt::Key_Enter || key == Qt::Key_Space) && hisglobalparameter.getfaflag()){
 		hisglobalparameter.setfaflag(false);
 		// 		return;
 	}
@@ -650,8 +658,8 @@ void QHMainWindow::keyPressEvent(QKeyEvent* event)
 // 		ClickExecbutton();
 // 		classButtonExec->ui.seriallineEdit->setFocus();
 	}
-	else if (((key >= Qt::Key_0 && key<=Qt::Key_9) || (key>=Qt::Key_A && key<=Qt::Key_Z) || (key>96 && key<123)) && event->modifiers()!=Qt::CTRL){
-		if(key>64 && key<91)	key	+=	32;
+	else if (((key >= Qt::Key_0 && key<=Qt::Key_9) || (key>=Qt::Key_A && key<=Qt::Key_Z) || (key>96 && key<123))){
+		if(key>64 && key<91)	key	=	(Qt::Key)(int(key)+32);
 		if(hisglobalparameter.getfaflag()){
 			hisglobalparameter.setfaflag(false);
 			::Sleep(200);
@@ -673,7 +681,6 @@ void QHMainWindow::keyPressEvent(QKeyEvent* event)
 			if(!HISCCMSHORTCUT::isKeyValidTwoChannel(key, 1, itemshareDataC1.shortcutgather, itemshareDataC2.shortcutgather) && \
 				!HISCCMSHORTCUT::isKeyValidTwoChannel(key, 2, itemshareDataC1.shortcutgather, itemshareDataC2.shortcutgather))
 			{
-				QMainWindow::keyPressEvent(event);
 				return;
 			}
 			
@@ -713,7 +720,6 @@ void QHMainWindow::keyPressEvent(QKeyEvent* event)
 			{
 				ucClicktimer	=	 (b2ndClick[uiIndex])?(1):(2);
 				if(!HISCCMSHORTCUT::isKeyValidOneChannel(key, ucClicktimer, itemshareDataC1.shortcutgather)){
-					QMainWindow::keyPressEvent(event);
 					return;
 				}
 			}
@@ -721,7 +727,8 @@ void QHMainWindow::keyPressEvent(QKeyEvent* event)
 			if(itemshareDataC1.mutexItemExec.tryLock(30)){
 				itemshareDataC1.mutexItemExec.unlock();
 				b2ndClick[uiIndex]	=	!(b2ndClick[uiIndex]);
-				emit signalExecKeyshortcutC1(key, ucClicktimer);		
+				emit signalExecKeyshortcutC1(key, ucClicktimer);	
+
 			}
 		}
 	
@@ -777,8 +784,6 @@ void QHMainWindow::keyPressEvent(QKeyEvent* event)
 		threadshareData.flaglock.unlock();
 	}
 */
-	  
-	QMainWindow::keyPressEvent(event);
 }
 
 void QHMainWindow::mouseDoubleClickEvent(QMouseEvent * event)
@@ -2053,4 +2058,48 @@ void QHMainWindow::slotJsvDecode(){
 		QMessageBox::information(this, "success", "jsv to csv, success!");
 
 	}
+}
+
+thread_Key::thread_Key(QObject *parent/* =0 */):QThread(parent),m_parent((QHMainWindow*)parent){
+
+}
+
+thread_Key::~thread_Key(){
+
+}
+
+void thread_Key::run(){
+	::OutputDebugString(L"SOFIA:Start Run");
+
+	QTime time = QTime::currentTime();
+	while (QTime::currentTime() < time.addMSecs(500)) {
+
+	}
+
+	QString str;
+	str.append("SOFIA:");
+	for (int i=0;i<m_parent->m_vecTemp.size();i++)
+	{
+		str.append(QString::number(m_parent->m_vecTemp.at(i)));
+		str.append("|");
+	}
+	
+	OutputDebugString(str.toStdWString().data());
+
+	m_parent->mutexKey.lock();
+	if(m_parent->m_vecTemp.size()>1){
+		m_parent->m_vecTemp.clear();
+		m_parent->mutexKey.unlock();
+		::OutputDebugString(L"SOFIA: Key number > 1");
+		return;
+	}
+		
+
+	Qt::Key key=(Qt::Key)m_parent->m_vecTemp.at(0);
+	m_parent->m_vecTemp.clear();
+	m_parent->mutexKey.unlock();
+
+	m_parent->keyPressEvent_Ex(key);
+	
+	::OutputDebugString(L"SOFIA:Start Run End");
 }

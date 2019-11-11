@@ -15,7 +15,9 @@
 #include "QHRepeatedTest.h"
 #include "QHFontSetting.h"
 #include "jsl_logindialog.h"
+#include <QThread>
 
+class thread_Key;
 
 class QHthreadShortcut : public QObject
 {
@@ -34,6 +36,7 @@ signals:
 	void signalExecKeyshortcutC2(char key, unsigned char uctimer);
 };
 
+
 class QHMainWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -46,6 +49,11 @@ public:
 	void getOperateModeConfig();
 	void restoreUI();
 	void creatMenuAction();
+
+	QMutex mutexKey;
+	QVector<int> m_vecTemp;
+	thread_Key *m_threadKey;
+	void keyPressEvent_Ex(Qt::Key key);
 
 protected:
 	int  MessageEvent(int key);
@@ -588,6 +596,16 @@ public:
 	jsl_loginDialog loginDlg;
 
 	HDEVNOTIFY hDeviceNote;
+};
+
+class thread_Key:public QThread{
+public:
+	thread_Key(QObject *parent=0);
+	~thread_Key();
+	QHMainWindow *m_parent;
+
+protected:
+	void run();
 };
 
 #endif // QHMAINWINDOW_H
