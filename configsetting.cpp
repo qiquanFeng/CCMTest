@@ -68,11 +68,18 @@ enum _HisDB_DataIndex{
 };
 
 configsetting::configsetting(QWidget *parent, bool bChannel1, _threadshareData& threadshareDataC, _global_itemexec& itemshareDataC, itemprocess* classItemProcess2)
-	: QDockWidget(parent), bBoxChannel1(bChannel1), threadshareData(threadshareDataC), itemshareData(itemshareDataC), classItemProcess(classItemProcess2)
+	: QDockWidget(parent), bBoxChannel1(bChannel1), threadshareData(threadshareDataC), itemshareData(itemshareDataC), classItemProcess(classItemProcess2),m_pTimer(new QTimer)
 {
 	ui.setupUi(this);
-	inextflag=0;
+	//********** SuperDog Timer ************************ 
 
+#ifdef RELEASE
+	m_pTimer->start(500);
+	connect(m_pTimer,SIGNAL(timeout()),this,SLOT(slotSuperDogStatusCheck()));
+#endif
+	//**************************************************************
+
+	inextflag=0;
 	ui.spiCSLow_checkBox->setVisible(false);
 	ui.spiLittleEndian_checkBox->setVisible(false);
 
@@ -586,6 +593,9 @@ configsetting::~configsetting()
 	vectorListort.clear();
 	vectorListooc.clear();
 	vectorListcmbosp.clear();
+
+	m_pTimer->stop();
+	delete m_pTimer;
 }
 
 void configsetting::previewData2UI()
@@ -7635,4 +7645,63 @@ void configsetting::DPCRULE2UI()
 	classItemProcess->getDPCParameter(true, false);
 	if(!itemshareData.dpcParameter) return;
 	ui.dpcrulechoosecomboBox->setCurrentIndex(ui.dpcrulechoosecomboBox->findText(itemshareData.dpcParameter->strDPCRuleChoose.toUpper()));
+}
+
+void configsetting::slotSuperDogStatusCheck(){
+	unsigned char vendor_code[] =
+		"AKdZlyc1hJosvGICNJxIUEYKM+QR/pP4A3iRUOL+r3OLmSBs1Cu5kLYYzDne4/QNSig3N3"
+		"uvpzWo94BsZ/BMMOyHr8mqNvxIPPltdgRtKWuOQax3neXwLbtoQ02ncrlwnyQcodDoGX+5"
+		"G3VOXaUnsKVJXxgvREcuOOH+/WhbvMNDcIMeMoWgdiUXnBHsFwjDlyRJQ0+BoQWOtr4atG"
+		"AmjD2gccQ1LoPjHx/cXes8BVEW4mVpVc7cVbdI3EGJZ1cLTltLRbKStEFWQXH6M6JqVjR+"
+		"bc/HUDt36H3JcwumyI19t5Jq+PpJlTiV3vP1gk2n6jtBuix10QkfEXJ5q1kkgY44hGKc3O"
+		"nzhF94vy1Qyp+InyqDbXqWvo2v0gLCdooWF+dOxWwTdt+Fb6kxOY9q4dLc6XPdt+uEQCNK"
+		"rPFEWqgM1NqUr6Ffs1Hh61bguYVUQdjhe8+bigwn94eLokSp+R6CqDwH3Y9OtZ7puajzZi"
+		"OB4Y0/nDslgJe0s9ZRJko4jR77egTE77VZXSaWbPCKlcAnSbDdfEgyGAGqTsq/BXxliQAZ"
+		"k3qS4ZdLCwWxz12K7IK2Gh+FQIH92psEmh4jWgOdx5bxNfYyAOyoUGbzpqhUqXn1+SJ0M2"
+		"mm/hs8xhRBzZEiMCoX+jLe4MwvsC4gNkXMrKV9TD6hxtiYbopMQxbN+hgASIEMYN6EKWlT"
+		"F4cfcWc1UERlFrZW1pWyMClEjZ+wQEOho/AnZayV1V8tVWXf+CbKAV35bOlwpiEpOvT06+"
+		"sU6M2XCPoURJ+GW42LVs2wnE5TcgRsgQkB4fe3OLYdOpVO1uE3BJTpMt0n2wioHM+r1N5i"
+		"RB/YYEof0MDt5tuNOTnnVAPA3eym4rIb4PwI0HBd2Oj0x+LxoVopuzzvMPHjYGy2btsPt8"
+		"tC5hheCAEUoRInN+N0RDd1ywKK5t1oGpTTjPtJMTGoSPVbt6mUr9fuosRB62yLcLB1hBBcQw==";
+
+	dog_handle_t hand_dog;
+	dog_status_t ret= dog_login(0, (dog_vendor_code_t)vendor_code,&hand_dog);
+	if (ret) {
+		QList<QWidget*> widlist = this->findChildren<QWidget*>();
+		for each (QWidget* var in widlist)
+		{
+			QString str = var->objectName();
+			const char *name=var->metaObject()->className();
+
+			if (strcmp(name, "QTabWidget") == 0) {
+				((QWidget*)var->parent())->setDisabled(false);
+			}else if(strcmp(name, "QTabBar")&& strcmp(name, "QStackedWidget")){
+				var->setDisabled(true);
+			}
+		}
+		ui.statuslabel_dog->setText(QTextCodec::codecForName("GBK")->toUnicode("请插入加密狗，以激活配置选项!"));
+		ui.statuslabel_dog->setPalette(QPalette(QColor(255,0,0)));
+	}else{
+		ui.statuslabel_dog->setPalette(QPalette(QColor(255,255,255)));
+
+		QList<QWidget*> widlist = this->findChildren<QWidget*>();
+		for each (QWidget* var in widlist)
+		{
+			var->setDisabled(false);
+		}
+		mutex_superdog.lock();
+		dog_read(hand_dog,DOG_FILEID_RW,0,2,(char*)&usPermission);
+		dog_read(hand_dog,DOG_FILEID_RW,2,8,pucDogUserName);
+
+		ui.statuslabel_dog->setText(QTextCodec::codecForName("GBK")->toUnicode("加密狗用户：")%\
+			QTextCodec::codecForName("GBK")->toUnicode((char*)pucDogUserName)%"|Permission:0x"%\
+			QString("%1").arg(usPermission,4,16,QLatin1Char('0')));
+		mutex_superdog.unlock();
+	}
+
+	
+	ui.statuslabel->setDisabled(false);
+	dog_logout(hand_dog);
+
+
 }

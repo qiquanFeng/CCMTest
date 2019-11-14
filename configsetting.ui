@@ -9,13 +9,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>983</width>
+    <width>1260</width>
     <height>803</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>618</width>
+    <width>1260</width>
     <height>453</height>
    </size>
   </property>
@@ -48,6 +48,9 @@
     </property>
     <item>
      <widget class="QTabWidget" name="tabWidgetmain">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="minimumSize">
        <size>
         <width>618</width>
@@ -73,6 +76,9 @@
        <enum>Qt::ElideLeft</enum>
       </property>
       <widget class="QWidget" name="previewtab">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <attribute name="title">
         <string>Preview</string>
        </attribute>
@@ -2490,7 +2496,7 @@
            <enum>QTabWidget::West</enum>
           </property>
           <property name="currentIndex">
-           <number>4</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tab_5">
            <attribute name="title">
@@ -41059,8 +41065,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>449</width>
-               <height>1455</height>
+               <width>594</width>
+               <height>1272</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_53">
@@ -42741,8 +42747,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>470</width>
-               <height>622</height>
+               <width>611</width>
+               <height>623</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_56">
@@ -42940,6 +42946,51 @@
     </item>
     <item>
      <widget class="QLabel" name="statuslabel">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>618</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Microsoft Tai Le</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::DefaultContextMenu</enum>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Box</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="textInteractionFlags">
+       <set>Qt::TextSelectableByMouse</set>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="statuslabel_dog">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
         <horstretch>0</horstretch>

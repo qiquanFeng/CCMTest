@@ -6,8 +6,8 @@ using namespace std;
 
 
 string post(string strPostData) {
-
 	CWininetHttp http = CWininetHttp();
+
 	return http.RequestJsonInfo(
 		"http://192.168.11.15:8000/api/action2", Hr_Post,
 		"Accept:*/*\nContent-Type:application/json", 
@@ -38,6 +38,8 @@ const std::string CWininetHttp::RequestJsonInfo(const std::string& lpUrl,
 		}
 		Release();
 		m_hSession = InternetOpen(L"Http-connect", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, NULL);    //¾Ö²¿
+		int timeout=3000;
+		InternetSetOption(m_hSession,INTERNET_OPTION_CONNECT_TIMEOUT,&timeout,sizeof(int));
 
 		if (NULL == m_hSession)
 		{
@@ -50,8 +52,10 @@ const std::string CWininetHttp::RequestJsonInfo(const std::string& lpUrl,
 
 		ParseURLWeb(lpUrl, strHostName, strPageName, port);
 		printf("lpUrl:%s,\nstrHostName:%s,\nstrPageName:%s,\nport:%d\n", lpUrl.c_str(), strHostName.c_str(), strPageName.c_str(), (int)port);
+		
 
 		m_hConnect = InternetConnectA(m_hSession, strHostName.c_str(), port, NULL, NULL, INTERNET_SERVICE_HTTP, NULL, NULL);
+		InternetSetOption(m_hConnect,INTERNET_OPTION_CONNECT_TIMEOUT,&timeout,sizeof(int));
 
 		if (NULL == m_hConnect)
 		{
@@ -69,6 +73,7 @@ const std::string CWininetHttp::RequestJsonInfo(const std::string& lpUrl,
 		}
 
 		m_hRequest = HttpOpenRequestA(m_hConnect, strRequestType.c_str(), strPageName.c_str(), "HTTP/1.1", NULL, NULL, INTERNET_FLAG_RELOAD, NULL);
+		InternetSetOption(m_hRequest,INTERNET_OPTION_CONNECT_TIMEOUT,&timeout,sizeof(int));
 		if (NULL == m_hRequest)
 		{
 			throw Hir_InitErr;

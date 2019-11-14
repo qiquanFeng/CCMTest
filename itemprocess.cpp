@@ -3820,8 +3820,20 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 		iresult	=	HisCCMError_NoFocusStep;
 	}
 
+	if(pstParameter->stTacticsBasic.ucTactics == _HisCCMAlg_Rolongo_AFC_Tactics_PEAK || \
+		pstParameter->stTacticsBasic.ucTactics == _HisCCMAlg_Rolongo_AFC_Tactics_Inflexion){
+			if(vectorItemData.at(uiSaveIndex).sMotorStep < pstParameter->stTacticsBasic.sMotorSpecMin){
+				iresult	=	HisFX3Error_AFC_MinResult;
+			}
+
+			if(vectorItemData.at(uiSaveIndex).sMotorStep > pstParameter->stTacticsBasic.sMotorSpecMax){
+				iresult	=	HisFX3Error_AFC_MaxResult;
+			}
+	}
+
  	if(uiSaveIndex != 0xFFFFFFFF && uiSaveIndex != vectorItemData.size() - 1){
 		emit information(QTextCodec::codecForName( "GBK")->toUnicode("马达运动到最优点:") % QString::number(vectorItemData.at(uiSaveIndex).sMotorStep));
+		Sleep(100);
 		int iresult2 = iresult;
 		if(iresult = setMotor(itemshareData.ccmhardwareParameter->motortype.toAscii().data(), itemshareData.previewParameter->ucSlave, \
 			itemshareData.ccmhardwareParameter->projectname.toAscii().data(), vectorItemData.at(uiSaveIndex).sMotorStep, globalFunPointer.ReadHisFX3IIC, globalFunPointer.WriteHisFX3IIC, globalFunPointer.SetHisFX3IICSpeed, globalFunPointer.PullHisFX3RESET, globalFunPointer.PullHisFX3PWND, \
@@ -3874,7 +3886,6 @@ int itemprocess::mtfAFCCA(unsigned char uctype, int iNewStactics, int& iOldStati
 			else if(uctype == 1)	emit information(QTextCodec::codecForName( "GBK")->toUnicode("中焦最优点马达坐标：") % QString::number(vectorItemData.at(uiSaveIndex).sMotorStep));
 			else emit information(QTextCodec::codecForName( "GBK")->toUnicode("远焦最优点马达坐标：") % QString::number(vectorItemData.at(uiSaveIndex).sMotorStep));
 
-			
 			if(vectorItemData.at(uiSaveIndex).sMotorStep < pstParameter->stTacticsBasic.sMotorSpecMin){
 				iresult	=	HisFX3Error_AFC_MinResult;
 				emit information(QTextCodec::codecForName( "GBK")->toUnicode("最优点点马达位置超出规格(下限)"));
@@ -28445,12 +28456,17 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 			writer1.EndObject();
 			//QMessageBox::information(this,"test",QTextCodec::codecForName("GBK")->toUnicode(buf.GetString()));
 			//************************************************************
-			std::string str=post(std::string(buf1.GetString()));
-			emit information(QTextCodec::codecForName("GBK")->toUnicode(buf1.GetString()));
-			emit information(QTextCodec::codecForName("GBK")->toUnicode(str.c_str()));
+			try{
+				std::string str=post(std::string(buf1.GetString()));
+				emit information(QTextCodec::codecForName("GBK")->toUnicode(buf1.GetString()));
+				emit information(QTextCodec::codecForName("GBK")->toUnicode(str.c_str()));
 
-			if(QString::fromStdString(str).lastIndexOf("true")<0){
-				emit information(QTextCodec::codecForName("GBK")->toUnicode("错误：MES 过站检查失败!"));
+				if(QString::fromStdString(str).lastIndexOf("true")<0){
+					emit information(QTextCodec::codecForName("GBK")->toUnicode("错误：MES 过站检查失败!"));
+					iresult=-1;
+				}
+			}catch(HttpInterfaceError error){
+				emit information(QTextCodec::codecForName("GBK")->toUnicode("错误：网络连接MES服务器失败!"));
 				iresult=-1;
 			}
 		}
@@ -28561,16 +28577,23 @@ int itemprocess::operateItem(_shoutCutDetail& currentitem)
 			writer.EndObject();
 
 			emit information(QTextCodec::codecForName("GBK")->toUnicode(buf.GetString()));
-			std::string str=post(buf.GetString());
 
-			emit information(QTextCodec::codecForName("GBK")->toUnicode(str.c_str()));
+			try{
+				std::string str=post(buf.GetString());
 
-			if(QString::fromStdString(str).lastIndexOf("true")<0){
-				emit information(QTextCodec::codecForName("GBK")->toUnicode("错误:MES 数据上传失败!"));
-				iresult = -1;
-			}else{
-				iresult=0;
+				emit information(QTextCodec::codecForName("GBK")->toUnicode(str.c_str()));
+
+				if(QString::fromStdString(str).lastIndexOf("true")<0){
+					emit information(QTextCodec::codecForName("GBK")->toUnicode("错误:MES 数据上传失败!"));
+					iresult = -1;
+				}else{
+					iresult=0;
+				}
+			}catch(HttpInterfaceError error){
+				emit information(QTextCodec::codecForName("GBK")->toUnicode("错误：网络连接MES服务器失败!"));
+				iresult=-1;
 			}
+			
 
 		}
 

@@ -3215,14 +3215,15 @@ public:
     QLabel *autoFADBlabel;
     QPushButton *FC_DBClear_pushButton;
     QLabel *statuslabel;
+    QLabel *statuslabel_dog;
 
     void setupUi(QDockWidget *configsetting)
     {
         if (configsetting->objectName().isEmpty())
             configsetting->setObjectName(QString::fromUtf8("configsetting"));
         configsetting->setWindowModality(Qt::NonModal);
-        configsetting->resize(983, 803);
-        configsetting->setMinimumSize(QSize(618, 453));
+        configsetting->resize(1260, 803);
+        configsetting->setMinimumSize(QSize(1260, 453));
         QFont font;
         font.setFamily(QString::fromUtf8("Microsoft Tai Le"));
         font.setBold(true);
@@ -3239,6 +3240,7 @@ public:
         verticalLayout_82->setObjectName(QString::fromUtf8("verticalLayout_82"));
         tabWidgetmain = new QTabWidget(widget);
         tabWidgetmain->setObjectName(QString::fromUtf8("tabWidgetmain"));
+        tabWidgetmain->setEnabled(true);
         tabWidgetmain->setMinimumSize(QSize(618, 375));
         QFont font1;
         font1.setBold(true);
@@ -3249,6 +3251,7 @@ public:
         tabWidgetmain->setElideMode(Qt::ElideLeft);
         previewtab = new QWidget();
         previewtab->setObjectName(QString::fromUtf8("previewtab"));
+        previewtab->setEnabled(true);
         horizontalLayout_624 = new QHBoxLayout(previewtab);
         horizontalLayout_624->setSpacing(6);
         horizontalLayout_624->setContentsMargins(11, 11, 11, 11);
@@ -25958,7 +25961,7 @@ public:
         autoExposurescrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents_2 = new QWidget();
         scrollAreaWidgetContents_2->setObjectName(QString::fromUtf8("scrollAreaWidgetContents_2"));
-        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 449, 1455));
+        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 594, 1272));
         verticalLayout_53 = new QVBoxLayout(scrollAreaWidgetContents_2);
         verticalLayout_53->setSpacing(6);
         verticalLayout_53->setContentsMargins(11, 11, 11, 11);
@@ -26942,7 +26945,7 @@ public:
         autoExposurescrollArea_3->setWidgetResizable(true);
         scrollAreaWidgetContents_7 = new QWidget();
         scrollAreaWidgetContents_7->setObjectName(QString::fromUtf8("scrollAreaWidgetContents_7"));
-        scrollAreaWidgetContents_7->setGeometry(QRect(0, 0, 470, 622));
+        scrollAreaWidgetContents_7->setGeometry(QRect(0, 0, 611, 623));
         verticalLayout_56 = new QVBoxLayout(scrollAreaWidgetContents_7);
         verticalLayout_56->setSpacing(6);
         verticalLayout_56->setContentsMargins(11, 11, 11, 11);
@@ -27069,6 +27072,20 @@ public:
         statuslabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
         verticalLayout_82->addWidget(statuslabel);
+
+        statuslabel_dog = new QLabel(widget);
+        statuslabel_dog->setObjectName(QString::fromUtf8("statuslabel_dog"));
+        sizePolicy2.setHeightForWidth(statuslabel_dog->sizePolicy().hasHeightForWidth());
+        statuslabel_dog->setSizePolicy(sizePolicy2);
+        statuslabel_dog->setMinimumSize(QSize(618, 20));
+        statuslabel_dog->setMaximumSize(QSize(16777215, 20));
+        statuslabel_dog->setFont(font17);
+        statuslabel_dog->setContextMenuPolicy(Qt::DefaultContextMenu);
+        statuslabel_dog->setFrameShape(QFrame::Box);
+        statuslabel_dog->setFrameShadow(QFrame::Sunken);
+        statuslabel_dog->setTextInteractionFlags(Qt::TextSelectableByMouse);
+
+        verticalLayout_82->addWidget(statuslabel_dog);
 
         configsetting->setWidget(widget);
 #ifndef QT_NO_SHORTCUT
@@ -28209,7 +28226,7 @@ public:
         tabWidgetmain->setCurrentIndex(1);
         mipiSignalcomboBox->setCurrentIndex(1);
         commuProtocalcomboBox->setCurrentIndex(0);
-        focusAdjusttabWidget->setCurrentIndex(4);
+        focusAdjusttabWidget->setCurrentIndex(0);
         mfamtfaFBGradecomboBox->setCurrentIndex(3);
         mfasfraGradeNumcomboBox->setCurrentIndex(3);
         afaChartTypecomboBox->setCurrentIndex(0);
@@ -30361,6 +30378,7 @@ public:
         FC_DBClear_pushButton->setText(QApplication::translate("configsetting", "Clear Database", 0, QApplication::UnicodeUTF8));
         tabWidgetmain->setTabText(tabWidgetmain->indexOf(tab_3), QApplication::translate("configsetting", "Database", 0, QApplication::UnicodeUTF8));
         statuslabel->setText(QString());
+        statuslabel_dog->setText(QString());
     } // retranslateUi
 
 };

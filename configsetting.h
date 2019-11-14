@@ -16,6 +16,19 @@
 #include <qtextcursor.h >
 #include <QTextBlock> 
 #include "itemprocess.h"
+#include <QTimer>
+
+//************** Super Dog API ***********************
+#include "inc/dog_api.h"
+#ifdef WIN32
+#ifdef DEBUG
+#pragma comment(lib,"lib/x86/debug/superdog/dog_windows_3156034")
+#else
+#pragma comment(lib,"lib/x86/release/superdog/dog_windows_3156034")
+#endif
+#else
+
+#endif
 
 class configsetting : public QDockWidget
 {
@@ -92,10 +105,16 @@ public:
 	void LightSpecification2UI();
 	int saveLightSpecificationData();
 
+	QTimer *m_pTimer;
+	unsigned short usPermission;
+	unsigned char pucDogUserName[8];
+	QMutex mutex_superdog;
 signals:
 
   
 private slots:
+	void slotSuperDogStatusCheck();
+
 	void DPCRULE2UI();
 	void otpBurn2UI();
 	void savepreviewinfo();
