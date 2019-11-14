@@ -73,7 +73,8 @@ configsetting::configsetting(QWidget *parent, bool bChannel1, _threadshareData& 
 	ui.setupUi(this);
 	//********** SuperDog Timer ************************ 
 
-#ifdef RELEASE
+#ifdef DEBUG
+#else
 	m_pTimer->start(500);
 	connect(m_pTimer,SIGNAL(timeout()),this,SLOT(slotSuperDogStatusCheck()));
 #endif
